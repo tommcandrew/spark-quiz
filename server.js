@@ -116,6 +116,36 @@ app.post("/publish", (req, res) => {
     });
 });
 
+app.post("/deleteQuiz", (req, res) => {
+  const { id } = req.body;
+  Quiz.findByIdAndDelete(id)
+    .then(() => {
+      console.log("Quiz deleted");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get("/fetchQuizzes", (req, res) => {
+  //get email from jwt
+  let userQuizzes = [];
+  User.findOne({ email: "tommcandrew@hotmail.com" })
+    .then((user) => {
+      Quiz.find().then((quizzes) => {
+        quizzes.forEach((quiz) => {
+          if (user.quizzes.includes(quiz.id)) {
+            userQuizzes.push(quiz);
+          }
+        });
+        res.status(200).send({ quizzes: userQuizzes });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 const emailInvites = (invites, quizName, quizAuthor, quizSubject) => {
   let emailList = [];
   //get email from jwt
