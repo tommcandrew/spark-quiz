@@ -167,9 +167,43 @@ app.post("/updateQuiz", (req, res) => {
   //update can be an object (as this is the format it need to be in for mongoose anyway) e.g. {name: "The Renaissance and its Importance", timeLimit: "40" }
   const { quizId, update } = req.body;
   Quiz.update({ _id: quizId }, { $set: update })
-    .then((quiz) => {
-      //   console.log("Quiz updated successfully");
+    .then(() => {
+      console.log("Quiz updated successfully");
       res.status(200).send();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/submit", (req, res) => {
+  const { studentId, quizId, submittedAnswers } = req.body;
+  Quiz.findById(quizId)
+    .then((quiz) => {
+      let results = [];
+      quiz.questions.forEach((question, index) => {
+        if (question.questionType === "trueFalse") {
+          if (question.answers.trueFalseAnswer === submittedAnswers[index]) {
+            results.push({ question: index, correct: true });
+          } else {
+            results.push({ question: index, correct: false });
+          }
+        } else if (question.questionType === "multipleChoice") {
+          if (
+            question.answers.multipleChoiceAnswer === submittedAnswers[index]
+          ) {
+            results.push({ question: index, correct: true });
+          } else {
+            results.push({ question: index, correct: false });
+          }
+        }
+      });
+      const scoreObject = {
+        studentId,
+        results,
+      };
+      quiz.scores.push(scoreObject);
+      res.status(200).send({ msg: "Quiz submitted", results });
     })
     .catch((err) => {
       console.log(err);
