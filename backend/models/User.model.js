@@ -12,6 +12,7 @@ const User = new Schema({
       name: String,
       email: String,
       groups: [String],
+      id: String,
     },
   ],
 });
