@@ -10,6 +10,15 @@ const MONGO_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MON
 const app = express();
 const User = require("./models/User.model");
 const Quiz = require("./models/Quiz.model");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "thomasdarragh88@gmail.com",
+    pass: "Trafalgar_1805",
+  },
+});
 
 app.listen(PORT, () => console.log("listening on port " + PORT));
 
@@ -91,11 +100,13 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/publish", (req, res) => {
-  const { name, subject, questions, timeLimit, scores } = req.body;
+  const { name, subject, questions, timeLimit, scores, invites } = req.body;
   new Quiz({ name, subject, questions, timeLimit, scores })
     .save()
     .then(() => {
       console.log("quiz saved");
+      //get name from jwt
+      emailInvites(invites, name, "Mr. Jones", subject);
       res.status(200).send({ msg: "Quiz saved" });
     })
     .catch((err) => {
@@ -104,3 +115,33 @@ app.post("/publish", (req, res) => {
       res.status(500).send({ msg: "Unable to save quiz" });
     });
 });
+
+const emailInvites = (invites, quizName, quizAuthor, quizSubject) => {
+  let emailList = [];
+  //get email from jwt
+  User.findOne({ email: "tommcandrew@hotmail.com" })
+    .then((user) => {
+      user.contacts.forEach((contact) => {
+        if (invites.includes(contact.id)) {
+          emailList.push(contact.email);
+        }
+      });
+      const mailOptions = {
+        from: "Quiz Master",
+        to: emailList,
+        subject: "Quiz Master Invitation",
+        html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email(s) sent");
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send({ msg: "Unable to find user" });
+    });
+};

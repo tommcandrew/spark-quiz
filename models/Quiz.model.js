@@ -6,6 +6,7 @@ const Quiz = new Schema(
   {
     name: String,
     subject: String,
+    invites: [String],
     questions: [
       {
         questionType: String,
