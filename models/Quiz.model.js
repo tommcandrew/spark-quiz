@@ -19,13 +19,9 @@ const Quiz = new Schema(
           },
         ],
         answers: {
-          trueFalse: Boolean,
-          multipleChoice: [
-            {
-              text: String,
-              correct: Boolean,
-            },
-          ],
+          trueFalseAnswer: String,
+          multipleChoiceOptions: [String],
+          multipleChoiceAnswer: String,
         },
       },
     ],
