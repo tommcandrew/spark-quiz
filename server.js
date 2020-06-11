@@ -40,6 +40,7 @@ db.once("open", () => {
 
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
 
 app.post("/register", (req, res) => {
   const { name, email, password, password2 } = req.body;
@@ -116,8 +117,42 @@ app.post("/studentLogin", (req, res) => {
   });
 });
 
+app.post("/addQuestion", (req, res) => {
+  const { quizId, question } = req.body;
+  //parse question as it was stringified in order to send
+  const questionParsed = JSON.parse(question);
+  //since FormData separated the media from the rest of the question, loop over media and insert back into question object
+  const mediaFiles = req.files;
+  const keys = Object.keys(mediaFiles);
+  for (key of keys) {
+    //probably a good idea to check that the media prop exists and add if not
+    questionParsed.media.push({
+      mediaType: mediaFiles[key].mimetype,
+      data: mediaFiles[key].data,
+    });
+  }
+  //then find quiz that was previously saved and push the new question onto the questions array
+  Quiz.findById(quizId)
+    .then((quiz) => {
+      quiz.questions.push(questionParsed);
+      quiz
+        .save()
+        .then(() => {
+          console.log("question added to quiz");
+          res.status(200).send({ msg: "Question added to quiz" });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(400).send({ msg: "Unable to add question to quiz" });
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 app.post("/publish", (req, res) => {
-  const { name, subject, questions, timeLimit, scores, invites } = req.body;
+  const { name, subject, invites, questions, timeLimit, scores } = req.body;
   new Quiz({ name, subject, questions, timeLimit, scores, invites })
     .save()
     .then(() => {
