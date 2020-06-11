@@ -63,3 +63,29 @@ app.post("/register", (req, res) => {
     });
   });
 });
+
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  User.findOne({ email }).then((user) => {
+    if (!user) {
+      res.status(403).send({ msg: "That email is not registered" });
+    } else {
+      bcrypt.compare(password, user.password, (err, isSame) => {
+        if (err) {
+          res.status(403).send({ msg: "Problem comparing the passwords" });
+        } else {
+          if (!isSame) {
+            res.status(403).send({ msg: "Wrong password" });
+          } else {
+            jwt.sign({ user }, "secretkey", (err, token) => {
+              res.status(200).send({
+                token: token,
+                userName: user.name,
+              });
+            });
+          }
+        }
+      });
+    }
+  });
+});
