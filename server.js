@@ -88,8 +88,7 @@ app.post("/login", (req, res) => {
           } else {
             jwt.sign({ user }, "secretkey", (err, token) => {
               res.status(200).send({
-                token: token,
-                userName: user.name,
+                token,
               });
             });
           }
@@ -99,9 +98,26 @@ app.post("/login", (req, res) => {
   });
 });
 
+app.post("/studentLogin", (req, res) => {
+  const { id } = req.body;
+  Quiz.find().then((quizzes) => {
+    const matchingQuizArray = [];
+    quizzes.forEach((quiz) => {
+      if (quiz.invites.includes(id)) {
+        matchingQuizArray.push(quiz);
+      }
+    });
+    if (matchingQuizArray.length > 0) {
+      const matchingQuiz = matchingQuizArray[0];
+      res.status(200).send();
+      //send jwt token?
+    }
+  });
+});
+
 app.post("/publish", (req, res) => {
   const { name, subject, questions, timeLimit, scores, invites } = req.body;
-  new Quiz({ name, subject, questions, timeLimit, scores })
+  new Quiz({ name, subject, questions, timeLimit, scores, invites })
     .save()
     .then(() => {
       console.log("quiz saved");
