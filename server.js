@@ -89,3 +89,18 @@ app.post("/login", (req, res) => {
     }
   });
 });
+
+app.post("/publish", (req, res) => {
+  const { name, subject, questions, timeLimit, scores } = req.body;
+  new Quiz({ name, subject, questions, timeLimit, scores })
+    .save()
+    .then(() => {
+      console.log("quiz saved");
+      res.status(200).send({ msg: "Quiz saved" });
+    })
+    .catch((err) => {
+      console.log("Unable to save quiz");
+      console.log(err);
+      res.status(500).send({ msg: "Unable to save quiz" });
+    });
+});
