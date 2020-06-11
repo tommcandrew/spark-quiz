@@ -129,7 +129,8 @@ const AddQuestionModal = () => {
     e.preventDefault();
     const questionObject = {
       questionType: questionType,
-      media: addedMedia,
+      //leaving media array empty here because this object will be stringified before sending to /addQuestion and media needs to be added separately
+      media: [],
       question: question,
       answers: {
         trueFalseAnswer:
@@ -140,7 +141,6 @@ const AddQuestionModal = () => {
       multipleChoiceAnswer: selectedMultipleChoiceOption,
     };
     console.log(questionObject);
-    //probably save questionObject to state here and close this modal
   };
 
   return (
