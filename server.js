@@ -130,6 +130,7 @@ app.post("/deleteQuiz", (req, res) => {
 app.get("/fetchQuizzes", (req, res) => {
   //get email from jwt
   let userQuizzes = [];
+  //get email from jwt
   User.findOne({ email: "tommcandrew@hotmail.com" })
     .then((user) => {
       Quiz.find().then((quizzes) => {
@@ -140,6 +141,19 @@ app.get("/fetchQuizzes", (req, res) => {
         });
         res.status(200).send({ quizzes: userQuizzes });
       });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/updateQuiz", (req, res) => {
+  //update can be an object (as this is the format it need to be in for mongoose anyway) e.g. {name: "The Renaissance and its Importance", timeLimit: "40" }
+  const { quizId, update } = req.body;
+  Quiz.update({ _id: quizId }, { $set: update })
+    .then((quiz) => {
+      //   console.log("Quiz updated successfully");
+      res.status(200).send();
     })
     .catch((err) => {
       console.log(err);
