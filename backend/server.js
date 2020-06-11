@@ -11,6 +11,7 @@ const app = express();
 const User = require("./models/User.model");
 const Quiz = require("./models/Quiz.model");
 const nodemailer = require("nodemailer");
+const Str = require("@supercharge/strings");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -210,6 +211,27 @@ app.post("/submit", (req, res) => {
     });
 });
 
+app.post("/forgotPassword", (req, res) => {
+  //email will probably come from jwt
+  const { email } = req.body;
+  User.findOne({ email }).then((user) => {
+    if (user) {
+      const randomString = Str.random();
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(randomString, salt, (err, hash) => {
+          user.password = hash;
+          user.save().then((user) => {
+            console.log("password reset");
+            emailNewPassword(email, randomString);
+            res.status(200).send({ msg: "New password emailed" });
+          });
+        });
+      });
+      s;
+    }
+  });
+});
+
 const emailInvites = (invites, quizName, quizAuthor, quizSubject) => {
   let emailList = [];
   //get email from jwt
@@ -238,4 +260,23 @@ const emailInvites = (invites, quizName, quizAuthor, quizSubject) => {
       console.log(err);
       res.status(400).send({ msg: "Unable to find user" });
     });
+};
+
+const emailNewPassword = (email, newPassword) => {
+  const mailOptions = {
+    from: "Quiz Master",
+    to: email,
+    subject: "Password reset",
+    text:
+      "Your password has been reset. You're new temporary password is " +
+      newPassword +
+      ".",
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email(s) sent");
+    }
+  });
 };
