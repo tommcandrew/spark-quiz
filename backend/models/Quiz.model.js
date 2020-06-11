@@ -13,9 +13,8 @@ const Quiz = new Schema(
         question: String,
         media: [
           {
-            mimeType: String,
+            mediaType: String,
             data: Schema.Types.Mixed,
-            id: String,
           },
         ],
         answers: {
