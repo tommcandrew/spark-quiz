@@ -8,7 +8,7 @@ const Quiz = new Schema(
     subject: String,
     questions: [
       {
-        type: String,
+        questionType: String,
         question: String,
         media: [
           {
