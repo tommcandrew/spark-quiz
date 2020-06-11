@@ -13,7 +13,7 @@ const Quiz = new Schema(
         media: [
           {
             mimeType: String,
-            data: Mixed,
+            data: Schema.Types.Mixed,
             id: String,
           },
         ],
@@ -39,7 +39,10 @@ const Quiz = new Schema(
           },
         ],
         overallScore: Number,
-        date: Date.now,
+        date: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
   },
@@ -48,4 +51,4 @@ const Quiz = new Schema(
   }
 );
 
-module.exports = mongoose.model("User", User);
+module.exports = mongoose.model("Quiz", Quiz);
