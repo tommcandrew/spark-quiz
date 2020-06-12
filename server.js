@@ -123,14 +123,17 @@ app.post("/addQuestion", (req, res) => {
   const questionParsed = JSON.parse(question);
   //since FormData separated the media from the rest of the question, loop over media and insert back into question object
   const mediaFiles = req.files;
-  const keys = Object.keys(mediaFiles);
-  for (key of keys) {
-    //probably a good idea to check that the media prop exists and add if not
-    questionParsed.media.push({
-      mediaType: mediaFiles[key].mimetype,
-      data: mediaFiles[key].data,
-    });
+  if (mediaFiles) {
+    const keys = Object.keys(mediaFiles);
+    for (key of keys) {
+      //probably a good idea to check that the media prop exists and add if not
+      questionParsed.media.push({
+        mediaType: mediaFiles[key].mimetype,
+        data: mediaFiles[key].data,
+      });
+    }
   }
+
   //then find quiz that was previously saved and push the new question onto the questions array
   Quiz.findById(quizId)
     .then((quiz) => {
@@ -152,6 +155,7 @@ app.post("/addQuestion", (req, res) => {
 });
 
 app.post("/publish", (req, res) => {
+  //don't forget to add the quiz id to the User's quizzes array
   const { name, subject, invites, questions, timeLimit, scores } = req.body;
   new Quiz({ name, subject, questions, timeLimit, scores, invites })
     .save()
@@ -180,14 +184,13 @@ app.post("/deleteQuiz", (req, res) => {
 });
 
 app.get("/fetchQuizzes", (req, res) => {
-  //get email from jwt
   let userQuizzes = [];
   //get email from jwt
   User.findOne({ email: "tommcandrew@hotmail.com" })
     .then((user) => {
       Quiz.find().then((quizzes) => {
         quizzes.forEach((quiz) => {
-          if (user.quizzes.includes(quiz.id)) {
+          if (user.quizzes.includes(quiz._id)) {
             userQuizzes.push(quiz);
           }
         });
