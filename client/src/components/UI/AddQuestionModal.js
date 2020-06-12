@@ -1,3 +1,4 @@
+<<<<<<< HEAD:client/src/components/UI/AddQuestionModal.js
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
 import AddedMedia from "./AddedMedia";
@@ -139,8 +140,8 @@ const AddQuestionModal = () => {
           questionType === "trueFalse" ? selectedTrueFalse : null,
         multipleChoiceOptions:
           questionType === "multipleChoice" ? [...multipleChoiceOptions] : null,
+          multipleChoiceAnswer: selectedMultipleChoiceOption,
       },
-      multipleChoiceAnswer: selectedMultipleChoiceOption,
     };
     console.log(questionObject);
     //probably save questionObject to state here and close this modal
