@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import AddedMedia from "./AddedMedia";
 import camelToSentence from "../../utils/camelToSentence";
-import * as questionActions from '../../store/actions/newQuiz'
+import * as questionActions from "../../store/actions/newQuiz";
 
 //some super basic styling
 const styles = {
@@ -46,7 +46,7 @@ const supportedFileTypes = [
 const questionTypes = ["trueFalse", "multipleChoice"];
 
 const AddQuestionModal = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [addedMedia, setAddedMedia] = useState([]);
   const [questionType, setQuestionType] = useState("trueFalse");
   const [multipleChoiceOptions, setMultipleChoiceOptions] = useState(["", ""]);
@@ -132,19 +132,19 @@ const AddQuestionModal = () => {
     e.preventDefault();
     const questionObject = {
       questionType: questionType,
-      media: addedMedia,
+      media: [],
       question: question,
       answers: {
         trueFalseAnswer:
           questionType === "trueFalse" ? selectedTrueFalse : null,
         multipleChoiceOptions:
           questionType === "multipleChoice" ? [...multipleChoiceOptions] : null,
-          multipleChoiceAnswer: selectedMultipleChoiceOption,
+        multipleChoiceAnswer: selectedMultipleChoiceOption,
       },
     };
     console.log(questionObject);
     //probably save questionObject to state here and close this modal
-    await dispatch(questionActions.addNewQuestion(questionObject))
+    await dispatch(questionActions.addNewQuestion(questionObject));
   };
 
   return (
