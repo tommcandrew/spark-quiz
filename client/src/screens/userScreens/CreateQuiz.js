@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import QuestionsList from '../../components/UI/QuestionsList'
 import AddQuestionModal from '../../components/UI/AddQuestionModal'
 import PreviewQuestions from '../../components/UI/PreviewQuestions'
 const CreateQuiz = () => {
@@ -10,10 +9,18 @@ const CreateQuiz = () => {
 
     //HANDLERS
     const addNewQuestion = () => {
-        setDisplayedComponent(<AddQuestionModal/>)
+      setDisplayedComponent(<AddQuestionModal questionSubmitted={closeModal}/>)
   }
   const previewQuestionsHandler = () => {
-    setDisplayedComponent(<PreviewQuestions/>)
+    setDisplayedComponent(<PreviewQuestions editQuestion = {editQuestion}/>)
+  }
+
+  const editQuestion = (id) => {
+    console.log("clicked")
+  }
+  
+  const closeModal = () => {
+    previewQuestionsHandler()
   }
 
     //HOOKS 
