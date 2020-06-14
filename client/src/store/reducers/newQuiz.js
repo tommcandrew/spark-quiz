@@ -19,7 +19,12 @@ export default (state = initalState, action) => {
                     question => question.id !== action.id
                 )
             }
+<<<<<<< Updated upstream
         
+=======
+        default: 
+            return state
+>>>>>>> Stashed changes
             
     }
      return state;
