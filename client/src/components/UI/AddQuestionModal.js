@@ -45,8 +45,8 @@ const supportedFileTypes = [
 ];
 const questionTypes = ["trueFalse", "multipleChoice"];
 
-const AddQuestionModal = props => {
-  const dispatch = useDispatch()
+const AddQuestionModal = (props) => {
+  const dispatch = useDispatch();
   const [addedMedia, setAddedMedia] = useState([]);
   const [questionType, setQuestionType] = useState("trueFalse");
   const [multipleChoiceOptions, setMultipleChoiceOptions] = useState(["", ""]);
@@ -141,13 +141,12 @@ const AddQuestionModal = props => {
         multipleChoiceOptions:
           questionType === "multipleChoice" ? [...multipleChoiceOptions] : null,
         multipleChoiceAnswer: selectedMultipleChoiceOption,
-      }
-     
+      },
     };
-    //probably save questionObject to state here and close this modal
-    await dispatch(questionActions.addNewQuestion(questionObject))
-    props.questionSubmitted()
 
+    //probably save questionObject to state here and close this modal
+    await dispatch(questionActions.addNewQuestion(questionObject));
+    props.questionSubmitted();
   };
 
   return (
