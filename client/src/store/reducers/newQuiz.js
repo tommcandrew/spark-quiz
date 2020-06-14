@@ -5,6 +5,9 @@ import {
 } from "../actions/newQuiz";
 
 const initalState = {
+  quizId: "",
+  quizName: "",
+  quizSubject: "",
   quizQuestions: [],
 };
 

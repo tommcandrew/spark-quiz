@@ -36,15 +36,13 @@ export const createQuiz = (quizName, quizSubject) => {
         { quizName, quizSubject },
         tokenConfig(token)
       )
-      .then(() => {
-        console.log(
-          "got response from server - now dispatching action to reducer"
-        );
+      .then((res) => {
         return {
           type: CREATE_QUIZ,
           payload: {
             quizName,
             quizSubject,
+            quizId: res.data.quizId,
           },
         };
       })

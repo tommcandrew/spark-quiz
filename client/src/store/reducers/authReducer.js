@@ -17,8 +17,6 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-  console.log("auth reducer");
-  console.log(action.type);
   switch (action.type) {
     case USER_LOADING:
       return {
@@ -46,7 +44,6 @@ export default function (state = initialState, action) {
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
     case REGISTER_FAIL:
-      console.log("in reducer");
       localStorage.removeItem("token");
       return {
         ...state,
@@ -56,7 +53,6 @@ export default function (state = initialState, action) {
         isLoading: false,
       };
     default:
-      console.log("default - returning state");
       return state;
   }
 }

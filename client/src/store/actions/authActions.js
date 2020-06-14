@@ -14,7 +14,6 @@ export const REGISTER_FAIL = "REGISTER_FAIL";
 
 //check token and load user. This function will be called all the time
 export const loadUser = () => {
-  console.log("loaduser");
   return async (dispatch, getState) => {
     //user loading
     dispatch({ type: USER_LOADING }); //ser is loading to true
@@ -36,7 +35,6 @@ export const loadUser = () => {
 };
 
 export const register = ({ name, email, password, password2 }) => {
-  console.log("register");
   return async (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
     const body = JSON.stringify({ name, email, password, password2 });
@@ -64,7 +62,6 @@ export const register = ({ name, email, password, password2 }) => {
 };
 
 export const login = ({ email, password }) => {
-  console.log("login");
   return async (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
     const body = JSON.stringify({ email, password });
@@ -92,17 +89,13 @@ export const login = ({ email, password }) => {
 };
 
 export const logout = () => {
-  console.log("logout");
   return async (dispatch) => {
-    console.log("in action");
     dispatch({ type: LOGOUT_SUCCESS });
   };
 };
 
 //set up config/headers and token
 export const tokenConfig = (token) => {
-  console.log("token config");
-  //get token from local storage
   const config = {
     headers: {
       "Content-type": "application/json",
