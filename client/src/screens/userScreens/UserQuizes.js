@@ -2,8 +2,8 @@ import React from 'react'
 
 const UserQuizes = () => {
     return (
-        <div>
-            User Quizes
+        <div className='userQuizes'>
+            
         </div>
     )
 }
