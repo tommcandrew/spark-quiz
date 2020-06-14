@@ -100,11 +100,9 @@ export const logout = () => {
 };
 
 //set up config/headers and token
-export const tokenConfig = (getState) => {
+export const tokenConfig = (token) => {
   console.log("token config");
-  console.log(getState);
   //get token from local storage
-  const token = getState.auth.token;
   const config = {
     headers: {
       "Content-type": "application/json",

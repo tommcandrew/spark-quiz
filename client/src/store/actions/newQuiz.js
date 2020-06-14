@@ -28,17 +28,13 @@ export const deleteQuestion = (id) => {
 };
 
 export const createQuiz = (quizName, quizSubject) => {
-  console.log("create quiz action");
-  console.log(quizName, quizSubject);
-  return async (dispatch, getState) => {
-    console.log("making axios call");
-    console.log(store.getState());
-    return;
+  return async (dispatch) => {
+    const token = store.getState().auth.token;
     axios
       .post(
         "http://localhost:5000/createQuiz",
-        { quizName, quizSubject }
-        // tokenConfig(getState)
+        { quizName, quizSubject },
+        tokenConfig(token)
       )
       .then(() => {
         console.log(
