@@ -144,15 +144,16 @@ app.post ('/addQuestion', (req, res) => {
   //since FormData separated the media from the rest of the question, loop over media and insert back into question object
   const mediaFiles = req.files;
   if (mediaFiles) {
-    const keys = Object.keys (mediaFiles);
+    const keys = Object.keys(mediaFiles);
     for (key of keys) {
       //probably a good idea to check that the media prop exists and add if not
-      questionParsed.media.push ({
+      questionParsed.media.push({
         mediaType: mediaFiles[key].mimetype,
         data: mediaFiles[key].data,
       });
     }
   }
+
   //then find quiz that was previously saved and push the new question onto the questions array
   Quiz.findById (quizId)
     .then (quiz => {

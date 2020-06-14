@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import AddedMedia from "./AddedMedia";
 import camelToSentence from "../../utils/camelToSentence";
-import * as questionActions from '../../store/actions/newQuiz'
+import * as questionActions from "../../store/actions/newQuiz";
 
 //some super basic styling
 const styles = {
@@ -134,7 +133,7 @@ const AddQuestionModal = props => {
     const questionObject = {
       id: new Date().getUTCMilliseconds(),
       questionType: questionType,
-      media: addedMedia,
+      media: [],
       question: question,
       answers: {
         trueFalseAnswer:
@@ -148,6 +147,7 @@ const AddQuestionModal = props => {
     //probably save questionObject to state here and close this modal
     await dispatch(questionActions.addNewQuestion(questionObject))
     props.questionSubmitted()
+
   };
 
   return (

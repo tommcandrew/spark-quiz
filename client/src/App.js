@@ -1,20 +1,3 @@
-<<<<<<< Updated upstream
-import React from "react";
-import MainNavigation from './components/navigation/MainNavigation'
-import {Provider} from 'react-redux';
-import {createStore, combineReducers} from 'redux';
-import './app.css'
-import newQuizReducer from './store/reducers/newQuiz'
-
-
-export default function App() {
-
-  const rootReducer = combineReducers ({
-  newQuiz: newQuizReducer 
-  });
-  const store = createStore (rootReducer);
-
-=======
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
@@ -35,7 +18,6 @@ export default function AppWrapper () {
     error: errorReducer,
     auth: authReducer,
   });
->>>>>>> Stashed changes
 
   const composeEnhancers = typeof window === 'object' &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -52,22 +34,9 @@ const enhancer = composeEnhancers (
   
   
   return (
-<<<<<<< Updated upstream
      <Provider store={store}>
       <MainNavigation />
     </Provider>
   )
 }
-=======
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-}
 
-
-
-const App = () => {
-  return(<MainNavigation />)
-};
->>>>>>> Stashed changes
