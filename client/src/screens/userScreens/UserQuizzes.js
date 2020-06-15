@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as userActions from "../../store/actions/userActions";
+import * as quizActions from "../../store/actions/quizActions";
+
 import { withRouter } from "react-router-dom";
 
 const UserQuizzes = (props) => {
@@ -10,8 +12,8 @@ const UserQuizzes = (props) => {
     dispatch(userActions.fetchQuizzes());
   }, []);
 
-  const handleOpenCreateQuiz = (quizId) => {
-    console.log("handle open create quiz");
+  const handleOpenCreateQuiz = (quiz) => {
+    dispatch(quizActions.setCurrentQuiz(quiz));
     props.history.push("/createQuiz");
   };
 
@@ -24,7 +26,7 @@ const UserQuizzes = (props) => {
         {quizzes.map((quiz, index) => (
           <li
             key={index}
-            onClick={() => handleOpenCreateQuiz(quiz._id)}
+            onClick={() => handleOpenCreateQuiz(quiz)}
             style={{ border: "2px solid black", cursor: "pointer" }}
           >
             <div>

@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 const CreateQuiz = () => {
   const dispatch = useDispatch();
 
-  const quizId = useSelector((state) => state.quiz.quizId, []);
+  const quiz = useSelector((state) => state.quiz, []);
 
   useEffect(() => {
     dispatch(userActions.fetchQuizzes());
@@ -34,7 +34,7 @@ const CreateQuiz = () => {
   //HANDLERS
   const addNewQuestion = () => {
     setDisplayedComponent(
-      <AddQuestionModal questionSubmitted={closeModal} quizId={quizId} />
+      <AddQuestionModal questionSubmitted={closeModal} _id={quiz._id} />
     );
   };
   const previewQuestionsHandler = () => {
@@ -66,7 +66,7 @@ const CreateQuiz = () => {
 
   return (
     <div className="create-quiz-container">
-      {quizId && (
+      {quiz._id && (
         <>
           <div className="create-quiz-container container-1">
             <button onClick={addNewQuestion}>Add question</button>
@@ -80,7 +80,7 @@ const CreateQuiz = () => {
           </div>
         </>
       )}
-      {!quizId && (
+      {!quiz._id && (
         <div>
           <label>
             Quiz name:

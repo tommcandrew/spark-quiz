@@ -7,6 +7,7 @@ export const DELETE_QUESTION = "DELETE_QUESTION";
 export const CREATE_QUIZ = "CREATE_QUIZ";
 export const FETCH_QUIZZES = "FETCH_QUIZZES";
 export const ADD_QUIZ = "ADD_QUIZ";
+export const SET_CURRENT_QUIZ = "SET_CURRENT_QUIZ";
 
 export const addNewQuestion = (formData) => {
   return (dispatch) => {
@@ -31,6 +32,17 @@ export const deleteQuestion = (id) => {
   };
 };
 
+export const setCurrentQuiz = (quiz) => {
+  console.log("set current quiz");
+  return (dispatch) => {
+    console.log("set current quiz - inner");
+    dispatch({
+      type: SET_CURRENT_QUIZ,
+      payload: quiz,
+    });
+  };
+};
+
 export const createQuiz = (quizName, quizSubject) => {
   return (dispatch) => {
     const token = store.getState().auth.token;
@@ -46,7 +58,7 @@ export const createQuiz = (quizName, quizSubject) => {
           payload: {
             quizName,
             quizSubject,
-            quizId: res.data.quizId,
+            _id: res.data._id,
           },
         });
       })

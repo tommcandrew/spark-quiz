@@ -11,8 +11,6 @@ export const fetchQuizzes = () => {
     axios
       .get("http://localhost:5000/fetchQuizzes", tokenConfig(token))
       .then((res) => {
-        console.log("fetch quizzes  response:");
-        console.log(res);
         dispatch({
           type: FETCH_QUIZZES,
           payload: res.data.quizzes,

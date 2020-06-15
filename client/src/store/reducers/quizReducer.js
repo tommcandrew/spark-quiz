@@ -1,11 +1,11 @@
-import {
-  ADD_NEW_QUESTION,
-  DELETE_QUESTION,
-  CREATE_QUIZ,
-} from "../actions/quizActions";
+// import {
+//   ADD_NEW_QUESTION,
+//   DELETE_QUESTION,
+//   CREATE_QUIZ,
+// } from "../actions/quizActions";
 
 const initalState = {
-  quizId: "",
+  _id: "",
   quizName: "",
   quizSubject: "",
   quizQuestions: [],
@@ -27,9 +27,15 @@ export default (state = initalState, action) => {
     case "CREATE_QUIZ":
       return {
         ...state,
-        quizId: action.payload.quizId,
+        _id: action.payload._id,
         quizName: action.payload.quizName,
         quizSubject: action.payload.quizSubject,
+      };
+    case "SET_CURRENT_QUIZ":
+      console.log("setting current quiz info");
+      return {
+        ...state,
+        ...action.payload,
       };
     default:
       return state;

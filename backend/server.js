@@ -135,7 +135,8 @@ app.post("/studentLogin", (req, res) => {
 });
 
 app.post("/addQuestion", (req, res) => {
-  const { quizId, questionObject } = req.body;
+  console.log(req.body);
+  const { _id, questionObject } = req.body;
   //parse question as it was stringified in order to send
   const questionParsed = JSON.parse(questionObject);
   //since FormData separated the media from the rest of the question, loop over media and insert back into question object
@@ -152,7 +153,7 @@ app.post("/addQuestion", (req, res) => {
   }
 
   //then find quiz that was previously saved and push the new question onto the questions array
-  Quiz.findById(quizId)
+  Quiz.findById(_id)
     .then((quiz) => {
       quiz.quizQuestions.push(questionParsed);
       quiz
@@ -188,7 +189,7 @@ app.post("/createQuiz", auth, (req, res) => {
         user.quizzes.push(quiz._id);
         user.save().then(() => {
           console.log("quiz added to user's quizzes array");
-          res.status(200).send({ quizId: quiz._id });
+          res.status(200).send({ _id: quiz._id });
         });
       });
     })
@@ -199,8 +200,8 @@ app.post("/createQuiz", auth, (req, res) => {
 });
 
 app.post("/deleteQuiz", (req, res) => {
-  const { quizId } = req.body;
-  Quiz.findByIdAndDelete(quizId)
+  const { _id } = req.body;
+  Quiz.findByIdAndDelete(_id)
     .then(() => {
       console.log("Quiz deleted");
     })
@@ -231,8 +232,8 @@ app.get("/fetchQuizzes", auth, (req, res) => {
 
 app.post("/updateQuiz", (req, res) => {
   //update can be an object (as this is the format it need to be in for mongoose anyway) e.g. {name: "The Renaissance and its Importance", timeLimit: "40" }
-  const { quizId, update } = req.body;
-  Quiz.update({ _id: quizId }, { $set: update })
+  const { _id, update } = req.body;
+  Quiz.update({ _id: _id }, { $set: update })
     .then(() => {
       console.log("Quiz updated successfully");
       res.status(200).send();
@@ -243,8 +244,8 @@ app.post("/updateQuiz", (req, res) => {
 });
 
 app.post("/submit", (req, res) => {
-  const { studentId, quizId, submittedAnswers } = req.body;
-  Quiz.findById(quizId)
+  const { studentId, _id, submittedAnswers } = req.body;
+  Quiz.findById(_id)
     .then((quiz) => {
       let results = [];
       quiz.questions.forEach((question, index) => {

@@ -19,8 +19,9 @@ const PreviewQuestions = (props) => {
       <h1>
         {quiz.quizName} ({quiz.quizSubject})
       </h1>
-      {!quiz.quizQuestions ||
-        (quiz.quizQuestions.length === 0 && <p>Add some question</p>)}
+      {(!quiz.quizQuestions || quiz.quizQuestions.length === 0) && (
+        <p>Add some question</p>
+      )}
       {quiz.quizQuestions.length > 0 && (
         <ul className="question-list">
           {quiz.quizQuestions &&
