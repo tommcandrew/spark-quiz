@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Contacts from "../../screens/userScreens/Contacts";
@@ -72,6 +78,7 @@ const MainNavigation = () => {
         <Route path="/" component={Home} exact />
         <Route path="/login" component={Login} />;
         <Route path="/register" component={Register} />;
+        <Redirect to="/" />
       </Switch>
     </Router>
   );
