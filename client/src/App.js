@@ -7,6 +7,8 @@ import newQuizReducer from './store/reducers/newQuiz';
 import errorReducer from './store/reducers/errorReducer';
 import authReducer from './store/reducers/authReducer';
 import MainNavigation from './components/navigation/MainNavigation'
+import theme from './style/theme'
+import { ThemeProvider } from '@material-ui/core/styles';
 
 
 import Register from './screens/authenticatoinScreens/Register'
@@ -18,7 +20,6 @@ export default function AppWrapper () {
     error: errorReducer,
     auth: authReducer,
   });
-
   const composeEnhancers = typeof window === 'object' &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ (
@@ -34,8 +35,9 @@ const enhancer = composeEnhancers (
   
   
   return (
-     <Provider store={store}>
-      <MainNavigation />
+    <Provider store={store}>
+      <ThemeProvider theme = {theme}>
+      <MainNavigation /></ThemeProvider>
     </Provider>
   )
 }
