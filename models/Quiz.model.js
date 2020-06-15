@@ -25,7 +25,9 @@ const Quiz = new Schema(
         },
       },
     ],
-    quizTimeLimit: Number,
+    quizTimeLimit: String,
+    quizPoints: String,
+    quizOverallPoints: String,
     quizScores: [
       {
         studentId: String,
