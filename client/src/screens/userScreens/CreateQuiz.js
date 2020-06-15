@@ -3,10 +3,12 @@ import AddQuestionModal from "../../components/UI/AddQuestionModal";
 import PreviewQuestions from "../../components/UI/PreviewQuestions";
 import QuizOptions from "../../components/UI/QuizOptions";
 import * as questionActions from "../../store/actions/newQuiz";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const CreateQuiz = () => {
   const dispatch = useDispatch();
+
+  const quizId = useSelector((state) => state.quiz.quizId, []);
 
   //STATES
   const [displayedComponent, setDisplayedComponent] = useState(
@@ -15,7 +17,6 @@ const CreateQuiz = () => {
   const [quizName, setQuizName] = useState("");
   const [quizSubject, setQuizSubject] = useState("");
   const [quizTime, setQuizTime] = useState(0);
-  const [quizCreated, setQuizCreated] = useState(false);
 
   //HANDLERS
   const addNewQuestion = () => {
@@ -45,14 +46,15 @@ const CreateQuiz = () => {
 
   const handleCreate = () => {
     console.log("handle create");
-    dispatch(() => questionActions.createQuiz(quizName, quizSubject)());
+    dispatch(questionActions.createQuiz(quizName, quizSubject));
   };
 
   return (
     <div className="create-quiz-container">
-      {quizCreated && (
+      {quizId && (
         <>
           <div className="create-quiz-container container-1">
+            <p>{quizId}</p>
             <button onClick={addNewQuestion}>Add question</button>
             <button onClick={quizOptionsHandler}>QuizOptions</button>
             <button onClick={previewQuestionsHandler}>Preview</button>
@@ -64,7 +66,7 @@ const CreateQuiz = () => {
           </div>
         </>
       )}
-      {!quizCreated && (
+      {!quizId && (
         <div>
           <label>
             Quiz name:

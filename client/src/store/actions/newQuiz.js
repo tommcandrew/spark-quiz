@@ -28,8 +28,9 @@ export const deleteQuestion = (id) => {
 };
 
 export const createQuiz = (quizName, quizSubject) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     const token = store.getState().auth.token;
+    console.log("making axios call");
     axios
       .post(
         "http://localhost:5000/createQuiz",
@@ -37,14 +38,16 @@ export const createQuiz = (quizName, quizSubject) => {
         tokenConfig(token)
       )
       .then((res) => {
-        return {
+        console.log("got id back " + res.data.quizId);
+        console.log("dispatching action object to reducer");
+        dispatch({
           type: CREATE_QUIZ,
           payload: {
             quizName,
             quizSubject,
             quizId: res.data.quizId,
           },
-        };
+        });
       })
       .catch((err) => {
         console.log(err);

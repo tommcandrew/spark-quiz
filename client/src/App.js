@@ -11,7 +11,7 @@ import MainNavigation from "./components/navigation/MainNavigation";
 import Register from "./screens/authenticatoinScreens/Register";
 
 const rootReducer = combineReducers({
-  newQuiz: newQuizReducer,
+  quiz: newQuizReducer,
   error: errorReducer,
   auth: authReducer,
 });
@@ -23,10 +23,7 @@ const composeEnhancers =
       })
     : compose;
 const enhancer = composeEnhancers(applyMiddleware(ReduxThunk));
-
-const initialState = {};
-
-export const store = createStore(rootReducer, initialState, enhancer);
+export const store = createStore(rootReducer, enhancer);
 
 export default function AppWrapper() {
   return (

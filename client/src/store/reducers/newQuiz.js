@@ -11,26 +11,29 @@ const initalState = {
   quizQuestions: [],
 };
 
+//changing cases to strings because of strange error
 export default (state = initalState, action) => {
   switch (action.type) {
-    case ADD_NEW_QUESTION:
+    case "ADD_NEW_QUESTION":
       return {
         ...state,
         quizQuestions: state.quizQuestions.concat(action.question),
       };
-    case DELETE_QUESTION:
+    case "DELETE_QUESTION":
       return {
         ...state,
         quizQuestions: state.quizQuestions.filter(
           (question) => question.id !== action.id
         ),
       };
-    case CREATE_QUIZ:
+    case "CREATE_QUIZ":
+      console.log("changing quiz state with payload data");
+      console.log(action.payload);
       return {
         ...state,
-        quizQuestions: state.quizQuestions.filter(
-          (question) => question.id !== action.id
-        ),
+        quizId: action.payload.quizId,
+        quizName: action.payload.quizName,
+        quizSubject: action.payload.quizSubject,
       };
     default:
       return state;
