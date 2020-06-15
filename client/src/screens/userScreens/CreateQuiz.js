@@ -62,6 +62,8 @@ const CreateQuiz = () => {
   const handleCreate = () => {
     dispatch(quizActions.createQuiz(quizName, quizSubject));
     dispatch(userActions.addQuiz(quizName, quizSubject, false));
+    setQuizName("");
+    setQuizSubject("");
   };
 
   const handleSave = () => {
