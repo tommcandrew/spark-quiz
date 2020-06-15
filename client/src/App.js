@@ -1,42 +1,35 @@
-import React, {useEffect} from 'react';
-import {Provider} from 'react-redux';
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import ReduxThunk from 'redux-thunk';
-import './app.css';
-import newQuizReducer from './store/reducers/newQuiz';
-import errorReducer from './store/reducers/errorReducer';
-import authReducer from './store/reducers/authReducer';
-import MainNavigation from './components/navigation/MainNavigation'
+import React from "react";
+import { Provider } from "react-redux";
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import ReduxThunk from "redux-thunk";
+import "./app.css";
+import quizReducer from "./store/reducers/quizReducer";
+import errorReducer from "./store/reducers/errorReducer";
+import authReducer from "./store/reducers/authReducer";
+import userReducer from "./store/reducers/userReducer";
+import MainNavigation from "./components/navigation/MainNavigation";
+import Register from "./screens/authenticationScreens/Register";
 
+const rootReducer = combineReducers({
+  quiz: quizReducer,
+  error: errorReducer,
+  auth: authReducer,
+  user: userReducer,
+});
 
-import Register from './screens/authenticatoinScreens/Register'
-
-
-export default function AppWrapper () {
-  const rootReducer = combineReducers ({
-    newQuiz: newQuizReducer,
-    error: errorReducer,
-    auth: authReducer,
-  });
-
-  const composeEnhancers = typeof window === 'object' &&
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ (
-      {
+const composeEnhancers =
+  typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
         // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-      }
-    )
-  : compose;
-const enhancer = composeEnhancers (
-  applyMiddleware(ReduxThunk)
-);
-  const store = createStore(rootReducer, enhancer);
-  
-  
+      })
+    : compose;
+const enhancer = composeEnhancers(applyMiddleware(ReduxThunk));
+export const store = createStore(rootReducer, enhancer);
+
+export default function AppWrapper() {
   return (
-     <Provider store={store}>
+    <Provider store={store}>
       <MainNavigation />
     </Provider>
-  )
+  );
 }
-

@@ -1,53 +1,57 @@
-.side-drawer{
-height: 100%;
-width: 20%;
-display: flex;
-align-items: flex-start;
-background-color: pink;
-position: fixed;
+ul {
+  list-style: none;
+}
+
+.side-drawer {
+  height: 100%;
+  width: 20%;
+  display: flex;
+  align-items: flex-start;
+  background-color: pink;
+  /* position: fixed; */
 }
 .create-quiz-container {
-        height: 90%;
-        width: 75%;
-        float: right;
-        display: flex;
-        flex-direction: row;
-        border: 1px solid black;
-        justify-content: space-evenly;
+  height: 90%;
+  width: 75%;
+  float: right;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  justify-content: space-evenly;
 }
 .container-1 {
-    height: 500px;
-    width: 300px;
-    flex-direction: column;
+  height: 500px;
+  width: 300px;
+  flex-direction: column;
 }
 .container-2 {
-    height: 500px;
-    width: 600px;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
+  height: 500px;
+  width: 600px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
-.add-question-container{
-    display: flex;
-    flex-direction: column;
+.add-question-container {
+  display: flex;
+  flex-direction: column;
 }
-.question-list{
-    width: 100%;
+.question-list {
+  width: 100%;
 }
-.list-item{
-    list-style-type: none;
-    border: 1px solid black;
-    padding: 10px;
-    width: 90%;
+.list-item {
+  list-style-type: none;
+  border: 1px solid black;
+  padding: 10px;
+  width: 90%;
 }
 
-.userQuizes{
-        height: 90%;
-        width: 75%;
-        float: right;
-        display: flex;
-        flex-direction: row;
-        border: 1px solid black;
-        justify-content: space-evenly;
+.userQuizes {
+  height: 90%;
+  width: 75%;
+  float: right;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  justify-content: space-evenly;
 }

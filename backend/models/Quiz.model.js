@@ -4,10 +4,11 @@ const Schema = mongoose.Schema;
 
 const Quiz = new Schema(
   {
-    name: String,
-    subject: String,
-    invites: [String],
-    questions: [
+    quizName: String,
+    quizSubject: String,
+    quizInvites: [String],
+    quizPublished: Boolean,
+    quizQuestions: [
       {
         questionType: String,
         question: String,
@@ -22,10 +23,13 @@ const Quiz = new Schema(
           multipleChoiceOptions: [String],
           multipleChoiceAnswer: String,
         },
+        points: String,
       },
     ],
-    timeLimit: Number,
-    scores: [
+    quizTimeLimit: String,
+    quizPointsSystem: String,
+    quizOverallPoints: String,
+    quizScores: [
       {
         studentId: String,
         results: [
