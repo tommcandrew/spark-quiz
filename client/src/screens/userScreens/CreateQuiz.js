@@ -17,7 +17,6 @@ const CreateQuiz = () => {
   }, []);
 
   const user = useSelector((state) => state.user);
-  console.log(user.quizzes);
   for (let i = 0; i < user.quizzes; i++) {
     if (!user.quizzes[i].quizPublished) {
       console.log(!user.quizzes[i]);
