@@ -58,29 +58,30 @@ app.post("/register", (req, res) => {
     return;
   }
 
-  User.findOne({ email }).then((user) => {
+  User.findOne ({email}).then (user => {
     if (user) {
-      res.status(403).send({ msg: "That email is already registered" });
+      res.status (403).send ({msg: 'That email is already registered'});
       return;
-    }
-  });
-  const user = new User({ name, email, password });
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(user.password, salt, (err, hash) => {
-      user.password = hash;
-      user.save().then((user) => {
-        jwt.sign({ id: user._id }, "secretkey", (err, token) => {
-          res.send({
-            token,
-            user: {
-              id: user._id,
-              name: user.name,
-              email: user.email,
-            },
+    } else {
+      const user = new User ({name, email, password});
+      bcrypt.genSalt (10, (err, salt) => {
+        bcrypt.hash (user.password, salt, (err, hash) => {
+          user.password = hash;
+          user.save ().then (user => {
+            jwt.sign ({id: user._id}, 'secretkey', (err, token) => {
+              res.send ({
+                token,
+                user: {
+                  id: user._id,
+                  name: user.name,
+                  email: user.email,
+                },
+              });
+            });
           });
         });
       });
-    });
+    }
   });
 });
 
@@ -138,10 +139,10 @@ app.post("/addQuestion", (req, res) => {
   //since FormData separated the media from the rest of the question, loop over media and insert back into question object
   const mediaFiles = req.files;
   if (mediaFiles) {
-    const keys = Object.keys(mediaFiles);
+    const keys = Object.keys (mediaFiles);
     for (key of keys) {
       //probably a good idea to check that the media prop exists and add if not
-      questionParsed.media.push({
+      questionParsed.media.push ({
         mediaType: mediaFiles[key].mimetype,
         data: mediaFiles[key].data,
       });
