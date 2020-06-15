@@ -9,6 +9,8 @@ export const FETCH_QUIZZES = "FETCH_QUIZZES";
 export const ADD_QUIZ = "ADD_QUIZ";
 export const SET_CURRENT_QUIZ = "SET_CURRENT_QUIZ";
 export const CLEAR_CURRENT_QUIZ = "CLEAR_CURRENT_QUIZ";
+export const ADD_TIME_LIMIT = "ADD_TIME_LIMIT";
+export const UPDATE_QUIZ = "UPDATE_QUIZ";
 
 export const addNewQuestion = (formData) => {
   return (dispatch) => {
@@ -47,6 +49,26 @@ export const clearCurrentQuiz = () => {
     dispatch({
       type: CLEAR_CURRENT_QUIZ,
     });
+  };
+};
+
+export const updateQuiz = (_id, update) => {
+  console.log("update quiz action");
+  console.log(update);
+  return (dispatch) => {
+    console.log("making axios call");
+    axios
+      .post("http://localhost:5000/updateQuiz", { _id, update })
+      .then(() => {
+        console.log("got response from server - now sending dispatch");
+        dispatch({
+          type: UPDATE_QUIZ,
+          payload: update,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 

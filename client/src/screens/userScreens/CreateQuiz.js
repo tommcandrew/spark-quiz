@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AddQuestionModal from "../../components/UI/AddQuestionModal";
 import PreviewQuestions from "../../components/UI/PreviewQuestions";
-import QuizOptions from "../../components/UI/QuizOptions";
+import QuizOptionsModal from "../../components/UI/QuizOptionsModal";
 import * as quizActions from "../../store/actions/quizActions";
 import * as userActions from "../../store/actions/userActions";
 
@@ -41,10 +41,9 @@ const CreateQuiz = () => {
     setDisplayedComponent(<PreviewQuestions editQuestion={editQuestion} />);
   };
   const quizOptionsHandler = () => {
-    setDisplayedComponent(<QuizOptions setTime={setTime} />);
-  };
-  const createQuizHandler = () => {
-    console.log(quizName, quizTime);
+    setDisplayedComponent(
+      <QuizOptionsModal quizId={quiz._id} closeModal={closeModal} />
+    );
   };
 
   const setTime = (time) => {
@@ -76,10 +75,9 @@ const CreateQuiz = () => {
         <>
           <div className="create-quiz-container container-1">
             <button onClick={addNewQuestion}>Add question</button>
-            <button onClick={quizOptionsHandler}>QuizOptions</button>
+            <button onClick={quizOptionsHandler}>Quiz Options</button>
             <button onClick={previewQuestionsHandler}>Preview</button>
             <button>Invite</button>
-            <button onClick={createQuizHandler}>CreateQuiz</button>
           </div>
           <div className="create-quiz-container container-2">
             {displayedComponent}

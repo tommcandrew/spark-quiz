@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import * as quizActions from "../../store/actions/quizActions";
+import { useDispatch } from "react-redux";
 
 const styles = {
   wrapper: {
@@ -23,9 +25,10 @@ const handleCloseModal = () => {
   //close modal
 };
 
-const QuizOptionsModal = () => {
+const QuizOptionsModal = ({ quizId, closeModal }) => {
   const [showOverallPointsInput, setShowOverallPointsInput] = useState(false);
   const [selectOptions, setSelectOptions] = useState([]);
+  const dispatch = useDispatch();
 
   //generate options for dropdown menu based on timeLimitOptions object
   useEffect(() => {
@@ -63,12 +66,33 @@ const QuizOptionsModal = () => {
     const selectedTimeLimit = e.target.timeLimit.value;
     const points = e.target.points.value;
     let overallPoints;
+
     if (showOverallPointsInput) {
       overallPoints = e.target.overallPoints.value;
     }
+
     console.log(selectedTimeLimit);
     console.log(points);
     console.log(overallPoints);
+
+    if (selectedTimeLimit) {
+      dispatch(
+        quizActions.updateQuiz(quizId, { quizTimeLimit: selectedTimeLimit })
+      );
+    }
+
+    if (points) {
+      dispatch(quizActions.updateQuiz(quizId, { quizPoints: points }));
+    }
+
+    if (overallPoints) {
+      dispatch(
+        quizActions.updateQuiz(quizId, { quizOverallPoints: overallPoints })
+      );
+    }
+
+    closeModal();
+
     //if points is set to "eachQuestion", we'll need to have an input element in the AddQuestionModal where the user can add points
   };
 

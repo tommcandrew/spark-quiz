@@ -41,6 +41,12 @@ export default (state = initalState, action) => {
       return {
         ...initalState,
       };
+    case "UPDATE_QUIZ":
+      console.log("updating state");
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }

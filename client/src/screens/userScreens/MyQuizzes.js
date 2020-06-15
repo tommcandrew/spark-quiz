@@ -35,7 +35,9 @@ const UserQuizzes = (props) => {
             <div onClick={() => handleOpenCreateQuiz(quiz)}>
               <h2>{quiz.quizName}</h2>
               <p>
-                {quiz.quizPublished ? "" : "Unpublished - click to continue"}
+                {quiz.quizPublished
+                  ? "Published - click to edit"
+                  : "Unpublished - click to continue"}
               </p>
             </div>
             <button onClick={() => handleDeleteQuiz(quiz._id)}>Delete</button>

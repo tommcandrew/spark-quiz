@@ -13,9 +13,6 @@ const Quiz = require("./models/Quiz.model");
 const nodemailer = require("nodemailer");
 const Str = require("@supercharge/strings");
 const auth = require("./middleware");
-const {
-  default: QuizOptions,
-} = require("../client/src/components/UI/QuizOptions");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -180,6 +177,8 @@ app.post("/createQuiz", auth, (req, res) => {
     quizTimeLimit: null,
     quizScores: [],
     quizPublished: false,
+    quizPoints: null,
+    quizOverallPoints: null,
   })
     .save()
     .then((quiz) => {
@@ -226,10 +225,19 @@ app.get("/fetchQuizzes", auth, (req, res) => {
 });
 
 app.post("/updateQuiz", (req, res) => {
+  console.log("update request received");
   //update can be an object (as this is the format it need to be in for mongoose anyway) e.g. {name: "The Renaissance and its Importance", timeLimit: "40" }
   const { _id, update } = req.body;
-  Quiz.update({ _id: _id }, { $set: update })
+  console.log(_id);
+  console.log(update);
+  //should insert field if doesn't exist but not working
+  Quiz.findOneAndUpdate(
+    { _id: _id },
+    { $set: update },
+    { new: true, upsert: true, useFindAndmodify: false }
+  )
     .then(() => {
+      console.log("quiz has been updated");
       res.status(200).send();
     })
     .catch((err) => {
