@@ -27,16 +27,10 @@ const transporter = nodemailer.createTransport({
 
 app.listen(PORT, () => console.log("listening on port " + PORT));
 
-mongoose.connect(
-  MONGO_URI,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-  () => {
-    console.log("connected to db");
-  }
-);
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
 
@@ -45,7 +39,7 @@ db.on("error", () => {
 });
 
 db.once("open", () => {
-  console.log("Conncted to db");
+  console.log("Connected to db");
 });
 
 app.use(express.json());
@@ -128,7 +122,7 @@ app.post("/studentLogin", (req, res) => {
   Quiz.find().then((quizzes) => {
     const matchingQuizArray = [];
     quizzes.forEach((quiz) => {
-      if (quiz.invites.includes(id)) {
+      if (quiz.quizInvites.includes(id)) {
         matchingQuizArray.push(quiz);
       }
     });
@@ -141,9 +135,9 @@ app.post("/studentLogin", (req, res) => {
 });
 
 app.post("/addQuestion", (req, res) => {
-  const { quizId, question } = req.body;
+  const { quizId, questionObject } = req.body;
   //parse question as it was stringified in order to send
-  const questionParsed = JSON.parse(question);
+  const questionParsed = JSON.parse(questionObject);
   //since FormData separated the media from the rest of the question, loop over media and insert back into question object
   const mediaFiles = req.files;
   if (mediaFiles) {
@@ -160,12 +154,11 @@ app.post("/addQuestion", (req, res) => {
   //then find quiz that was previously saved and push the new question onto the questions array
   Quiz.findById(quizId)
     .then((quiz) => {
-      quiz.questions.push(questionParsed);
+      quiz.quizQuestions.push(questionParsed);
       quiz
         .save()
-        .then(() => {
-          console.log("question added to quiz");
-          res.status(200).send({ msg: "Question added to quiz" });
+        .then((quiz) => {
+          res.status(200).send({ quiz });
         })
         .catch((err) => {
           console.log(err);
@@ -180,24 +173,29 @@ app.post("/addQuestion", (req, res) => {
 app.post("/createQuiz", auth, (req, res) => {
   // const { name, subject, invites, questions, timeLimit, scores } = req.body;
   const { quizName, quizSubject } = req.body;
-  new Quiz({ name: quizName, subject: quizSubject })
+  new Quiz({
+    name: quizName,
+    subject: quizSubject,
+    questions: [],
+    timeLimit: null,
+    scores: [],
+  })
     .save()
     .then((quiz) => {
-      //dd the quiz id to the User's quizzes array here (get email from jwt)
+      //add the quiz id to the User's quizzes array here (get email from jwt)
 
       // emailInvites (invites, name, 'Mr. Jones', subject);
       res.status(200).send({ quizId: quiz._id });
     })
     .catch((err) => {
-      console.log("Unable to save quiz");
       console.log(err);
       res.status(500).send({ msg: "Unable to save quiz" });
     });
 });
 
 app.post("/deleteQuiz", (req, res) => {
-  const { id } = req.body;
-  Quiz.findByIdAndDelete(id)
+  const { quizId } = req.body;
+  Quiz.findByIdAndDelete(quizId)
     .then(() => {
       console.log("Quiz deleted");
     })
@@ -264,7 +262,7 @@ app.post("/submit", (req, res) => {
         studentId,
         results,
       };
-      quiz.scores.push(scoreObject);
+      quiz.quizScores.push(scoreObject);
       res.status(200).send({ msg: "Quiz submitted", results });
     })
     .catch((err) => {
@@ -300,7 +298,7 @@ app.get("/user", auth, (req, res) => {
     .then((user) => res.json(user));
 });
 
-const emailInvites = (invites, quizName, quizAuthor, quizSubject) => {
+const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   let emailList = [];
   //get email from jwt
   User.findOne({ email: "tommcandrew@hotmail.com" })

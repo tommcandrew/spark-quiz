@@ -6,18 +6,20 @@ export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
 export const DELETE_QUESTION = "DELETE_QUESTION";
 export const CREATE_QUIZ = "CREATE_QUIZ";
 
-export const addNewQuestion = (questionData) => {
-  axios
-    .post("/addQuestion", {})
-    .then(() => {
-      return {
-        type: ADD_NEW_QUESTION,
-        question: questionData,
-      };
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+export const addNewQuestion = (formData) => {
+  return (dispatch) => {
+    axios
+      .post("http://localhost:5000/addQuestion", formData)
+      .then((res) => {
+        dispatch({
+          type: ADD_NEW_QUESTION,
+          payload: res.data.quiz,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 };
 
 export const deleteQuestion = (id) => {
@@ -30,7 +32,6 @@ export const deleteQuestion = (id) => {
 export const createQuiz = (quizName, quizSubject) => {
   return (dispatch) => {
     const token = store.getState().auth.token;
-    console.log("making axios call");
     axios
       .post(
         "http://localhost:5000/createQuiz",
@@ -38,8 +39,6 @@ export const createQuiz = (quizName, quizSubject) => {
         tokenConfig(token)
       )
       .then((res) => {
-        console.log("got id back " + res.data.quizId);
-        console.log("dispatching action object to reducer");
         dispatch({
           type: CREATE_QUIZ,
           payload: {

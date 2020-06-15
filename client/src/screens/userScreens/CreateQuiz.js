@@ -20,7 +20,9 @@ const CreateQuiz = () => {
 
   //HANDLERS
   const addNewQuestion = () => {
-    setDisplayedComponent(<AddQuestionModal questionSubmitted={closeModal} />);
+    setDisplayedComponent(
+      <AddQuestionModal questionSubmitted={closeModal} quizId={quizId} />
+    );
   };
   const previewQuestionsHandler = () => {
     setDisplayedComponent(<PreviewQuestions editQuestion={editQuestion} />);
@@ -45,7 +47,6 @@ const CreateQuiz = () => {
   };
 
   const handleCreate = () => {
-    console.log("handle create");
     dispatch(questionActions.createQuiz(quizName, quizSubject));
   };
 
@@ -54,7 +55,6 @@ const CreateQuiz = () => {
       {quizId && (
         <>
           <div className="create-quiz-container container-1">
-            <p>{quizId}</p>
             <button onClick={addNewQuestion}>Add question</button>
             <button onClick={quizOptionsHandler}>QuizOptions</button>
             <button onClick={previewQuestionsHandler}>Preview</button>

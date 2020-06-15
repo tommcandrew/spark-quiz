@@ -15,10 +15,8 @@ const initalState = {
 export default (state = initalState, action) => {
   switch (action.type) {
     case "ADD_NEW_QUESTION":
-      return {
-        ...state,
-        quizQuestions: state.quizQuestions.concat(action.question),
-      };
+      //update entire state with updated version of quiz
+      return { ...state, ...action.payload };
     case "DELETE_QUESTION":
       return {
         ...state,
@@ -27,8 +25,6 @@ export default (state = initalState, action) => {
         ),
       };
     case "CREATE_QUIZ":
-      console.log("changing quiz state with payload data");
-      console.log(action.payload);
       return {
         ...state,
         quizId: action.payload.quizId,

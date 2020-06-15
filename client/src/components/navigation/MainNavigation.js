@@ -16,7 +16,6 @@ import * as authActions from "../../store/actions/authActions";
 const MainNavigation = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.token);
-  console.log("isAuthenticated: " + isAuthenticated);
   return isAuthenticated ? (
     <Router>
       <div>

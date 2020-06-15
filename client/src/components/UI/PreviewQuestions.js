@@ -4,9 +4,7 @@ import * as questionActions from "../../store/actions/newQuiz";
 
 const PreviewQuestions = (props) => {
   const dispatch = useDispatch();
-  const questions = useSelector((state) => state.quiz.quizQuestions);
-
-  if (questions.length < 1) return <p>Add some question</p>;
+  const quiz = useSelector((state) => state.quiz);
 
   const editQuestionHandler = (id) => {
     props.editQuestion(id);
@@ -18,33 +16,46 @@ const PreviewQuestions = (props) => {
 
   return (
     <div>
-      below items are to be made clickable
-      <ul className="question-list">
-        {questions.map((q) => {
-          return (
-            <li key={q.id} className="list-item">
-              <p>Question Type: {q.questionType}</p>
-              <p>Question: {q.question}</p>
-              {q.questionType === "trueFalse" ? (
-                <p>correct answer is {q.answers.trueFalseAnswer}</p>
-              ) : (
-                <div>
-                  Options:
-                  {q.answers.multipleChoiceOptions.map((option, i) => (
-                    <p key={i}>-{option}</p>
-                  ))}
-                  <p>correct answer: {q.answers.multipleChoiceAnswer}</p>
-                </div>
-              )}
+      <h1>{quiz.quizName}</h1>
+      {!quiz.quizQuestions ||
+        (quiz.quizQuestions.length === 0 && <p>Add some question</p>)}
+      {quiz.quizQuestions.length > 0 && (
+        <ul className="question-list">
+          {quiz.quizQuestions &&
+            quiz.quizQuestions.length > 0 &&
+            quiz.quizQuestions.map((question, index) => {
+              //do we want to display attached media here?
+              return (
+                <li key={index} className="list-item">
+                  <p>Question Type: {question.questionType}</p>
+                  <p>Question: {question.question}</p>
+                  {question.questionType === "trueFalse" ? (
+                    <p>correct answer is {question.answers.trueFalseAnswer}</p>
+                  ) : (
+                    <div>
+                      Options:
+                      {question.answers.multipleChoiceOptions.map(
+                        (option, i) => (
+                          <p key={i}>-{option}</p>
+                        )
+                      )}
+                      <p>
+                        correct answer: {question.answers.multipleChoiceAnswer}
+                      </p>
+                    </div>
+                  )}
 
-              <button onClick={() => deleteQuestionHandler(q.id)}>
-                delete
-              </button>
-              <button onClick={() => editQuestionHandler(q.id)}>edit</button>
-            </li>
-          );
-        })}
-      </ul>
+                  <button onClick={() => deleteQuestionHandler(question.id)}>
+                    delete
+                  </button>
+                  <button onClick={() => editQuestionHandler(question.id)}>
+                    edit
+                  </button>
+                </li>
+              );
+            })}
+        </ul>
+      )}
     </div>
   );
 };

@@ -144,8 +144,16 @@ const AddQuestionModal = (props) => {
       },
     };
 
-    //probably save questionObject to state here and close this modal
-    await dispatch(questionActions.addNewQuestion(questionObject));
+    const questionObjectStringified = JSON.stringify(questionObject);
+
+    const formData = new FormData();
+    formData.append("quizId", props.quizId);
+    formData.append("questionObject", questionObjectStringified);
+    addedMedia.forEach((media) => {
+      formData.append("file", media.file);
+    });
+
+    await dispatch(questionActions.addNewQuestion(formData));
     props.questionSubmitted();
   };
 
