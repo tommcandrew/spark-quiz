@@ -174,18 +174,23 @@ app.post("/createQuiz", auth, (req, res) => {
   // const { name, subject, invites, questions, timeLimit, scores } = req.body;
   const { quizName, quizSubject } = req.body;
   new Quiz({
-    name: quizName,
-    subject: quizSubject,
-    questions: [],
-    timeLimit: null,
-    scores: [],
+    quizName: quizName,
+    quizSubject: quizSubject,
+    quizQuestions: [],
+    quizTimeLimit: null,
+    quizScores: [],
+    quizPublished: false,
   })
     .save()
     .then((quiz) => {
       //add the quiz id to the User's quizzes array here (get email from jwt)
-
-      // emailInvites (invites, name, 'Mr. Jones', subject);
-      res.status(200).send({ quizId: quiz._id });
+      User.findOne({ email: "nildeniz@gmail.com" }).then((user) => {
+        user.quizzes.push(quiz._id);
+        user.save().then(() => {
+          console.log("quiz added to user's quizzes array");
+          res.status(200).send({ quizId: quiz._id });
+        });
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -204,10 +209,10 @@ app.post("/deleteQuiz", (req, res) => {
     });
 });
 
-app.get("/fetchQuizzes", (req, res) => {
+app.get("/fetchQuizzes", auth, (req, res) => {
   let userQuizzes = [];
   //get email from jwt
-  User.findOne({ email: "tommcandrew@hotmail.com" })
+  User.findOne({ email: "nildeniz@gmail.com" })
     .then((user) => {
       Quiz.find().then((quizzes) => {
         quizzes.forEach((quiz) => {
@@ -215,6 +220,7 @@ app.get("/fetchQuizzes", (req, res) => {
             userQuizzes.push(quiz);
           }
         });
+        console.log("sending back quizzes");
         res.status(200).send({ quizzes: userQuizzes });
       });
     })
