@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import * as questionActions from "../../store/actions/newQuiz";
+import * as quizActions from "../../store/actions/quizActions";
 
 const PreviewQuestions = (props) => {
   const dispatch = useDispatch();
@@ -11,12 +11,14 @@ const PreviewQuestions = (props) => {
   };
 
   const deleteQuestionHandler = (id) => {
-    dispatch(questionActions.deleteQuestion(id));
+    dispatch(quizActions.deleteQuestion(id));
   };
 
   return (
     <div>
-      <h1>{quiz.quizName}</h1>
+      <h1>
+        {quiz.quizName} ({quiz.quizSubject})
+      </h1>
       {!quiz.quizQuestions ||
         (quiz.quizQuestions.length === 0 && <p>Add some question</p>)}
       {quiz.quizQuestions.length > 0 && (

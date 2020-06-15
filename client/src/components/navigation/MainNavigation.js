@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Contacts from "../../screens/userScreens/Contacts";
 import Groups from "../../screens/userScreens/Groups";
 import CreateQuiz from "../../screens/userScreens/CreateQuiz";
-import UserQuizes from "../../screens/userScreens/UserQuizes";
+import UserQuizzes from "../../screens/userScreens/UserQuizzes";
 
 import Home from "../../screens/authenticatoinScreens/Home";
 import Login from "../../screens/authenticatoinScreens/Login";
@@ -22,7 +22,7 @@ const MainNavigation = () => {
         <nav className="side-drawer">
           <ul>
             <li>
-              <Link to="/">My Quizes</Link>
+              <Link to="/">My Quizzes</Link>
             </li>
             <li>
               <Link to="/groups">Groups</Link>
@@ -61,7 +61,7 @@ const MainNavigation = () => {
             <Contacts />
           </Route>
           <Route path="/">
-            <UserQuizes />
+            <UserQuizzes />
           </Route>
         </Switch>
       </div>

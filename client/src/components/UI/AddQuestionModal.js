@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import AddedMedia from "./AddedMedia";
 import camelToSentence from "../../utils/camelToSentence";
-import * as questionActions from "../../store/actions/newQuiz";
+import * as quizActions from "../../store/actions/quizActions";
 
 //some super basic styling
 const styles = {
@@ -153,7 +153,7 @@ const AddQuestionModal = (props) => {
       formData.append("file", media.file);
     });
 
-    await dispatch(questionActions.addNewQuestion(formData));
+    await dispatch(quizActions.addNewQuestion(formData));
     props.questionSubmitted();
   };
 

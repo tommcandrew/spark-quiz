@@ -5,6 +5,8 @@ import { store } from "../../App";
 export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
 export const DELETE_QUESTION = "DELETE_QUESTION";
 export const CREATE_QUIZ = "CREATE_QUIZ";
+export const FETCH_QUIZZES = "FETCH_QUIZZES";
+export const ADD_QUIZ = "ADD_QUIZ";
 
 export const addNewQuestion = (formData) => {
   return (dispatch) => {

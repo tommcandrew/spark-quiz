@@ -2,13 +2,27 @@ import React, { useState, useEffect } from "react";
 import AddQuestionModal from "../../components/UI/AddQuestionModal";
 import PreviewQuestions from "../../components/UI/PreviewQuestions";
 import QuizOptions from "../../components/UI/QuizOptions";
-import * as questionActions from "../../store/actions/newQuiz";
+import * as quizActions from "../../store/actions/quizActions";
+import * as userActions from "../../store/actions/userActions";
+
 import { useDispatch, useSelector } from "react-redux";
 
 const CreateQuiz = () => {
   const dispatch = useDispatch();
 
   const quizId = useSelector((state) => state.quiz.quizId, []);
+
+  useEffect(() => {
+    dispatch(userActions.fetchQuizzes());
+  }, []);
+
+  const user = useSelector((state) => state.user);
+  console.log(user.quizzes);
+  for (let i = 0; i < user.quizzes; i++) {
+    if (!user.quizzes[i].quizPublished) {
+      console.log(!user.quizzes[i]);
+    }
+  }
 
   //STATES
   const [displayedComponent, setDisplayedComponent] = useState(
@@ -47,7 +61,8 @@ const CreateQuiz = () => {
   };
 
   const handleCreate = () => {
-    dispatch(questionActions.createQuiz(quizName, quizSubject));
+    dispatch(quizActions.createQuiz(quizName, quizSubject));
+    dispatch(userActions.addQuiz(quizName, quizSubject, false));
   };
 
   return (

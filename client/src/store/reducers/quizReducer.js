@@ -2,7 +2,7 @@ import {
   ADD_NEW_QUESTION,
   DELETE_QUESTION,
   CREATE_QUIZ,
-} from "../actions/newQuiz";
+} from "../actions/quizActions";
 
 const initalState = {
   quizId: "",
