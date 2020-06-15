@@ -18,10 +18,8 @@ const UserQuizzes = (props) => {
   };
 
   const quizzes = useSelector((state) => state.user.quizzes);
-  console.log(quizzes);
 
   const handleDeleteQuiz = (id) => {
-    console.log("delete quiz");
     dispatch(userActions.deleteQuiz(id));
   };
 
