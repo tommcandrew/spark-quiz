@@ -11,6 +11,13 @@ import theme from './style/theme'
 import { ThemeProvider } from '@material-ui/core/styles';
 
 
+const rootReducer = combineReducers({
+  quiz: quizReducer,
+  error: errorReducer,
+  auth: authReducer,
+  user: userReducer,
+});
+
 import Register from './screens/authenticationScreens/Register'
 
 
@@ -24,21 +31,19 @@ export default function AppWrapper () {
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ (
       {
+
         // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-      }
-    )
-  : compose;
-const enhancer = composeEnhancers (
-  applyMiddleware(ReduxThunk)
-);
-  const store = createStore(rootReducer, enhancer);
-  
-  
+      })
+    : compose;
+const enhancer = composeEnhancers(applyMiddleware(ReduxThunk));
+export const store = createStore(rootReducer, enhancer);
+
+export default function AppWrapper() {
   return (
     <Provider store={store}>
       <ThemeProvider theme = {theme}>
       <MainNavigation /></ThemeProvider>
-    </Provider>
-  )
-}
 
+    </Provider>
+  );
+}

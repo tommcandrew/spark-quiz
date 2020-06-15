@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import AddedMedia from "./AddedMedia";
 import camelToSentence from "../../utils/camelToSentence";
-import * as questionActions from "../../store/actions/newQuiz";
+import * as quizActions from "../../store/actions/quizActions";
 
 //some super basic styling
 const styles = {
@@ -11,7 +11,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: "40%",
   },
   /* hide default input (replaced with parent label element - see html) */
   fileInput: {
@@ -45,8 +44,8 @@ const supportedFileTypes = [
 ];
 const questionTypes = ["trueFalse", "multipleChoice"];
 
-const AddQuestionModal = props => {
-  const dispatch = useDispatch()
+const AddQuestionModal = ({ closeModal, quiz }) => {
+  const dispatch = useDispatch();
   const [addedMedia, setAddedMedia] = useState([]);
   const [questionType, setQuestionType] = useState("trueFalse");
   const [multipleChoiceOptions, setMultipleChoiceOptions] = useState(["", ""]);
@@ -56,6 +55,7 @@ const AddQuestionModal = props => {
   ] = useState(null);
   const [selectedTrueFalse, setSelectedTrueFalse] = useState();
   const [question, setQuestion] = useState("");
+  const [points, setPoints] = useState(null);
 
   const handleAddText = () => {
     setAddedMedia([
@@ -128,6 +128,10 @@ const AddQuestionModal = props => {
     setSelectedMultipleChoiceOption(e.target.value);
   };
 
+  const handlePointsChange = (e) => {
+    setPoints(e.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const questionObject = {
@@ -141,13 +145,21 @@ const AddQuestionModal = props => {
         multipleChoiceOptions:
           questionType === "multipleChoice" ? [...multipleChoiceOptions] : null,
         multipleChoiceAnswer: selectedMultipleChoiceOption,
-      }
-     
+      },
+      points: points,
     };
-    //probably save questionObject to state here and close this modal
-    await dispatch(questionActions.addNewQuestion(questionObject))
-    props.questionSubmitted()
 
+    const questionObjectStringified = JSON.stringify(questionObject);
+
+    const formData = new FormData();
+    formData.append("_id", quiz._id);
+    formData.append("questionObject", questionObjectStringified);
+    addedMedia.forEach((media) => {
+      formData.append("file", media.file);
+    });
+
+    await dispatch(quizActions.addNewQuestion(formData));
+    closeModal();
   };
 
   return (
@@ -194,6 +206,18 @@ const AddQuestionModal = props => {
                 </option>
               ))}
             </select>
+            {quiz.quizPointsSystem === "eachQuestion" && (
+              <div>
+                <label htmlFor="points">Points:</label>
+                <input
+                  type="text"
+                  id="points"
+                  name="points"
+                  value={points}
+                  onChange={handlePointsChange}
+                />
+              </div>
+            )}
             <label htmlFor="question">Question</label>
             <textarea
               rows="4"

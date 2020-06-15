@@ -14,7 +14,7 @@ import {Link} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import * as authActions from '../../store/actions/authActions';
 
-const Regsiter = () => {
+const Register = () => {
   //STATE
   const [name, setName] = useState ('testuser');
   const [email, setEmail] = useState ('testuser@test.com');
@@ -23,6 +23,7 @@ const Regsiter = () => {
   const dispatch = useDispatch ();
 
   const classes = useStyles ();
+
 
   //HANDLERS
   const handleRegister = () => {
@@ -34,7 +35,6 @@ const Regsiter = () => {
     };
     dispatch(authActions.register(registerDetails));
   };
-
 
   return (
     <Container component="main" maxWidth="xs">
