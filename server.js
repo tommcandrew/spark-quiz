@@ -135,7 +135,6 @@ app.post("/studentLogin", (req, res) => {
 });
 
 app.post("/addQuestion", (req, res) => {
-  console.log(req.body);
   const { _id, questionObject } = req.body;
   //parse question as it was stringified in order to send
   const questionParsed = JSON.parse(questionObject);
@@ -184,11 +183,9 @@ app.post("/createQuiz", auth, (req, res) => {
   })
     .save()
     .then((quiz) => {
-      //add the quiz id to the User's quizzes array here (get email from jwt)
-      User.findOne({ email: "nildeniz@gmail.com" }).then((user) => {
+      User.findById(req.user.id).then((user) => {
         user.quizzes.push(quiz._id);
         user.save().then(() => {
-          console.log("quiz added to user's quizzes array");
           res.status(200).send({ _id: quiz._id });
         });
       });
@@ -200,11 +197,9 @@ app.post("/createQuiz", auth, (req, res) => {
 });
 
 app.post("/deleteQuiz", (req, res) => {
-  console.log("received delete request");
   const { _id } = req.body;
   Quiz.findByIdAndDelete(_id)
     .then(() => {
-      console.log("Quiz deleted");
       res.status(200).send();
     })
     .catch((err) => {
@@ -214,8 +209,7 @@ app.post("/deleteQuiz", (req, res) => {
 
 app.get("/fetchQuizzes", auth, (req, res) => {
   let userQuizzes = [];
-  //get email from jwt
-  User.findOne({ email: "nildeniz@gmail.com" })
+  User.findById(req.user.id)
     .then((user) => {
       Quiz.find().then((quizzes) => {
         quizzes.forEach((quiz) => {
@@ -223,7 +217,6 @@ app.get("/fetchQuizzes", auth, (req, res) => {
             userQuizzes.push(quiz);
           }
         });
-        console.log("sending back quizzes");
         res.status(200).send({ quizzes: userQuizzes });
       });
     })
@@ -237,7 +230,6 @@ app.post("/updateQuiz", (req, res) => {
   const { _id, update } = req.body;
   Quiz.update({ _id: _id }, { $set: update })
     .then(() => {
-      console.log("Quiz updated successfully");
       res.status(200).send();
     })
     .catch((err) => {
@@ -279,18 +271,15 @@ app.post("/submit", (req, res) => {
     });
 });
 
-app.post("/forgotPassword", (req, res) => {
-  //email will probably come from jwt
-  const { email } = req.body;
-  User.findOne({ email }).then((user) => {
+app.post("/forgotPassword", auth, (req, res) => {
+  User.findById(req.user.id).then((user) => {
     if (user) {
       const randomString = Str.random();
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(randomString, salt, (err, hash) => {
           user.password = hash;
           user.save().then((user) => {
-            console.log("password reset");
-            emailNewPassword(email, randomString);
+            emailNewPassword(user.email, randomString);
             res.status(200).send({ msg: "New password emailed" });
           });
         });
@@ -309,11 +298,10 @@ app.get("/user", auth, (req, res) => {
 
 const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   let emailList = [];
-  //get email from jwt
-  User.findOne({ email: "tommcandrew@hotmail.com" })
+  User.findById(req.user.id)
     .then((user) => {
       user.contacts.forEach((contact) => {
-        if (invites.includes(contact.id)) {
+        if (quizInvites.includes(contact.id)) {
           emailList.push(contact.email);
         }
       });
