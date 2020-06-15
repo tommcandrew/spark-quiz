@@ -11,7 +11,7 @@ import theme from './style/theme'
 import { ThemeProvider } from '@material-ui/core/styles';
 
 
-import Register from './screens/authenticatoinScreens/Register'
+import Register from './screens/authenticationScreens/Register'
 
 
 export default function AppWrapper () {
