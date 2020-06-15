@@ -6,7 +6,7 @@ const bcrypt = require ('bcryptjs');
 const dotenv = require ('dotenv').config ();
 const cors = require ('cors');
 const PORT = 5000;
-const MONGO_URI = process.env.DB_CONNECT;
+const MONGO_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0-hjn2u.gcp.mongodb.net/quiz-master?retryWrites=true&w=majority`;
 const app = express ();
 const User = require ('./models/User.model');
 const Quiz = require ('./models/Quiz.model');
@@ -49,8 +49,8 @@ app.use (express.json ());
 app.use (cors ());
 app.use (fileUpload ());
 
-app.post ('/register', (req, res) => {
-  const {name, email, password, password2} = req.body;
+app.post('/register', (req, res) => {
+  const { name, email, password, password2 } = req.body;
   if (password.length < 8) {
     res.status (500).send ({msg: 'Password must have at least 8 characters'});
     return;
@@ -63,31 +63,30 @@ app.post ('/register', (req, res) => {
     res.status (400).send ({msg: 'Passwords must match'});
     return;
   }
-
-  User.findOne ({email}).then (user => {
+  
+  User.findOne({email}).then (user => {
     if (user) {
-      res.status (403).send ({msg: 'That email is already registered'});
+      res.status (403).send({msg: 'That email is already registered'});
       return;
-    } else {
-      const user = new User ({name, email, password});
-      bcrypt.genSalt (10, (err, salt) => {
-        bcrypt.hash (user.password, salt, (err, hash) => {
-          user.password = hash;
-          user.save ().then (user => {
-            jwt.sign ({id: user._id}, 'secretkey', (err, token) => {
-              res.send ({
-                token,
-                user: {
+    }
+  });
+  const user = new User({name, email, password});
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(user.password, salt, (err, hash) => {
+      user.password = hash;
+      user.save().then (user => {
+        jwt.sign({id: user._id}, 'secretkey', (err, token) => {
+          res.send({
+            token,
+            user: {
                   id: user._id,
                   name: user.name,
                   email: user.email,
-                },
-              });
-            });
+                }
           });
         });
       });
-    }
+    });
   });
 });
 
@@ -111,7 +110,7 @@ app.post ('/login', (req, res) => {
                   id: user._id,
                   name: user.name,
                   email: user.email,
-                },
+                }
               });
             });
           }
@@ -145,10 +144,10 @@ app.post ('/addQuestion', (req, res) => {
   //since FormData separated the media from the rest of the question, loop over media and insert back into question object
   const mediaFiles = req.files;
   if (mediaFiles) {
-    const keys = Object.keys (mediaFiles);
+    const keys = Object.keys(mediaFiles);
     for (key of keys) {
       //probably a good idea to check that the media prop exists and add if not
-      questionParsed.media.push ({
+      questionParsed.media.push({
         mediaType: mediaFiles[key].mimetype,
         data: mediaFiles[key].data,
       });
@@ -175,13 +174,13 @@ app.post ('/addQuestion', (req, res) => {
     });
 });
 
-app.post ('/publish', auth, (req, res) => {
+app.post("/publish", (req, res) => {
   //don't forget to add the quiz id to the User's quizzes array
-  const {name, subject, invites, questions, timeLimit, scores} = req.body;
-  new Quiz ({name, subject, questions, timeLimit, scores, invites})
-    .save ()
-    .then (() => {
-      console.log ('quiz saved');
+  const { name, subject, invites, questions, timeLimit, scores } = req.body;
+  new Quiz({ name, subject, questions, timeLimit, scores, invites })
+    .save()
+    .then(() => {
+      console.log("quiz saved");
       //get name from jwt
       emailInvites (invites, name, 'Mr. Jones', subject);
       res.status (200).send ({msg: 'Quiz saved'});
@@ -204,15 +203,15 @@ app.post ('/deleteQuiz', (req, res) => {
     });
 });
 
-app.get ('/fetchQuizzes', (req, res) => {
+app.get("/fetchQuizzes", (req, res) => {
   let userQuizzes = [];
   //get email from jwt
-  User.findOne ({email: 'tommcandrew@hotmail.com'})
-    .then (user => {
-      Quiz.find ().then (quizzes => {
-        quizzes.forEach (quiz => {
-          if (user.quizzes.includes (quiz._id)) {
-            userQuizzes.push (quiz);
+  User.findOne({ email: "tommcandrew@hotmail.com" })
+    .then((user) => {
+      Quiz.find().then((quizzes) => {
+        quizzes.forEach((quiz) => {
+          if (user.quizzes.includes(quiz._id)) {
+            userQuizzes.push(quiz);
           }
         });
         res.status (200).send ({quizzes: userQuizzes});
@@ -295,7 +294,7 @@ app.post ('/forgotPassword', (req, res) => {
 app.get ('/user', auth, (req, res) => {
   User.findById (req.user.id)
     .select ('-password')
-    .then (user => res.json (user));
+    .then(user => res.json(user))
 });
 
 const emailInvites = (invites, quizName, quizAuthor, quizSubject) => {
