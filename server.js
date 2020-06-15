@@ -168,7 +168,6 @@ app.post("/addQuestion", (req, res) => {
 });
 
 app.post("/createQuiz", auth, (req, res) => {
-  // const { name, subject, invites, questions, timeLimit, scores } = req.body;
   const { quizName, quizSubject } = req.body;
   new Quiz({
     quizName: quizName,
@@ -177,7 +176,7 @@ app.post("/createQuiz", auth, (req, res) => {
     quizTimeLimit: null,
     quizScores: [],
     quizPublished: false,
-    quizPoints: null,
+    quizPointsSystem: null,
     quizOverallPoints: null,
   })
     .save()
@@ -226,10 +225,7 @@ app.get("/fetchQuizzes", auth, (req, res) => {
 
 app.post("/updateQuiz", (req, res) => {
   console.log("update request received");
-  //update can be an object (as this is the format it need to be in for mongoose anyway) e.g. {name: "The Renaissance and its Importance", timeLimit: "40" }
   const { _id, update } = req.body;
-  console.log(_id);
-  console.log(update);
   //should insert field if doesn't exist but not working
   Quiz.findOneAndUpdate(
     { _id: _id },
@@ -237,7 +233,6 @@ app.post("/updateQuiz", (req, res) => {
     { new: true, upsert: true, useFindAndmodify: false }
   )
     .then(() => {
-      console.log("quiz has been updated");
       res.status(200).send();
     })
     .catch((err) => {
