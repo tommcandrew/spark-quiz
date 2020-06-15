@@ -200,10 +200,12 @@ app.post("/createQuiz", auth, (req, res) => {
 });
 
 app.post("/deleteQuiz", (req, res) => {
+  console.log("received delete request");
   const { _id } = req.body;
   Quiz.findByIdAndDelete(_id)
     .then(() => {
       console.log("Quiz deleted");
+      res.status(200).send();
     })
     .catch((err) => {
       console.log(err);

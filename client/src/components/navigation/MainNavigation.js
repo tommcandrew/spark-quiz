@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Contacts from "../../screens/userScreens/Contacts";
 import Groups from "../../screens/userScreens/Groups";
 import CreateQuiz from "../../screens/userScreens/CreateQuiz";
-import UserQuizzes from "../../screens/userScreens/UserQuizzes";
+import MyQuizzes from "../../screens/userScreens/MyQuizzes";
 
 import Home from "../../screens/authenticatoinScreens/Home";
 import Login from "../../screens/authenticatoinScreens/Login";
@@ -61,7 +61,7 @@ const MainNavigation = () => {
             <Contacts />
           </Route>
           <Route path="/">
-            <UserQuizzes />
+            <MyQuizzes />
           </Route>
         </Switch>
       </div>

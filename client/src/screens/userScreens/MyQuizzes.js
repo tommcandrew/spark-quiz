@@ -18,6 +18,12 @@ const UserQuizzes = (props) => {
   };
 
   const quizzes = useSelector((state) => state.user.quizzes);
+  console.log(quizzes);
+
+  const handleDeleteQuiz = (id) => {
+    console.log("delete quiz");
+    dispatch(userActions.deleteQuiz(id));
+  };
 
   return (
     <div className="userQuizzes">
@@ -26,15 +32,15 @@ const UserQuizzes = (props) => {
         {quizzes.map((quiz, index) => (
           <li
             key={index}
-            onClick={() => handleOpenCreateQuiz(quiz)}
             style={{ border: "2px solid black", cursor: "pointer" }}
           >
-            <div>
+            <div onClick={() => handleOpenCreateQuiz(quiz)}>
               <h2>{quiz.quizName}</h2>
               <p>
                 {quiz.quizPublished ? "" : "Unpublished - click to continue"}
               </p>
             </div>
+            <button onClick={() => handleDeleteQuiz(quiz._id)}>Delete</button>
           </li>
         ))}
       </ul>

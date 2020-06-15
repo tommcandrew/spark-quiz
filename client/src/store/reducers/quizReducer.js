@@ -18,12 +18,13 @@ export default (state = initalState, action) => {
       //update entire state with updated version of quiz
       return { ...state, ...action.payload };
     case "DELETE_QUESTION":
-      return {
+      const updatedState = {
         ...state,
         quizQuestions: state.quizQuestions.filter(
           (question) => question.id !== action.id
         ),
       };
+      return updatedState;
     case "CREATE_QUIZ":
       return {
         ...state,
@@ -32,10 +33,13 @@ export default (state = initalState, action) => {
         quizSubject: action.payload.quizSubject,
       };
     case "SET_CURRENT_QUIZ":
-      console.log("setting current quiz info");
       return {
         ...state,
         ...action.payload,
+      };
+    case "CLEAR_CURRENT_QUIZ":
+      return {
+        ...initalState,
       };
     default:
       return state;

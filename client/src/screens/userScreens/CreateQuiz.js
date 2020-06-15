@@ -64,6 +64,10 @@ const CreateQuiz = () => {
     dispatch(userActions.addQuiz(quizName, quizSubject, false));
   };
 
+  const handleSave = () => {
+    dispatch(quizActions.clearCurrentQuiz());
+  };
+
   return (
     <div className="create-quiz-container">
       {quiz._id && (
@@ -77,6 +81,7 @@ const CreateQuiz = () => {
           </div>
           <div className="create-quiz-container container-2">
             {displayedComponent}
+            <button onClick={handleSave}>Save and Close</button>
           </div>
         </>
       )}
