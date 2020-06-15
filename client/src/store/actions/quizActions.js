@@ -1,7 +1,6 @@
 import axios from "axios";
 import { tokenConfig } from "./authActions";
 import { store } from "../../App";
-
 export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
 export const DELETE_QUESTION = "DELETE_QUESTION";
 export const CREATE_QUIZ = "CREATE_QUIZ";
@@ -53,14 +52,10 @@ export const clearCurrentQuiz = () => {
 };
 
 export const updateQuiz = (_id, update) => {
-  console.log("update quiz action");
-  console.log(update);
   return (dispatch) => {
-    console.log("making axios call");
     axios
       .post("http://localhost:5000/updateQuiz", { _id, update })
       .then(() => {
-        console.log("got response from server - now sending dispatch");
         dispatch({
           type: UPDATE_QUIZ,
           payload: update,

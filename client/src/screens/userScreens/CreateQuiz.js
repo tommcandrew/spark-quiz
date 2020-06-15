@@ -34,7 +34,7 @@ const CreateQuiz = () => {
   //HANDLERS
   const addNewQuestion = () => {
     setDisplayedComponent(
-      <AddQuestionModal questionSubmitted={closeModal} _id={quiz._id} />
+      <AddQuestionModal closeModal={closeModal} quiz={quiz} />
     );
   };
   const previewQuestionsHandler = () => {

@@ -23,10 +23,11 @@ const Quiz = new Schema(
           multipleChoiceOptions: [String],
           multipleChoiceAnswer: String,
         },
+        points: String,
       },
     ],
     quizTimeLimit: String,
-    quizPoints: String,
+    quizPointsSystem: String,
     quizOverallPoints: String,
     quizScores: [
       {

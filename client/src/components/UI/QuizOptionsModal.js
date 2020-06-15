@@ -21,10 +21,6 @@ const timeLimitOptions = {
   step: 5,
 };
 
-const handleCloseModal = () => {
-  //close modal
-};
-
 const QuizOptionsModal = ({ quizId, closeModal }) => {
   const [showOverallPointsInput, setShowOverallPointsInput] = useState(false);
   const [selectOptions, setSelectOptions] = useState([]);
@@ -60,7 +56,6 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
     }
   };
 
-  //I assume this submit function will be in QuizMaker
   const handleSubmit = (e) => {
     e.preventDefault();
     const selectedTimeLimit = e.target.timeLimit.value;
@@ -70,30 +65,20 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
     if (showOverallPointsInput) {
       overallPoints = e.target.overallPoints.value;
     }
-
-    console.log(selectedTimeLimit);
-    console.log(points);
-    console.log(overallPoints);
-
     if (selectedTimeLimit) {
       dispatch(
         quizActions.updateQuiz(quizId, { quizTimeLimit: selectedTimeLimit })
       );
     }
-
     if (points) {
-      dispatch(quizActions.updateQuiz(quizId, { quizPoints: points }));
+      dispatch(quizActions.updateQuiz(quizId, { quizPointsSystem: points }));
     }
-
     if (overallPoints) {
       dispatch(
         quizActions.updateQuiz(quizId, { quizOverallPoints: overallPoints })
       );
     }
-
     closeModal();
-
-    //if points is set to "eachQuestion", we'll need to have an input element in the AddQuestionModal where the user can add points
   };
 
   return (
@@ -132,7 +117,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
         </div>
         <div>
           <button type="submit">Done</button>
-          <button type="button" onClick={handleCloseModal}>
+          <button type="button" onClick={closeModal}>
             Cancel
           </button>
         </div>

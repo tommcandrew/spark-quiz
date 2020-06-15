@@ -7,16 +7,13 @@ import {
   Redirect,
 } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
 import Contacts from "../../screens/userScreens/Contacts";
 import Groups from "../../screens/userScreens/Groups";
 import CreateQuiz from "../../screens/userScreens/CreateQuiz";
 import MyQuizzes from "../../screens/userScreens/MyQuizzes";
-
-import Home from "../../screens/authenticatoinScreens/Home";
-import Login from "../../screens/authenticatoinScreens/Login";
-import Register from "../../screens/authenticatoinScreens/Register";
-
+import Home from "../../screens/authenticationScreens/Home";
+import Login from "../../screens/authenticationScreens/Login";
+import Register from "../../screens/authenticationScreens/Register";
 import * as authActions from "../../store/actions/authActions";
 
 const MainNavigation = () => {

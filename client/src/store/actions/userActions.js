@@ -1,7 +1,6 @@
 import axios from "axios";
 import { tokenConfig } from "./authActions";
 import { store } from "../../App";
-
 export const FETCH_QUIZZES = "FETCH_QUIZZES";
 export const ADD_QUIZ = "ADD_QUIZ";
 export const DELETE_QUIZ = "DELETE_QUIZ";

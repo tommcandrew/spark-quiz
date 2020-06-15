@@ -1,8 +1,11 @@
-// import {
-//   ADD_NEW_QUESTION,
-//   DELETE_QUESTION,
-//   CREATE_QUIZ,
-// } from "../actions/quizActions";
+import {
+  ADD_NEW_QUESTION,
+  DELETE_QUESTION,
+  CREATE_QUIZ,
+  SET_CURRENT_QUIZ,
+  CLEAR_CURRENT_QUIZ,
+  UPDATE_QUIZ,
+} from "../actions/quizActions";
 
 const initalState = {
   _id: "",
@@ -14,10 +17,10 @@ const initalState = {
 //changing cases to strings because of strange error
 export default (state = initalState, action) => {
   switch (action.type) {
-    case "ADD_NEW_QUESTION":
+    case ADD_NEW_QUESTION:
       //update entire state with updated version of quiz
       return { ...state, ...action.payload };
-    case "DELETE_QUESTION":
+    case DELETE_QUESTION:
       const updatedState = {
         ...state,
         quizQuestions: state.quizQuestions.filter(
@@ -25,24 +28,23 @@ export default (state = initalState, action) => {
         ),
       };
       return updatedState;
-    case "CREATE_QUIZ":
+    case CREATE_QUIZ:
       return {
         ...state,
         _id: action.payload._id,
         quizName: action.payload.quizName,
         quizSubject: action.payload.quizSubject,
       };
-    case "SET_CURRENT_QUIZ":
+    case SET_CURRENT_QUIZ:
       return {
         ...state,
         ...action.payload,
       };
-    case "CLEAR_CURRENT_QUIZ":
+    case CLEAR_CURRENT_QUIZ:
       return {
         ...initalState,
       };
-    case "UPDATE_QUIZ":
-      console.log("updating state");
+    case UPDATE_QUIZ:
       return {
         ...state,
         ...action.payload,

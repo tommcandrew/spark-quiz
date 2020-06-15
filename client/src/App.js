@@ -8,8 +8,7 @@ import errorReducer from "./store/reducers/errorReducer";
 import authReducer from "./store/reducers/authReducer";
 import userReducer from "./store/reducers/userReducer";
 import MainNavigation from "./components/navigation/MainNavigation";
-
-import Register from "./screens/authenticatoinScreens/Register";
+import Register from "./screens/authenticationScreens/Register";
 
 const rootReducer = combineReducers({
   quiz: quizReducer,
