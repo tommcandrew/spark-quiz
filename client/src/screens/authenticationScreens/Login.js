@@ -51,7 +51,7 @@ const Login = () => {
                 name="email"
                 autoComplete="email"
                 value={email}
-                onChange={e => setEmail (e.target.value)}
+                onChange={e => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -65,7 +65,7 @@ const Login = () => {
                 id="password"
                 minLength="8"
                 value={password}
-                onChange={e => setPassword (e.target.value)}
+                onChange={e => setPassword(e.target.value)}
               />
             </Grid>
           </Grid>

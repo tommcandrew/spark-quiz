@@ -148,4 +148,5 @@ const useStyles = makeStyles (theme => ({
 }));
 
 
-export default Regsiter;
+export default Register;
+;

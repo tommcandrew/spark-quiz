@@ -1,165 +1,167 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import AddedMedia from "./AddedMedia";
-import camelToSentence from "../../utils/camelToSentence";
-import * as quizActions from "../../store/actions/quizActions";
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import AddedMedia from './AddedMedia';
+import camelToSentence from '../../utils/camelToSentence';
+import * as quizActions from '../../store/actions/quizActions';
 
 //some super basic styling
 const styles = {
   wrapper: {
-    border: "1px solid #333",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    border: '1px solid #333',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   /* hide default input (replaced with parent label element - see html) */
   fileInput: {
-    display: "none",
+    display: 'none',
   },
   /* style label to look like button */
   addMedia: {
-    border: "1px solid rgba(0, 0, 0, 0.7)",
-    padding: "2px",
+    border: '1px solid rgba(0, 0, 0, 0.7)',
+    padding: '2px',
   },
   form: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
   },
 };
 
 //these two lists should probably be passed in to this component via props from the main QuizMaker component
 const supportedFileTypes = [
   //image
-  "image/jpeg",
-  "image/png",
-  "image/svg",
+  'image/jpeg',
+  'image/png',
+  'image/svg',
   //video
-  "video/mp4",
-  "video/webm",
-  "video/ogg",
+  'video/mp4',
+  'video/webm',
+  'video/ogg',
   //audio
-  "audio/mpeg",
-  "audio/ogg",
-  "audio/wav",
+  'audio/mpeg',
+  'audio/ogg',
+  'audio/wav',
 ];
-const questionTypes = ["trueFalse", "multipleChoice"];
+const questionTypes = ['trueFalse', 'multipleChoice'];
 
-const AddQuestionModal = ({ closeModal, quiz }) => {
-  const dispatch = useDispatch();
-  const [addedMedia, setAddedMedia] = useState([]);
-  const [questionType, setQuestionType] = useState("trueFalse");
-  const [multipleChoiceOptions, setMultipleChoiceOptions] = useState(["", ""]);
+const AddQuestionModal = ({closeModal, quiz}) => {
+  const dispatch = useDispatch ();
+  const [addedMedia, setAddedMedia] = useState ([]);
+  const [questionType, setQuestionType] = useState ('trueFalse');
+  const [multipleChoiceOptions, setMultipleChoiceOptions] = useState (['', '']);
   const [
     selectedMultipleChoiceOption,
     setSelectedMultipleChoiceOption,
-  ] = useState(null);
-  const [selectedTrueFalse, setSelectedTrueFalse] = useState();
-  const [question, setQuestion] = useState("");
-  const [points, setPoints] = useState(null);
+  ] = useState (null);
+  const [selectedTrueFalse, setSelectedTrueFalse] = useState ();
+  const [question, setQuestion] = useState ('');
+  const [points, setPoints] = useState (null);
 
   const handleAddText = () => {
-    setAddedMedia([
+    setAddedMedia ([
       ...addedMedia,
-      { file: { type: "text/plain", text: "" }, id: Date.now() },
+      {file: {type: 'text/plain', text: ''}, id: Date.now ()},
     ]);
   };
 
   //saves the file in state which results in preview displaying on page
-  const handleAddFile = (e) => {
+  const handleAddFile = e => {
     const file = e.target.files[0];
     if (!file) {
       return;
     }
     if (file.size >= 16000000) {
-      alert("File size limit is 16MB.");
+      alert ('File size limit is 16MB.');
       return;
     }
-    if (!supportedFileTypes.includes(file.type)) {
-      alert("File type not supported.");
+    if (!supportedFileTypes.includes (file.type)) {
+      alert ('File type not supported.');
       return;
     }
-    setAddedMedia([
+    setAddedMedia ([
       ...addedMedia,
       {
         file: file,
         //need some kind of id to be able to remove media after adding it
-        id: Date.now(),
+        id: Date.now (),
       },
     ]);
   };
 
-  const handleRemoveMedia = (mediaId) => {
-    setAddedMedia(addedMedia.filter((media) => media.id !== mediaId));
+  const handleRemoveMedia = mediaId => {
+    setAddedMedia (addedMedia.filter (media => media.id !== mediaId));
   };
 
-  const handleTextChange = (e) => {
+  const handleTextChange = e => {
     const addedMediaCopy = [...addedMedia];
     addedMediaCopy[e.target.dataset.index].file.text = e.target.value;
-    setAddedMedia([...addedMediaCopy]);
+    setAddedMedia ([...addedMediaCopy]);
   };
 
-  const handleSelectQuestionType = (e) => {
-    setQuestionType(e.target.value);
+  const handleSelectQuestionType = e => {
+    setQuestionType (e.target.value);
   };
 
-  const handleQuestionChange = (e) => {
-    setQuestion(e.target.value);
+  const handleQuestionChange = e => {
+    setQuestion (e.target.value);
   };
 
   const handleAddMultipleChoiceOption = () => {
     if (multipleChoiceOptions.length < 6) {
-      setMultipleChoiceOptions([...multipleChoiceOptions, ""]);
+      setMultipleChoiceOptions ([...multipleChoiceOptions, '']);
     } else {
-      alert("Maximum 6 options.");
+      alert ('Maximum 6 options.');
     }
   };
 
-  const handleTrueFalseSelect = (e) => {
-    setSelectedTrueFalse(e.target.value);
+  const handleTrueFalseSelect = e => {
+    setSelectedTrueFalse (e.target.value);
   };
 
-  const handleMultipleChoiceOptionChange = (e) => {
+  const handleMultipleChoiceOptionChange = e => {
     const multipleChoiceOptionsCopy = [...multipleChoiceOptions];
     multipleChoiceOptionsCopy[e.target.dataset.index] = e.target.value;
-    setMultipleChoiceOptions([...multipleChoiceOptionsCopy]);
+    setMultipleChoiceOptions ([...multipleChoiceOptionsCopy]);
   };
 
-  const handleMultipleChoiceOptionSelect = (e) => {
-    setSelectedMultipleChoiceOption(e.target.value);
+  const handleMultipleChoiceOptionSelect = e => {
+    setSelectedMultipleChoiceOption (e.target.value);
   };
 
-  const handlePointsChange = (e) => {
-    setPoints(e.target.value);
+  const handlePointsChange = e => {
+    setPoints (e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async e => {
+    e.preventDefault ();
     const questionObject = {
-      id: new Date().getUTCMilliseconds(),
+      id: new Date ().getUTCMilliseconds (),
       questionType: questionType,
       media: [],
       question: question,
       answers: {
-        trueFalseAnswer:
-          questionType === "trueFalse" ? selectedTrueFalse : null,
-        multipleChoiceOptions:
-          questionType === "multipleChoice" ? [...multipleChoiceOptions] : null,
+        trueFalseAnswer: questionType === 'trueFalse'
+          ? selectedTrueFalse
+          : null,
+        multipleChoiceOptions: questionType === 'multipleChoice'
+          ? [...multipleChoiceOptions]
+          : null,
         multipleChoiceAnswer: selectedMultipleChoiceOption,
       },
       points: points,
     };
 
-    const questionObjectStringified = JSON.stringify(questionObject);
+    const questionObjectStringified = JSON.stringify (questionObject);
 
-    const formData = new FormData();
-    formData.append("_id", quiz._id);
-    formData.append("questionObject", questionObjectStringified);
-    addedMedia.forEach((media) => {
-      formData.append("file", media.file);
+    const formData = new FormData ();
+    formData.append ('_id', quiz._id);
+    formData.append ('questionObject', questionObjectStringified);
+    addedMedia.forEach (media => {
+      formData.append ('file', media.file);
     });
 
-    await dispatch(quizActions.addNewQuestion(formData));
-    closeModal();
+    await dispatch (quizActions.addNewQuestion (formData));
+    closeModal ();
   };
 
   return (
@@ -175,14 +177,14 @@ const AddQuestionModal = ({ closeModal, quiz }) => {
                   type="file"
                   onChange={handleAddFile}
                   style={styles.fileInput}
-                  accept={supportedFileTypes.toString()}
-                ></input>
+                  accept={supportedFileTypes.toString ()}
+                />
                 Add Media
               </label>
               <button onClick={handleAddText}>Add Text</button>
             </div>
 
-            {addedMedia.map((media, index) => (
+            {addedMedia.map ((media, index) => (
               <AddedMedia
                 media={media}
                 handleRemoveMedia={handleRemoveMedia}
@@ -200,13 +202,13 @@ const AddQuestionModal = ({ closeModal, quiz }) => {
               value={questionType}
               onChange={handleSelectQuestionType}
             >
-              {questionTypes.map((type, index) => (
+              {questionTypes.map ((type, index) => (
                 <option key={index} value={type}>
-                  {camelToSentence(type)}
+                  {camelToSentence (type)}
                 </option>
               ))}
             </select>
-            {quiz.quizPointsSystem === "eachQuestion" && (
+            {quiz.quizPointsSystem === 'eachQuestion' &&
               <div>
                 <label htmlFor="points">Points:</label>
                 <input
@@ -216,23 +218,22 @@ const AddQuestionModal = ({ closeModal, quiz }) => {
                   value={points}
                   onChange={handlePointsChange}
                 />
-              </div>
-            )}
+              </div>}
             <label htmlFor="question">Question</label>
             <textarea
               rows="4"
               value={question}
               onChange={handleQuestionChange}
               required
-            ></textarea>
-            {questionType === "trueFalse" && (
+            />
+            {questionType === 'trueFalse' &&
               <div>
                 <div>
                   <input
                     type="radio"
                     value="true"
                     id="true"
-                    checked={selectedTrueFalse === "true"}
+                    checked={selectedTrueFalse === 'true'}
                     onChange={handleTrueFalseSelect}
                     name="trueFalse"
                     required
@@ -244,21 +245,20 @@ const AddQuestionModal = ({ closeModal, quiz }) => {
                     type="radio"
                     value="false"
                     id="false"
-                    checked={selectedTrueFalse === "false"}
+                    checked={selectedTrueFalse === 'false'}
                     onChange={handleTrueFalseSelect}
                     name="trueFalse"
                   />
                   <label htmlFor="false">False</label>
                 </div>
-              </div>
-            )}
-            {questionType === "multipleChoice" && (
+              </div>}
+            {questionType === 'multipleChoice' &&
               <div>
                 <button type="button" onClick={handleAddMultipleChoiceOption}>
                   Add option
                 </button>
                 <div>
-                  {multipleChoiceOptions.map((option, index) => (
+                  {multipleChoiceOptions.map ((option, index) => (
                     <div key={index}>
                       <label htmlFor={index}>{index + 1}.</label>
                       <textarea
@@ -268,20 +268,19 @@ const AddQuestionModal = ({ closeModal, quiz }) => {
                         //needed to access item in multipleChoiceOptions array in state on change
                         data-index={index}
                         required
-                      ></textarea>
+                      />
                       <input
                         type="radio"
                         value={index}
                         checked={
-                          selectedMultipleChoiceOption === index.toString()
+                          selectedMultipleChoiceOption === index.toString ()
                         }
                         onChange={handleMultipleChoiceOptionSelect}
                       />
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              </div>}
             <div>
               <p>Please select the correct answer.</p>
               <button type="submit">Done</button>

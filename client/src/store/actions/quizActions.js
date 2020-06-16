@@ -1,6 +1,5 @@
 import axios from "axios";
 import { tokenConfig } from "./authActions";
-import { store } from "../../App";
 export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
 export const DELETE_QUESTION = "DELETE_QUESTION";
 export const CREATE_QUIZ = "CREATE_QUIZ";
@@ -68,8 +67,8 @@ export const updateQuiz = (_id, update) => {
 };
 
 export const createQuiz = (quizName, quizSubject) => {
-  return (dispatch) => {
-    const token = store.getState().auth.token;
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
     axios
       .post(
         "http://localhost:5000/createQuiz",
