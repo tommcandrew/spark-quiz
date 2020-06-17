@@ -58,18 +58,18 @@ app.post("/register", (req, res) => {
     return;
   }
 
-  User.findOne({ email }).then(user => {
+  User.findOne ({email}).then (user => {
     if (user) {
-      res.status(403).send({ msg: "That email is already registered" });
+      res.status (403).send ({msg: 'That email is already registered'});
       return;
     } else {
-      const user = new User({ name, email, password });
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(user.password, salt, (err, hash) => {
+      const user = new User ({name, email, password});
+      bcrypt.genSalt (10, (err, salt) => {
+        bcrypt.hash (user.password, salt, (err, hash) => {
           user.password = hash;
-          user.save().then(user => {
-            jwt.sign({ id: user._id }, "secretkey", (err, token) => {
-              res.send({
+          user.save ().then (user => {
+            jwt.sign ({id: user._id}, 'secretkey', (err, token) => {
+              res.send ({
                 token,
                 user: {
                   id: user._id,
@@ -87,7 +87,7 @@ app.post("/register", (req, res) => {
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email }).then(user => {
+  User.findOne({ email }).then((user) => {
     if (!user) {
       res.status(403).send({ msg: "That email is not registered" });
     } else {
@@ -117,9 +117,9 @@ app.post("/login", (req, res) => {
 
 app.post("/studentLogin", (req, res) => {
   const { id } = req.body;
-  Quiz.find().then(quizzes => {
+  Quiz.find().then((quizzes) => {
     const matchingQuizArray = [];
-    quizzes.forEach(quiz => {
+    quizzes.forEach((quiz) => {
       if (quiz.quizInvites.includes(id)) {
         matchingQuizArray.push(quiz);
       }
@@ -139,10 +139,10 @@ app.post("/addQuestion", auth, (req, res) => {
   //since FormData separated the media from the rest of the question, loop over media and insert back into question object
   const mediaFiles = req.files;
   if (mediaFiles) {
-    const keys = Object.keys(mediaFiles);
+    const keys = Object.keys (mediaFiles);
     for (key of keys) {
       //probably a good idea to check that the media prop exists and add if not
-      questionParsed.media.push({
+      questionParsed.media.push ({
         mediaType: mediaFiles[key].mimetype,
         data: mediaFiles[key].data,
       });
@@ -151,19 +151,19 @@ app.post("/addQuestion", auth, (req, res) => {
 
   //then find quiz that was previously saved and push the new question onto the questions array
   Quiz.findById(_id)
-    .then(quiz => {
+    .then((quiz) => {
       quiz.quizQuestions.push(questionParsed);
       quiz
         .save()
-        .then(quiz => {
+        .then((quiz) => {
           res.status(200).send({ quiz });
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           res.status(400).send({ msg: "Unable to add question to quiz" });
         });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 });
@@ -181,15 +181,15 @@ app.post("/createQuiz", auth, (req, res) => {
     quizOverallPoints: null,
   })
     .save()
-    .then(quiz => {
-      User.findById(req.user.id).then(user => {
+    .then((quiz) => {
+      User.findById(req.user.id).then((user) => {
         user.quizzes.push(quiz._id);
         user.save().then(() => {
           res.status(200).send({ _id: quiz._id });
         });
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).send({ msg: "Unable to save quiz" });
     });
@@ -201,7 +201,7 @@ app.post("/deleteQuiz", auth, (req, res) => {
     .then(() => {
       res.status(200).send();
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 });
@@ -209,9 +209,9 @@ app.post("/deleteQuiz", auth, (req, res) => {
 app.get("/fetchQuizzes", auth, (req, res) => {
   let userQuizzes = [];
   User.findById(req.user.id)
-    .then(user => {
-      Quiz.find().then(quizzes => {
-        quizzes.forEach(quiz => {
+    .then((user) => {
+      Quiz.find().then((quizzes) => {
+        quizzes.forEach((quiz) => {
           if (user.quizzes.includes(quiz._id)) {
             userQuizzes.push(quiz);
           }
@@ -219,7 +219,7 @@ app.get("/fetchQuizzes", auth, (req, res) => {
         res.status(200).send({ quizzes: userQuizzes });
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 });
@@ -227,7 +227,7 @@ app.get("/fetchQuizzes", auth, (req, res) => {
 app.post("/updateQuiz", auth, (req, res) => {
   console.log("update request received");
   const { _id, update } = req.body;
-  //should insert field if doesn"t exist but not working
+  //should insert field if doesn't exist but not working
   Quiz.findOneAndUpdate(
     { _id: _id },
     { $set: update },
@@ -236,7 +236,7 @@ app.post("/updateQuiz", auth, (req, res) => {
     .then(() => {
       res.status(200).send();
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 });
@@ -244,7 +244,7 @@ app.post("/updateQuiz", auth, (req, res) => {
 app.post("/submit", auth, (req, res) => {
   const { studentId, _id, submittedAnswers } = req.body;
   Quiz.findById(_id)
-    .then(quiz => {
+    .then((quiz) => {
       let results = [];
       quiz.questions.forEach((question, index) => {
         if (question.questionType === "trueFalse") {
@@ -270,19 +270,19 @@ app.post("/submit", auth, (req, res) => {
       quiz.quizScores.push(scoreObject);
       res.status(200).send({ msg: "Quiz submitted", results });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 });
 
 app.post("/forgotPassword", (req, res) => {
-  User.findById(req.user.id).then(user => {
+  User.findById(req.user.id).then((user) => {
     if (user) {
       const randomString = Str.random();
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(randomString, salt, (err, hash) => {
           user.password = hash;
-          user.save().then(user => {
+          user.save().then((user) => {
             emailNewPassword(user.email, randomString);
             res.status(200).send({ msg: "New password emailed" });
           });
@@ -297,14 +297,14 @@ app.post("/forgotPassword", (req, res) => {
 app.get("/user", auth, (req, res) => {
   User.findById(req.user.id)
     .select("-password")
-    .then(user => res.json(user));
+    .then((user) => res.json(user));
 });
 
 const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   let emailList = [];
   User.findById(req.user.id)
-    .then(user => {
-      user.contacts.forEach(contact => {
+    .then((user) => {
+      user.contacts.forEach((contact) => {
         if (quizInvites.includes(contact.id)) {
           emailList.push(contact.email);
         }
@@ -313,7 +313,7 @@ const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
         from: "Quiz Master",
         to: emailList,
         subject: "Quiz Master Invitation",
-        html: `<h1>You"ve been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
+        html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
       };
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
@@ -323,7 +323,7 @@ const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
         }
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(400).send({ msg: "Unable to find user" });
     });
@@ -334,7 +334,8 @@ const emailNewPassword = (email, newPassword) => {
     from: "Quiz Master",
     to: email,
     subject: "Password reset",
-    text: "Your password has been reset. New temporary password is " +
+    text:
+      "Your password has been reset. You're new temporary password is " +
       newPassword +
       ".",
   };
