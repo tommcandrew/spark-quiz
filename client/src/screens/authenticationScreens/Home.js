@@ -1,119 +1,99 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
   CssBaseline,
-  TextField,
-  Paper,
-  ButtonGroup,
+  Container,
   Grid,
+  Box,
   Typography,
-} from '@material-ui/core/';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import {makeStyles} from '@material-ui/core/styles';
-import bg from '../../assets/background1.jpg';
-
+  TextField
+} from "@material-ui/core/";
+import { makeStyles } from "@material-ui/core/styles";
+import logo from "../../assets/logo1.png"
 const handleStudentLogin = () => {
   //do some stuff and call /studentLogin on server
 };
 
 const Home = () => {
-  const classes = useStyles ();
+  const classes = useStyles();
 
   return (
-    <div>
-      <Grid container component="main" className={classes.root}>
-        <CssBaseline />
-        <Grid item xs={false} sm={4} md={7} className={classes.imageContainer}>
-          <img src={bg} className={classes.image} />
-        </Grid>
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Hello There!{' '}
-            </Typography>
-            <form className={classes.form} noValidate>
-              <Grid container spacing={3}>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
 
-                <Grid item xs={12} sm={6}>
-                  <Link to="/register">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                    >
-                      Register
-                    </Button>
-                  </Link>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Link to="/login">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                    >
-                      Login
-                    </Button>
-                  </Link>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    label="Have a code?"
-                    autoFocus
-                  />
-                </Grid>
+        <Avatar
+          alt="logo"
+          src={logo}
+          width={30}
+          height={30}
+          className={classes.large}
+        />
 
-              </Grid>
-            </form>
-          </div>
-        </Grid>
-      </Grid>
-
-    </div>
+        <Typography component="h1" variant="h5">
+          Hello There!
+        </Typography>
+        <form className={classes.form} noValidate>
+          <Link to="/login">
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              SignIn
+            </Button>
+          </Link>
+          <Link to="/register">
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Register
+            </Button>
+          </Link>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            id="code"
+            label="Have a code?"
+            name="code"
+            autoFocus
+          />
+        </form>
+        I like the transparent background more
+      </div>
+    </Container>
   );
 };
 
-const useStyles = makeStyles (theme => ({
-  root: {
-    height: '100vh',
-  },
-  imageContainer: {
-    backgroundRepeat: 'no-repeat',
-    backgroundColor: theme.palette.type === 'light'
-      ? theme.palette.grey[50]
-      : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    opacity: '0.8',
-  },
+const useStyles = makeStyles(theme => ({
   paper: {
-    margin: theme.spacing (8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing (1),
-    backgroundColor: theme.palette.secondary.main,
+    marginTop: theme.spacing(3),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    backgroundColor: "white",
+    padding: "20px",
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing (1),
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing (3, 0, 2),
+    margin: theme.spacing(3, 0, 2),
+  },
+  large: {
+    width: theme.spacing(12),
+    height: theme.spacing(12),
   },
 }));
 

@@ -1,3 +1,19 @@
+html, body, #root{
+  height: vh;
+  width: vw;
+}
+
+body{
+  background-image: url("./assets/bg-blur2.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+   background-attachment: fixed;
+  background-size: cover;
+  overflow: hidden;
+}
+
+
+
 ul {
   list-style: none;
 }

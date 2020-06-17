@@ -6,7 +6,7 @@ export const ADD_QUIZ = "ADD_QUIZ";
 export const DELETE_QUIZ = "DELETE_QUIZ";
 
 export const fetchQuizzes = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const token = store.getState().auth.token;
     axios
       .get("http://localhost:5000/fetchQuizzes", tokenConfig(token))
