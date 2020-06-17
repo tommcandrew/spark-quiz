@@ -1,12 +1,12 @@
-import React from 'react';
-import {Route, BrowserRouter, Switch} from 'react-router-dom';
+import React from "react";
+import { Route, BrowserRouter, Switch } from "react-router-dom";
 
-import ProtectedRoute from './ProtectedRoute';
+import ProtectedRoute from "./ProtectedRoute";
 
-import Dashboard from '../../screens/userScreens/Dashboard';
-import Home from '../../screens/authenticationScreens/Home';
-import Login from '../../screens/authenticationScreens/Login';
-import Register from '../../screens/authenticationScreens/Register';
+import Dashboard from "../../screens/userScreens/Dashboard";
+import Home from "../../screens/authenticationScreens/Home";
+import Login from "../../screens/authenticationScreens/Login";
+import Register from "../../screens/authenticationScreens/Register";
 
 const MainNavigation = () => {
   return (

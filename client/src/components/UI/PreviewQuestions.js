@@ -35,18 +35,18 @@ const PreviewQuestions = (props) => {
                   {question.questionType === "trueFalse" ? (
                     <p>correct answer is {question.answers.trueFalseAnswer}</p>
                   ) : (
-                    <div>
-                      Options:
-                      {question.answers.multipleChoiceOptions.map(
-                        (option, i) => (
-                          <p key={i}>-{option}</p>
-                        )
-                      )}
-                      <p>
-                        correct answer: {question.answers.multipleChoiceAnswer}
-                      </p>
-                    </div>
-                  )}
+                      <div>
+                        Options:
+                        {question.answers.multipleChoiceOptions.map(
+                          (option, i) => (
+                            <p key={i}>-{option}</p>
+                          )
+                        )}
+                        <p>
+                          correct answer: {question.answers.multipleChoiceAnswer}
+                        </p>
+                      </div>
+                    )}
 
                   <button onClick={() => deleteQuestionHandler(question.id)}>
                     delete

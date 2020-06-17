@@ -1,52 +1,52 @@
-import React from 'react';
+import React from "react";
 import { useDispatch } from "react-redux";
-import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import {makeStyles, useTheme} from '@material-ui/core/styles';
+import PropTypes from "prop-types";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Divider from "@material-ui/core/Divider";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
   useRouteMatch,
-} from 'react-router-dom';
-import ProtectedRoute from '../../components/navigation/ProtectedRoute';
-import UserQuizzes from './UserQuizzes';
-import CreateQuiz from './CreateQuiz';
-import Contacts from './Contacts';
-import Groups from './Groups';
-import * as authActions from '../../store/actions/authActions';
+} from "react-router-dom";
+import ProtectedRoute from "../../components/navigation/ProtectedRoute";
+import UserQuizzes from "./UserQuizzes";
+import CreateQuiz from "./CreateQuiz";
+import Contacts from "./Contacts";
+import Groups from "./Groups";
+import * as authActions from "../../store/actions/authActions";
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles (theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
+    display: "flex",
   },
   drawer: {
-    [theme.breakpoints.up ('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: drawerWidth,
       flexShrink: 0,
     },
   },
   appBar: {
-    [theme.breakpoints.up ('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
   },
   menuButton: {
-    marginRight: theme.spacing (2),
-    [theme.breakpoints.up ('sm')]: {
-      display: 'none',
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
     },
   },
   // necessary for content to be below app bar
@@ -56,20 +56,20 @@ const useStyles = makeStyles (theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing (3),
+    padding: theme.spacing(3),
   },
 }));
 
 function ResponsiveDrawer(props) {
   const dispatch = useDispatch()
-  let {path, url} = useRouteMatch ();
-  const {window} = props;
-  const classes = useStyles ();
-  const theme = useTheme ();
-  const [mobileOpen, setMobileOpen] = React.useState (false);
+  let { path, url } = useRouteMatch();
+  const { window } = props;
+  const classes = useStyles();
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
-    setMobileOpen (!mobileOpen);
+    setMobileOpen(!mobileOpen);
   };
 
   const drawer = (
@@ -92,7 +92,7 @@ function ResponsiveDrawer(props) {
         <li>
           <button
             onClick={() => {
-              dispatch (authActions.logout ());
+              dispatch(authActions.logout());
             }}
           >
             Sign Out
@@ -105,7 +105,7 @@ function ResponsiveDrawer(props) {
   );
 
   const container = window !== undefined
-    ? () => window ().document.body
+    ? () => window().document.body
     : undefined;
 
   return (
@@ -134,7 +134,7 @@ function ResponsiveDrawer(props) {
             <Drawer
               container={container}
               variant="temporary"
-              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              anchor={theme.direction === "rtl" ? "right" : "left"}
               open={mobileOpen}
               onClose={handleDrawerToggle}
               classes={{
@@ -181,7 +181,7 @@ function ResponsiveDrawer(props) {
 ResponsiveDrawer.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
+   * You won"t need it on your project.
    */
   window: PropTypes.func,
 };

@@ -146,10 +146,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-<<<<<<< HEAD
-
 export default Register;
-;
-=======
-export default Register;
->>>>>>> 551095f8b90b191e5a3b0ecdcc7996c303db67d3

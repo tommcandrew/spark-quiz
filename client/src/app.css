@@ -4,7 +4,7 @@ html, body, #root{
 }
 
 body{
-  background-image: url('./assets/bg-blur2.jpg');
+  background-image: url("./assets/bg-blur2.jpg");
   background-position: center center;
   background-repeat: no-repeat;
    background-attachment: fixed;

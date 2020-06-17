@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {Link, useHistory, useLocation} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
-import * as authActions from '../../store/actions/authActions';
+import React, { useState } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import * as authActions from "../../store/actions/authActions";
 
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from "@material-ui/core/Avatar";
 import {
   Button,
   CssBaseline,
@@ -11,23 +11,23 @@ import {
   Grid,
   Typography,
   Container,
-} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 const Login = () => {
-  const [email, setEmail] = useState ('testuser@test.com');
-  const [password, setPassword] = useState ('12345678');
-  const dispatch = useDispatch ();
+  const [email, setEmail] = useState("testuser@test.com");
+  const [password, setPassword] = useState("12345678");
+  const dispatch = useDispatch();
 
   const loginHandler = () => {
     const loginData = {
       email,
       password,
     };
-    dispatch (authActions.login (loginData));
+    dispatch(authActions.login(loginData));
   };
 
-  const classes = useStyles ();
+  const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -50,7 +50,7 @@ const Login = () => {
                 name="email"
                 autoComplete="email"
                 value={email}
-                onChange={e => setEmail (e.target.value)}
+                onChange={e => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -64,7 +64,7 @@ const Login = () => {
                 id="password"
                 minLength="8"
                 value={password}
-                onChange={e => setPassword (e.target.value)}
+                onChange={e => setPassword(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -83,7 +83,7 @@ const Login = () => {
             <Grid item>
               <Link to="/register">
                 <Typography href="#" variant="body2">
-                  Don't have an account? Sign up
+                  Don"t have an account? Sign up
                 </Typography>
               </Link>
             </Grid>
@@ -94,23 +94,23 @@ const Login = () => {
   );
 };
 
-const useStyles = makeStyles (theme => ({
+const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing (8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
-    margin: theme.spacing (1),
+    margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing (1),
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing (3, 0, 2),
+    margin: theme.spacing(3, 0, 2),
   },
 }));
 

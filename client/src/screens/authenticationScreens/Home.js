@@ -1,5 +1,5 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -9,9 +9,9 @@ import {
   Box,
   Typography,
   TextField
-} from '@material-ui/core/';
-import {makeStyles} from '@material-ui/core/styles';
-import logo from '../../assets/logo1.png'
+} from "@material-ui/core/";
+import { makeStyles } from "@material-ui/core/styles";
+import logo from "../../assets/logo1.png"
 const handleStudentLogin = () => {
   //do some stuff and call /studentLogin on server
 };
@@ -23,7 +23,7 @@ const Home = () => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        
+
         <Avatar
           alt="logo"
           src={logo}
@@ -74,24 +74,24 @@ const Home = () => {
   );
 };
 
-const useStyles = makeStyles (theme => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(3),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white',
-    padding: '20px',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    backgroundColor: "white",
+    padding: "20px",
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-    large: {
+  large: {
     width: theme.spacing(12),
     height: theme.spacing(12),
   },
