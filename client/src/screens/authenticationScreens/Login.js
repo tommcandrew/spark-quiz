@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useHistory, useLocation} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import * as authActions from '../../store/actions/authActions';
 
@@ -14,19 +14,18 @@ import {
 } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 
-
 const Login = () => {
   const [email, setEmail] = useState ('testuser@test.com');
   const [password, setPassword] = useState ('12345678');
-  const dispatch = useDispatch();
-  
+  const dispatch = useDispatch ();
+
   const loginHandler = () => {
     const loginData = {
       email,
-      password
-    }
-    dispatch(authActions.login(loginData))
-  }
+      password,
+    };
+    dispatch (authActions.login (loginData));
+  };
 
   const classes = useStyles ();
 
@@ -40,7 +39,7 @@ const Login = () => {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            
+
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -51,7 +50,7 @@ const Login = () => {
                 name="email"
                 autoComplete="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => setEmail (e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -65,7 +64,7 @@ const Login = () => {
                 id="password"
                 minLength="8"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => setPassword (e.target.value)}
               />
             </Grid>
           </Grid>
@@ -76,7 +75,9 @@ const Login = () => {
             className={classes.submit}
             onClick={loginHandler}
           >
-            Sign In
+            <Link to="/dashboard">
+              Sign In
+            </Link>
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
