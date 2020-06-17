@@ -132,7 +132,7 @@ app.post("/studentLogin", (req, res) => {
   });
 });
 
-app.post("/addQuestion", auth, (req, res) => {
+app.post("/addQuestion", (req, res) => {
   const { _id, questionObject } = req.body;
   //parse question as it was stringified in order to send
   const questionParsed = JSON.parse(questionObject);
@@ -195,7 +195,7 @@ app.post("/createQuiz", auth, (req, res) => {
     });
 });
 
-app.post("/deleteQuiz", auth, (req, res) => {
+app.post("/deleteQuiz", (req, res) => {
   const { _id } = req.body;
   Quiz.findByIdAndDelete(_id)
     .then(() => {
@@ -224,7 +224,7 @@ app.get("/fetchQuizzes", auth, (req, res) => {
     });
 });
 
-app.post("/updateQuiz", auth, (req, res) => {
+app.post("/updateQuiz", (req, res) => {
   console.log("update request received");
   const { _id, update } = req.body;
   //should insert field if doesn't exist but not working
@@ -241,7 +241,7 @@ app.post("/updateQuiz", auth, (req, res) => {
     });
 });
 
-app.post("/submit", auth, (req, res) => {
+app.post("/submit", (req, res) => {
   const { studentId, _id, submittedAnswers } = req.body;
   Quiz.findById(_id)
     .then((quiz) => {
@@ -275,7 +275,7 @@ app.post("/submit", auth, (req, res) => {
     });
 });
 
-app.post("/forgotPassword", (req, res) => {
+app.post("/forgotPassword", auth, (req, res) => {
   User.findById(req.user.id).then((user) => {
     if (user) {
       const randomString = Str.random();
