@@ -33,10 +33,10 @@ export const loadUser = () => {
 };
 
 export const register = ({ name, email, password, password2 }) => {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
     const body = JSON.stringify({ name, email, password, password2 });
-    axios
+    return axios
       .post("http://localhost:5000/register", body, config)
       .then((res) => {
         dispatch({
@@ -60,10 +60,10 @@ export const register = ({ name, email, password, password2 }) => {
 };
 
 export const login = ({ email, password }) => {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
     const body = JSON.stringify({ email, password });
-    axios
+    return axios
       .post("http://localhost:5000/login", body, config)
       .then((res) => {
         dispatch({
@@ -87,7 +87,7 @@ export const login = ({ email, password }) => {
 };
 
 export const logout = () => {
-  return async (dispatch) => {
+  return(dispatch) => {
     dispatch({ type: LOGOUT_SUCCESS });
   };
 };

@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
 
-const Register = () => {
+const Register = props => {
   //STATE
   const [name, setName] = useState("testuser");
   const [email, setEmail] = useState("testuser@test.com");
@@ -25,14 +25,15 @@ const Register = () => {
   const classes = useStyles();
 
   //HANDLERS
-  const handleRegister = () => {
+  const handleRegister = async() => {
     const registerDetails = {
       name,
       email,
       password,
       password2,
     };
-    dispatch(authActions.register(registerDetails));
+    await dispatch(authActions.register(registerDetails))
+    props.history.push("/dashboard");
   };
 
   return (
