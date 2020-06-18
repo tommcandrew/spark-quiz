@@ -10,7 +10,6 @@ import quizReducer from "./store/reducers/quizReducer";
 import MainNavigation from "./components/navigation/MainNavigation";
 import theme from "./style/theme";
 import { ThemeProvider } from "@material-ui/core/styles";
-import Quiz from "./screens/userScreens/Quiz";
 
 const rootReducer = combineReducers({
   quiz: quizReducer,
@@ -32,8 +31,7 @@ export default function AppWrapper() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        {/* <MainNavigation /> */}
-        <Quiz />
+        <MainNavigation />
       </ThemeProvider>
     </Provider>
   );
