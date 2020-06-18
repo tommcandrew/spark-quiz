@@ -9,10 +9,17 @@ import questions from "./questions";
 const Quiz = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const prepareNext = () => {
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    setSelectedOption(null);
+  };
 
   const tl = gsap.timeline();
 
-  const handleClick = (isCorrect) => {
+  const handleClick = (optionIndex, isCorrect) => {
+    setSelectedOption(optionIndex);
     if (isCorrect) {
       setScore(score + 1);
     }
@@ -21,12 +28,17 @@ const Quiz = () => {
       return;
     }
     //slide both question and options out of view to left
-    tl.to([".quiz__question", ".quiz__options"], 0.5, {
-      x: "-100vw",
-      opacity: 0,
-      ease: "Power4.easeIn",
-      onComplete: () => setCurrentQuestionIndex(currentQuestionIndex + 1),
-    });
+    tl.to(
+      [".quiz__question", ".quiz__options"],
+      0.5,
+      {
+        x: "-100vw",
+        opacity: 0,
+        ease: "Power4.easeIn",
+        onComplete: prepareNext,
+      },
+      "+=0.8"
+    );
     //return question and options elements to original position (not visible)
     tl.to([".quiz__question", ".quiz__options"], 0, {
       x: 0,
@@ -60,8 +72,14 @@ const Quiz = () => {
         </div>
         <div className="quiz__options">
           {questions[currentQuestionIndex] &&
-            questions[currentQuestionIndex].options.map((option) => (
-              <QuizOption option={option} handleClick={handleClick} />
+            questions[currentQuestionIndex].options.map((option, index) => (
+              <QuizOption
+                option={option}
+                handleClick={handleClick}
+                key={option.text}
+                optionIndex={index}
+                selectedOption={selectedOption}
+              />
             ))}
         </div>
       </div>
