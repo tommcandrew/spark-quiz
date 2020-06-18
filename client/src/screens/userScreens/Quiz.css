@@ -23,6 +23,10 @@ body,
   font-size: 1.5rem;
 }
 
+.quiz__question {
+  text-align: center;
+}
+
 .quiz__options {
   width: 70%;
 }

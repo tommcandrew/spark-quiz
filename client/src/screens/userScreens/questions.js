@@ -4,19 +4,19 @@ const questions = [
     options: [
       {
         text: "Dubai",
-        correct: true,
+        isCorrect: true,
       },
       {
         text: "New York",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "London",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Shanghai",
-        correct: false,
+        isCorrect: false,
       },
     ],
   },
@@ -25,19 +25,19 @@ const questions = [
     options: [
       {
         text: "1993",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "1994",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "1995",
-        correct: true,
+        isCorrect: true,
       },
       {
         text: "1996",
-        correct: false,
+        isCorrect: false,
       },
     ],
   },
@@ -46,19 +46,19 @@ const questions = [
     options: [
       {
         text: "David Cameron",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Priti Patel",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Ed Milliband",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Rishi Sunak",
-        correct: true,
+        isCorrect: true,
       },
     ],
   },
@@ -68,19 +68,19 @@ const questions = [
     options: [
       {
         text: "Iron Man",
-        correct: true,
+        isCorrect: true,
       },
       {
         text: "The Avengers",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Batman vs Superman",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Daredevil",
-        correct: false,
+        isCorrect: false,
       },
     ],
   },
@@ -89,19 +89,19 @@ const questions = [
     options: [
       {
         text: "Leigh",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Thames",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Severn",
-        correct: true,
+        isCorrect: true,
       },
       {
         text: "Irwell",
-        correct: false,
+        isCorrect: false,
       },
     ],
   },
@@ -110,19 +110,19 @@ const questions = [
     options: [
       {
         text: "Wellington",
-        correct: true,
+        isCorrect: true,
       },
       {
         text: "Christchurch",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Canberra",
-        correct: false,
+        isCorrect: false,
       },
       {
         text: "Sydney",
-        correct: false,
+        isCorrect: false,
       },
     ],
   },
