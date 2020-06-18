@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import QuizOption from "../../components/UI/QuizOption";
 import gsap from "gsap";
 import "./Quiz.css";
+import QuizTimer from "../../components/UI/QuizTimer";
 
-//real questions will come from props
+//real questions and time limie will come from props
 import questions from "./questions";
 
 const Quiz = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
+  const timeLimit = 5 * 60;
 
   const prepareNext = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -57,6 +59,12 @@ const Quiz = () => {
 
   return (
     <div className="quiz__wrapper">
+      <div className="quiz__info">
+        <div className="quiz__progress">
+          Question {currentQuestionIndex + 1}/{questions.length}
+        </div>
+        <QuizTimer seconds={timeLimit} />
+      </div>
       <div className="quiz__content">
         <div className="quiz__question">
           {questions[currentQuestionIndex] ? (

@@ -39,6 +39,14 @@ body,
 }
 
 .quizOption__selected {
-  background-color: #333;
+  background-color: rgb(68, 65, 114);
   color: white;
+}
+
+.quiz__info {
+  display: flex;
+  justify-content: space-between;
+  width: 65%;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
