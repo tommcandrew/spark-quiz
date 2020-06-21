@@ -1,13 +1,12 @@
 import axios from "axios";
 import { tokenConfig } from "./authActions";
-import { store } from "../../App";
 export const FETCH_QUIZZES = "FETCH_QUIZZES";
 export const ADD_QUIZ = "ADD_QUIZ";
 export const DELETE_QUIZ = "DELETE_QUIZ";
 
 export const fetchQuizzes = () => {
   return (dispatch, getState) => {
-    const token = store.getState().auth.token;
+    const token = getState().auth.token;
     axios
       .get("http://localhost:5000/fetchQuizzes", tokenConfig(token))
       .then((res) => {
@@ -35,7 +34,7 @@ export const addQuiz = (quizName, quizSubject, quizPublished) => {
 
 export const deleteQuiz = (id) => {
   return (dispatch) => {
-    axios
+    return axios
       .post("http://localhost:5000/deleteQuiz", { _id: id })
       .then(() => {
         dispatch({

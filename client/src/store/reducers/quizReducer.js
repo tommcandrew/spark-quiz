@@ -19,12 +19,17 @@ export default (state = initalState, action) => {
   switch (action.type) {
     case ADD_NEW_QUESTION:
       //update entire state with updated version of quiz
-      return { ...state, ...action.payload };
+      return { ...state,
+        _id: action.payload._id,
+        quizName: action.payload.quizName,
+        quizSubject: action.payload.quizSubject,
+        quizQuestions: action.payload.quizQuestions,
+      };
     case DELETE_QUESTION:
       const updatedState = {
         ...state,
         quizQuestions: state.quizQuestions.filter(
-          (question) => question.id !== action.id
+          (question) => question._id !== action.id
         ),
       };
       return updatedState;
