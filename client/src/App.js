@@ -10,7 +10,9 @@ import quizReducer from "./store/reducers/quizReducer";
 import MainNavigation from "./components/navigation/MainNavigation";
 import theme from "./style/theme";
 import { ThemeProvider } from "@material-ui/core/styles";
+import Modal from 'react-modal'
 
+Modal.setAppElement("#root")
 const rootReducer = combineReducers({
   quiz: quizReducer,
   error: errorReducer,

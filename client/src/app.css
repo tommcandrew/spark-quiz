@@ -18,14 +18,12 @@ ul {
   list-style: none;
 }
 
-.side-drawer {
-  height: 100%;
-  width: 20%;
-  display: flex;
-  align-items: flex-start;
-  background-color: pink;
-  /* position: fixed; */
+a {
+  text-decoration: none;
+  color: black;
 }
+
+
 .create-quiz-container {
   height: 90%;
   width: 75%;

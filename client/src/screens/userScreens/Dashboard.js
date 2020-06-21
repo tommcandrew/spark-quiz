@@ -1,28 +1,46 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
-import IconButton from "@material-ui/core/IconButton";
+import {
+	AppBar,
+	CssBaseline,
+	Divider,
+	Drawer,
+	Hidden,
+	IconButton,
+	Toolbar,
+	Typography,
+	Button,
+	List,
+	ListItemIcon,
+	ListItemText,
+	ListItem,
+	Paper
+} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
+import HomeIcon from '@material-ui/icons/Home';
+import PersonIcon from '@material-ui/icons/Person';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import PeopleIcon from '@material-ui/icons/People';
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useRouteMatch } from "react-router-dom";
+import WelcomScreen from "./WelcomeScreen";
 import UserQuizzes from "./UserQuizzes";
 import CreateQuiz from "./CreateQuiz";
 import Contacts from "./Contacts";
 import Groups from "./Groups";
+import Logo from "../../assets/logo1.png";
 import * as authActions from "../../store/actions/authActions";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		display: "flex"
+		display: "flex",
+		height: "100vh",
+		width: "100vw"
 	},
 	drawer: {
 		[theme.breakpoints.up("sm")]: {
@@ -42,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
 			display: "none"
 		}
 	},
+	toolbarItems: {
+		justifyContent: "flex-end"
+	},
 	// necessary for content to be below app bar
 	toolbar: theme.mixins.toolbar,
 	drawerPaper: {
@@ -49,7 +70,23 @@ const useStyles = makeStyles((theme) => ({
 	},
 	content: {
 		flexGrow: 1,
-		padding: theme.spacing(3)
+		padding: theme.spacing(3),
+		display: 'flex',
+		marginTop: "64px",
+		padding: "40px",
+		
+	},
+	list: {
+		width: "100%",
+		maxWidth: 360,
+		backgroundColor: theme.palette.background.paper
+	},
+	logo: {
+		maxHeight: "64px"
+	},
+	mainContent: {
+		flexGrow: 1,
+		
 	}
 }));
 
@@ -72,36 +109,75 @@ function Dashboard(props) {
 
 	const drawer = (
 		<div>
-			<div className={classes.toolbar} />
+			<div
+				className={classes.toolbar}
+				style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+				<img src={Logo} className={classes.logo} />
+			</div>
 			<Divider />
-			<ul>
-				<li>
-					<Link to={`${url}/myquizzes`}>My Quizes</Link>
-				</li>
-				<li>
-					<Link to={`${url}/createquiz`}>Create Quiz</Link>
-				</li>
-				<li>
-					<Link to={`${url}/contacts`}>Contacts</Link>
-				</li>
-				<li>
-					<Link to={`${url}/groups`}>Groups</Link>
-				</li>
-				<li>
-					<button onClick={logoutHandler}>Sign Out</button>
-				</li>
-			</ul>
+			<div className={classes.list}>
+				<List component="nav" aria-label="side drawer">
+					<Link to={`${url}`}>
+						<ListItem button>
+							<ListItemIcon>
+								<HomeIcon/>
+							</ListItemIcon>
+							<ListItemText primary="Random" />
+						</ListItem>
+					</Link>
+
+					<Link to={`${url}/myquizzes`}>
+						<ListItem button>
+							<ListItemIcon>
+								<PersonIcon />
+							</ListItemIcon>
+							<ListItemText primary="My Quizes" />
+						</ListItem>
+					</Link>
+
+					<Link to={`${url}/createQuiz`}>
+						<ListItem button>
+							<ListItemIcon>
+								<LibraryAddIcon />
+							</ListItemIcon>
+							<ListItemText primary="Create new quiz" />
+						</ListItem>
+					</Link>
+
+					<Link to={`${url}/contacts`}>
+						<ListItem button>
+							<ListItemIcon>
+								<EmojiPeopleIcon/>
+							</ListItemIcon>
+							<ListItemText primary="Contacts" />
+						</ListItem>
+					</Link>
+
+					<Link to={`${url}/groups`}>
+						<ListItem button>
+							<ListItemIcon>
+								<PeopleIcon/>
+							</ListItemIcon>
+							<ListItemText primary="Groups" />
+						</ListItem>
+					</Link>
+				</List>
+			</div>
 		</div>
 	);
 
 	const container = window !== undefined ? () => window().document.body : undefined;
+
+	function ListItemLink(props) {
+		return <ListItem button component="a" {...props} />;
+	}
 
 	return (
 		<Router>
 			<div className={classes.root}>
 				<CssBaseline />
 				<AppBar position="fixed" className={classes.appBar}>
-					<Toolbar>
+					<Toolbar className={classes.toolbarItems}>
 						<IconButton
 							color="inherit"
 							aria-label="open drawer"
@@ -110,9 +186,9 @@ function Dashboard(props) {
 							className={classes.menuButton}>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="h6" noWrap>
-							Responsive drawer
-						</Typography>
+						<Button color="inherit" className={classes.logoutButton} onClick={logoutHandler}>
+							Logout
+						</Button>
 					</Toolbar>
 				</AppBar>
 				<nav className={classes.drawer} aria-label="mailbox folders">
@@ -144,18 +220,17 @@ function Dashboard(props) {
 						</Drawer>
 					</Hidden>
 				</nav>
-				<main className={classes.content}>
-					<div className={classes.toolbar} />
-					<Switch>
-						<Route exact path={path}>
-							<h3>Please select a topic.</h3>
-						</Route>
 
-						<Route path={`${url}/myquizzes`} component={UserQuizzes} />
-						<Route path={`${url}/createquiz`} component={CreateQuiz} />
-						<Route path={`${url}/contacts`} component={Contacts} />
-						<Route path={`${url}/groups`} compoenent={Groups} />
-					</Switch>
+				<main className={classes.content}>
+					<Paper className={classes.mainContent} elevation ={0}>
+						<Switch>
+							<Route exact path={path} component={WelcomScreen} />
+							<Route path={`${url}/myquizzes`} component={UserQuizzes} />
+							<Route path={`${url}/createquiz`} component={CreateQuiz} />
+							<Route path={`${url}/contacts`} component={Contacts} />
+							<Route path={`${url}/groups`} compoenent={Groups} />
+						</Switch>
+					</Paper>
 				</main>
 			</div>
 		</Router>

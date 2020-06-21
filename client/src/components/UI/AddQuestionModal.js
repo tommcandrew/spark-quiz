@@ -1,295 +1,302 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AddedMedia from "./AddedMedia";
 import camelToSentence from "../../utils/camelToSentence";
 import * as quizActions from "../../store/actions/quizActions";
+import { makeStyles } from "@material-ui/core/styles";
+import { Paper, Grid, Typography, Button,TextField } from "@material-ui/core";
 
-//some super basic styling
-const styles = {
-  wrapper: {
-    border: "1px solid #333",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  /* hide default input (replaced with parent label element - see html) */
-  fileInput: {
-    display: "none",
-  },
-  /* style label to look like button */
-  addMedia: {
-    border: "1px solid rgba(0, 0, 0, 0.7)",
-    padding: "2px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-  },
-};
+const useStyles = makeStyles((theme) => ({
+	root: {
+		flexGrow: 1
+	},
+	paper: {
+		padding: theme.spacing(2),
+		textAlign: "center",
+		color: theme.palette.text.secondary,
+		width: "100%"
+	}
+}));
 
 //these two lists should probably be passed in to this component via props from the main QuizMaker component
 const supportedFileTypes = [
-  //image
-  "image/jpeg",
-  "image/png",
-  "image/svg",
-  //video
-  "video/mp4",
-  "video/webm",
-  "video/ogg",
-  //audio
-  "audio/mpeg",
-  "audio/ogg",
-  "audio/wav",
+	//image
+	"image/jpeg",
+	"image/png",
+	"image/svg",
+	//video
+	"video/mp4",
+	"video/webm",
+	"video/ogg",
+	//audio
+	"audio/mpeg",
+	"audio/ogg",
+	"audio/wav"
 ];
-const questionTypes = ["trueFalse", "multipleChoice"];
+const questionTypes = [ "trueFalse", "multipleChoice" ];
 
-const AddQuestionModal = ({ closeModal, quiz }) => {
-  const dispatch = useDispatch();
-  const [addedMedia, setAddedMedia] = useState([]);
-  const [questionType, setQuestionType] = useState("trueFalse");
-  const [multipleChoiceOptions, setMultipleChoiceOptions] = useState(["", ""]);
-  const [
-    selectedMultipleChoiceOption,
-    setSelectedMultipleChoiceOption,
-  ] = useState(null);
-  const [selectedTrueFalse, setSelectedTrueFalse] = useState();
-  const [question, setQuestion] = useState("");
-  const [points, setPoints] = useState(null);
+const AddQuestionModal = ({ closeModal, quiz, questionId}) => {
+	const classes = useStyles();
+	const dispatch = useDispatch();
+	const [ addedMedia, setAddedMedia ] = useState([]);
+	const [ questionType, setQuestionType ] = useState("multipleChoice");
+	const [ multipleChoiceOptions, setMultipleChoiceOptions ] = useState([ "", "" ]);
+	const [ selectedMultipleChoiceOption, setSelectedMultipleChoiceOption ] = useState(null);
+	const [ selectedTrueFalse, setSelectedTrueFalse ] = useState();
+	const [ question, setQuestion ] = useState("");
+	const [points, setPoints] = useState(null);
 
-  const handleAddText = () => {
-    setAddedMedia([
-      ...addedMedia,
-      { file: { type: "text/plain", text: "" }, id: Date.now() },
-    ]);
-  };
+	const questionToEdit = useSelector(state => state.quiz.quizQuestions.filter((question) => question._id === questionId))
 
-  //saves the file in state which results in preview displaying on page
-  const handleAddFile = (e) => {
-    const file = e.target.files[0];
-    if (!file) {
-      return;
-    }
-    if (file.size >= 16000000) {
-      alert("File size limit is 16MB.");
-      return;
-    }
-    if (!supportedFileTypes.includes(file.type)) {
-      alert("File type not supported.");
-      return;
-    }
-    setAddedMedia([
-      ...addedMedia,
-      {
-        file: file,
-        //need some kind of id to be able to remove media after adding it
-        id: Date.now(),
-      },
-    ]);
-  };
+	const handleAddText = () => {
+		setAddedMedia([ ...addedMedia, { file: { type: "text/plain", text: "" }, id: Date.now() } ]);
+	};
 
-  const handleRemoveMedia = (mediaId) => {
-    setAddedMedia(addedMedia.filter((media) => media.id !== mediaId));
-  };
+	//saves the file in state which results in preview displaying on page
+	const handleAddFile = (e) => {
+		const file = e.target.files[0];
+		if (!file) {
+			return;
+		}
+		if (file.size >= 16000000) {
+			alert("File size limit is 16MB.");
+			return;
+		}
+		if (!supportedFileTypes.includes(file.type)) {
+			alert("File type not supported.");
+			return;
+		}
+		setAddedMedia([
+			...addedMedia,
+			{
+				file: file,
+				//need some kind of id to be able to remove media after adding it
+				id: Date.now()
+			}
+		]);
+	};
 
-  const handleTextChange = (e) => {
-    const addedMediaCopy = [...addedMedia];
-    addedMediaCopy[e.target.dataset.index].file.text = e.target.value;
-    setAddedMedia([...addedMediaCopy]);
-  };
+	const handleRemoveMedia = (mediaId) => {
+		setAddedMedia(addedMedia.filter((media) => media.id !== mediaId));
+	};
 
-  const handleSelectQuestionType = (e) => {
-    setQuestionType(e.target.value);
-  };
+	const handleTextChange = (e) => {
+		const addedMediaCopy = [ ...addedMedia ];
+		addedMediaCopy[e.target.dataset.index].file.text = e.target.value;
+		setAddedMedia([ ...addedMediaCopy ]);
+	};
 
-  const handleQuestionChange = (e) => {
-    setQuestion(e.target.value);
-  };
+	const handleSelectQuestionType = (e) => {
+		setQuestionType(e.target.value);
+	};
 
-  const handleAddMultipleChoiceOption = () => {
-    if (multipleChoiceOptions.length < 6) {
-      setMultipleChoiceOptions([...multipleChoiceOptions, ""]);
-    } else {
-      alert("Maximum 6 options.");
-    }
-  };
+	const handleQuestionChange = (e) => {
+		setQuestion(e.target.value);
+	};
 
-  const handleTrueFalseSelect = (e) => {
-    setSelectedTrueFalse(e.target.value);
-  };
+	const handleAddMultipleChoiceOption = () => {
+		if (multipleChoiceOptions.length < 6) {
+			setMultipleChoiceOptions([ ...multipleChoiceOptions, "" ]);
+		} else {
+			alert("Maximum 6 options.");
+		}
+	};
 
-  const handleMultipleChoiceOptionChange = (e) => {
-    const multipleChoiceOptionsCopy = [...multipleChoiceOptions];
-    multipleChoiceOptionsCopy[e.target.dataset.index] = e.target.value;
-    setMultipleChoiceOptions([...multipleChoiceOptionsCopy]);
-  };
+	const handleTrueFalseSelect = (e) => {
+		setSelectedTrueFalse(e.target.value);
+	};
 
-  const handleMultipleChoiceOptionSelect = (e) => {
-    setSelectedMultipleChoiceOption(e.target.value);
-  };
+	const handleMultipleChoiceOptionChange = (e) => {
+		const multipleChoiceOptionsCopy = [ ...multipleChoiceOptions ];
+		multipleChoiceOptionsCopy[e.target.dataset.index] = e.target.value;
+		setMultipleChoiceOptions([ ...multipleChoiceOptionsCopy ]);
+	};
 
-  const handlePointsChange = (e) => {
-    setPoints(e.target.value);
-  };
+	const handleMultipleChoiceOptionSelect = (e) => {
+		setSelectedMultipleChoiceOption(e.target.value);
+	};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const questionObject = {
-      id: new Date().getUTCMilliseconds(),
-      questionType: questionType,
-      media: [],
-      question: question,
-      answers: {
-        trueFalseAnswer:
-          questionType === "trueFalse" ? selectedTrueFalse : null,
-        multipleChoiceOptions:
-          questionType === "multipleChoice" ? [...multipleChoiceOptions] : null,
-        multipleChoiceAnswer: selectedMultipleChoiceOption,
-      },
-      points: points,
-    };
+	const handlePointsChange = (e) => {
+		setPoints(e.target.value);
+	};
 
-    const questionObjectStringified = JSON.stringify(questionObject);
+	const handleSubmit = async(e) => {
+		e.preventDefault();
+		const questionObject = {
+			id: new Date().getUTCMilliseconds(),
+			questionType: questionType,
+			media: [],
+			question: question,
+			answers: {
+				trueFalseAnswer: questionType === "trueFalse" ? selectedTrueFalse : null,
+				multipleChoiceOptions: questionType === "multipleChoice" ? [ ...multipleChoiceOptions ] : null,
+				multipleChoiceAnswer: selectedMultipleChoiceOption
+			},
+			points: points
+		};
 
-    const formData = new FormData();
-    formData.append("_id", quiz._id);
-    formData.append("questionObject", questionObjectStringified);
-    addedMedia.forEach((media) => {
-      formData.append("file", media.file);
-    });
+		const questionObjectStringified = JSON.stringify(questionObject);
 
-    await dispatch(quizActions.addNewQuestion(formData));
-    closeModal();
-  };
+		const formData = new FormData();
+		formData.append("_id", quiz._id);
+		formData.append("questionObject", questionObjectStringified);
+		addedMedia.forEach((media) => {
+			formData.append("file", media.file);
+		});
 
-  return (
-    <div>
-      <div style={styles.wrapper}>
-        <div>
-          <div>
-            <h2>Add Question</h2>
-            <div>
-              <label htmlFor="myFile" style={styles.addMedia}>
-                <input
-                  id="myFile"
-                  type="file"
-                  onChange={handleAddFile}
-                  style={styles.fileInput}
-                  accept={supportedFileTypes.toString()}
-                ></input>
-                Add Media
-              </label>
-              <button onClick={handleAddText}>Add Text</button>
-            </div>
+		await dispatch(quizActions.addNewQuestion(formData));
+		closeModal();
+	};
 
-            {addedMedia.map((media, index) => (
-              <AddedMedia
-                media={media}
-                handleRemoveMedia={handleRemoveMedia}
-                handleTextChange={handleTextChange}
-                key={index}
-                //passed into remove function to access item in addedMedia array in state
-                index={index}
-              />
-            ))}
-          </div>
-          <form onSubmit={handleSubmit} style={styles.form}>
-            <label htmlFor="questionType">Question type</label>
-            <select
-              id="questionType"
-              value={questionType}
-              onChange={handleSelectQuestionType}
-            >
-              {questionTypes.map((type, index) => (
-                <option key={index} value={type}>
-                  {camelToSentence(type)}
-                </option>
-              ))}
-            </select>
-            {quiz.quizPointsSystem === "eachQuestion" && (
-              <div>
-                <label htmlFor="points">Points:</label>
-                <input
-                  type="text"
-                  id="points"
-                  name="points"
-                  value={points}
-                  onChange={handlePointsChange}
-                />
-              </div>
-            )}
-            <label htmlFor="question">Question</label>
-            <textarea
-              rows="4"
-              value={question}
-              onChange={handleQuestionChange}
-              required
-            ></textarea>
-            {questionType === "trueFalse" && (
-              <div>
-                <div>
-                  <input
-                    type="radio"
-                    value="true"
-                    id="true"
-                    checked={selectedTrueFalse === "true"}
-                    onChange={handleTrueFalseSelect}
-                    name="trueFalse"
-                    required
-                  />
-                  <label htmlFor="true">True</label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    value="false"
-                    id="false"
-                    checked={selectedTrueFalse === "false"}
-                    onChange={handleTrueFalseSelect}
-                    name="trueFalse"
-                  />
-                  <label htmlFor="false">False</label>
-                </div>
-              </div>
-            )}
-            {questionType === "multipleChoice" && (
-              <div>
-                <button type="button" onClick={handleAddMultipleChoiceOption}>
-                  Add option
-                </button>
-                <div>
-                  {multipleChoiceOptions.map((option, index) => (
-                    <div key={index}>
-                      <label htmlFor={index}>{index + 1}.</label>
-                      <textarea
-                        type="text"
-                        value={option}
-                        onChange={handleMultipleChoiceOptionChange}
-                        //needed to access item in multipleChoiceOptions array in state on change
-                        data-index={index}
-                        required
-                      ></textarea>
-                      <input
-                        type="radio"
-                        value={index}
-                        checked={
-                          selectedMultipleChoiceOption === index.toString()
-                        }
-                        onChange={handleMultipleChoiceOptionSelect}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            <div>
-              <p>Please select the correct answer.</p>
-              <button type="submit">Done</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<Grid container spacing={2} style={{ width: "95%" }}>
+			<Grid item xs={12}>
+				<Typography className={classes.paper} variant="h5">
+					Add Question
+				</Typography>
+			</Grid>
+			<Grid item xs={12} sm={6}>
+				<Paper className={classes.paper}>
+					<label htmlFor="myFile">
+						<input
+							id="myFile"
+							type="file"
+							onChange={handleAddFile}
+							accept={supportedFileTypes.toString()}
+						/>
+						Add Media
+					</label>
+				</Paper>
+			</Grid>
+			<Grid item xs={12} sm={6}>
+				<Button variant="outlined" color="primary" onClick={handleAddText} className={classes.paper}>
+					Add Text
+				</Button>
+			</Grid>
+
+			<Grid container item spacing={2} xl={12} style={{ minHeight: "150px" }}>
+				{addedMedia.map((media, index) => (
+					<Grid item xs={6} md={2}>
+						<AddedMedia
+							media={media}
+							handleRemoveMedia={handleRemoveMedia}
+							handleTextChange={handleTextChange}
+							key={index}
+							//passed into remove function to access item in addedMedia array in state
+							index={index}
+						/>
+					</Grid>
+				))}
+			</Grid>
+
+			<Grid item xs={12} sm={6}>
+				<Paper className={classes.paper}>
+					<Typography htmlFor="questionType">Question type</Typography>
+					<select id="questionType" value={questionType} onChange={handleSelectQuestionType}>
+						{questionTypes.map((type, index) => (
+							<option key={index} value={type}>
+								{camelToSentence(type)}
+							</option>
+						))}
+					</select>
+				</Paper>
+			</Grid>
+			<Grid item md={6} sm={6} xs={false} />
+			<Grid item md={12}>
+				<TextField
+					variant="outlined"
+					required
+					fullWidth
+					label="Question"
+					value={question}
+					onChange={handleQuestionChange}
+					required
+				/>
+			</Grid>
+
+			{questionType === "trueFalse" && (
+				<Fragment>
+					<Grid item md={6} sm={6}>
+						<input
+							type="radio"
+							value="true"
+							id="true"
+							checked={selectedTrueFalse === "true"}
+							onChange={handleTrueFalseSelect}
+							name="trueFalse"
+							required
+						/>
+						<label htmlFor="true">True</label>
+					</Grid>
+					<Grid item md={6} sm={6}>
+						<input
+							type="radio"
+							value="false"
+							id="false"
+							checked={selectedTrueFalse === "false"}
+							onChange={handleTrueFalseSelect}
+							name="trueFalse"
+						/>
+						<label htmlFor="false">False</label>
+					</Grid>
+				</Fragment>
+			)}
+
+			{questionType === "multipleChoice" && (
+				<Fragment>
+					<Grid item xs={12} md={12}>
+						<button type="button" onClick={handleAddMultipleChoiceOption}>
+							Add option
+						</button>
+					</Grid>
+
+					{multipleChoiceOptions.map((option, index) => (
+						<Grid item md={6} xs={3} key={index}>
+							<label htmlFor={index}>{index + 1}.</label>
+							<textarea
+								type="text"
+								value={option}
+								onChange={handleMultipleChoiceOptionChange}
+								//needed to access item in multipleChoiceOptions array in state on change
+								data-index={index}
+								required
+							/>
+							<input
+								type="radio"
+								value={index}
+								checked={selectedMultipleChoiceOption === index.toString()}
+								onChange={handleMultipleChoiceOptionSelect}
+							/>
+						</Grid>
+					))}
+				</Fragment>
+			)}
+
+			<Grid item md={12} sm={12}>
+				<p>Please select the correct answer.</p>
+			</Grid>
+			
+			 {quiz.quizPointsSystem === "eachQuestion" && (
+		          <div>
+		            <label htmlFor="points">Points:</label>
+		            <input
+		              type="text"
+		              id="points"
+		              name="points"
+		              value={points}
+		              onChange={handlePointsChange}
+		            />
+		          </div>
+		        )}
+
+			<Grid item md={12} sm={12}>
+				<button type="submit" onClick={handleSubmit}>
+					Add question
+				</button>
+			</Grid>
+		</Grid>
+
+		         
+	);
 };
 export default AddQuestionModal;
