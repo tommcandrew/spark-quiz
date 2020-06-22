@@ -70,7 +70,7 @@ const UserQuizzes = (props) => {
 						</CardContent>
 						<CardActions>
 							<Button size="small" onClick={() => handleOpenCreateQuiz(quiz)}>
-								Edit
+								{quiz.quizPublished? (<>Update</>): (<>Continue editing</>)}
 							</Button>
 							<Button size="small" onClick={() => handleDeleteQuiz(quiz._id)}>
 								Delete
