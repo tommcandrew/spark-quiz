@@ -5,16 +5,11 @@ import QuizTimer from "../../components/student/QuizTimer";
 import { useDispatch, useSelector } from "react-redux";
 import QuizMedia from "../../components/student/QuizMedia";
 import * as quizActions from "../../store/actions/quizActions";
-import * as authActions from "../../store/actions/authActions";
 
 import QuizStart from "./QuizStart";
 import { animateNextQuestion } from "./QuizAnimations";
 
 const Quiz = () => {
-  useEffect(() => {
-    dispatch(authActions.checkAuth());
-  }, []);
-
   const dispatch = useDispatch();
 
   //fetch quiz again from DB if page is refreshed

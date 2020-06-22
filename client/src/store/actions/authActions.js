@@ -131,28 +131,3 @@ export const studentLogin = (id) => {
       });
   };
 };
-
-export const checkAuth = () => {
-  return (dispatch, getState) => {
-    const token = getState().auth.token;
-
-    return axios
-      .get("http://localhost:5000/checkAuth", tokenConfig(token))
-      .then((res) => {
-        console.log("received response");
-        console.log(res);
-        // dispatch({
-        //   type: STUDENT_LOGIN_SUCCESS,
-        //   payload: { token: res.data.token },
-        // });
-        // //not sure if we should use same state to store quiz for student as for teacher when creating
-        // dispatch({
-        //   type: SET_CURRENT_QUIZ,
-        //   payload: res.data.quiz,
-        // });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-};

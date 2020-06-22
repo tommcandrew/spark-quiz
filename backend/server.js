@@ -388,8 +388,3 @@ const emailNewPassword = (email, newPassword) => {
     }
   });
 };
-
-app.get("/checkAuth", auth, (req, res) => {
-  console.log(req.user);
-  res.status(200).send(req.user);
-});
