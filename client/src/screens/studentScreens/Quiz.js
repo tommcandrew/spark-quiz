@@ -6,6 +6,7 @@ import QuizTimer from "../../components/student/QuizTimer";
 import { useDispatch, useSelector } from "react-redux";
 import QuizMedia from "../../components/student/QuizMedia";
 import * as quizActions from "../../store/actions/quizActions";
+import QuizStart from "./QuizStart";
 
 const Quiz = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const Quiz = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [timeUp, setTimeUp] = useState(false);
   const timeLimit = 0.5 * 60;
+  const [inProgress, setInProgress] = useState(false);
 
   useEffect(() => {
     if (timeUp) {
@@ -78,10 +80,12 @@ const Quiz = () => {
 
   return (
     <div className="quiz__wrapper">
+      {!inProgress && <QuizStart quiz={quiz} setInProgress={setInProgress} />}
+
       {quiz.quizQuestions && quiz.quizQuestions.length === 0 && (
         <h1>No quiz in state.</h1>
       )}
-      {quiz.quizQuestions && quiz.quizQuestions.length > 0 && (
+      {inProgress && quiz.quizQuestions && quiz.quizQuestions.length > 0 && (
         <>
           <div className="quiz__info">
             <div className="quiz__progress">
@@ -92,11 +96,13 @@ const Quiz = () => {
           <div className="quiz__content">
             <div className="quiz__question">
               {quiz.quizQuestions[currentQuestionIndex].media.length > 0 &&
-                quiz.quizQuestions[
-                  currentQuestionIndex
-                ].media.map((media, index) => (
-                  <QuizMedia media={media} index={index} />
-                ))}
+                quiz.quizQuestions[currentQuestionIndex].media.map(
+                  (media, index) => (
+                    <div className="quiz__medias" key={index}>
+                      <QuizMedia media={media} />
+                    </div>
+                  )
+                )}
               {quiz.quizQuestions[currentQuestionIndex] ? (
                 quiz.quizQuestions[currentQuestionIndex].question
               ) : (
