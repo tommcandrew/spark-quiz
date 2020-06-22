@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, BrowserRouter, Switch } from "react-router-dom";
+import { BrowserRouter, Switch } from "react-router-dom";
 
 import { ProtectedRoute, PublicRoute } from "./Routes";
 

@@ -19,7 +19,7 @@ const Timer = ({ seconds, setTimeUp }) => {
 
     // clear interval on re-render to avoid memory leaks
     return () => clearInterval(intervalId);
-  }, [timeLeft]);
+  }, [timeLeft, setTimeUp]);
 
   return <div>Time left: {fmtMSS(timeLeft)}</div>;
 };

@@ -9,11 +9,11 @@ export const animateNextQuestion = (onComplete) => {
   //slide both question and options out of view to left
   tl.to(
     ".quiz__questionContent",
-    1.3,
+    1,
     {
       x: "-100vw",
       opacity: 0,
-      ease: "Power1.ease-in",
+      ease: "Power2.ease-in",
       onComplete: onComplete,
     },
     "+=0.8"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { returnErrors, clearErrors } from "../actions/errorActions";
+// import { returnErrors, clearErrors } from "../actions/errorActions";
 import { tokenConfig } from "./authActions";
 export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
 export const DELETE_QUESTION = "DELETE_QUESTION";
@@ -17,7 +17,6 @@ export const addNewQuestion = (formData) => {
     axios
       .post("http://localhost:5000/addQuestion", formData)
       .then((res) => {
-        console.log(res);
         dispatch({
           type: ADD_NEW_QUESTION,
           payload: res.data.quiz,

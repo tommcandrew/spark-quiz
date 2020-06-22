@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import QuizOption from "../../components/student/QuizOption";
 import "./Quiz.css";
 import QuizTimer from "../../components/student/QuizTimer";
@@ -117,7 +117,7 @@ const Quiz = () => {
 
                   {quiz.quizQuestions[currentQuestionIndex].questionType ===
                     "trueFalse" && (
-                    <>
+                    <div className="quiz__buttons">
                       <button
                         onClick={() =>
                           handleClick(
@@ -140,7 +140,7 @@ const Quiz = () => {
                       >
                         False
                       </button>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
