@@ -1,14 +1,20 @@
 import React from "react";
 
-const QuizOption = ({ option, handleClick, optionIndex, selectedOption }) => {
+const QuizOption = ({
+  option,
+  handleClick,
+  optionIndex,
+  selectedOption,
+  isCorrect,
+}) => {
   return (
     <div
       className={`quizOption ${
         selectedOption === optionIndex ? "quizOption__selected" : ""
       }`}
-      onClick={() => handleClick(optionIndex, option.isCorrect)}
+      onClick={() => handleClick(optionIndex, isCorrect)}
     >
-      {option.text}
+      {option}
     </div>
   );
 };

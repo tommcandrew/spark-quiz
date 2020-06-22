@@ -5,25 +5,31 @@ import {
   Button,
   CssBaseline,
   Container,
-  Grid,
-  Box,
   Typography,
-  TextField
+  TextField,
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import logo from "../../assets/logo1.png"
-const handleStudentLogin = () => {
-  //do some stuff and call /studentLogin on server
-};
+import logo from "../../assets/logo1.png";
+import * as authActions from "../../store/actions/authActions";
+import { useDispatch } from "react-redux";
 
-const Home = () => {
+const Home = (props) => {
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+
+  const studentLoginHandler = async (e) => {
+    e.preventDefault();
+    const id = e.target.code.value;
+    await dispatch(authActions.studentLogin(id));
+    props.history.push("/quiz");
+    //don't forget error handling
+  };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-
         <Avatar
           alt="logo"
           src={logo}
@@ -31,11 +37,14 @@ const Home = () => {
           height={30}
           className={classes.large}
         />
-
         <Typography component="h1" variant="h5">
           Hello There!
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={studentLoginHandler}
+        >
           <Link to="/login">
             <Button
               type="submit"
@@ -67,6 +76,15 @@ const Home = () => {
             name="code"
             autoFocus
           />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Go
+          </Button>
         </form>
         I like the transparent background more
       </div>
@@ -74,7 +92,7 @@ const Home = () => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(3),
     display: "flex",
