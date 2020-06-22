@@ -120,20 +120,22 @@ app.post("/login", (req, res) => {
 //logging in with contact id for now - will return most recent quiz if there's more than one
 //we should have an "invite id" later which is unique to the student AND the quiz
 app.post("/studentLogin", (req, res) => {
-  const { id } = req.body;
+  const { studentId } = req.body;
   Quiz.find().then((quizzes) => {
     const matchingQuizArray = [];
     quizzes.forEach((quiz) => {
-      if (quiz.quizInvites.includes(id)) {
+      if (quiz.quizInvites.includes(studentId)) {
         matchingQuizArray.push(quiz);
       }
     });
     if (matchingQuizArray.length > 0) {
       const matchingQuiz = matchingQuizArray[0];
-      jwt.sign({ id: id }, "secretkey", (err, token) => {
+      console.log("quiz found");
+      console.log(matchingQuiz);
+      jwt.sign({ studentId }, "secretkey", (err, token) => {
         res.status(200).send({
           token,
-          id,
+          studentId,
         });
       });
     }

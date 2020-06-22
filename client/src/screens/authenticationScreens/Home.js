@@ -12,12 +12,20 @@ import {
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import logo from "../../assets/logo1.png";
-const handleStudentLogin = () => {
-  //do some stuff and call /studentLogin on server
-};
+import * as authActions from "../../store/actions/authActions";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+
+  const studentLoginHandler = async (e) => {
+    e.preventDefault();
+    const studentId = e.target.code.value;
+    await dispatch(authActions.studentLogin(studentId));
+    // props.history.push(from);
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -33,7 +41,11 @@ const Home = () => {
         <Typography component="h1" variant="h5">
           Hello There!
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={studentLoginHandler}
+        >
           <Link to="/login">
             <Button
               type="submit"

@@ -87,7 +87,7 @@ export const login = ({ email, password }) => {
 };
 
 export const logout = () => {
-  return(dispatch) => {
+  return (dispatch) => {
     dispatch({ type: LOGOUT_SUCCESS });
   };
 };
@@ -105,4 +105,25 @@ export const tokenConfig = (token) => {
     config.headers["x-auth-token"] = token;
   }
   return config;
+};
+
+export const studentLogin = (studentId) => {
+  console.log("actions");
+  console.log(studentId);
+  return (dispatch, getState) => {
+    return axios
+      .post("http://localhost:5000/studentLogin", { studentId })
+      .then((res) => {
+        // dispatch({
+        //   type: LOGIN_SUCCESS,
+        //   payload: res.data,
+        // });
+        // dispatch({
+        //   type: CLEAR_ERRORS,
+        // });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 };
