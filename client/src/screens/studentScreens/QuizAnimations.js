@@ -8,7 +8,7 @@ export const animateNextQuestion = (onComplete) => {
   }
   //slide both question and options out of view to left
   tl.to(
-    [".quiz__question", ".quiz__options"],
+    ".quiz__questionContent",
     0.5,
     {
       x: "-100vw",
@@ -19,12 +19,12 @@ export const animateNextQuestion = (onComplete) => {
     "+=0.8"
   );
   //return question and options elements to original position (not visible)
-  tl.to([".quiz__question", ".quiz__options"], 0, {
+  tl.to(".quiz__questionContent", 0, {
     x: 0,
   });
   //and fade them in
   tl.to(
-    [".quiz__question", ".quiz__options"],
+    ".quiz__questionContent",
     1,
     {
       opacity: 1,

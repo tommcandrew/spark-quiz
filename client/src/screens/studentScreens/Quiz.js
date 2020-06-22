@@ -45,7 +45,6 @@ const Quiz = () => {
   };
 
   const handleClick = (optionIndex, isCorrect) => {
-    console.log(isCorrect);
     if (timeUp) return;
     setSelectedOption(optionIndex);
     if (isCorrect) {
@@ -82,66 +81,68 @@ const Quiz = () => {
                 <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
               </div>
 
-              {quiz.quizQuestions[currentQuestionIndex].media.length > 0 &&
-                quiz.quizQuestions[currentQuestionIndex].media.map(
-                  (media, index) => (
-                    <div className="quiz__medias" key={index}>
-                      <QuizMedia media={media} />
-                    </div>
-                  )
-                )}
+              <div className="quiz__questionContent">
+                {quiz.quizQuestions[currentQuestionIndex].media.length > 0 &&
+                  quiz.quizQuestions[currentQuestionIndex].media.map(
+                    (media, index) => (
+                      <div className="quiz__medias" key={index}>
+                        <QuizMedia media={media} />
+                      </div>
+                    )
+                  )}
 
-              <div className="quiz__question">
-                {quiz.quizQuestions[currentQuestionIndex].question}
-              </div>
+                <div className="quiz__question">
+                  {quiz.quizQuestions[currentQuestionIndex].question}
+                </div>
 
-              <div className="quiz__options">
-                {quiz.quizQuestions[currentQuestionIndex].questionType ===
-                  "multipleChoice" &&
-                  quiz.quizQuestions[
-                    currentQuestionIndex
-                  ].answers.multipleChoiceOptions.map((option, index) => (
-                    <QuizOption
-                      option={option}
-                      handleClick={handleClick}
-                      key={option}
-                      optionIndex={index}
-                      selectedOption={selectedOption}
-                      isCorrect={
-                        index.toString() ===
-                        quiz.quizQuestions[currentQuestionIndex].answers
-                          .multipleChoiceAnswer
-                      }
-                    />
-                  ))}
-
-                {quiz.quizQuestions[currentQuestionIndex].questionType ===
-                  "trueFalse" && (
-                  <>
-                    <button
-                      onClick={() =>
-                        handleClick(
-                          null,
+                <div className="quiz__options">
+                  {quiz.quizQuestions[currentQuestionIndex].questionType ===
+                    "multipleChoice" &&
+                    quiz.quizQuestions[
+                      currentQuestionIndex
+                    ].answers.multipleChoiceOptions.map((option, index) => (
+                      <QuizOption
+                        option={option}
+                        handleClick={handleClick}
+                        key={option}
+                        optionIndex={index}
+                        selectedOption={selectedOption}
+                        isCorrect={
+                          index.toString() ===
                           quiz.quizQuestions[currentQuestionIndex].answers
-                            .trueFalseAnswer === "true"
-                        )
-                      }
-                    >
-                      True
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleClick(
-                          null,
-                          quiz.quizQuestions[currentQuestionIndex].answers
-                            .trueFalseAnswer === "false"
-                        )
-                      }
-                    >
-                      False
-                    </button>
-                  </>
-                )}
+                            .multipleChoiceAnswer
+                        }
+                      />
+                    ))}
+
+                  {quiz.quizQuestions[currentQuestionIndex].questionType ===
+                    "trueFalse" && (
+                    <>
+                      <button
+                        onClick={() =>
+                          handleClick(
+                            null,
+                            quiz.quizQuestions[currentQuestionIndex].answers
+                              .trueFalseAnswer === "true"
+                          )
+                        }
+                      >
+                        True
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleClick(
+                            null,
+                            quiz.quizQuestions[currentQuestionIndex].answers
+                              .trueFalseAnswer === "false"
+                          )
+                        }
+                      >
+                        False
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           )}
