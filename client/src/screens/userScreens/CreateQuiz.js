@@ -113,9 +113,11 @@ export default function CreateQuiz(props) {
 		} else console.log("plz fill the fields");
 	};
 
-	const handleSave = () => {
+
+	const publishQuiz = () => {
+		dispatch(quizActions.updateQuiz(quiz._id, { quizPublished: true }))
 		dispatch(quizActions.clearCurrentQuiz());
-	};
+	}
 
 	//UI FUNCTIONS
 	const classes = useStyles();
@@ -148,7 +150,7 @@ export default function CreateQuiz(props) {
 						</Grid>
 						<Grid item xs={12} md={6} className={classes.gridItem}>
 							<Typography variant="h4" align="right">
-								Quiz Subject:{" "}
+								Quiz Subject
 							</Typography>
 						</Grid>
 						<Grid item xs={12} md={6} className={classes.gridItem}>
@@ -186,13 +188,6 @@ export default function CreateQuiz(props) {
 							<Typography variant="h5">Quiz Name: {quiz.quizName}</Typography>
 						</Box>
 						<Button
-							variant="contained"
-							color="primary"
-							className={classes.button}
-							onClick={() => showModal("addNewQuestion")}>
-							Add Question
-						</Button>
-						<Button
 							variant="outlined"
 							color="primary"
 							className={classes.button}
@@ -200,12 +195,28 @@ export default function CreateQuiz(props) {
 							Quiz Options
 						</Button>
 						<Button
+							variant="contained"
+							color="primary"
+							className={classes.button}
+							onClick={() => showModal("addNewQuestion")}>
+							Add Question
+						</Button>
+					
+						<Button
 							variant="outlined"
 							color="primary"
 							className={classes.button}
 							onClick={() => showModal("invite")}>
 							Invite
 						</Button>
+						<Button
+							variant="contained"
+							color="secondary"
+							className={classes.button}
+							onClick={publishQuiz}>
+							Publish
+						</Button>
+
 					</Paper>
 					<Paper className={classes.flexItem} style={{ flex: 3 }}>
 						<PreviewQuestions editQuestion={editQuestion}/>
