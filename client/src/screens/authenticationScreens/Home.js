@@ -15,7 +15,7 @@ import logo from "../../assets/logo1.png";
 import * as authActions from "../../store/actions/authActions";
 import { useDispatch } from "react-redux";
 
-const Home = () => {
+const Home = (props) => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -24,7 +24,8 @@ const Home = () => {
     e.preventDefault();
     const studentId = e.target.code.value;
     await dispatch(authActions.studentLogin(studentId));
-    // props.history.push(from);
+    props.history.push("/quiz");
+    //don't forget error handling
   };
 
   return (
