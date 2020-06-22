@@ -36,11 +36,11 @@ export const deleteQuestion = (id) => {
 	};
 };
 
-export const setCurrentQuiz = ({  _id, quizName, quizSubject, quizQuestions}) => {
+export const setCurrentQuiz = (quiz) => {
 	return (dispatch) => {
 		dispatch({
 			type: SET_CURRENT_QUIZ,
-			payload: { _id, quizName, quizSubject, quizQuestions}
+			payload: quiz
 		});
 	};
 };
