@@ -1,20 +1,10 @@
 import React from "react";
 
-const styles = {
-  image: {
-    maxWidth: "50%",
-  },
-};
-
 const QuizMedia = ({ media }) => {
   return (
-    <div>
+    <div className="quiz__media">
       {media.mediaType.includes("image") && (
-        <img
-          style={styles.image}
-          src={`data:${media.mediaType};base64,${media.data}`}
-          alt=""
-        />
+        <img src={`data:${media.mediaType};base64,${media.data}`} alt="" />
       )}
       {media.mediaType.includes("video") && (
         <video width="320" height="240" controls>

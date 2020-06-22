@@ -23,7 +23,7 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [timeUp, setTimeUp] = useState(false);
-  const timeLimit = 0.5 * 60;
+  const timeLimit = 3 * 60;
   const [quizStarted, setQuizStarted] = useState(false);
   const [finished, setFinished] = useState(false);
 
@@ -35,7 +35,7 @@ const Quiz = () => {
     }
   }, [timeUp]);
 
-  const prepareNext = () => {
+  const goToNextQuestion = () => {
     if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
       setFinished(true);
     } else {
@@ -45,37 +45,44 @@ const Quiz = () => {
   };
 
   const handleClick = (optionIndex, isCorrect) => {
+    console.log(isCorrect);
     if (timeUp) return;
     setSelectedOption(optionIndex);
     if (isCorrect) {
       setScore(score + 1);
     }
-    animateNextQuestion(prepareNext);
+    animateNextQuestion(goToNextQuestion);
   };
 
   return (
     <div className="quiz__wrapper">
-      {quiz.quizQuestions && quiz.quizQuestions.length === 0 && (
-        <h1>No quiz in state.</h1>
-      )}
+      {quiz.quizQuestions.length === 0 && <h1>No quiz in state.</h1>}
+
       {!quizStarted && (
         <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />
       )}
 
-      {quizStarted && quiz.quizQuestions && quiz.quizQuestions.length > 0 && (
+      {quizStarted && (
         <>
-          <div className="quiz__info">
-            <div className="quiz__progress">
-              Question {currentQuestionIndex + 1}/{quiz.quizQuestions.length}
-            </div>
-            {!finished && (
-              <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
-            )}
-          </div>
-          <div className="quiz__content">
-            <div className="quiz__question">
-              {!finished &&
-                quiz.quizQuestions[currentQuestionIndex].media.length > 0 &&
+          {finished && (
+            <>
+              <h2>End of Quiz</h2>
+              <p>
+                Score: {score}/{quiz.quizQuestions.length}
+              </p>
+            </>
+          )}
+          {!finished && (
+            <div className="quiz__content">
+              <div className="quiz__info">
+                <div className="quiz__progress">
+                  Question {currentQuestionIndex + 1}/
+                  {quiz.quizQuestions.length}
+                </div>
+                <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
+              </div>
+
+              {quiz.quizQuestions[currentQuestionIndex].media.length > 0 &&
                 quiz.quizQuestions[currentQuestionIndex].media.map(
                   (media, index) => (
                     <div className="quiz__medias" key={index}>
@@ -83,42 +90,41 @@ const Quiz = () => {
                     </div>
                   )
                 )}
-              {!finished ? (
-                quiz.quizQuestions[currentQuestionIndex].question
-              ) : (
-                <>
-                  <h2>End of Quiz</h2>
-                  <p>
-                    Score: {score}/{quiz.quizQuestions.length}
-                  </p>
-                </>
-              )}
-            </div>
-            <div className="quiz__options">
-              {!finished &&
-                quiz.quizQuestions[currentQuestionIndex].questionType ===
+
+              <div className="quiz__question">
+                {quiz.quizQuestions[currentQuestionIndex].question}
+              </div>
+
+              <div className="quiz__options">
+                {quiz.quizQuestions[currentQuestionIndex].questionType ===
                   "multipleChoice" &&
-                quiz.quizQuestions[
-                  currentQuestionIndex
-                ].answers.multipleChoiceOptions.map((option, index) => (
-                  <QuizOption
-                    option={option}
-                    handleClick={handleClick}
-                    key={option}
-                    optionIndex={index}
-                    selectedOption={selectedOption}
-                  />
-                ))}
-              {!finished &&
-                quiz.quizQuestions[currentQuestionIndex].questionType ===
+                  quiz.quizQuestions[
+                    currentQuestionIndex
+                  ].answers.multipleChoiceOptions.map((option, index) => (
+                    <QuizOption
+                      option={option}
+                      handleClick={handleClick}
+                      key={option}
+                      optionIndex={index}
+                      selectedOption={selectedOption}
+                      isCorrect={
+                        option ===
+                        quiz.quizQuestions[currentQuestionIndex].answers
+                          .multipleChoiceAnswer
+                      }
+                    />
+                  ))}
+
+                {quiz.quizQuestions[currentQuestionIndex].questionType ===
                   "trueFalse" && (
                   <>
                     <button>True</button>
                     <button>False</button>
                   </>
                 )}
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
     </div>
