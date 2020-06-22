@@ -6,15 +6,10 @@ import { Card, CardContent, CardActions, Grid, Typography, makeStyles, Button } 
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		width: "100%",
-		height: "100%",
+		flexGrow: 1,
 		padding: "30px",
-		display: "flex",
-		flexDirection: "row",
 		overflowY: "scroll",
 		overflowX: "hidden",
-		alignItems: "flex-start",
-		justifyContent: "center"
 	},
 	card: {
 		minWidth: 275,
@@ -48,7 +43,7 @@ const UserQuizzes = (props) => {
 		<Grid container spacing={2} className={classes.root}>
 			<Grid item xs={12} xl={12}>
 				<Typography variant="h5" align="center">
-					My Quizes{" "}
+					My Quizes
 				</Typography>
 			</Grid>
 			{quizzes.length === 0 && (
@@ -58,6 +53,7 @@ const UserQuizzes = (props) => {
 			)}
 			{quizzes &&
 				quizzes.map((quiz, index) => (
+					<Grid item xs={12} sm={6} md={3} key={index}>
 					<Card className={classes.card} key={quiz._id}>
 						<CardContent>
 							<Typography variant="h5" component="h2">
@@ -76,7 +72,8 @@ const UserQuizzes = (props) => {
 								Delete
 							</Button>
 						</CardActions>
-					</Card>
+						</Card>
+						</Grid>
 				))}
 		</Grid>
 	);
