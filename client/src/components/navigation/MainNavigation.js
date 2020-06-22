@@ -7,7 +7,7 @@ import Dashboard from "../../screens/userScreens/Dashboard";
 import Home from "../../screens/authenticationScreens/Home";
 import Login from "../../screens/authenticationScreens/Login";
 import Register from "../../screens/authenticationScreens/Register";
-import Quiz from "../../screens/userScreens/Quiz";
+import Quiz from "../../screens/studentScreens/Quiz";
 
 const MainNavigation = () => {
   return (

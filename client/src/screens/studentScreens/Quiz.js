@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import QuizOption from "../../components/UI/QuizOption";
 import gsap from "gsap";
 import "./Quiz.css";
-import QuizTimer from "../../components/UI/QuizTimer";
+import QuizTimer from "../../components/student/QuizTimer";
 
 //real questions and time limie will come from props
 import questions from "./questions";
