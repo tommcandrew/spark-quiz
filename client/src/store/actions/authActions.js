@@ -109,12 +109,12 @@ export const tokenConfig = (token) => {
   return config;
 };
 
-export const studentLogin = (studentId) => {
+export const studentLogin = (id) => {
   return (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     return axios
-      .post("http://localhost:5000/studentLogin", { studentId }, config)
+      .post("http://localhost:5000/studentLogin", { id }, config)
       .then((res) => {
         dispatch({
           type: STUDENT_LOGIN_SUCCESS,
@@ -125,6 +125,31 @@ export const studentLogin = (studentId) => {
           type: SET_CURRENT_QUIZ,
           payload: res.data.quiz,
         });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const checkAuth = () => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    return axios
+      .get("http://localhost:5000/checkAuth", tokenConfig(token))
+      .then((res) => {
+        console.log("received response");
+        console.log(res);
+        // dispatch({
+        //   type: STUDENT_LOGIN_SUCCESS,
+        //   payload: { token: res.data.token },
+        // });
+        // //not sure if we should use same state to store quiz for student as for teacher when creating
+        // dispatch({
+        //   type: SET_CURRENT_QUIZ,
+        //   payload: res.data.quiz,
+        // });
       })
       .catch((err) => {
         console.log(err);

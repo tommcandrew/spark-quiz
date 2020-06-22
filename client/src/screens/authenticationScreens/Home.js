@@ -20,8 +20,8 @@ const Home = (props) => {
 
   const studentLoginHandler = async (e) => {
     e.preventDefault();
-    const studentId = e.target.code.value;
-    await dispatch(authActions.studentLogin(studentId));
+    const id = e.target.code.value;
+    await dispatch(authActions.studentLogin(id));
     props.history.push("/quiz");
     //don't forget error handling
   };

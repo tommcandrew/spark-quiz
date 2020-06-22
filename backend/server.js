@@ -59,27 +59,30 @@ app.post("/register", (req, res) => {
   }
 
   User.findOne({ email }).then((user) => {
-    console.log(email);
     if (user) {
       res.status(403).send({ msg: "That email is already registered" });
       return;
     } else {
-      console.log("creating new user");
       const user = new User({ name, email, password });
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(user.password, salt, (err, hash) => {
           user.password = hash;
           user.save().then((user) => {
-            jwt.sign({ id: user._id }, "secretkey", (err, token) => {
-              res.send({
-                token,
-                user: {
-                  id: user._id,
-                  name: user.name,
-                  email: user.email,
-                },
-              });
-            });
+            jwt.sign(
+              { id: user._id, role: "teacher" },
+              "secretkey",
+              (err, token) => {
+                res.send({
+                  token,
+                  user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: "teacher",
+                  },
+                });
+              }
+            );
           });
         });
       });
@@ -100,16 +103,21 @@ app.post("/login", (req, res) => {
           if (!isSame) {
             res.status(403).send({ msg: "Wrong password" });
           } else {
-            jwt.sign({ id: user._id }, "secretkey", (err, token) => {
-              res.status(200).send({
-                token,
-                user: {
-                  id: user._id,
-                  name: user.name,
-                  email: user.email,
-                },
-              });
-            });
+            jwt.sign(
+              { id: user._id, role: "teacher" },
+              "secretkey",
+              (err, token) => {
+                res.status(200).send({
+                  token,
+                  user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: "teacher",
+                  },
+                });
+              }
+            );
           }
         }
       });
@@ -120,22 +128,24 @@ app.post("/login", (req, res) => {
 //logging in with contact id for now - will return most recent quiz if there's more than one
 //we should have an "invite id" later which is unique to the student AND the quiz
 app.post("/studentLogin", (req, res) => {
-  const { studentId } = req.body;
+  const { id } = req.body;
   Quiz.find().then((quizzes) => {
     const matchingQuizArray = [];
     quizzes.forEach((quiz) => {
-      if (quiz.quizInvites.includes(studentId)) {
+      if (quiz.quizInvites.includes(id)) {
         matchingQuizArray.push(quiz);
       }
     });
     if (matchingQuizArray.length > 0) {
       const matchingQuiz = matchingQuizArray[0];
-      //why is studentId being added on to "user" object?
-      jwt.sign({ studentId }, "secretkey", (err, token) => {
+      jwt.sign({ id, role: "student" }, "secretkey", (err, token) => {
         res.status(200).send({
           quiz: matchingQuiz,
           token,
-          studentId,
+          user: {
+            id,
+            role: "student",
+          },
         });
       });
     }
@@ -236,12 +246,11 @@ app.get("/fetchQuizzes", auth, (req, res) => {
 
 //get quiz for student that is logged in (same as /studentLogin function but without jwt)
 app.get("/fetchQuiz", auth, (req, res) => {
-  console.log("fetch quiz");
-  const studentId = req.user.studentId;
+  const id = req.user.id;
   Quiz.find().then((quizzes) => {
     const matchingQuizArray = [];
     quizzes.forEach((quiz) => {
-      if (quiz.quizInvites.includes(studentId)) {
+      if (quiz.quizInvites.includes(id)) {
         matchingQuizArray.push(quiz);
       }
     });
@@ -379,3 +388,8 @@ const emailNewPassword = (email, newPassword) => {
     }
   });
 };
+
+app.get("/checkAuth", auth, (req, res) => {
+  console.log(req.user);
+  res.status(200).send(req.user);
+});
