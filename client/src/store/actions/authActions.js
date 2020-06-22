@@ -1,12 +1,14 @@
 import axios from "axios";
 import { returnErrors } from "./errorActions";
 import { CLEAR_ERRORS } from "./errorActions";
+import { SET_CURRENT_QUIZ } from "./quizActions";
 export const USER_LOADED = "USER_LOADED";
 export const USER_LOADING = "USER_LOADING";
 export const AUTH_ERROR = "AUTH_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const STUDENT_LOGIN_SUCCESS = "STUDENT_LOGIN_SUCCESS";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 
@@ -108,19 +110,19 @@ export const tokenConfig = (token) => {
 };
 
 export const studentLogin = (studentId) => {
-  console.log("actions");
-  console.log(studentId);
   return (dispatch, getState) => {
     return axios
       .post("http://localhost:5000/studentLogin", { studentId })
       .then((res) => {
-        // dispatch({
-        //   type: LOGIN_SUCCESS,
-        //   payload: res.data,
-        // });
-        // dispatch({
-        //   type: CLEAR_ERRORS,
-        // });
+        dispatch({
+          type: STUDENT_LOGIN_SUCCESS,
+          payload: { token: res.data.token },
+        });
+        //not sure if we should use same state to store quiz for student as for teacher when creating
+        dispatch({
+          type: SET_CURRENT_QUIZ,
+          payload: res.data.quiz,
+        });
       })
       .catch((err) => {
         console.log(err);
