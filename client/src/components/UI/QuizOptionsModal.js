@@ -1,8 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
 import * as quizActions from "../../store/actions/quizActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Grid, Typography, Button, TextField } from "@material-ui/core";
+import { Grid, Typography, Button} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -25,8 +25,9 @@ const timeLimitOptions = {
 const QuizOptionsModal = ({ quizId, closeModal }) => {
 	const classes = useStyles();
 	const [ showOverallPointsInput, setShowOverallPointsInput ] = useState(false);
-	const [ selectOptions, setSelectOptions ] = useState([]);
+	const [selectOptions, setSelectOptions] = useState([]);
 	const dispatch = useDispatch();
+	const prevState = useSelector(state => state.quiz)
 
 	//generate options for dropdown menu based on timeLimitOptions object
 	useEffect(() => {
@@ -38,15 +39,23 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 		);
 		for (let i = 1; i <= timeLimitOptions.max; i++) {
 			if (i % timeLimitOptions.step === 0) {
-				selectOptions.push(
-					<option key={i} value={i}>
-						{i}
-					</option>
-				);
+				if(prevState.quizTimeLimit === i.toString()) {
+					selectOptions.push(
+						<option key={i} value={i} selected>
+							{i}
+						</option>
+					);
+				} else {
+						selectOptions.push(
+							<option key={i} value={i}>
+								{i}
+							</option>
+						);
+				}
 			}
 		}
 		setSelectOptions(selectOptions);
-	}, []);
+	}, [prevState]);
 
 	const handleSelectPoints = (e) => {
 		if (e.target.value === "overall") {
@@ -89,21 +98,20 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 						</Typography>
 					</Grid>
 					<Grid item xs={6} style={{ textAlign: "right" }}>
-						<Typography variant="body">Time limit (minutes):</Typography>
+						<Typography >Time limit (minutes):</Typography>
 					</Grid>
 					<Grid item xs={6}>
-						<Typography variant="body">
-							<select id="timeLimit" name="timeLimit" defaultValue="No limit">
+						<select id="timeLimit" name="timeLimit">
 								{selectOptions}
-							</select>
-						</Typography>
+							</select> 
+							
 					</Grid>
 					<Grid item xs={6} style={{ textAlign: "right" }}>
-						<Typography variant="body">Assign points:</Typography>
+						<Typography >Assign points:</Typography>
 					</Grid>
 					<Grid item xs={6}>
-						<Typography variant="body">
-							<select id="points" name="points" defaultValue="no points" onChange={handleSelectPoints}>
+						<Typography>
+							<select id="points" name="points" defaultValue={prevState.quizPointsSystem} onChange={handleSelectPoints}>
 								<option value="noPoints">No points</option>
 								<option value="overall">Overall</option>
 								<option value="eachQuestion">Each question</option>
