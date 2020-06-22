@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import QuizOption from "../../components/student/QuizOption";
-import gsap from "gsap";
 import "./Quiz.css";
 import QuizTimer from "../../components/student/QuizTimer";
 import { useDispatch, useSelector } from "react-redux";
 import QuizMedia from "../../components/student/QuizMedia";
 import * as quizActions from "../../store/actions/quizActions";
 import QuizStart from "./QuizStart";
+import { animateNextQuestion } from "./QuizAnimations";
 
 const Quiz = () => {
   const dispatch = useDispatch();
@@ -24,8 +24,10 @@ const Quiz = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [timeUp, setTimeUp] = useState(false);
   const timeLimit = 0.5 * 60;
-  const [inProgress, setInProgress] = useState(false);
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [finished, setFinished] = useState(false);
 
+  //make a nicer notification
   useEffect(() => {
     if (timeUp) {
       alert("Time's up!");
@@ -34,11 +36,13 @@ const Quiz = () => {
   }, [timeUp]);
 
   const prepareNext = () => {
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
-    setSelectedOption(null);
+    if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
+      setFinished(true);
+    } else {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedOption(null);
+    }
   };
-
-  const tl = gsap.timeline();
 
   const handleClick = (optionIndex, isCorrect) => {
     if (timeUp) return;
@@ -46,56 +50,32 @@ const Quiz = () => {
     if (isCorrect) {
       setScore(score + 1);
     }
-    //do nothing is animation is playing
-    if (tl.isActive()) {
-      return;
-    }
-    //slide both question and options out of view to left
-    tl.to(
-      [".quiz__question", ".quiz__options"],
-      0.5,
-      {
-        x: "-100vw",
-        opacity: 0,
-        ease: "Power4.easeIn",
-        onComplete: prepareNext,
-      },
-      "+=0.8"
-    );
-    //return question and options elements to original position (not visible)
-    tl.to([".quiz__question", ".quiz__options"], 0, {
-      x: 0,
-    });
-    //and fade them in
-    tl.to(
-      [".quiz__question", ".quiz__options"],
-      1,
-      {
-        opacity: 1,
-        ease: "Power1.easeOut",
-      },
-      ">+0.3"
-    );
+    animateNextQuestion(prepareNext);
   };
 
   return (
     <div className="quiz__wrapper">
-      {!inProgress && <QuizStart quiz={quiz} setInProgress={setInProgress} />}
-
       {quiz.quizQuestions && quiz.quizQuestions.length === 0 && (
         <h1>No quiz in state.</h1>
       )}
-      {inProgress && quiz.quizQuestions && quiz.quizQuestions.length > 0 && (
+      {!quizStarted && (
+        <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />
+      )}
+
+      {quizStarted && quiz.quizQuestions && quiz.quizQuestions.length > 0 && (
         <>
           <div className="quiz__info">
             <div className="quiz__progress">
               Question {currentQuestionIndex + 1}/{quiz.quizQuestions.length}
             </div>
-            {/* <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} /> */}
+            {!finished && (
+              <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
+            )}
           </div>
           <div className="quiz__content">
             <div className="quiz__question">
-              {quiz.quizQuestions[currentQuestionIndex].media.length > 0 &&
+              {!finished &&
+                quiz.quizQuestions[currentQuestionIndex].media.length > 0 &&
                 quiz.quizQuestions[currentQuestionIndex].media.map(
                   (media, index) => (
                     <div className="quiz__medias" key={index}>
@@ -103,7 +83,7 @@ const Quiz = () => {
                     </div>
                   )
                 )}
-              {quiz.quizQuestions[currentQuestionIndex] ? (
+              {!finished ? (
                 quiz.quizQuestions[currentQuestionIndex].question
               ) : (
                 <>
@@ -115,7 +95,7 @@ const Quiz = () => {
               )}
             </div>
             <div className="quiz__options">
-              {quiz.quizQuestions[currentQuestionIndex] &&
+              {!finished &&
                 quiz.quizQuestions[currentQuestionIndex].questionType ===
                   "multipleChoice" &&
                 quiz.quizQuestions[
@@ -129,7 +109,7 @@ const Quiz = () => {
                     selectedOption={selectedOption}
                   />
                 ))}
-              {quiz.quizQuestions[currentQuestionIndex] &&
+              {!finished &&
                 quiz.quizQuestions[currentQuestionIndex].questionType ===
                   "trueFalse" && (
                   <>

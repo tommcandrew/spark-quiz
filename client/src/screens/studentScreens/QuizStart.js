@@ -2,7 +2,7 @@ import React from "react";
 import "./QuizStart.css";
 
 //this component is rendered as a child of Quiz
-const QuizStart = ({ quiz, setInProgress }) => {
+const QuizStart = ({ quiz, setQuizStarted }) => {
   return (
     <div className="quizStart__wrapper">
       <div className="quizStart__header">
@@ -14,7 +14,7 @@ const QuizStart = ({ quiz, setInProgress }) => {
             <li>Author: Mr. Pearce</li>
             <li>Subject: {quiz.quizSubject}</li>
             <li>Time limit: {quiz.quizTimeLimit}</li>
-            <button onClick={() => setInProgress(true)}>Start Quiz</button>
+            <button onClick={() => setQuizStarted(true)}>Start Quiz</button>
           </ul>
         </div>
         <div className="quizStart__scores">
