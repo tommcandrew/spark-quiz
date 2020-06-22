@@ -72,7 +72,7 @@ const Quiz = () => {
               </p>
             </>
           )}
-          {!finished && (
+          {!finished && quiz.quizQuestions.length > 0 && (
             <div className="quiz__content">
               <div className="quiz__info">
                 <div className="quiz__progress">
@@ -108,7 +108,7 @@ const Quiz = () => {
                       optionIndex={index}
                       selectedOption={selectedOption}
                       isCorrect={
-                        option ===
+                        index.toString() ===
                         quiz.quizQuestions[currentQuestionIndex].answers
                           .multipleChoiceAnswer
                       }
@@ -118,8 +118,28 @@ const Quiz = () => {
                 {quiz.quizQuestions[currentQuestionIndex].questionType ===
                   "trueFalse" && (
                   <>
-                    <button>True</button>
-                    <button>False</button>
+                    <button
+                      onClick={() =>
+                        handleClick(
+                          null,
+                          quiz.quizQuestions[currentQuestionIndex].answers
+                            .trueFalseAnswer === "true"
+                        )
+                      }
+                    >
+                      True
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleClick(
+                          null,
+                          quiz.quizQuestions[currentQuestionIndex].answers
+                            .trueFalseAnswer === "false"
+                        )
+                      }
+                    >
+                      False
+                    </button>
                   </>
                 )}
               </div>

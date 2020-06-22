@@ -13,7 +13,7 @@ const QuizStart = ({ quiz, setQuizStarted }) => {
           <ul>
             <li>Author: Mr. Pearce</li>
             <li>Subject: {quiz.quizSubject}</li>
-            <li>Time limit: {quiz.quizTimeLimit}</li>
+            <li>Time limit: {quiz.quizTimeLimit || "none"}</li>
             <button onClick={() => setQuizStarted(true)}>Start Quiz</button>
           </ul>
         </div>
