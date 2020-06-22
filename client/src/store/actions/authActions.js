@@ -111,8 +111,10 @@ export const tokenConfig = (token) => {
 
 export const studentLogin = (studentId) => {
   return (dispatch, getState) => {
+    const config = { headers: { "Content-Type": "application/json" } };
+
     return axios
-      .post("http://localhost:5000/studentLogin", { studentId })
+      .post("http://localhost:5000/studentLogin", { studentId }, config)
       .then((res) => {
         dispatch({
           type: STUDENT_LOGIN_SUCCESS,

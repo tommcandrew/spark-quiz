@@ -5,16 +5,24 @@ import "./Quiz.css";
 import QuizTimer from "../../components/student/QuizTimer";
 import { useDispatch, useSelector } from "react-redux";
 import QuizMedia from "../../components/student/QuizMedia";
+import * as quizActions from "../../store/actions/quizActions";
 
 const Quiz = () => {
+  const dispatch = useDispatch();
+
+  //fetch quiz again from DB if page is refreshed
+  useEffect(() => {
+    if (quiz.quizQuestions.length === 0) {
+      dispatch(quizActions.fetchQuiz());
+    }
+  });
+
   const quiz = useSelector((state) => state.quiz);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [timeUp, setTimeUp] = useState(false);
   const timeLimit = 0.5 * 60;
-
-  console.log(quiz.quizQuestions);
 
   useEffect(() => {
     if (timeUp) {
@@ -70,7 +78,10 @@ const Quiz = () => {
 
   return (
     <div className="quiz__wrapper">
-      {quiz.quizQuestions && (
+      {quiz.quizQuestions && quiz.quizQuestions.length === 0 && (
+        <h1>No quiz in state.</h1>
+      )}
+      {quiz.quizQuestions && quiz.quizQuestions.length > 0 && (
         <>
           <div className="quiz__info">
             <div className="quiz__progress">
