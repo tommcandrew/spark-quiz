@@ -134,6 +134,7 @@ app.post("/studentLogin", (req, res) => {
       console.log(matchingQuiz);
       jwt.sign({ studentId }, "secretkey", (err, token) => {
         res.status(200).send({
+          quiz: matchingQuiz,
           token,
           studentId,
         });
