@@ -130,8 +130,7 @@ app.post("/studentLogin", (req, res) => {
     });
     if (matchingQuizArray.length > 0) {
       const matchingQuiz = matchingQuizArray[0];
-      console.log("quiz found");
-      console.log(matchingQuiz);
+      //why is studentId being added on to "user" object?
       jwt.sign({ studentId }, "secretkey", (err, token) => {
         res.status(200).send({
           quiz: matchingQuiz,
@@ -233,6 +232,28 @@ app.get("/fetchQuizzes", auth, (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+});
+
+//get quiz for student that is logged in (same as /studentLogin function but without jwt)
+app.get("/fetchQuiz", auth, (req, res) => {
+  console.log("fetch quiz");
+  const studentId = req.user.studentId;
+  Quiz.find().then((quizzes) => {
+    const matchingQuizArray = [];
+    quizzes.forEach((quiz) => {
+      if (quiz.quizInvites.includes(studentId)) {
+        matchingQuizArray.push(quiz);
+      }
+    });
+    if (matchingQuizArray.length > 0) {
+      const matchingQuiz = matchingQuizArray[0];
+      res.status(200).send({ quiz: matchingQuiz });
+    } else {
+      console.log("no quiz found");
+    }
+  }).catch = (err) => {
+    console.log(err);
+  };
 });
 
 app.post("/updateQuiz", (req, res) => {
