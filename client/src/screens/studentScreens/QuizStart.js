@@ -22,8 +22,10 @@ const QuizStart = ({ quiz, setInProgress }) => {
             <h1>Scores</h1>
             <table>
               <thead>
-                <th>Name</th>
-                <th>Score</th>
+                <tr>
+                  <th>Name</th>
+                  <th>Score</th>
+                </tr>
               </thead>
               <tbody></tbody>
             </table>
