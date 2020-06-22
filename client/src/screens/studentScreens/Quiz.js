@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import QuizOption from "../../components/UI/QuizOption";
+import QuizOption from "../../components/student/QuizOption";
 import gsap from "gsap";
 import "./Quiz.css";
 import QuizTimer from "../../components/student/QuizTimer";
-
-//real questions and time limie will come from props
-import questions from "./questions";
+import { useDispatch, useSelector } from "react-redux";
+import QuizMedia from "../../components/student/QuizMedia";
 
 const Quiz = () => {
+  const quiz = useSelector((state) => state.quiz);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [timeUp, setTimeUp] = useState(false);
   const timeLimit = 0.5 * 60;
+
+  console.log(quiz.quizQuestions);
 
   useEffect(() => {
     if (timeUp) {
@@ -68,38 +70,60 @@ const Quiz = () => {
 
   return (
     <div className="quiz__wrapper">
-      <div className="quiz__info">
-        <div className="quiz__progress">
-          Question {currentQuestionIndex + 1}/{questions.length}
-        </div>
-        <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
-      </div>
-      <div className="quiz__content">
-        <div className="quiz__question">
-          {questions[currentQuestionIndex] ? (
-            questions[currentQuestionIndex].question
-          ) : (
-            <>
-              <h2>End of Quiz</h2>
-              <p>
-                Score: {score}/{questions.length}
-              </p>
-            </>
-          )}
-        </div>
-        <div className="quiz__options">
-          {questions[currentQuestionIndex] &&
-            questions[currentQuestionIndex].options.map((option, index) => (
-              <QuizOption
-                option={option}
-                handleClick={handleClick}
-                key={option.text}
-                optionIndex={index}
-                selectedOption={selectedOption}
-              />
-            ))}
-        </div>
-      </div>
+      {quiz.quizQuestions && (
+        <>
+          <div className="quiz__info">
+            <div className="quiz__progress">
+              Question {currentQuestionIndex + 1}/{quiz.quizQuestions.length}
+            </div>
+            {/* <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} /> */}
+          </div>
+          <div className="quiz__content">
+            <div className="quiz__question">
+              {quiz.quizQuestions[currentQuestionIndex].media.length > 0 &&
+                quiz.quizQuestions[
+                  currentQuestionIndex
+                ].media.map((media, index) => (
+                  <QuizMedia media={media} index={index} />
+                ))}
+              {quiz.quizQuestions[currentQuestionIndex] ? (
+                quiz.quizQuestions[currentQuestionIndex].question
+              ) : (
+                <>
+                  <h2>End of Quiz</h2>
+                  <p>
+                    Score: {score}/{quiz.quizQuestions.length}
+                  </p>
+                </>
+              )}
+            </div>
+            <div className="quiz__options">
+              {quiz.quizQuestions[currentQuestionIndex] &&
+                quiz.quizQuestions[currentQuestionIndex].questionType ===
+                  "multipleChoice" &&
+                quiz.quizQuestions[
+                  currentQuestionIndex
+                ].answers.multipleChoiceOptions.map((option, index) => (
+                  <QuizOption
+                    option={option}
+                    handleClick={handleClick}
+                    key={option}
+                    optionIndex={index}
+                    selectedOption={selectedOption}
+                  />
+                ))}
+              {quiz.quizQuestions[currentQuestionIndex] &&
+                quiz.quizQuestions[currentQuestionIndex].questionType ===
+                  "trueFalse" && (
+                  <>
+                    <button>True</button>
+                    <button>False</button>
+                  </>
+                )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

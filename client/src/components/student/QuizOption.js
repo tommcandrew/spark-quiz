@@ -8,7 +8,7 @@ const QuizOption = ({ option, handleClick, optionIndex, selectedOption }) => {
       }`}
       onClick={() => handleClick(optionIndex, option.isCorrect)}
     >
-      {option.text}
+      {option}
     </div>
   );
 };
