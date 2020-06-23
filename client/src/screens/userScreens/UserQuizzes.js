@@ -53,7 +53,7 @@ const UserQuizzes = (props) => {
 			)}
 			{quizzes &&
 				quizzes.map((quiz, index) => (
-					<Grid item xs={12} sm={6} md={3} key={index}>
+					<Grid item xs={12} sm={6} md={6} key={index}>
 					<Card className={classes.card} key={quiz._id}>
 						<CardContent>
 							<Typography variant="h5" component="h2">

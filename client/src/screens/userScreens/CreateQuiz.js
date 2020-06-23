@@ -63,9 +63,9 @@ const customStyles = {
 		justifyContent: "center",
 		padding: "20px"
 	},
-		overlay: {zIndex: 2000}
-	
+	overlay: { zIndex: 2000 }
 };
+
 
 export default function CreateQuiz(props) {
 	const dispatch = useDispatch();
@@ -74,35 +74,36 @@ export default function CreateQuiz(props) {
 	const [ quizName, setQuizName ] = useState("");
 	const [ quizSubject, setQuizSubject ] = useState("");
 	const [ quizTime, setQuizTime ] = useState(0);
-	const [modalIsOpen, setIsOpen] = useState(false);
-	const [qId, setQId] = useState("xyz")
+	const [ modalIsOpen, setIsOpen ] = useState(false);
+	const [questionToEdit, setQuestionToEdit] = useState("");
 
 	//HANDLERS
 	const showModal = (screen) => {
 		switch (screen) {
 			case "addNewQuestion":
-				setDisplayedComponent(<AddQuestionModal closeModal={closeModal} quiz={quiz} questionId={qId} />);
+				setDisplayedComponent(
+					<AddQuestionModal closeModal={closeModal} quiz={quiz} questionToEdit={questionToEdit} />
+				);
 				break;
 			case "quizOptions":
 				setDisplayedComponent(<QuizOptionsModal quizId={quiz._id} closeModal={closeModal} />);
 				break;
 			case "invite":
-				setDisplayedComponent(<ShareModal />);
+				setDisplayedComponent(<ShareModal quizId={quiz._id} closeModal={closeModal} />);
 				break;
 		}
 		setIsOpen(true);
-		return
+		return;
 	};
 
-	const setTime = (time) => {
-		setQuizTime(time);
-	};
+	useEffect(() => {
+		if(questionToEdit!== "") showModal("addNewQuestion")
+	}, [questionToEdit])
+
 	const editQuestion = (id) => {
-		setQId(id) //THIS IS UNABLE TO SET THE STATE. IDK WHY 
-		console.log(qId)
-		console.log(id)
-		showModal("addNewQuestion")
-	};
+		setQuestionToEdit(id);
+
+	}
 
 	const handleCreate = () => {
 		if (quizName.length !== 0 && quizSubject.length !== 0) {
@@ -113,11 +114,10 @@ export default function CreateQuiz(props) {
 		} else console.log("plz fill the fields");
 	};
 
-
 	const publishQuiz = () => {
-		dispatch(quizActions.updateQuiz(quiz._id, { quizPublished: true }))
+		dispatch(quizActions.updateQuiz(quiz._id, { quizPublished: true }));
 		dispatch(quizActions.clearCurrentQuiz());
-	}
+	};
 
 	//UI FUNCTIONS
 	const classes = useStyles();
@@ -128,7 +128,7 @@ export default function CreateQuiz(props) {
 
 	return (
 		<div className={classes.makeNewQuizContainer}>
-			{(quiz._id.length<=0) && (
+			{quiz._id.length <= 0 && (
 				<Paper
 					elevation={3}
 					style={{ flex: "1", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -171,7 +171,7 @@ export default function CreateQuiz(props) {
 					</Grid>
 				</Paper>
 			)}
-			{(quiz._id.length>0) && (
+			{quiz._id.length > 0 && (
 				<Fragment>
 					<Modal
 						isOpen={modalIsOpen}
@@ -201,7 +201,7 @@ export default function CreateQuiz(props) {
 							onClick={() => showModal("addNewQuestion")}>
 							Add Question
 						</Button>
-					
+
 						<Button
 							variant="outlined"
 							color="primary"
@@ -209,17 +209,12 @@ export default function CreateQuiz(props) {
 							onClick={() => showModal("invite")}>
 							Invite
 						</Button>
-						<Button
-							variant="contained"
-							color="secondary"
-							className={classes.button}
-							onClick={publishQuiz}>
+						<Button variant="contained" color="secondary" className={classes.button} onClick={publishQuiz}>
 							Publish
 						</Button>
-
 					</Paper>
 					<Paper className={classes.flexItem} style={{ flex: 3 }}>
-						<PreviewQuestions editQuestion={editQuestion}/>
+						<PreviewQuestions editQuestion={editQuestion} />
 					</Paper>
 				</Fragment>
 			)}

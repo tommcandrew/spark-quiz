@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AddedMedia from "./AddedMedia";
 import camelToSentence from "../../utils/camelToSentence";
@@ -35,7 +35,7 @@ const supportedFileTypes = [
 ];
 const questionTypes = [ "trueFalse", "multipleChoice" ];
 
-const AddQuestionModal = ({ closeModal, quiz, questionId}) => {
+const AddQuestionModal = ({ closeModal, quiz, questionToEdit}) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const [ addedMedia, setAddedMedia ] = useState([]);
@@ -45,8 +45,9 @@ const AddQuestionModal = ({ closeModal, quiz, questionId}) => {
 	const [ selectedTrueFalse, setSelectedTrueFalse ] = useState();
 	const [ question, setQuestion ] = useState("");
 	const [points, setPoints] = useState(null);
+	const qToEdit = useSelector(state => state.quiz.quizQuestions.filter(question => question._id !== questionToEdit))
+	
 
-	const questionToEdit = useSelector(state => state.quiz.quizQuestions.filter((question) => question._id === questionId))
 
 	const handleAddText = () => {
 		setAddedMedia([ ...addedMedia, { file: { type: "text/plain", text: "" }, id: Date.now() } ]);
@@ -276,7 +277,10 @@ const AddQuestionModal = ({ closeModal, quiz, questionId}) => {
 				<p>Please select the correct answer.</p>
 			</Grid>
 			
-			 {quiz.quizPointsSystem === "eachQuestion" && (
+			 
+			
+			<Grid item md={12} xl={12}>
+				{quiz.quizPointsSystem === "eachQuestion" && (
 		          <div>
 		            <label htmlFor="points">Points:</label>
 		            <input
@@ -287,7 +291,8 @@ const AddQuestionModal = ({ closeModal, quiz, questionId}) => {
 		              onChange={handlePointsChange}
 		            />
 		          </div>
-		        )}
+					)}
+			</Grid>
 
 			<Grid item md={12} sm={12}>
 				<button type="submit" onClick={handleSubmit}>
