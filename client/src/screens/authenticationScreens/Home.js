@@ -33,9 +33,10 @@ const Home = (props) => {
         <Avatar
           alt="logo"
           src={logo}
-          width={30}
-          height={30}
+          width={50}
+          height={50}
           className={classes.large}
+          variant= "square"
         />
         <Typography component="h1" variant="h5">
           Hello There!
@@ -86,7 +87,6 @@ const Home = (props) => {
             Go
           </Button>
         </form>
-        I like the transparent background more
       </div>
     </Container>
   );
@@ -99,8 +99,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-start",
-    backgroundColor: "white",
     padding: "20px",
+    border: "1px solid",
+    borderColor: theme.palette.primary,
+    borderRadius: "10px"
   },
   form: {
     width: "100%", // Fix IE 11 issue.

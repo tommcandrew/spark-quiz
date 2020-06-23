@@ -14,6 +14,7 @@ const initalState = {
   quizQuestions: [],
   quizTimeLimit: "",
   quizPointsSystem: "",
+  quizInvites: []
 };
 
 //changing cases to strings because of strange error
