@@ -1,18 +1,18 @@
-html, body, #root{
+html,
+body,
+#root {
   height: vh;
   width: vw;
 }
 
-body{
+body {
   background-image: url("./assets/bg-blur2.jpg");
   background-position: center center;
   background-repeat: no-repeat;
-   background-attachment: fixed;
+  background-attachment: fixed;
   background-size: cover;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
-
-
 
 ul {
   list-style: none;
@@ -22,7 +22,6 @@ a {
   text-decoration: none;
   color: black;
 }
-
 
 .create-quiz-container {
   height: 90%;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Typography, Tab, Tabs, AppBar, Box } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 import { groups, contacts } from "../../dummy-data/contacts";
 import * as quizActions from "../../store/actions/quizActions"
 
+
+//MUI TAB FUNCTIONS
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
 	return (
@@ -17,14 +19,9 @@ function TabPanel(props) {
 			aria-labelledby={`full-width-tab-${index}`}
 			{...other}>
 			{value === index && (
-				<Box p={3}>
-					<Typography>{children}</Typography>
-				</Box>
-			)}
-		</div>
-	);
+				<Box p={3}>{children}</Box>
+			)}</div>);
 }
-
 TabPanel.propTypes = {
 	children: PropTypes.node,
 	index: PropTypes.any.isRequired,
@@ -38,6 +35,7 @@ function a11yProps(index) {
 	};
 }
 
+//STYLES
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
@@ -52,16 +50,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
+//MAIN
 const ShareModal = ({quizId, closeModal}) => {
 	const classes = useStyles();
 	const [recipientsContacts, setRecipientsContacts] = useState([]);
-	const [ recipientsGroups, setRecipientsGroups] = useState([]);
+	const [recipientsGroups, setRecipientsGroups] = useState([]);
+	const recipientsList = useSelector(state => state.quiz.quizInvites)
 	const theme = useTheme();
 	const [value, setValue] = React.useState(0);
 	const dispatch = useDispatch()
 	
 
+	//HANDLERS
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
@@ -96,22 +96,25 @@ const ShareModal = ({quizId, closeModal}) => {
 		if (recipientsContacts.length === 0 && recipientsGroups.length===0 ) {
 			alert("Please add a recipient");
 		} else {
-			let recipientsList = [...recipientsContacts]
+			let newRecipientsList = recipientsList.concat(recipientsContacts)
 			if (recipientsGroups.length > 0) {
-				recipientsGroups.map(group => {
-					group.members.map(contact => {
-						recipientsList.push(contact)
+				 recipientsGroups.map(group => {
+					 group.members.map(contact => {
+						 newRecipientsList.push(contact)
+						 //a return is expected in console
 					})
+					 
 				})
 			}
-			console.log(recipientsList)
-			dispatch(quizActions.updateQuiz(quizId, { quizInvites: recipientsList }))
+			newRecipientsList = JSON.stringify(newRecipientsList);
+			dispatch(quizActions.updateQuiz(quizId, { quizInvites: newRecipientsList }))
+			//BACKEND UNABLE TO PROCESS IT 
 			closeModal()
 		}
 	};
 
 
-
+//RETURN
 	return (
 		<div className={classes.root}>
 			<Typography variant="h4" align="center">
@@ -143,8 +146,8 @@ const ShareModal = ({quizId, closeModal}) => {
 					index={value}
 					onChangeIndex={handleChangeIndex}>
 					<TabPanel value={value} index={0} dir={theme.direction}>
-						<div>
-							<ul>
+						
+							<ul> {/* THIS WILL BE CHANGED TO MUI LIST */}
 								{groups.map((group, index) => {
 									let isChecked = false;
 									for (let i = 0; i < recipientsGroups.length; i++) {
@@ -166,7 +169,6 @@ const ShareModal = ({quizId, closeModal}) => {
 									);
 								})}
 							</ul>
-						</div>
 					</TabPanel>
 					<TabPanel value={value} index={1} dir={theme.direction}>
 						<>

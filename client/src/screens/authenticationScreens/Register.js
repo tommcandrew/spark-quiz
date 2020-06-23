@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import {
   Button,
@@ -11,7 +11,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
 
 const Register = props => {
@@ -20,9 +20,15 @@ const Register = props => {
   const [email, setEmail] = useState("testuser@test.com");
   const [password, setPassword] = useState("12345678");
   const [password2, setPassword2] = useState("12345678");
+  const token = useSelector(state =>state.auth.token)
   const dispatch = useDispatch();
 
   const classes = useStyles();
+
+    //HOOKS
+  useEffect(() => {
+    if(token !== null)props.history.push("/dashboard");
+  }, [token, props.history])
 
   //HANDLERS
   const handleRegister = async() => {
@@ -33,7 +39,6 @@ const Register = props => {
       password2,
     };
     await dispatch(authActions.register(registerDetails))
-    props.history.push("/dashboard");
   };
 
   return (

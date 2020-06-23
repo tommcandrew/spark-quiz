@@ -2,38 +2,45 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as userActions from "../../store/actions/userActions";
 import * as quizActions from "../../store/actions/quizActions";
-import { Card, CardContent, CardActions, Grid, Typography, makeStyles, Button } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Grid,
+  Typography,
+  makeStyles,
+  Button,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		flexGrow: 1,
-		padding: "30px",
-		overflowY: "scroll",
-		overflowX: "hidden",
-	},
-	card: {
-		minWidth: 275,
-		margin: "5px"
-	}
+  root: {
+    flexGrow: 1,
+    padding: "30px",
+    overflowY: "scroll",
+    overflowX: "hidden",
+  },
+  card: {
+    minWidth: 275,
+    margin: "5px",
+  },
 }));
 
 const UserQuizzes = (props) => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const classes = useStyles();
   const quizzes = useSelector((state) => state.user.quizzes);
 
-	useEffect(() => {
-		dispatch(userActions.fetchQuizzes());
-	}, []);
+  useEffect(() => {
+    dispatch(userActions.fetchQuizzes());
+  }, [dispatch]);
 
-	const handleOpenCreateQuiz = (quiz) => {
-		dispatch(quizActions.setCurrentQuiz(quiz));
+  const handleOpenCreateQuiz = (quiz) => {
+    dispatch(quizActions.setCurrentQuiz(quiz));
     props.history.push({
-      pathname: "/dashboard/createQuiz"
+      pathname: "/dashboard/createQuiz",
     });
-	};
+  };
 
-	
 
 	const handleDeleteQuiz = (id) => {
 		dispatch(userActions.deleteQuiz(id));

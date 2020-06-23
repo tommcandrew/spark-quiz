@@ -1,20 +1,21 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AddedMedia from "./AddedMedia";
 import camelToSentence from "../../utils/camelToSentence";
 import * as quizActions from "../../store/actions/quizActions";
 import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Grid, Typography, Button,TextField } from "@material-ui/core";
+import { Paper, Grid, Typography, Button, TextField } from "@material-ui/core";
 
+//STYLES
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1
 	},
 	paper: {
-		padding: theme.spacing(2),
+		padding: theme.spacing(1),
 		textAlign: "center",
 		color: theme.palette.text.secondary,
-		width: "100%"
+		width: "50%"
 	}
 }));
 
@@ -33,9 +34,8 @@ const supportedFileTypes = [
 	"audio/ogg",
 	"audio/wav"
 ];
-const questionTypes = [ "trueFalse", "multipleChoice" ];
 
-const AddQuestionModal = ({ closeModal, quiz, questionToEdit}) => {
+const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const [ addedMedia, setAddedMedia ] = useState([]);
@@ -44,11 +44,14 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit}) => {
 	const [ selectedMultipleChoiceOption, setSelectedMultipleChoiceOption ] = useState(null);
 	const [ selectedTrueFalse, setSelectedTrueFalse ] = useState();
 	const [ question, setQuestion ] = useState("");
-	const [points, setPoints] = useState(null);
-	const qToEdit = useSelector(state => state.quiz.quizQuestions.filter(question => question._id !== questionToEdit))
-	
+	const [ points, setPoints ] = useState(null);
+	const questionTypes = [ "trueFalse", "multipleChoice" ];
+	const qToEdit = useSelector((state) =>
+		state.quiz.quizQuestions.filter((question) => question._id !== questionToEdit)
+	);
+	// getting the question to edit's id. Need to fill in the form fields
 
-
+	//HANDLERS
 	const handleAddText = () => {
 		setAddedMedia([ ...addedMedia, { file: { type: "text/plain", text: "" }, id: Date.now() } ]);
 	};
@@ -121,7 +124,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit}) => {
 		setPoints(e.target.value);
 	};
 
-	const handleSubmit = async(e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const questionObject = {
 			id: new Date().getUTCMilliseconds(),
@@ -135,30 +138,30 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit}) => {
 			},
 			points: points
 		};
-
 		const questionObjectStringified = JSON.stringify(questionObject);
-
 		const formData = new FormData();
 		formData.append("_id", quiz._id);
 		formData.append("questionObject", questionObjectStringified);
 		addedMedia.forEach((media) => {
 			formData.append("file", media.file);
 		});
-
 		await dispatch(quizActions.addNewQuestion(formData));
 		closeModal();
 	};
 
+
+  //RETURN
 	return (
-		<Grid container spacing={2} style={{ width: "95%" }}>
-			<Grid item xs={12}>
+		<Grid container spacing={2} style={{ width: "80%" }}>
+			<Grid item xs={12} className={classes.paper}>
 				<Typography className={classes.paper} variant="h5">
 					Add Question
 				</Typography>
 			</Grid>
 			<Grid item xs={12} sm={6}>
 				<Paper className={classes.paper}>
-					<label htmlFor="myFile">
+          <label htmlFor="myFile">
+            {/* need to hide the "input button for layout to look clean. Only Add media button should be left" */}
 						<input
 							id="myFile"
 							type="file"
@@ -206,7 +209,6 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit}) => {
 			<Grid item md={12}>
 				<TextField
 					variant="outlined"
-					required
 					fullWidth
 					label="Question"
 					value={question}
@@ -276,22 +278,14 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit}) => {
 			<Grid item md={12} sm={12}>
 				<p>Please select the correct answer.</p>
 			</Grid>
-			
-			 
-			
+
 			<Grid item md={12} xl={12}>
 				{quiz.quizPointsSystem === "eachQuestion" && (
-		          <div>
-		            <label htmlFor="points">Points:</label>
-		            <input
-		              type="text"
-		              id="points"
-		              name="points"
-		              value={points}
-		              onChange={handlePointsChange}
-		            />
-		          </div>
-					)}
+					<div>
+						<label htmlFor="points">Points:</label>
+						<input type="text" id="points" name="points" value={points} onChange={handlePointsChange} />
+					</div>
+				)}
 			</Grid>
 
 			<Grid item md={12} sm={12}>
@@ -300,8 +294,6 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit}) => {
 				</button>
 			</Grid>
 		</Grid>
-
-		         
 	);
 };
 export default AddQuestionModal;

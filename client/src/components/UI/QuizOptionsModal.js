@@ -1,8 +1,8 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import * as quizActions from "../../store/actions/quizActions";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Button} from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-//maybe this can be passed down via props
 const timeLimitOptions = {
 	max: 60,
 	step: 5
@@ -25,38 +24,43 @@ const timeLimitOptions = {
 const QuizOptionsModal = ({ quizId, closeModal }) => {
 	const classes = useStyles();
 	const [ showOverallPointsInput, setShowOverallPointsInput ] = useState(false);
-	const [selectOptions, setSelectOptions] = useState([]);
+	const [ selectOptions, setSelectOptions ] = useState([]);
 	const dispatch = useDispatch();
-	const prevState = useSelector(state => state.quiz)
+	const prevState = useSelector((state) => state.quiz);
 
-	//generate options for dropdown menu based on timeLimitOptions object
-	useEffect(() => {
-		let selectOptions = [];
-		selectOptions.push(
-			<option key="No limit" value="false">
-				No limit
-			</option>
-		);
-		for (let i = 1; i <= timeLimitOptions.max; i++) {
-			if (i % timeLimitOptions.step === 0) {
-				if(prevState.quizTimeLimit === i.toString()) {
-					selectOptions.push(
-						<option key={i} value={i} selected>
-							{i}
-						</option>
-					);
-				} else {
+	//HOOKS
+	useEffect(
+		() => {
+			let selectOptions = [];
+			selectOptions.push(
+				<option key="No limit" value="false">
+					No limit
+				</option>
+			);
+			for (let i = 1; i <= timeLimitOptions.max; i++) {
+				if (i % timeLimitOptions.step === 0) {
+					if (prevState.quizTimeLimit === i.toString()) {
+						selectOptions.push(
+							// ADDING SELECTED PROPRTY TO PREVIOUSLY SELECTED TIME
+							<option key={i} value={i} selected> {/* selected prop is giving a cosole warning */}
+								{i}
+							</option>
+						);
+					} else {
 						selectOptions.push(
 							<option key={i} value={i}>
 								{i}
 							</option>
 						);
+					}
 				}
 			}
-		}
-		setSelectOptions(selectOptions);
-	}, [prevState]);
+			setSelectOptions(selectOptions);
+		},
+		[ prevState ]
+	);
 
+	//HANDLERS
 	const handleSelectPoints = (e) => {
 		if (e.target.value === "overall") {
 			setShowOverallPointsInput(true);
@@ -72,7 +76,6 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 		const selectedTimeLimit = e.target.timeLimit.value;
 		const points = e.target.points.value;
 		let overallPoints;
-
 		if (showOverallPointsInput) {
 			overallPoints = e.target.overallPoints.value;
 		}
@@ -88,6 +91,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 		closeModal();
 	};
 
+	//RETURN
 	return (
 		<div className={classes.root}>
 			<form onSubmit={handleSubmit}>
@@ -98,20 +102,22 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 						</Typography>
 					</Grid>
 					<Grid item xs={6} style={{ textAlign: "right" }}>
-						<Typography >Time limit (minutes):</Typography>
+						<Typography>Time limit (minutes):</Typography>
 					</Grid>
 					<Grid item xs={6}>
 						<select id="timeLimit" name="timeLimit">
-								{selectOptions}
-							</select> 
-							
+							{selectOptions}
+						</select>
 					</Grid>
 					<Grid item xs={6} style={{ textAlign: "right" }}>
-						<Typography >Assign points:</Typography>
+						<Typography>Assign points:</Typography>
 					</Grid>
 					<Grid item xs={6}>
-						<Typography>
-							<select id="points" name="points" defaultValue={prevState.quizPointsSystem} onChange={handleSelectPoints}>
+							<select
+								id="points"
+								name="points"
+								defaultValue={prevState.quizPointsSystem} //SET TO PREVIOUSLY SELECTED VALUE
+								onChange={handleSelectPoints}>
 								<option value="noPoints">No points</option>
 								<option value="overall">Overall</option>
 								<option value="eachQuestion">Each question</option>
@@ -122,12 +128,9 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 									<input type="number" id="overallPoints" name="overallPoints" required />
 								</div>
 							)}
-						</Typography>
 					</Grid>
 					<Grid item xs={6} style={{ textAlign: "right" }}>
-						<button type="submit">
-							Done
-						</button>
+						<button type="submit">Done</button>
 					</Grid>
 					<Grid item xs={6}>
 						<button>Cancel</button>

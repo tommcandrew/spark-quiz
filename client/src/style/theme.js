@@ -1,5 +1,5 @@
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
-import { deepPurple, amber } from "@material-ui/core/colors";
+// import { deepPurple, amber } from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
   palette: {

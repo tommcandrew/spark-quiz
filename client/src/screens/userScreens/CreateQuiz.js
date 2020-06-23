@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import AddQuestionModal from "../../components/UI/AddQuestionModal";
 import PreviewQuestions from "../../components/UI/PreviewQuestions";
 import QuizOptionsModal from "../../components/UI/QuizOptionsModal";
@@ -11,41 +11,45 @@ import { Paper, Button, Box, Typography, Grid } from "@material-ui/core";
 import clsx from "clsx";
 import Modal from "react-modal";
 
-const useStyles = makeStyles((theme) => ({
-	makeNewQuizContainer: {
-		width: "100%",
-		height: "100%",
-		padding: "30px",
-		display: "flex",
-		flexDirection: "row",
-		alignItems: "stretch",
-		justifyContent: "space-between"
-	},
-	flexItem: {
-		margin: "10px"
-	},
 
-	paper: {
-		padding: theme.spacing(2),
-		textAlign: "center",
-		color: theme.palette.text.secondary
+//STYLES
+const useStyles = makeStyles((theme) => ({
+	quizNameContainer: {
+		padding: "30px"
 	},
-	buttonContainer: {
-		flex: 1,
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		justifyContent: "flex-start"
-	},
-	button: {
-		marginTop: "30px",
-		marginRight: "5px",
-		marginLeft: "5px",
-		width: "75%"
-	},
-	gridItem: {
-		padding: "10px"
-	}
+  makeNewQuizContainer: {
+    width: "100%",
+    height: "100%",
+    padding: "30px",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "stretch",
+    justifyContent: "space-between",
+  },
+  flexItem: {
+    margin: "10px",
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  },
+  buttonContainer: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  button: {
+    marginTop: "30px",
+    marginRight: "5px",
+    marginLeft: "5px",
+    width: "75%",
+  },
+  gridItem: {
+    padding: "10px",
+  },
 }));
 
 const customStyles = {
@@ -66,16 +70,16 @@ const customStyles = {
 	overlay: { zIndex: 2000 }
 };
 
-
+//MAIN
 export default function CreateQuiz(props) {
 	const dispatch = useDispatch();
-	const [ displayedComponent, setDisplayedComponent ] = useState(); //only for testing purposes
+	const [ displayedComponent, setDisplayedComponent ] = useState();
 	const quiz = useSelector((state) => state.quiz);
 	const [ quizName, setQuizName ] = useState("");
 	const [ quizSubject, setQuizSubject ] = useState("");
-	const [ quizTime, setQuizTime ] = useState(0);
 	const [ modalIsOpen, setIsOpen ] = useState(false);
 	const [questionToEdit, setQuestionToEdit] = useState("");
+	const classes = useStyles();
 
 	//HANDLERS
 	const showModal = (screen) => {
@@ -91,26 +95,30 @@ export default function CreateQuiz(props) {
 			case "invite":
 				setDisplayedComponent(<ShareModal quizId={quiz._id} closeModal={closeModal} />);
 				break;
+			default: return;
 		}
 		setIsOpen(true);
 		return;
 	};
 
+
+	//HOOKS
 	useEffect(() => {
 		if(questionToEdit!== "") showModal("addNewQuestion")
 	}, [questionToEdit])
 
+
+	//HANDLERS
 	const editQuestion = (id) => {
 		setQuestionToEdit(id);
-
 	}
-
+	
 	const handleCreate = () => {
-		if (quizName.length !== 0 && quizSubject.length !== 0) {
-			dispatch(quizActions.createQuiz(quizName, quizSubject));
-			dispatch(userActions.addQuiz(quizName, quizSubject, false));
-			setQuizName(quiz.quizName);
-			setQuizSubject(quiz.quizSubject);
+    if (quizName.length !== 0 && quizSubject.length !== 0) {
+      dispatch(quizActions.createQuiz(quizName, quizSubject));
+      dispatch(userActions.addQuiz(quizName, quizSubject, false));
+      setQuizName(quiz.quizName);
+      setQuizSubject(quiz.quizSubject);
 		} else console.log("plz fill the fields");
 	};
 
@@ -119,26 +127,24 @@ export default function CreateQuiz(props) {
 		dispatch(quizActions.clearCurrentQuiz());
 	};
 
-	//UI FUNCTIONS
-	const classes = useStyles();
-
 	function closeModal() {
 		setIsOpen(false);
 	}
 
+
+
+	//RETURN
 	return (
-		<div className={classes.makeNewQuizContainer}>
+		<Fragment>
 			{quiz._id.length <= 0 && (
-				<Paper
-					elevation={3}
-					style={{ flex: "1", display: "flex", alignItems: "center", justifyContent: "center" }}>
-					<Grid container spacing={3} justify="center">
-						<Grid item xs={12} md={6} className={classes.gridItem}>
-							<Typography variant="h4" align="right">
-								Quiz name:{" "}
+				<div className={classes.quizNameContainer}>
+				<Grid container spacing={2} justify="center">
+						<Grid item xs={12} md={6}>
+							<Typography variant="h5">
+								Quiz name:
 							</Typography>
 						</Grid>
-						<Grid item xs={12} md={6} className={classes.gridItem}>
+						<Grid item xs={12} md={6}>
 							<input
 								type="text"
 								name="name"
@@ -148,12 +154,12 @@ export default function CreateQuiz(props) {
 								value={quizName}
 							/>
 						</Grid>
-						<Grid item xs={12} md={6} className={classes.gridItem}>
-							<Typography variant="h4" align="right">
+						<Grid item xs={12} md={6}>
+							<Typography variant="h5">
 								Quiz Subject
 							</Typography>
 						</Grid>
-						<Grid item xs={12} md={6} className={classes.gridItem}>
+						<Grid item xs={12} md={6}>
 							<input
 								type="text"
 								name="subject"
@@ -169,10 +175,10 @@ export default function CreateQuiz(props) {
 							</Button>
 						</Grid>
 					</Grid>
-				</Paper>
+					</div>
 			)}
 			{quiz._id.length > 0 && (
-				<Fragment>
+				<div className={classes.makeNewQuizContainer}>
 					<Modal
 						isOpen={modalIsOpen}
 						onRequestClose={closeModal}
@@ -186,6 +192,7 @@ export default function CreateQuiz(props) {
 					<Paper className={clsx(classes.flexItem, classes.buttonContainer)}>
 						<Box className={classes.button}>
 							<Typography variant="h5">Quiz Name: {quiz.quizName}</Typography>
+							{quiz.quizTimeLimit? (<Typography>Quiz Timelimit: {quiz.quizTimeLimit}</Typography>): ""}
 						</Box>
 						<Button
 							variant="outlined"
@@ -210,14 +217,14 @@ export default function CreateQuiz(props) {
 							Invite
 						</Button>
 						<Button variant="contained" color="secondary" className={classes.button} onClick={publishQuiz}>
-							Publish
+							{quiz.quizPublished ? <>Update Quiz </> : <>Publish Quiz</>}
 						</Button>
 					</Paper>
 					<Paper className={classes.flexItem} style={{ flex: 3 }}>
 						<PreviewQuestions editQuestion={editQuestion} />
 					</Paper>
-				</Fragment>
+				</div>
 			)}
-		</div>
+					  </Fragment>
 	);
 }

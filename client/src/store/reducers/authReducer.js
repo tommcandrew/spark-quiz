@@ -3,6 +3,7 @@ import {
   USER_LOADING,
   AUTH_ERROR,
   LOGIN_SUCCESS,
+  STUDENT_LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
@@ -40,6 +41,16 @@ export default function (state = initialState, action) {
         isLoading: false,
         user: action.payload.user,
       };
+    case STUDENT_LOGIN_SUCCESS:
+      localStorage.setItem("token", action.payload.token);
+      return {
+        ...state,
+        token: action.payload.token,
+        isAuthenticated: true,
+        isLoading: false,
+        //no user data to set
+      };
+
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
