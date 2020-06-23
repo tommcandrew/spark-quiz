@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
 const PORT = 5000;
-const MONGO_URI = process.env.DB_CONNECT
+const MONGO_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0-hjn2u.gcp.mongodb.net/quiz-master?retryWrites=true&w=majority`;
 const app = express();
 const User = require("./models/User.model");
 const Quiz = require("./models/Quiz.model");
