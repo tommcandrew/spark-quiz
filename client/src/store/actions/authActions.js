@@ -16,7 +16,7 @@ export const REGISTER_FAIL = "REGISTER_FAIL";
 export const loadUser = () => {
   return async (dispatch, getState) => {
     //user loading
-    dispatch({ type: USER_LOADING }); //ser is loading to true
+    dispatch({ type: USER_LOADING }); //user is loading to true
     axios
       .get("http:localhost:5000/user", tokenConfig(getState))
       .then((res) =>
