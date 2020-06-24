@@ -14,11 +14,14 @@ export const REGISTER_FAIL = "REGISTER_FAIL";
 
 //check token and load user. This function will be called all the time
 export const loadUser = () => {
+  console.log("load user");
   return async (dispatch, getState) => {
     //user loading
-    dispatch({ type: USER_LOADING }); //ser is loading to true
+    dispatch({ type: USER_LOADING }); //user is loading to true
+    const token = getState().auth.token;
+
     axios
-      .get("http:localhost:5000/user", tokenConfig(getState))
+      .get("http://localhost:5000/user", tokenConfig(token))
       .then((res) =>
         dispatch({
           type: USER_LOADED,
@@ -48,6 +51,7 @@ export const register = ({ name, email, password, password2 }) => {
         dispatch({
           type: CLEAR_ERRORS,
         });
+        dispatch(loadUser());
       })
       .catch((err) => {
         dispatch(
@@ -75,6 +79,7 @@ export const login = ({ email, password }) => {
         dispatch({
           type: CLEAR_ERRORS,
         });
+        dispatch(loadUser());
       })
       .catch((err) => {
         // dispatch(
@@ -110,9 +115,8 @@ export const tokenConfig = (token) => {
 };
 
 export const studentLogin = (id) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
-
     return axios
       .post("http://localhost:5000/studentLogin", { id }, config)
       .then((res) => {

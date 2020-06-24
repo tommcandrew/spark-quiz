@@ -388,3 +388,18 @@ const emailNewPassword = (email, newPassword) => {
     }
   });
 };
+
+app.post("/addContact", auth, (req, res) => {
+  const id = req.user.id;
+  const { contact } = req.body;
+  User.findById(id)
+    .then((user) => {
+      user.contacts.push(contact);
+      user.save().then(() => {
+        res.status(200).send();
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
