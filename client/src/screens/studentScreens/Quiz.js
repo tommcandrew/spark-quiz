@@ -23,6 +23,7 @@ const Quiz = ({history}) => {
   
 
   const quiz = useSelector((state) => state.quiz);
+  const quizPointsSystem = quiz.quizPointsSystem;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -62,11 +63,16 @@ const Quiz = ({history}) => {
   const handleClick = async(optionIndex, isCorrect) => {
     if (timeUp) return;
     setSelectedOption(optionIndex);
+    
+    await (dispatch(quizScoreActions.setQuestionAnswer(currentQuestionIndex + 1, isCorrect)))
     if (isCorrect) {
-      setScore(score + 1);
+      if (quizPointsSystem === "overall") {
+        dispatch(quizScoreActions.setOverallScore(quiz.quizOverallPoints))
+      }
+      if (quizPointsSystem === "eachQuestion") {
+         dispatch(quizScoreActions.setOverallScore(quiz.quizQuestions[currentQuestionIndex].points))
+      }
     }
-    console.log(isCorrect);
-    await(dispatch(quizScoreActions.setQuestionAnswer(currentQuestionIndex+1, isCorrect)))
     animateNextQuestion(goToNextQuestion);
   };
 
@@ -83,7 +89,7 @@ const Quiz = ({history}) => {
       {quizStarted && (
         <>
           {finished && (
-            <Finish history={history} score={score} quiz={quiz}/>
+            <Finish history={history} quiz={quiz}/>
           )}
           {!finished && quiz.quizQuestions.length > 0 && (
             <div className="quiz__content">
@@ -155,7 +161,9 @@ const Quiz = ({history}) => {
                         False
                       </button>
                     </div>
-                  )}
+                    )}
+                  {quizPointsSystem === "overall" && <h5>points: {quiz.quizOverallPoints}</h5>}
+                  {quizPointsSystem === "eachQuestion" && <h5>points: {quiz.quizQuestions[currentQuestionIndex].points} </h5> }
                 </div>
               </div>
             </div>

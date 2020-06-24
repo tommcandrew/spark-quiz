@@ -129,7 +129,7 @@ app.post("/studentLogin", (req, res) => {
 					found = c;
 					jwt.sign({ c, role: "student" }, "secretkey", (err, token) => {
 						res.status(200).send({
-							quiz: quiz,
+							quiz: quiz, //here we do not need to send the entire quiz
 							token,
 							user: {
 								code: c.code,
@@ -264,7 +264,6 @@ app.get("/fetchQuiz", auth, (req, res) => {
 });
 
 app.post("/updateQuiz", (req, res) => {
-	console.log("update request received");
 	const { _id, update } = req.body;
 	//should insert field if doesn't exist but not working
 	Quiz.findOneAndUpdate({ _id: _id }, { $set: update }, { new: true, upsert: true, useFindAndmodify: false })
@@ -325,7 +324,7 @@ app.post("/forgotPassword", auth, (req, res) => {
 	});
 });
 
-app.post("/quizscores", (req, res) => {
+app.post("/quizscores", auth, (req, res) => {
 	let { _id, scoreObject } = req.body;
 	 scoreObject = JSON.parse(scoreObject);
 	Quiz.findById(_id)

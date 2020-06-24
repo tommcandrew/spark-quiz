@@ -1,4 +1,4 @@
-import { SET_STUDENT, SET_QUESTION_ANSWER, FINISH_QUIZ } from "../actions/quizScoreActions";
+import { SET_STUDENT, SET_QUESTION_ANSWER, FINISH_QUIZ, SET_OVERALL_SCORE } from "../actions/quizScoreActions";
 
 const initalState = {
 		studentId: "",
@@ -18,6 +18,11 @@ export default (state = initalState, action) => {
 			return {
 				...state,
 				results: [...state.results, action.payload]
+			}
+		case SET_OVERALL_SCORE: 
+			return {
+				...state,
+				overallScore: state.overallScore +action.score
 			}
 		case FINISH_QUIZ: 
 			return initalState

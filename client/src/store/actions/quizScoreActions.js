@@ -1,5 +1,5 @@
 import Axios from "axios";
-
+import { tokenConfig } from "./authActions";
 export const SET_STUDENT = "SET_STUDENT";
 export const SET_QUESTION_ANSWER = "SET_QUESTION_ANSWER";
 export const SET_OVERALLSCORE = "SET_OVERALLSCORE";
@@ -16,13 +16,15 @@ export const setStudent = (contactId) => {
 };
 
 export const finishQuiz = () => {
-    return (dispatch, getState) => {
+	
+	return (dispatch, getState) => {
+		const token = getState().auth.studentToken;
 		let scoreObject = JSON.stringify(getState().score)
 		const quizId = getState().quiz._id
 		const formData = new FormData();
 		formData.append("_id", quizId);
 		formData.append("scoreObject", scoreObject)
-		Axios.post("http://localhost:5000/quizscores", formData)
+		Axios.post("http://localhost:5000/quizscores", formData, tokenConfig(token) )
 			.then((res) => {
 				dispatch({
 					type: FINISH_QUIZ
@@ -48,7 +50,7 @@ export const setOverallScore = (score) => {
 return (dispatch) => {
     dispatch({
       type: SET_OVERALL_SCORE,
-      score: score,
+      score: parseInt(score),
     });
   };
 };
