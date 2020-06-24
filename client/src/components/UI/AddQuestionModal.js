@@ -180,7 +180,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
 			<Grid container item spacing={2} xl={12} style={{ minHeight: "150px" }}>
 				{addedMedia.map((media, index) => (
-					<Grid item xs={6} md={2}>
+					<Grid item xs={6} md={2} key={index}>
 						<AddedMedia
 							media={media}
 							handleRemoveMedia={handleRemoveMedia}

@@ -4,20 +4,23 @@ import "./Quiz.css";
 import QuizTimer from "../../components/student/QuizTimer";
 import { useDispatch, useSelector } from "react-redux";
 import QuizMedia from "../../components/student/QuizMedia";
+import Finish from "./Finish"
 import * as quizActions from "../../store/actions/quizActions";
-
+import * as quizScoreActions from "../../store/actions/quizScoreActions"
 import QuizStart from "./QuizStart";
 import { animateNextQuestion } from "./QuizAnimations";
 
-const Quiz = () => {
+const Quiz = ({history}) => {
   const dispatch = useDispatch();
 
   //fetch quiz again from DB if page is refreshed
-  useEffect(() => {
-    if (quiz.quizQuestions.length === 0) {
-      dispatch(quizActions.fetchQuiz());
-    }
-  });
+  // useEffect(() => {
+  //   if (quiz.quizQuestions.length === 0) {
+  //     dispatch(quizActions.fetchQuiz());
+  //   }
+  // });
+
+  
 
   const quiz = useSelector((state) => state.quiz);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -32,9 +35,20 @@ const Quiz = () => {
   useEffect(() => {
     if (timeUp) {
       alert("Time's up!");
-      return;
+      setFinished(true);
+      return
     }
   }, [timeUp]);
+
+
+  useEffect(() => {
+    async function fetchData() {
+    if(finished){
+    await dispatch(quizScoreActions.finishQuiz());
+    await dispatch(quizActions.clearCurrentQuiz());
+  }}
+  fetchData();
+}, [finished, dispatch]); // Or [] if effect doesn't need props or state
 
   const goToNextQuestion = () => {
     if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
@@ -45,14 +59,18 @@ const Quiz = () => {
     }
   };
 
-  const handleClick = (optionIndex, isCorrect) => {
+  const handleClick = async(optionIndex, isCorrect) => {
     if (timeUp) return;
     setSelectedOption(optionIndex);
     if (isCorrect) {
       setScore(score + 1);
     }
+    console.log(isCorrect);
+    await(dispatch(quizScoreActions.setQuestionAnswer(currentQuestionIndex+1, isCorrect)))
     animateNextQuestion(goToNextQuestion);
   };
+
+ 
 
   return (
     <div className="quiz__wrapper">
@@ -65,12 +83,7 @@ const Quiz = () => {
       {quizStarted && (
         <>
           {finished && (
-            <>
-              <h2>End of Quiz</h2>
-              <p>
-                Score: {score}/{quiz.quizQuestions.length}
-              </p>
-            </>
+            <Finish history={history} score={score} quiz={quiz}/>
           )}
           {!finished && quiz.quizQuestions.length > 0 && (
             <div className="quiz__content">

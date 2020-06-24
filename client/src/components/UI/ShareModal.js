@@ -55,7 +55,7 @@ const ShareModal = ({quizId, closeModal}) => {
 	const classes = useStyles();
 	const [recipientsContacts, setRecipientsContacts] = useState([]);
 	const [recipientsGroups, setRecipientsGroups] = useState([]);
-	const recipientsList = useSelector(state => state.quiz.quizInvites)
+	let recipientsList = useSelector(state => state.quiz.quizInvites)
 	const theme = useTheme();
 	const [value, setValue] = React.useState(0);
 	const dispatch = useDispatch()
@@ -96,18 +96,18 @@ const ShareModal = ({quizId, closeModal}) => {
 		if (recipientsContacts.length === 0 && recipientsGroups.length===0 ) {
 			alert("Please add a recipient");
 		} else {
-			let newRecipientsList = recipientsList.concat(recipientsContacts)
-			if (recipientsGroups.length > 0) {
-				 recipientsGroups.map(group => {
-					 group.members.map(contact => {
-						 newRecipientsList.push(contact)
-						 //a return is expected in console
-					})
+			recipientsList = recipientsList.concat(recipientsContacts).concat(recipientsGroups)
+			// if (recipientsGroups.length > 0) {
+			// 	 recipientsGroups.map(group => {
+			// 		 group.members.map(contact => {
+			// 			 newRecipientsList.push(contact)
+			// 			 //a return is expected in console
+			// 		})
 					 
-				})
-			}
-			newRecipientsList = JSON.stringify(newRecipientsList);
-			dispatch(quizActions.updateQuiz(quizId, { quizInvites: newRecipientsList }))
+			// 	})
+			// }
+			// newRecipientsList = JSON.stringify(newRecipientsList);
+			dispatch(quizActions.updateQuiz(quizId, { quizInvites: JSON.stringify(recipientsList) }))
 			//BACKEND UNABLE TO PROCESS IT 
 			closeModal()
 		}

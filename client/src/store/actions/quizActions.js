@@ -12,6 +12,7 @@ export const ADD_TIME_LIMIT = "ADD_TIME_LIMIT";
 export const UPDATE_QUIZ = "UPDATE_QUIZ";
 export const FETCH_QUIZ = "FETCH_QUIZ";
 
+
 export const addNewQuestion = (formData) => {
   return (dispatch) => {
     axios
@@ -111,3 +112,8 @@ export const fetchQuiz = () => {
       });
   };
 };
+
+
+
+
+
