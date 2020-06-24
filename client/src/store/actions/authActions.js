@@ -18,7 +18,6 @@ export const loadUser = () => {
   return async (dispatch, getState) => {
     //user loading
     dispatch({ type: USER_LOADING }); //user is loading to true
-    console.log("making axios call for user");
     const token = getState().auth.token;
 
     axios
@@ -116,9 +115,8 @@ export const tokenConfig = (token) => {
 };
 
 export const studentLogin = (id) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
-
     return axios
       .post("http://localhost:5000/studentLogin", { id }, config)
       .then((res) => {
