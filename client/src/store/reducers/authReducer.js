@@ -18,6 +18,7 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
+  console.log(action.type);
   switch (action.type) {
     case USER_LOADING:
       return {
@@ -55,6 +56,7 @@ export default function (state = initialState, action) {
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
     case REGISTER_FAIL:
+      console.log("removing token");
       localStorage.removeItem("token");
       return {
         ...state,

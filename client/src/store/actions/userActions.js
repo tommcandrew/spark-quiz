@@ -1,5 +1,7 @@
 import axios from "axios";
 import { tokenConfig } from "./authActions";
+import { loadUser } from "./authActions";
+
 export const FETCH_QUIZZES = "FETCH_QUIZZES";
 export const ADD_QUIZ = "ADD_QUIZ";
 export const DELETE_QUIZ = "DELETE_QUIZ";
@@ -34,11 +36,8 @@ export const addQuiz = (quizName, quizSubject, quizPublished) => {
 };
 
 export const addContact = (contact) => {
-  console.log("add contact action");
   return (dispatch, getState) => {
     const token = getState().auth.token;
-
-    console.log("making axios call");
     return axios
       .post("http://localhost:5000/addContact", { contact }, tokenConfig(token))
       .then(() => {
@@ -46,6 +45,7 @@ export const addContact = (contact) => {
           type: ADD_CONTACT,
           payload: contact,
         });
+        dispatch(loadUser());
       })
       .catch((err) => {
         console.log(err);

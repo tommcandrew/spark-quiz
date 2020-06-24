@@ -33,6 +33,7 @@ const Contacts = () => {
         </div>
         <div>
           {user &&
+            user.contacts &&
             user.contacts.map((contact) => (
               <div className="contact__contact">{contact.name}</div>
             ))}
