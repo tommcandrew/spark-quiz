@@ -1,4 +1,9 @@
-import { ADD_QUIZ, FETCH_QUIZZES, DELETE_QUIZ } from "../actions/userActions";
+import {
+  ADD_QUIZ,
+  FETCH_QUIZZES,
+  DELETE_QUIZ,
+  ADD_CONTACT,
+} from "../actions/userActions";
 
 const initalState = {
   quizzes: [],
@@ -16,6 +21,8 @@ export default (state = initalState, action) => {
         ...state,
         quizzes: state.quizzes.filter((quiz) => quiz._id !== action.payload),
       };
+    case ADD_CONTACT:
+      return { ...state, quizzes: [...state.quizzes, action.payload] };
     default:
       return state;
   }
