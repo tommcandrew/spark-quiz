@@ -11,10 +11,16 @@ const User = new Schema({
     {
       name: String,
       email: String,
-      groups: [String],
       id: String,
     },
   ],
+  groups: [
+    {
+      id: String,
+      name: String,
+      contacts: [String]
+    }
+  ]
 });
 
 module.exports = mongoose.model("User", User);
