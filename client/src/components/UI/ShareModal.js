@@ -118,7 +118,6 @@ const ShareModal = ({ quizId, closeModal }) => {
           });
         });
       }
-      newRecipientsList = JSON.stringify(newRecipientsList);
       dispatch(
         quizActions.updateQuiz(quizId, { quizInvites: newRecipientsList })
       );
