@@ -408,3 +408,18 @@ app.post("/addContact", auth, (req, res) => {
       console.log(err);
     });
 });
+
+app.post("/addGroup", auth, (req, res) => {
+  const id = req.user.id;
+  const { group } = req.body;
+  User.findById(id)
+    .then((user) => {
+      user.groups.push(group);
+      user.save().then(() => {
+        res.status(200).send();
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
