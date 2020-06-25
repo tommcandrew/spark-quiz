@@ -250,7 +250,7 @@ function Dashboard(props) {
               <Route path={`${url}/myquizzes`} component={UserQuizzes} />
               <Route path={`${url}/createquiz`} component={CreateQuiz} />
               <Route path={`${url}/contacts`} component={Contacts} />
-              <Route path={`${url}/groups`} compoenent={Groups} />
+              <Route path={`${url}/groups`} component={Groups} />
             </Switch>
           </Paper>
         </main>
