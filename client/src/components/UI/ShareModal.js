@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Typography, Tab, Tabs, AppBar, Box } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
 import PropTypes from "prop-types";
 import * as quizActions from "../../store/actions/quizActions";
+import * as authActions from "../../store/actions/authActions";
 
 //MUI TAB FUNCTIONS
 function TabPanel(props) {
@@ -59,6 +60,21 @@ const ShareModal = ({ quizId, closeModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
+  console.log("recipient list in the start: " + recipientsList)
+
+  const getUser = async() =>{
+		await dispatch(authActions.loadUser());
+	}
+
+	useEffect(
+		() => {
+			if (!user) {
+				getUser();
+			}
+		},
+		[ user, getUser ]
+	);
+
   //will get groups later
   const groups = [];
 
@@ -72,9 +88,9 @@ const ShareModal = ({ quizId, closeModal }) => {
   };
 
   const handleaddGroup = (e) => {
-    const selectedGroupName = e.target.value;
-    const selectedGroup = groups.find(
-      (group) => group.name === selectedGroupName
+    const selectedGroupId = e.target.value;
+    const selectedGroup = user.groups.find(
+      (group) => group._id === selectedGroupId
     );
 
     if (e.target.checked) {
@@ -82,49 +98,49 @@ const ShareModal = ({ quizId, closeModal }) => {
     } else {
       setRecipientsGroups(
         recipientsGroups.filter(
-          (recipient) => recipient.name !== selectedGroupName
+          (recipient) => recipient._id !== selectedGroupId
         )
       );
     }
   };
 
   const handleAddContact = (e) => {
-    const selectedContactName = e.target.value;
+    const selectedContactId= e.target.value;
     const selectedContact = user.contacts.find(
-      (contact) => contact.name === selectedContactName
+      (contact) => contact._id === selectedContactId
     );
+
 
     if (e.target.checked) {
       setRecipientsContacts([...recipientsContacts, selectedContact]);
     } else {
       setRecipientsContacts(
         recipientsContacts.filter(
-          (recipient) => recipient.name !== selectedContactName
+          (recipient) => recipient._id !== selectedContactId
         )
       );
     }
   };
 
-  const handleComplete = () => {
+   const handleComplete = () => {
     if (recipientsContacts.length === 0 && recipientsGroups.length === 0) {
       alert("Please add a recipient");
     } else {
-      let newRecipientsList = recipientsList.concat(recipientsContacts);
-      if (recipientsGroups.length > 0) {
-        recipientsGroups.map((group) => {
-          group.members.map((contact) => {
-            newRecipientsList.push(contact);
-            //a return is expected in console
-          });
-        });
-      }
-      newRecipientsList = JSON.stringify(newRecipientsList);
-      dispatch(
-        quizActions.updateQuiz(quizId, { quizInvites: newRecipientsList })
-      );
-      //BACKEND UNABLE TO PROCESS IT
-      closeModal();
-    }
+      const newRecipientsList = recipientsList.concat(recipientsContacts);
+       if (recipientsGroups.length > 0) {
+        recipientsGroups.map((group) => { 
+          group.contacts = JSON.parse(group.contacts);
+          group.contacts.map((contactIdsInRecipientsGroups) => {
+            let contactData = user.contacts.find(c => c._id === contactIdsInRecipientsGroups)
+          newRecipientsList.push(contactData)
+          })
+        })}
+        console.log(newRecipientsList)
+
+        const uniqueArray = [...new Map(newRecipientsList.map(item => [item._id, item])).values()]
+        console.log(uniqueArray)
+     }
+     closeModal()
   };
 
   //RETURN
@@ -166,9 +182,8 @@ const ShareModal = ({ quizId, closeModal }) => {
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
             <ul>
-              {" "}
               {/* THIS WILL BE CHANGED TO MUI LIST */}
-              {groups.map((group, index) => {
+              {user && user.groups && user.groups.map((group, index) => {
                 let isChecked = false;
                 for (let i = 0; i < recipientsGroups.length; i++) {
                   if (recipientsGroups[i].name === group.name) {
@@ -177,12 +192,12 @@ const ShareModal = ({ quizId, closeModal }) => {
                 }
                 return (
                   <div key={index}>
-                    <label htmlFor={group.name}>{group.name}</label>
+                    <label htmlFor={group.name}>{group._id}</label>
                     <input
                       type="checkbox"
-                      id={group.name}
+                      id={group._id}
                       onChange={handleaddGroup}
-                      value={group.name}
+                      value={group._id}
                       checked={isChecked}
                     />
                   </div>
@@ -207,9 +222,9 @@ const ShareModal = ({ quizId, closeModal }) => {
                         <label htmlFor={contact.name}>{contact.name}</label>
                         <input
                           type="checkbox"
-                          id={contact.name}
+                          id={contact._id}
                           onChange={handleAddContact}
-                          value={contact.name}
+                          value={contact._id}
                           checked={isChecked}
                         />
                       </div>
