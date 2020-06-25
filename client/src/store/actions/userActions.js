@@ -67,3 +67,5 @@ export const deleteQuiz = (id) => {
       });
   };
 };
+
+
