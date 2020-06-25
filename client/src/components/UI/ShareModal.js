@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Typography, Tab, Tabs, AppBar, Box } from "@material-ui/core";
@@ -58,6 +58,7 @@ const ShareModal = ({ quizId, closeModal }) => {
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const [inviteCodes, setInviteCodes] = useState([]);
 
   //will get groups later
   const groups = [];
@@ -93,7 +94,12 @@ const ShareModal = ({ quizId, closeModal }) => {
     const selectedContact = user.contacts.find(
       (contact) => contact.name === selectedContactName
     );
-
+    //maybe use a library or something for more secure code
+    const inviteCode = Math.floor(Math.random() * 1000);
+    setInviteCodes([
+      ...inviteCodes,
+      { code: inviteCode, contactId: selectedContact._id },
+    ]);
     if (e.target.checked) {
       setRecipientsContacts([...recipientsContacts, selectedContact]);
     } else {
@@ -119,9 +125,11 @@ const ShareModal = ({ quizId, closeModal }) => {
         });
       }
       dispatch(
-        quizActions.updateQuiz(quizId, { quizInvites: newRecipientsList })
+        quizActions.updateQuiz(quizId, {
+          quizInvites: newRecipientsList,
+          quizCodes: inviteCodes,
+        })
       );
-      //BACKEND UNABLE TO PROCESS IT
       closeModal();
     }
   };
