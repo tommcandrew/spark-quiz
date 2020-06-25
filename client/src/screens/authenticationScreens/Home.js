@@ -22,6 +22,7 @@ const Home = (props) => {
     e.preventDefault();
     const id = e.target.code.value;
     await dispatch(authActions.studentLogin(id));
+    
     props.history.push("/quiz");
     //don't forget error handling
   };

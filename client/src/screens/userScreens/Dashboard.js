@@ -35,6 +35,7 @@ import UserQuizzes from "./UserQuizzes";
 import CreateQuiz from "./CreateQuiz";
 import Contacts from "./Contacts";
 import Groups from "./Groups";
+import * as quizActions from "../../store/actions/quizActions"
 import Logo from "../../assets/logo1.png";
 import * as authActions from "../../store/actions/authActions";
 
@@ -100,6 +101,8 @@ function Dashboard(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -108,6 +111,10 @@ function Dashboard(props) {
     await dispatch(authActions.logout());
     props.history.push("/");
   };
+
+  const clearQuizState = async () => {
+    await dispatch(quizActions.clearCurrentQuiz())
+  }
 
   const drawer = (
     <div>
@@ -142,8 +149,8 @@ function Dashboard(props) {
             </ListItem>
           </Link>
 
-          <Link to={`${url}/createQuiz`}>
-            <ListItem button>
+          <Link to={`${url}/createQuiz`} onClick={clearQuizState}>
+            <ListItem button >
               <ListItemIcon>
                 <LibraryAddIcon />
               </ListItemIcon>

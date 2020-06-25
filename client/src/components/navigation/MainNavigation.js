@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch } from "react-router-dom";
 
-import { ProtectedRoute, PublicRoute } from "./Routes";
+import { ProtectedRoute, PublicRoute, StudentRoute } from "./Routes";
 
 import Dashboard from "../../screens/userScreens/Dashboard";
 import Home from "../../screens/authenticationScreens/Home";
@@ -17,7 +17,7 @@ const MainNavigation = () => {
         <PublicRoute exact={true} path="/login" component={Login} />
         <PublicRoute exact={true} path="/register" component={Register} />
         <ProtectedRoute path="/dashboard" component={Dashboard} />
-        <ProtectedRoute path="/quiz" component={Quiz} />
+        <StudentRoute path="/quiz" component={Quiz} />
       </Switch>
     </BrowserRouter>
   );

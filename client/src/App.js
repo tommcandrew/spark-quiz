@@ -7,10 +7,11 @@ import errorReducer from "./store/reducers/errorReducer";
 import authReducer from "./store/reducers/authReducer";
 import userReducer from "./store/reducers/userReducer";
 import quizReducer from "./store/reducers/quizReducer";
+import quizScoreReducer from "./store/reducers/quizScoreReducer"
 import MainNavigation from "./components/navigation/MainNavigation";
 import theme from "./style/theme";
 import { ThemeProvider } from "@material-ui/core/styles";
-import Modal from 'react-modal'
+import Modal from 'react-modal';
 
 Modal.setAppElement("#root")
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   error: errorReducer,
   auth: authReducer,
   user: userReducer,
+  score: quizScoreReducer,
 });
 
 const composeEnhancers =
