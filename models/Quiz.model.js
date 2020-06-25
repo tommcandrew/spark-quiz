@@ -6,9 +6,9 @@ const Quiz = new Schema(
   {
     quizName: String,
     quizSubject: String,
-    quizInvites: [{email: String, name: String }],
+    quizInvites: [{ email: String, name: String }],
     quizPublished: Boolean,
-    codes: [{code: String, contactId: String}],
+    quizCodes: [{ code: String, contactId: String }],
     quizQuestions: [
       {
         questionType: String,
