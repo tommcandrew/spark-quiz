@@ -72,8 +72,10 @@ const ShareModal = ({ quizId, closeModal }) => {
 
   //add previously invited students to recipients list
   useEffect(() => {
-    if (quiz) {
-      setRecipientsContacts(quiz.quizInvites.map((invite) => invite.id));
+    if (quiz && quiz.quizInvites.contacts) {
+      setRecipientsContacts(
+        quiz.quizInvites.contacts.map((invite) => invite.id)
+      );
     }
     //eslint-disable-next-line
   }, []);
@@ -156,7 +158,9 @@ const ShareModal = ({ quizId, closeModal }) => {
       });
     });
 
-    dispatch(quizActions.updateQuiz(quizId, { quizInvites: quizInvites })); //QUIZ INVITES SENT
+    dispatch(
+      quizActions.updateQuiz(quizId, { quizInvites: { contacts: quizInvites } })
+    ); //QUIZ INVITES SENT
     dispatch(quizActions.updateQuiz(quizId, { quizCodes: quizCodes }));
 
     closeModal();

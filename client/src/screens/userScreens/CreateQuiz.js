@@ -130,7 +130,10 @@ export default function CreateQuiz(props) {
   };
 
   const publishQuiz = () => {
-    if (quiz.quizInvites.length === 0) {
+    if (
+      quiz.quizInvites.contacts.length === 0 ||
+      quiz.quizInvites.groups.length === 0
+    ) {
       if (
         window.confirm(
           "You are publishing a quiz without any invites. Continue?"
