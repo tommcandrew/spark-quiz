@@ -1,29 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AddContactModal from "../../components/UI/AddContactModal";
 import { useDispatch, useSelector } from "react-redux";
-import * as authActions from "../../store/actions/authActions";
-import * as userActions from "../../store/actions/userActions"
+import * as userActions from "../../store/actions/userActions";
 import "./Contacts.css";
 
 const Contacts = () => {
   const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [showAddContactModal, setShowAddContactModal] = useState(false);
   const handleClose = (e) => {
     if (e.target.classList.contains("addContactModal__wrapper")) {
       setShowAddContactModal(false);
     }
   };
-
-  function getUser(){
-    dispatch(authActions.loadUser())
-  }
-
-  useEffect(() => {
-    if (!user) {
-      getUser()
-    }
-  }, [user])
 
   const handleSubmit = (e) => {
     e.preventDefault();
