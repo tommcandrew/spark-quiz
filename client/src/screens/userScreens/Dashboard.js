@@ -36,6 +36,7 @@ import UserQuizzes from "./UserQuizzes";
 import CreateQuiz from "./CreateQuiz";
 import Contacts from "./Contacts";
 import Groups from "./Groups";
+import MyAccount from "./MyAccount";
 import * as quizActions from "../../store/actions/quizActions";
 import Logo from "../../assets/logo1.png";
 import * as authActions from "../../store/actions/authActions";
@@ -259,6 +260,10 @@ function Dashboard(props) {
               <Route path={`${url}/createquiz`} component={CreateQuiz} />
               <Route path={`${url}/contacts`} component={Contacts} />
               <Route path={`${url}/groups`} component={Groups} />
+              <Route
+                path={`${url}/myAccount`}
+                render={() => <MyAccount history={props.history} />}
+              />
             </Switch>
           </Paper>
         </main>
