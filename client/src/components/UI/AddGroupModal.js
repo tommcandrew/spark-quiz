@@ -46,7 +46,7 @@ const AddGroupModal = ({ closeModal, user }) => {
     e.preventDefault();
     const group = {
       name: groupName,
-      contacts: JSON.stringify(groupMemberList),
+      contacts: groupMemberList,
     };
     dispatch(userActions.addGroup(group));
     closeModal();

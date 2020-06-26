@@ -127,12 +127,12 @@ const ShareModal = ({ quizId, closeModal }) => {
 
     if (recipientsGroups.length > 0) {
       recipientsGroups.forEach((group) => {
-        let parsed = JSON.parse(group.contacts);
-        parsed.forEach((contact) => {
+        group.contacts.forEach((contact) => {
           newRecipientsList.push(contact);
         });
       });
     }
+
     newRecipientsList = [...new Set(newRecipientsList)]; //aray of non duplicate selected contact ids
     let quizInvites = [];
     let quizCodes = [];
