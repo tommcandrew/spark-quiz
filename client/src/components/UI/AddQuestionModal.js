@@ -291,6 +291,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
                 value={index}
                 checked={selectedMultipleChoiceOption === index.toString()}
                 onChange={handleMultipleChoiceOptionSelect}
+                required
               />
             </Grid>
           ))}
