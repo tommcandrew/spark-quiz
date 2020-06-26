@@ -44,7 +44,6 @@ export default (state = initalState, action) => {
         quizSubject: action.payload.quizSubject,
       };
     case SET_CURRENT_QUIZ:
-      localStorage.setItem("quiz", action.payload._id)
       return {
         ...state,
         ...action.payload,
