@@ -260,7 +260,7 @@ app.get("/fetchQuiz", auth, (req, res) => {
   Quiz.find().then((quizzes) => {
     const matchingQuizArray = [];
     quizzes.forEach((quiz) => {
-      if (quiz.quizInvites.includes(id)) {
+      if (quiz.quizInvites.contacts.includes(id)) {
         matchingQuizArray.push(quiz);
       }
     });
@@ -385,7 +385,7 @@ app.post("/publishQuiz", auth, (req, res) => {
   )
     .then((quiz) => {
       emailInvites(
-        quiz.quizInvites,
+        quiz.quizInvites.contacts,
         quiz.quizName,
         quiz.quizAuthor,
         quiz.quizSubject
