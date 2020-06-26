@@ -129,8 +129,18 @@ export default function CreateQuiz(props) {
   };
 
   const publishQuiz = () => {
-    dispatch(quizActions.publishQuiz(quiz._id));
-    //maybe redirect to My Quizzes here?
+    if (quiz.quizInvites.length === 0) {
+      if (
+        window.confirm(
+          "You are publishing a quiz without any invites. Continue?"
+        )
+      ) {
+        dispatch(quizActions.publishQuiz(quiz._id));
+        //maybe redirect to My Quizzes here?
+      } else {
+        return;
+      }
+    }
   };
 
   function closeModal() {

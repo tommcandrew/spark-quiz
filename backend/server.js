@@ -405,7 +405,7 @@ const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   const mailOptions = {
     from: "Quiz Master",
     //emailList will go here
-    to: ["thomasdarragh88@gmail.com", "zehrataqi@gmail.com"],
+    to: ["thomasdarragh88@gmail.com"],
     subject: "Quiz Master Invitation",
     html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
   };

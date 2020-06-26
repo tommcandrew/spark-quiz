@@ -141,8 +141,10 @@ const ShareModal = ({ quizId, closeModal }) => {
           quizInvites.push({
             email: u.email,
             name: u.name,
-            //adding ID here to be able to check if contact rendered in list has already been invited or not
+            //I'm adding ID field here to be able to check if contact rendered in list has already been invited or not
+            //using both "id" and "_id" is not ideal!
             id: u._id,
+            //when adding someone to invites array, in DB they seem to be assigned a Mongo ID which I don't understand
           });
           quizCodes.push({
             code: Math.floor(Math.random() * 1000),
