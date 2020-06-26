@@ -373,28 +373,45 @@ app.get("/user", auth, (req, res) => {
     .then((user) => res.json(user));
 });
 
+app.post("/publishQuiz", auth, (req, res) => {
+  const { quizId } = req.body;
+  Quiz.findOneAndUpdate(
+    { _id: quizId },
+    { $set: { quizPublished: true } },
+    { new: true, upsert: true, useFindAndmodify: false }
+  )
+    .then((quiz) => {
+      emailInvites(
+        quiz.quizInvites,
+        quiz.quizName,
+        quiz.author,
+        quiz.quizSubject
+      );
+      res.status(200).send();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   let emailList = [];
-  User.findById(req.user.id)
-    .then((user) => {
-      user.contacts.forEach((contact) => {
-        if (quizInvites.includes(contact.id)) {
-          emailList.push(contact.email);
-        }
-      });
-      const mailOptions = {
-        from: "Quiz Master",
-        to: emailList,
-        subject: "Quiz Master Invitation",
-        html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
-      };
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Email(s) sent");
-        }
-      });
+  quizInvites.forEach((contact) => {
+    emailList.push(contact.email);
+  });
+  const mailOptions = {
+    from: "Quiz Master",
+    to: emailList,
+    subject: "Quiz Master Invitation",
+    html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
+  };
+  transporter
+    .sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email(s) sent");
+      }
     })
     .catch((err) => {
       console.log(err);
