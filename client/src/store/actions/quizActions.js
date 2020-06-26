@@ -11,7 +11,7 @@ export const CLEAR_CURRENT_QUIZ = "CLEAR_CURRENT_QUIZ";
 export const ADD_TIME_LIMIT = "ADD_TIME_LIMIT";
 export const UPDATE_QUIZ = "UPDATE_QUIZ";
 export const FETCH_QUIZ = "FETCH_QUIZ";
-
+export const PUBLISH_QUIZ = "PUBLISH_QUIZ";
 
 export const addNewQuestion = (formData) => {
   return (dispatch) => {
@@ -113,7 +113,16 @@ export const fetchQuiz = () => {
   };
 };
 
-
-
-
-
+export const publishQuiz = (quizId) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post("http://localhost:5000/publishQuiz", { quizId }, tokenConfig(token))
+      .then((res) => {
+        clearCurrentQuiz();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};

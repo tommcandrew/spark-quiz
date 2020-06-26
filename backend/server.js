@@ -198,8 +198,7 @@ app.post("/addQuestion", (req, res) => {
 
 app.post("/createQuiz", auth, (req, res) => {
   const { quizName, quizSubject } = req.body;
-  console.log(req.user);
-  const { quizAuthor } = req.user.name;
+  const quizAuthor = req.user.name;
   new Quiz({
     quizName,
     quizAuthor,
@@ -382,7 +381,7 @@ app.post("/publishQuiz", auth, (req, res) => {
       emailInvites(
         quiz.quizInvites,
         quiz.quizName,
-        quiz.author,
+        quiz.quizAuthor,
         quiz.quizSubject
       );
       res.status(200).send();
@@ -400,22 +399,17 @@ const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   const mailOptions = {
     from: "Quiz Master",
     //emailList will go here
-    to: "thomasdarragh88@gmail.com",
+    to: ["thomasdarragh88@gmail.com", "zehrataqi@gmail.com"],
     subject: "Quiz Master Invitation",
     html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
   };
-  transporter
-    .sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email(s) sent");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).send({ msg: "Unable to find user" });
-    });
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email(s) sent");
+    }
+  });
 };
 
 const emailNewPassword = (email, newPassword) => {
