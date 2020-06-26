@@ -203,9 +203,11 @@ app.post("/addQuestion", (req, res) => {
 
 app.post("/createQuiz", auth, (req, res) => {
   const { quizName, quizSubject } = req.body;
+  const { quizAuthor } = req.user.name;
   new Quiz({
-    quizName: quizName,
-    quizSubject: quizSubject,
+    quizName,
+    quizAuthor,
+    quizSubject,
     quizQuestions: [],
     quizTimeLimit: null,
     quizScores: [],
