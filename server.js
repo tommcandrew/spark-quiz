@@ -471,3 +471,32 @@ app.get("/deleteAccount", auth, (req, res) => {
       console.log(err);
     });
 });
+
+app.post("/changepassword", auth, (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const id = req.user.id;
+  User.findById(id)
+    .then((user) => {
+      bcrypt.compare(currentPassword, user.password, (err, isSame) => {
+        if (err) {
+          res.status(403).send({ msg: "Problem comparing the passwords" });
+        } else {
+          if (!isSame) {
+            res.status(403).send({ msg: "Passwords don't match" });
+          } else {
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newPassword, salt, (err, hash) => {
+                user.password = hash;
+                user.save().then(() => {
+                  res.status(200).send({ msg: "Password changed" });
+                });
+              });
+            });
+          }
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
