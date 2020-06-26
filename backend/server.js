@@ -460,3 +460,14 @@ app.post("/addGroup", auth, (req, res) => {
       console.log(err);
     });
 });
+
+app.get("/deleteAccount", auth, (req, res) => {
+  const id = req.user.id;
+  User.findByIdAndDelete(id)
+    .then(() => {
+      res.status(200).send({ msg: "User deleted" });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});

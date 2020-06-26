@@ -7,8 +7,13 @@ const MyAccount = (props) => {
 
   const user = useSelector((state) => state.auth.user);
 
-  const handleDeleteAccount = () => {
-    alert("Are you sure you want to delete your account?");
+  const handleDeleteAccount = async () => {
+    if (window.confirm("Are you sure you want to delete your account?")) {
+      await dispatch(authActions.deleteAccount());
+      props.history.push("/");
+    } else {
+      return;
+    }
   };
 
   const logoutHandler = async () => {

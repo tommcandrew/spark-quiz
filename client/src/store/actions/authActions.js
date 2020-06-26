@@ -16,7 +16,6 @@ export const CLEAR_STUDENT = "CLEAR_STUDENT";
 
 //check token and load user. This function will be called all the time
 export const loadUser = () => {
-  console.log("load user");
   return async (dispatch, getState) => {
     //user loading
     dispatch({ type: USER_LOADING }); //user is loading to true
@@ -96,7 +95,7 @@ export const login = ({ email, password }) => {
 };
 
 export const logout = () => {
-  console.log("logging out");
+  console.log("logout action");
   return (dispatch) => {
     dispatch({ type: LOGOUT_SUCCESS });
   };
@@ -144,5 +143,20 @@ export const studentLogin = (id) => {
 export const clearStudent = () => {
   return async (dispatch) => {
     dispatch({ type: CLEAR_STUDENT });
+  };
+};
+
+export const deleteAccount = () => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .get("http://localhost:5000/deleteAccount", tokenConfig(token))
+      .then(() => {
+        //is it ok to not return an action object for reducer? It seems unnecessary here.
+        dispatch(logout());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
