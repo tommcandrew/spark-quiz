@@ -160,3 +160,21 @@ export const deleteAccount = () => {
       });
   };
 };
+
+export const changePassword = (currentPassword, newPassword) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post(
+        "http://localhost:5000/changePassword",
+        { currentPassword, newPassword },
+        tokenConfig(token)
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};

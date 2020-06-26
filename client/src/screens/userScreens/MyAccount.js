@@ -21,6 +21,13 @@ const MyAccount = (props) => {
     props.history.push("/");
   };
 
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    const currentPassword = e.target.currentPassword.value;
+    const newPassword = e.target.newPassword.value;
+    await dispatch(authActions.changePassword(currentPassword, newPassword));
+  };
+
   return (
     <div className="myAccount__wrapper">
       <h1 className="myAccount__title">MY ACCOUNT</h1>
@@ -28,6 +35,13 @@ const MyAccount = (props) => {
         <li>Name: {user && user.name}</li>
         <li>Email: {user && user.email}</li>
       </ul>
+      <form onSubmit={handleChangePassword}>
+        <label htmlFor="currentPassword">Current password:</label>
+        <input type="password" id="currentPassword" name="currentPassword" />
+        <label htmlFor="currentPassword">New password:</label>
+        <input type="password" id="newPassword" name="newPassword" />
+        <button type="submit">Confirm</button>
+      </form>
       <button onClick={logoutHandler} className="myAccount__logout">
         Log out
       </button>

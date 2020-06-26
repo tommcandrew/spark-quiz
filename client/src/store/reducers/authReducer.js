@@ -60,7 +60,6 @@ export default function (state = initialState, action) {
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
     case REGISTER_FAIL:
-      console.log("logoout reducer - removing token");
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       return {
