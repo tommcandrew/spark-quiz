@@ -54,13 +54,10 @@ const ShareModal = ({ quizId, closeModal }) => {
   const classes = useStyles();
   const [recipientsContacts, setRecipientsContacts] = useState([]);
   const [recipientsGroups, setRecipientsGroups] = useState([]);
-  const recipientsList = useSelector((state) => state.quiz.quizInvites);
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const [inviteCodes, setInviteCodes] = useState([]);
-  const [invitees, setInvitees] = useState([]);
   const quiz = useSelector((state) => state.quiz);
   const getUser = async () => {
     await dispatch(authActions.loadUser());
@@ -72,9 +69,10 @@ const ShareModal = ({ quizId, closeModal }) => {
     }
   }, [user, getUser]);
 
+  //add previously invited students to recipients list
   useEffect(() => {
     if (quiz) {
-      setInvitees(quiz.quizInvites.map((invite) => invite.id));
+      setRecipientsContacts(quiz.quizInvites.map((invite) => invite.id));
     }
   }, []);
 
@@ -105,65 +103,61 @@ const ShareModal = ({ quizId, closeModal }) => {
   };
 
   const handleAddContact = (e) => {
+    debugger;
     const selectedContactId = e.target.value;
     const selectedContact = user.contacts.find(
       (contact) => contact._id === selectedContactId
     );
 
     if (e.target.checked) {
-      setRecipientsContacts([...recipientsContacts, selectedContact]);
+      setRecipientsContacts([...recipientsContacts, selectedContact._id]);
     } else {
       setRecipientsContacts(
-        recipientsContacts.filter(
-          (recipient) => recipient._id !== selectedContactId
-        )
+        recipientsContacts.filter((id) => id !== selectedContactId)
       );
     }
   };
 
   const handleComplete = () => {
-    if (recipientsContacts.length === 0 && recipientsGroups.length === 0) {
-      alert("Please add a recipient");
-    } else {
-      let newRecipientsList = [...invitees];
-      recipientsContacts.map((contact) => {
-        newRecipientsList.push(contact._id);
-      });
+    let newRecipientsList = [...recipientsContacts];
+    recipientsContacts.map((contact) => {
+      newRecipientsList.push(contact._id);
+    });
 
-      if (recipientsGroups.length > 0) {
-        recipientsGroups.map((group) => {
-          let parsed = JSON.parse(group.contacts);
-          parsed.map((contact) => {
-            newRecipientsList.push(contact);
-          });
-        });
-      }
-      newRecipientsList = [...new Set(newRecipientsList)]; //aray of non duplicate selected contact ids
-      let quizInvites = [];
-      let quizCodes = [];
-      newRecipientsList.map((r) => {
-        user.contacts.map((u) => {
-          if (u._id === r) {
-            quizInvites.push({
-              email: u.email,
-              name: u.name,
-              //adding ID here to be able to check if contact rendered in list has already been invited or not
-              id: u._id,
-            });
-            quizCodes.push({
-              code: Math.floor(Math.random() * 1000),
-              contactId: u._id,
-            });
-          }
+    if (recipientsGroups.length > 0) {
+      recipientsGroups.map((group) => {
+        let parsed = JSON.parse(group.contacts);
+        parsed.map((contact) => {
+          newRecipientsList.push(contact);
         });
       });
-
-      //maybe use a library or something for more secure code
-      // const inviteCode = Math.floor(Math.random() * 1000);
-
-      dispatch(quizActions.updateQuiz(quizId, { quizInvites: quizInvites })); //QUIZ INVITES SENT
-      dispatch(quizActions.updateQuiz(quizId, { quizCodes: quizCodes }));
     }
+    newRecipientsList = [...new Set(newRecipientsList)]; //aray of non duplicate selected contact ids
+    let quizInvites = [];
+    let quizCodes = [];
+    newRecipientsList.map((r) => {
+      user.contacts.map((u) => {
+        if (u._id === r) {
+          quizInvites.push({
+            email: u.email,
+            name: u.name,
+            //adding ID here to be able to check if contact rendered in list has already been invited or not
+            id: u._id,
+          });
+          quizCodes.push({
+            code: Math.floor(Math.random() * 1000),
+            contactId: u._id,
+          });
+        }
+      });
+    });
+
+    //maybe use a library or something for more secure code
+    // const inviteCode = Math.floor(Math.random() * 1000);
+
+    dispatch(quizActions.updateQuiz(quizId, { quizInvites: quizInvites })); //QUIZ INVITES SENT
+    dispatch(quizActions.updateQuiz(quizId, { quizCodes: quizCodes }));
+
     closeModal();
   };
 
@@ -236,9 +230,8 @@ const ShareModal = ({ quizId, closeModal }) => {
               {user &&
                 user.contacts &&
                 user.contacts.map((contact, index) => {
-                  let isChecked = invitees.includes(contact._id);
-                  console.log(contact);
-                  console.log(invitees);
+                  let isChecked = recipientsContacts.includes(contact._id);
+
                   for (let i = 0; i < recipientsContacts.length; i++) {
                     if (recipientsContacts[i].name === contact.name) {
                       isChecked = true;
