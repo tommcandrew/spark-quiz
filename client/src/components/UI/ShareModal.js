@@ -148,15 +148,13 @@ const ShareModal = ({ quizId, closeModal }) => {
             //when adding someone to invites array, in DB they seem to be assigned a Mongo ID which I don't understand
           });
           quizCodes.push({
+            //maybe use a library or something for more secure code
             code: Math.floor(Math.random() * 1000),
             contactId: u._id,
           });
         }
       });
     });
-
-    //maybe use a library or something for more secure code
-    // const inviteCode = Math.floor(Math.random() * 1000);
 
     dispatch(quizActions.updateQuiz(quizId, { quizInvites: quizInvites })); //QUIZ INVITES SENT
     dispatch(quizActions.updateQuiz(quizId, { quizCodes: quizCodes }));

@@ -7,7 +7,10 @@ const Quiz = new Schema(
     quizName: String,
     quizAuthor: String,
     quizSubject: String,
-    quizInvites: [{ email: String, name: String, id: String }],
+    quizInvites: {
+      contacts: [{ email: String, name: String, id: String }],
+      groups: [String],
+    },
     quizPublished: Boolean,
     quizCodes: [{ code: String, contactId: String }],
     quizQuestions: [
