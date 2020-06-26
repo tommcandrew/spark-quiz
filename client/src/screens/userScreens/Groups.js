@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import AddGroupModal from "../../components/UI/AddGroupModal";
 import Modal from "react-modal";
 
 import { Grid, Typography, makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     padding: "30px",
@@ -36,8 +36,7 @@ const customStyles = {
   overlay: { zIndex: 2000 },
 };
 
-const Groups = (props) => {
-  const dispatch = useDispatch();
+const Groups = () => {
   const classes = useStyles();
   const user = useSelector((state) => state.auth.user);
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -56,9 +55,9 @@ const Groups = (props) => {
       <Grid item container xl={12} spacing={2}>
         {user &&
           user.groups &&
-          user.groups.map((group) => {
+          user.groups.map((group, index) => {
             return (
-              <Grid item lg={2}>
+              <Grid item lg={2} key={index}>
                 {group.name}
               </Grid>
             );

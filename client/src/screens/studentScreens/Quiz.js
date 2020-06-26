@@ -4,28 +4,18 @@ import "./Quiz.css";
 import QuizTimer from "../../components/student/QuizTimer";
 import { useDispatch, useSelector } from "react-redux";
 import QuizMedia from "../../components/student/QuizMedia";
-import Finish from "./Finish"
+import Finish from "./Finish";
 import * as quizActions from "../../store/actions/quizActions";
-import * as quizScoreActions from "../../store/actions/quizScoreActions"
+import * as quizScoreActions from "../../store/actions/quizScoreActions";
 import QuizStart from "./QuizStart";
 import { animateNextQuestion } from "./QuizAnimations";
 
-const Quiz = ({history}) => {
+const Quiz = ({ history }) => {
   const dispatch = useDispatch();
-
-  //fetch quiz again from DB if page is refreshed
-  // useEffect(() => {
-  //   if (quiz.quizQuestions.length === 0) {
-  //     dispatch(quizActions.fetchQuiz());
-  //   }
-  // });
-
-  
 
   const quiz = useSelector((state) => state.quiz);
   const quizPointsSystem = quiz.quizPointsSystem;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [timeUp, setTimeUp] = useState(false);
   const timeLimit = 3 * 60;
@@ -37,19 +27,19 @@ const Quiz = ({history}) => {
     if (timeUp) {
       alert("Time's up!");
       setFinished(true);
-      return
+      return;
     }
   }, [timeUp]);
 
-
   useEffect(() => {
     async function fetchData() {
-    if(finished){
-    await dispatch(quizScoreActions.finishQuiz());
-    await dispatch(quizActions.clearCurrentQuiz());
-  }}
-  fetchData();
-}, [finished, dispatch]); // Or [] if effect doesn't need props or state
+      if (finished) {
+        await dispatch(quizScoreActions.finishQuiz());
+        await dispatch(quizActions.clearCurrentQuiz());
+      }
+    }
+    fetchData();
+  }, [finished, dispatch]); // Or [] if effect doesn't need props or state
 
   const goToNextQuestion = () => {
     if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
@@ -60,23 +50,27 @@ const Quiz = ({history}) => {
     }
   };
 
-  const handleClick = async(optionIndex, isCorrect) => {
+  const handleClick = async (optionIndex, isCorrect) => {
     if (timeUp) return;
     setSelectedOption(optionIndex);
-    
-    await (dispatch(quizScoreActions.setQuestionAnswer(currentQuestionIndex + 1, isCorrect)))
+
+    await dispatch(
+      quizScoreActions.setQuestionAnswer(currentQuestionIndex + 1, isCorrect)
+    );
     if (isCorrect) {
       if (quizPointsSystem === "overall") {
-        dispatch(quizScoreActions.setOverallScore(quiz.quizOverallPoints))
+        dispatch(quizScoreActions.setOverallScore(quiz.quizOverallPoints));
       }
       if (quizPointsSystem === "eachQuestion") {
-         dispatch(quizScoreActions.setOverallScore(quiz.quizQuestions[currentQuestionIndex].points))
+        dispatch(
+          quizScoreActions.setOverallScore(
+            quiz.quizQuestions[currentQuestionIndex].points
+          )
+        );
       }
     }
     animateNextQuestion(goToNextQuestion);
   };
-
- 
 
   return (
     <div className="quiz__wrapper">
@@ -88,9 +82,7 @@ const Quiz = ({history}) => {
 
       {quizStarted && (
         <>
-          {finished && (
-            <Finish history={history} quiz={quiz}/>
-          )}
+          {finished && <Finish history={history} quiz={quiz} />}
           {!finished && quiz.quizQuestions.length > 0 && (
             <div className="quiz__content">
               <div className="quiz__info">
@@ -161,9 +153,15 @@ const Quiz = ({history}) => {
                         False
                       </button>
                     </div>
-                    )}
-                  {quizPointsSystem === "overall" && <h5>points: {quiz.quizOverallPoints}</h5>}
-                  {quizPointsSystem === "eachQuestion" && <h5>points: {quiz.quizQuestions[currentQuestionIndex].points} </h5> }
+                  )}
+                  {quizPointsSystem === "overall" && (
+                    <h5>points: {quiz.quizOverallPoints}</h5>
+                  )}
+                  {quizPointsSystem === "eachQuestion" && (
+                    <h5>
+                      points: {quiz.quizQuestions[currentQuestionIndex].points}{" "}
+                    </h5>
+                  )}
                 </div>
               </div>
             </div>

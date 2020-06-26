@@ -67,13 +67,15 @@ const ShareModal = ({ quizId, closeModal }) => {
     if (!user) {
       getUser();
     }
-  }, [user, getUser]);
+    //eslint-disable-next-line
+  }, []);
 
   //add previously invited students to recipients list
   useEffect(() => {
     if (quiz) {
       setRecipientsContacts(quiz.quizInvites.map((invite) => invite.id));
     }
+    //eslint-disable-next-line
   }, []);
 
   //HANDLERS
@@ -103,7 +105,6 @@ const ShareModal = ({ quizId, closeModal }) => {
   };
 
   const handleAddContact = (e) => {
-    debugger;
     const selectedContactId = e.target.value;
     const selectedContact = user.contacts.find(
       (contact) => contact._id === selectedContactId
@@ -120,14 +121,14 @@ const ShareModal = ({ quizId, closeModal }) => {
 
   const handleComplete = () => {
     let newRecipientsList = [...recipientsContacts];
-    recipientsContacts.map((contact) => {
+    recipientsContacts.forEach((contact) => {
       newRecipientsList.push(contact._id);
     });
 
     if (recipientsGroups.length > 0) {
-      recipientsGroups.map((group) => {
+      recipientsGroups.forEach((group) => {
         let parsed = JSON.parse(group.contacts);
-        parsed.map((contact) => {
+        parsed.forEach((contact) => {
           newRecipientsList.push(contact);
         });
       });
@@ -135,8 +136,8 @@ const ShareModal = ({ quizId, closeModal }) => {
     newRecipientsList = [...new Set(newRecipientsList)]; //aray of non duplicate selected contact ids
     let quizInvites = [];
     let quizCodes = [];
-    newRecipientsList.map((r) => {
-      user.contacts.map((u) => {
+    newRecipientsList.forEach((r) => {
+      user.contacts.forEach((u) => {
         if (u._id === r) {
           quizInvites.push({
             email: u.email,

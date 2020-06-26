@@ -112,6 +112,7 @@ export default function CreateQuiz(props) {
   //HOOKS
   useEffect(() => {
     if (questionToEdit !== "") showModal("addNewQuestion");
+    //eslint-disable-next-line
   }, [questionToEdit]);
 
   //HANDLERS

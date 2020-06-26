@@ -109,6 +109,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     getUser();
+    //eslint-disable-next-line
   }, []);
 
   const handleDrawerToggle = () => {
