@@ -23,6 +23,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import PersonIcon from "@material-ui/icons/Person";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import PeopleIcon from "@material-ui/icons/People";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   BrowserRouter as Router,
@@ -35,7 +36,8 @@ import UserQuizzes from "./UserQuizzes";
 import CreateQuiz from "./CreateQuiz";
 import Contacts from "./Contacts";
 import Groups from "./Groups";
-import * as quizActions from "../../store/actions/quizActions"
+import MyAccount from "./MyAccount";
+import * as quizActions from "../../store/actions/quizActions";
 import Logo from "../../assets/logo1.png";
 import * as authActions from "../../store/actions/authActions";
 
@@ -101,8 +103,6 @@ function Dashboard(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -113,8 +113,8 @@ function Dashboard(props) {
   };
 
   const clearQuizState = async () => {
-    await dispatch(quizActions.clearCurrentQuiz())
-  }
+    await dispatch(quizActions.clearCurrentQuiz());
+  };
 
   const drawer = (
     <div>
@@ -150,7 +150,7 @@ function Dashboard(props) {
           </Link>
 
           <Link to={`${url}/createQuiz`} onClick={clearQuizState}>
-            <ListItem button >
+            <ListItem button>
               <ListItemIcon>
                 <LibraryAddIcon />
               </ListItemIcon>
@@ -173,6 +173,15 @@ function Dashboard(props) {
                 <PeopleIcon />
               </ListItemIcon>
               <ListItemText primary="Groups" />
+            </ListItem>
+          </Link>
+
+          <Link to={`${url}/myAccount`}>
+            <ListItem button>
+              <ListItemIcon>
+                <AccountCircleIcon />
+              </ListItemIcon>
+              <ListItemText primary="My Account" />
             </ListItem>
           </Link>
         </List>
@@ -251,6 +260,10 @@ function Dashboard(props) {
               <Route path={`${url}/createquiz`} component={CreateQuiz} />
               <Route path={`${url}/contacts`} component={Contacts} />
               <Route path={`${url}/groups`} component={Groups} />
+              <Route
+                path={`${url}/myAccount`}
+                render={() => <MyAccount history={props.history} />}
+              />
             </Switch>
           </Paper>
         </main>

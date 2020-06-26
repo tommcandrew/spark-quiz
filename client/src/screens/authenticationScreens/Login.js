@@ -87,6 +87,15 @@ const Login = (props) => {
               </Link>
             </Grid>
           </Grid>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link to="/forgotPassword">
+                <Typography href="#" variant="body2">
+                  I forgot my password
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
         </form>
       </div>
     </Container>

@@ -325,21 +325,27 @@ app.post("/submit", (req, res) => {
     });
 });
 
-app.post("/forgotPassword", auth, (req, res) => {
-  User.findById(req.user.id).then((user) => {
-    if (user) {
-      const randomString = Str.random();
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(randomString, salt, (err, hash) => {
-          user.password = hash;
-          user.save().then((user) => {
-            emailNewPassword(user.email, randomString);
-            res.status(200).send({ msg: "New password emailed" });
+app.post("/resetPassword", (req, res) => {
+  const { email } = req.body;
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        //will need to generate a random code
+        const tempPassword = "bananas";
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(tempPassword, salt, (err, hash) => {
+            user.password = hash;
+            user.save().then((user) => {
+              emailNewPassword(user.email, tempPassword);
+              res.status(200).send({ msg: "New password emailed" });
+            });
           });
         });
-      });
-    }
-  });
+      }
+    })
+    .catch((err) => {
+      res.status(400).send({ msg: "User not found" });
+    });
 });
 
 app.post("/quizscores", auth, (req, res) => {
@@ -412,14 +418,15 @@ const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   });
 };
 
-const emailNewPassword = (email, newPassword) => {
+const emailNewPassword = (email, tempPassword) => {
   const mailOptions = {
     from: "Quiz Master",
-    to: email,
+    //email goes here
+    to: "thomasdarragh88@gmail.com",
     subject: "Password reset",
     text:
       "Your password has been reset. You're new temporary password is " +
-      newPassword +
+      tempPassword +
       ".",
   };
   transporter.sendMail(mailOptions, (error, info) => {
@@ -454,6 +461,46 @@ app.post("/addGroup", auth, (req, res) => {
       user.groups.push(group);
       user.save().then(() => {
         res.status(200).send();
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get("/deleteAccount", auth, (req, res) => {
+  const id = req.user.id;
+  User.findByIdAndDelete(id)
+    .then(() => {
+      res.status(200).send({ msg: "User deleted" });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/changepassword", auth, (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const id = req.user.id;
+  User.findById(id)
+    .then((user) => {
+      bcrypt.compare(currentPassword, user.password, (err, isSame) => {
+        if (err) {
+          res.status(403).send({ msg: "Problem comparing the passwords" });
+        } else {
+          if (!isSame) {
+            res.status(403).send({ msg: "Passwords don't match" });
+          } else {
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newPassword, salt, (err, hash) => {
+                user.password = hash;
+                user.save().then(() => {
+                  res.status(200).send({ msg: "Password changed" });
+                });
+              });
+            });
+          }
+        }
       });
     })
     .catch((err) => {

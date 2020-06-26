@@ -3,13 +3,13 @@ import {
   FETCH_QUIZZES,
   DELETE_QUIZ,
   ADD_CONTACT,
-  ADD_GROUP
+  ADD_GROUP,
 } from "../actions/userActions";
 
 const initalState = {
   quizzes: [],
   contacts: [],
-  groups: []
+  groups: [],
 };
 
 //changing cases to strings because of strange error
@@ -26,7 +26,7 @@ export default (state = initalState, action) => {
       };
     case ADD_CONTACT:
       return { ...state, contacts: [...state.contacts, action.payload] };
-      case ADD_GROUP:
+    case ADD_GROUP:
       return { ...state, groups: [...state.groups, action.payload] };
     default:
       return state;

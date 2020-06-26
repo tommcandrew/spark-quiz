@@ -16,7 +16,6 @@ export const CLEAR_STUDENT = "CLEAR_STUDENT";
 
 //check token and load user. This function will be called all the time
 export const loadUser = () => {
-  console.log("load user");
   return async (dispatch, getState) => {
     //user loading
     dispatch({ type: USER_LOADING }); //user is loading to true
@@ -96,52 +95,98 @@ export const login = ({ email, password }) => {
 };
 
 export const logout = () => {
-	return (dispatch) => {
-		dispatch({ type: LOGOUT_SUCCESS });
-	};
+  return (dispatch) => {
+    dispatch({ type: LOGOUT_SUCCESS });
+  };
 };
 
 //set up config/headers and token
 export const tokenConfig = (token) => {
-	const config = {
-		headers: {
-			"Content-type": "application/json"
-		}
-	};
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
 
-	//if token, add to headers
-	if (token) {
-		config.headers["x-auth-token"] = token;
-	}
-	return config;
+  //if token, add to headers
+  if (token) {
+    config.headers["x-auth-token"] = token;
+  }
+  return config;
 };
 
 export const studentLogin = (id) => {
-	return (dispatch, getState) => {
-		const config = { headers: { "Content-Type": "application/json" } };
+  return (dispatch, getState) => {
+    const config = { headers: { "Content-Type": "application/json" } };
 
-		return axios
-			.post("http://localhost:5000/studentLogin", { id }, config)
-			.then((res) => {
-				dispatch({
-					type: STUDENT_LOGIN_SUCCESS,
-					payload: { token: res.data.token }
-				});
-				//not sure if we should use same state to store quiz for student as for teacher when creating
-				dispatch({
-					type: SET_CURRENT_QUIZ,
-					payload: res.data.quiz
-				});
-				dispatch(setStudent(res.data.user.contactId));
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
+    return axios
+      .post("http://localhost:5000/studentLogin", { id }, config)
+      .then((res) => {
+        dispatch({
+          type: STUDENT_LOGIN_SUCCESS,
+          payload: { token: res.data.token },
+        });
+        //not sure if we should use same state to store quiz for student as for teacher when creating
+        dispatch({
+          type: SET_CURRENT_QUIZ,
+          payload: res.data.quiz,
+        });
+        dispatch(setStudent(res.data.user.contactId));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 };
 
 export const clearStudent = () => {
-	return async (dispatch) => {
-		dispatch({ type: CLEAR_STUDENT });
-	};
+  return async (dispatch) => {
+    dispatch({ type: CLEAR_STUDENT });
+  };
+};
+
+export const deleteAccount = () => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .get("http://localhost:5000/deleteAccount", tokenConfig(token))
+      .then(() => {
+        //is it ok to not return an action object for reducer? It seems unnecessary here.
+        dispatch(logout());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const changePassword = (currentPassword, newPassword) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post(
+        "http://localhost:5000/changePassword",
+        { currentPassword, newPassword },
+        tokenConfig(token)
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const resetPassword = (email) => {
+  return (dispatch, getState) => {
+    return axios
+      .post("http://localhost:5000/resetPassword", { email })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 };
