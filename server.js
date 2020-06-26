@@ -70,7 +70,7 @@ app.post("/register", (req, res) => {
           user.password = hash;
           user.save().then((user) => {
             jwt.sign(
-              { id: user._id, role: "teacher" },
+              { id: user._id, role: "teacher", name: user.name },
               "secretkey",
               (err, token) => {
                 res.send({
@@ -92,10 +92,8 @@ app.post("/register", (req, res) => {
 });
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
   User.findOne({ email }).then((user) => {
     if (!user) {
-      console.log("no user");
       res.status(403).send({ msg: "That email is not registered" });
     } else {
       bcrypt.compare(password, user.password, (err, isSame) => {
@@ -104,14 +102,11 @@ app.post("/login", (req, res) => {
         } else {
           if (!isSame) {
             res.status(403).send({ msg: "Wrong password" });
-            console.log("wrong password");
           } else {
             jwt.sign(
-              { id: user._id, role: "teacher" },
+              { id: user._id, role: "teacher", name: user.name },
               "secretkey",
               (err, token) => {
-                console.log("signing in");
-
                 res.status(200).send({
                   token,
                   user: {
@@ -203,6 +198,7 @@ app.post("/addQuestion", (req, res) => {
 
 app.post("/createQuiz", auth, (req, res) => {
   const { quizName, quizSubject } = req.body;
+  console.log(req.user);
   const { quizAuthor } = req.user.name;
   new Quiz({
     quizName,
@@ -403,7 +399,8 @@ const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   });
   const mailOptions = {
     from: "Quiz Master",
-    to: emailList,
+    //emailList will go here
+    to: "thomasdarragh88@gmail.com",
     subject: "Quiz Master Invitation",
     html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
   };
