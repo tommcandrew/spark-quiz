@@ -5,6 +5,7 @@ import {
   SET_CURRENT_QUIZ,
   CLEAR_CURRENT_QUIZ,
   UPDATE_QUIZ,
+  PUBLISH_QUIZ,
 } from "../actions/quizActions";
 
 const initalState = {
@@ -22,7 +23,8 @@ export default (state = initalState, action) => {
   switch (action.type) {
     case ADD_NEW_QUESTION:
       //update entire state with updated version of quiz
-      return { ...state,
+      return {
+        ...state,
         _id: action.payload._id,
         quizName: action.payload.quizName,
         quizSubject: action.payload.quizSubject,
@@ -56,6 +58,11 @@ export default (state = initalState, action) => {
       return {
         ...state,
         ...action.payload,
+      };
+    //don't think we need to return anything here
+    case PUBLISH_QUIZ:
+      return {
+        ...state,
       };
     default:
       return state;

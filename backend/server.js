@@ -70,7 +70,7 @@ app.post("/register", (req, res) => {
           user.password = hash;
           user.save().then((user) => {
             jwt.sign(
-              { id: user._id, role: "teacher" },
+              { id: user._id, role: "teacher", name: user.name },
               "secretkey",
               (err, token) => {
                 res.send({
@@ -92,10 +92,8 @@ app.post("/register", (req, res) => {
 });
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
   User.findOne({ email }).then((user) => {
     if (!user) {
-      console.log("no user");
       res.status(403).send({ msg: "That email is not registered" });
     } else {
       bcrypt.compare(password, user.password, (err, isSame) => {
@@ -104,14 +102,11 @@ app.post("/login", (req, res) => {
         } else {
           if (!isSame) {
             res.status(403).send({ msg: "Wrong password" });
-            console.log("wrong password");
           } else {
             jwt.sign(
-              { id: user._id, role: "teacher" },
+              { id: user._id, role: "teacher", name: user.name },
               "secretkey",
               (err, token) => {
-                console.log("signing in");
-
                 res.status(200).send({
                   token,
                   user: {
@@ -203,9 +198,11 @@ app.post("/addQuestion", (req, res) => {
 
 app.post("/createQuiz", auth, (req, res) => {
   const { quizName, quizSubject } = req.body;
+  const quizAuthor = req.user.name;
   new Quiz({
-    quizName: quizName,
-    quizSubject: quizSubject,
+    quizName,
+    quizAuthor,
+    quizSubject,
     quizQuestions: [],
     quizTimeLimit: null,
     quizScores: [],
@@ -373,33 +370,46 @@ app.get("/user", auth, (req, res) => {
     .then((user) => res.json(user));
 });
 
-const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
-  let emailList = [];
-  User.findById(req.user.id)
-    .then((user) => {
-      user.contacts.forEach((contact) => {
-        if (quizInvites.includes(contact.id)) {
-          emailList.push(contact.email);
-        }
-      });
-      const mailOptions = {
-        from: "Quiz Master",
-        to: emailList,
-        subject: "Quiz Master Invitation",
-        html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
-      };
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Email(s) sent");
-        }
-      });
+app.post("/publishQuiz", auth, (req, res) => {
+  const { quizId } = req.body;
+  Quiz.findOneAndUpdate(
+    { _id: quizId },
+    { $set: { quizPublished: true } },
+    { new: true, upsert: true, useFindAndmodify: false }
+  )
+    .then((quiz) => {
+      emailInvites(
+        quiz.quizInvites,
+        quiz.quizName,
+        quiz.quizAuthor,
+        quiz.quizSubject
+      );
+      res.status(200).send();
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ msg: "Unable to find user" });
     });
+});
+
+const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
+  let emailList = [];
+  quizInvites.forEach((contact) => {
+    emailList.push(contact.email);
+  });
+  const mailOptions = {
+    from: "Quiz Master",
+    //emailList will go here
+    to: ["thomasdarragh88@gmail.com", "zehrataqi@gmail.com"],
+    subject: "Quiz Master Invitation",
+    html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email(s) sent");
+    }
+  });
 };
 
 const emailNewPassword = (email, newPassword) => {

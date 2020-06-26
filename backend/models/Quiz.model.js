@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const Quiz = new Schema(
   {
     quizName: String,
+    quizAuthor: String,
     quizSubject: String,
     quizInvites: [{ email: String, name: String }],
     quizPublished: Boolean,

@@ -11,7 +11,7 @@ const QuizStart = ({ quiz, setQuizStarted }) => {
       <div className="quizStart__content">
         <div className="quizStart__info">
           <ul>
-            <li>Author: Mr. Pearce</li>
+            <li>Author: {quiz.quizAuthor}</li>
             <li>Subject: {quiz.quizSubject}</li>
             <li>Time limit: {quiz.quizTimeLimit || "none"}</li>
             <button onClick={() => setQuizStarted(true)}>Start Quiz</button>
