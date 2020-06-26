@@ -95,7 +95,6 @@ export const login = ({ email, password }) => {
 };
 
 export const logout = () => {
-  console.log("logout action");
   return (dispatch) => {
     dispatch({ type: LOGOUT_SUCCESS });
   };
@@ -170,6 +169,19 @@ export const changePassword = (currentPassword, newPassword) => {
         { currentPassword, newPassword },
         tokenConfig(token)
       )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const resetPassword = (email) => {
+  return (dispatch, getState) => {
+    return axios
+      .post("http://localhost:5000/resetPassword", { email })
       .then((res) => {
         console.log(res);
       })
