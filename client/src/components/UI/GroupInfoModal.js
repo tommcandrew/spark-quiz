@@ -2,14 +2,22 @@ import React from "react";
 import "./GroupInfoModal.css";
 
 const GroupInfoModal = ({
-  group,
-  setSelectedGroup,
+  selectedGroup,
+  setSelectedGroupId,
   handleDeleteGroup,
   handleDeleteMember,
-  handleAddMember,
   user,
   handleUpdateGroup,
+  handleAddMember,
 }) => {
+  let groupMembers = [];
+  selectedGroup.contacts.forEach((contact) => {
+    groupMembers.push(contact._id);
+  });
+  let nonGroupContacts = user.contacts.filter(
+    (contact) => !groupMembers.includes(contact._id)
+  );
+
   return (
     <div className="groupInfoModal__wrapper">
       <div className="groupInfoModal__content">
@@ -20,12 +28,12 @@ const GroupInfoModal = ({
               type="text"
               id="name"
               name="name"
-              defaultValue={group.name}
+              defaultValue={selectedGroup.name}
             />
           </div>
           <div className="groupInfoModal__field">
             <ul>
-              {group.contacts.map((contact, index) => (
+              {selectedGroup.contacts.map((contact, index) => (
                 <li key={index} className="groupInfoModal__field">
                   <div>{contact.name}</div>
                   <span
@@ -39,7 +47,7 @@ const GroupInfoModal = ({
             </ul>
           </div>
           <div className="groupInfoModal__buttons">
-            <button type="button" onClick={() => setSelectedGroup(false)}>
+            <button type="button" onClick={() => setSelectedGroupId(null)}>
               Cancel
             </button>
           </div>
@@ -49,20 +57,17 @@ const GroupInfoModal = ({
         </form>
         <form>
           <h2>Add member to group</h2>
-          {user &&
-            user.contacts &&
-            user.contacts.map((contact, index) => {
-              return (
-                <div key={index}>
-                  <label htmlFor={contact.name}>{contact.name}</label>
-                  <input
-                    type="checkbox"
-                    onChange={handleAddMember}
-                    value={contact._id}
-                  />
-                </div>
-              );
-            })}
+          {nonGroupContacts &&
+            nonGroupContacts.map((contact) => (
+              <div key={contact._id}>
+                <label htmlFor={contact.name}>{contact.name}</label>
+                <input
+                  type="checkbox"
+                  onChange={handleAddMember}
+                  value={contact._id}
+                />
+              </div>
+            ))}
         </form>
         <button onClick={handleUpdateGroup}>Done</button>
       </div>
