@@ -462,6 +462,16 @@ app.post("/deleteContact", auth, (req, res) => {
         (contact) => contact._id.toString() !== contactId
       );
       user.contacts = updatedContacts;
+
+      //remove contact from any groups
+      user.groups.forEach((group) => {
+        group.contacts = [
+          ...group.contacts.filter(
+            (contact) => contact._id.toString() !== contactId
+          ),
+        ];
+      });
+
       user.save().then(() => {
         res.status(200).send({ msg: "Contact deleted" });
       });
