@@ -134,9 +134,12 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const addedText = addedMedia.filter(
-      (media) => media.file.type === "text/plain"
-    );
+    //don't need id we added in backend so just sending file
+    const addedText = addedMedia
+      .filter(
+        (media) => media.file.type === "text/plain" && media.file.data !== ""
+      )
+      .map((obj) => obj.file);
     const questionObject = {
       id: new Date().getUTCMilliseconds(),
       questionType: questionType,
