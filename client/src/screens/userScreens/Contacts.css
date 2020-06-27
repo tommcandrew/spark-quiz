@@ -33,9 +33,9 @@
   background-color: #f4f4f4;
   border: 1px solid #333;
   justify-content: space-between;
+  cursor: pointer;
 }
 
-.contacts__delete {
-  color: red;
-  cursor: pointer;
+.contacts__contact:hover {
+  background-color: #e7dede;
 }

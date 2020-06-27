@@ -71,6 +71,24 @@ export const deleteContact = (contactId) => {
   };
 };
 
+export const updateContact = (contactId, updatedContact) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post(
+        "http://localhost:5000/updateContact",
+        { contactId, updatedContact },
+        tokenConfig(token)
+      )
+      .then(() => {
+        dispatch(loadUser());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 export const addGroup = (group) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
