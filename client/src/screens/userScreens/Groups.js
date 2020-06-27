@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddGroupModal from "../../components/UI/AddGroupModal";
 import Modal from "react-modal";
@@ -56,7 +56,8 @@ const Groups = () => {
 
   const handleDeleteMember = (memberId) => {
     dispatch(userActions.deleteMember(selectedGroup._id, memberId));
-    //unfortunately "selectedGroup" doesn't update after adding/removing members so the GroupInfoModal does not reflect changes until refresh
+    setSelectedGroup(null);
+    //unfortunately "selectedGroup" doesn't update after adding/removing members so the GroupInfoModal does not reflect changes
   };
 
   const handleAddMember = (e) => {
@@ -75,7 +76,10 @@ const Groups = () => {
   };
 
   const handleUpdateGroup = () => {
-    dispatch(userActions.updateGroup(selectedGroup._id, membersToAdd));
+    if (membersToAdd.length > 0) {
+      dispatch(userActions.updateGroup(selectedGroup._id, membersToAdd));
+    }
+    setSelectedGroup(null);
   };
 
   return (
