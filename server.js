@@ -184,6 +184,8 @@ app.post("/addQuestion", (req, res) => {
     }
   }
 
+  console.log(questionParsed);
+
   //then find quiz that was previously saved and push the new question onto the questions array
   Quiz.findById(_id)
     .then((quiz) => {
