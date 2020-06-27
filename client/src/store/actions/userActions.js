@@ -144,10 +144,8 @@ export const deleteMember = (groupId, memberId) => {
 };
 
 export const updateGroup = (groupId, membersToAdd) => {
-  console.log("update group action");
   return (dispatch, getState) => {
     const token = getState().auth.token;
-    console.log("calling axios");
     return axios
       .post(
         "http://localhost:5000/updateGroup",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddGroupModal from "../../components/UI/AddGroupModal";
 import Modal from "react-modal";
@@ -41,6 +41,7 @@ const Groups = () => {
   const classes = useStyles();
   const user = useSelector((state) => state.auth.user);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [selectedGroupId, setSelectedGroupId] = useState(null);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const dispatch = useDispatch();
   const [membersToAdd, setMembersToAdd] = useState([]);
@@ -49,15 +50,22 @@ const Groups = () => {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    //update selectedgroup after user is updated so changes are reflected in GroupInfoModal
+    if (user) {
+      setSelectedGroup(
+        user.groups.filter((group) => group._id === selectedGroupId)[0]
+      );
+    }
+  }, [user, selectedGroupId]);
+
   const handleDeleteGroup = () => {
     dispatch(userActions.deleteGroup(selectedGroup._id));
-    setSelectedGroup(null);
+    setSelectedGroupId(null);
   };
 
   const handleDeleteMember = (memberId) => {
     dispatch(userActions.deleteMember(selectedGroup._id, memberId));
-    setSelectedGroup(null);
-    //unfortunately "selectedGroup" doesn't update after adding/removing members so the GroupInfoModal does not reflect changes
   };
 
   const handleAddMember = (e) => {
@@ -79,7 +87,7 @@ const Groups = () => {
     if (membersToAdd.length > 0) {
       dispatch(userActions.updateGroup(selectedGroup._id, membersToAdd));
     }
-    setSelectedGroup(null);
+    setSelectedGroupId(null);
   };
 
   return (
@@ -98,7 +106,7 @@ const Groups = () => {
                 item
                 lg={2}
                 key={index}
-                onClick={() => setSelectedGroup(group)}
+                onClick={() => setSelectedGroupId(group._id)}
                 className="groups__group"
               >
                 {group.name}
@@ -124,8 +132,8 @@ const Groups = () => {
       )}
       {selectedGroup && (
         <GroupInfoModal
-          group={selectedGroup}
-          setSelectedGroup={setSelectedGroup}
+          selectedGroup={selectedGroup}
+          setSelectedGroupId={setSelectedGroupId}
           handleDeleteGroup={handleDeleteGroup}
           handleDeleteMember={handleDeleteMember}
           handleAddMember={handleAddMember}
