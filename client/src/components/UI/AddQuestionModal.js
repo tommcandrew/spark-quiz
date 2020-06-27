@@ -60,7 +60,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
   const handleAddText = () => {
     setAddedMedia([
       ...addedMedia,
-      { file: { type: "text/plain", text: "" }, id: Date.now() },
+      { file: { type: "text/plain", data: "" }, id: Date.now() },
     ]);
   };
 
@@ -94,7 +94,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
   const handleTextChange = (e) => {
     const addedMediaCopy = [...addedMedia];
-    addedMediaCopy[e.target.dataset.index].file.text = e.target.value;
+    addedMediaCopy[e.target.dataset.index].file.data = e.target.value;
     setAddedMedia([...addedMediaCopy]);
   };
 
