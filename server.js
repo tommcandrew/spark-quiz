@@ -23,6 +23,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
+
 app.listen(PORT, () => console.log("listening on port " + PORT));
 
 mongoose.connect(MONGO_URI, {
@@ -375,6 +377,18 @@ app.get("/user", auth, (req, res) => {
     .select("-password")
     .then((user) => res.json(user));
 });
+
+//to identify the quiz
+app.post("/quiz", (req, res) => {
+  const { quizId } = req.body
+  Quiz.findById(quizId)
+    .then(quiz => {
+      res.status(200).send({ quiz })
+    })
+  .catch(err=> res.status(404).send({msg: "quiz not found"}))
+  
+})
+
 
 app.post("/publishQuiz", auth, (req, res) => {
   const { quizId } = req.body;
