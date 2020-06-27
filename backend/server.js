@@ -512,12 +512,36 @@ app.post("/updateContact", auth, (req, res) => {
 app.post("/addGroup", auth, (req, res) => {
   const id = req.user.id;
   const { group } = req.body;
-  console.log(group);
   User.findById(id)
     .then((user) => {
       user.groups.push(group);
       user.save().then(() => {
         res.status(200).send();
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/deleteMember", auth, (req, res) => {
+  const id = req.user.id;
+  const { groupId, memberId } = req.body;
+  User.findById(id)
+    .then((user) => {
+      const updatedGroups = user.groups.map((group) => {
+        if (group._id.toString() === groupId) {
+          console.log("found group");
+          group.contacts = [
+            ...group.contacts.filter(
+              (contact) => contact._id.toString() !== memberId
+            ),
+          ];
+        }
+        return group;
+      });
+      user.save().then(() => {
+        res.status(200).send({ msg: "Member deleted" });
       });
     })
     .catch((err) => {

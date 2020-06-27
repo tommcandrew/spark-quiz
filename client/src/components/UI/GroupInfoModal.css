@@ -29,3 +29,12 @@
   align-items: center;
   justify-content: space-around;
 }
+
+.groupInfoModal__field {
+  display: flex;
+}
+
+.groupInfoModal__delete {
+  color: red;
+  cursor: pointer;
+}

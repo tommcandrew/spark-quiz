@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddGroupModal from "../../components/UI/AddGroupModal";
 import Modal from "react-modal";
@@ -44,6 +44,10 @@ const Groups = () => {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    console.log(selectedGroup);
+  }, [selectedGroup]);
+
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -51,6 +55,10 @@ const Groups = () => {
   const handleDeleteGroup = () => {
     dispatch(userActions.deleteGroup(selectedGroup._id));
     setSelectedGroup(null);
+  };
+
+  const handleDeleteMember = (memberId) => {
+    dispatch(userActions.deleteMember(selectedGroup._id, memberId));
   };
 
   return (
@@ -98,6 +106,7 @@ const Groups = () => {
           group={selectedGroup}
           setSelectedGroup={setSelectedGroup}
           handleDeleteGroup={handleDeleteGroup}
+          handleDeleteMember={handleDeleteMember}
         />
       )}
     </Grid>

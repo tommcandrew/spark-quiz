@@ -125,6 +125,25 @@ export const addGroup = (group) => {
   };
 };
 
+export const deleteMember = (groupId, memberId) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post(
+        "http://localhost:5000/deleteMember",
+        { groupId, memberId },
+        tokenConfig(token)
+      )
+      .then(() => {
+        console.log("loading user");
+        dispatch(loadUser());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 export const deleteQuiz = (id) => {
   return (dispatch) => {
     return axios

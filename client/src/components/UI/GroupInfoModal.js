@@ -1,7 +1,12 @@
 import React from "react";
 import "./GroupInfoModal.css";
 
-const GroupInfoModal = ({ group, setSelectedGroup, handleDeleteGroup }) => {
+const GroupInfoModal = ({
+  group,
+  setSelectedGroup,
+  handleDeleteGroup,
+  handleDeleteMember,
+}) => {
   return (
     <div className="groupInfoModal__wrapper">
       <div className="groupInfoModal__content">
@@ -18,7 +23,15 @@ const GroupInfoModal = ({ group, setSelectedGroup, handleDeleteGroup }) => {
           <div className="groupInfoModal__field">
             <ul>
               {group.contacts.map((contact, index) => (
-                <li key={index}>{contact.name}</li>
+                <li key={index} className="groupInfoModal__field">
+                  <div>{contact.name}</div>
+                  <span
+                    className="groupInfoModal__delete"
+                    onClick={() => handleDeleteMember(contact._id)}
+                  >
+                    &times;
+                  </span>
+                </li>
               ))}
             </ul>
           </div>

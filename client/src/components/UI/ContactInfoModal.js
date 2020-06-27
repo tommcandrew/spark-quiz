@@ -31,7 +31,7 @@ const ContactInfoModal = ({
           </div>
           <div className="contactInfoModal__buttons">
             <button type="submit">Save</button>
-            <button type="button" onClick={() => setSelectedContact(false)}>
+            <button type="button" onClick={() => setSelectedContact(null)}>
               Cancel
             </button>
           </div>
