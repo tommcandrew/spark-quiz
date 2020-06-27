@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import AddGroupModal from "../../components/UI/AddGroupModal";
 import Modal from "react-modal";
-
+import * as userActions from "../../store/actions/userActions";
 import { Grid, Typography, makeStyles } from "@material-ui/core";
-
+import GroupInfoModal from "../../components/UI/GroupInfoModal";
+import "./Groups.css";
 const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
@@ -40,9 +41,45 @@ const Groups = () => {
   const classes = useStyles();
   const user = useSelector((state) => state.auth.user);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const dispatch = useDispatch();
+  const [membersToAdd, setMembersToAdd] = useState([]);
 
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  const handleDeleteGroup = () => {
+    dispatch(userActions.deleteGroup(selectedGroup._id));
+    setSelectedGroup(null);
+  };
+
+  const handleDeleteMember = (memberId) => {
+    dispatch(userActions.deleteMember(selectedGroup._id, memberId));
+    setSelectedGroup(null);
+    //unfortunately "selectedGroup" doesn't update after adding/removing members so the GroupInfoModal does not reflect changes
+  };
+
+  const handleAddMember = (e) => {
+    const selectedContactId = e.target.value;
+    const selectedContact = user.contacts.find(
+      (contact) => contact._id === selectedContactId
+    );
+
+    if (e.target.checked) {
+      setMembersToAdd([...membersToAdd, selectedContact]);
+    } else {
+      setMembersToAdd(
+        membersToAdd.filter((member) => member._id !== selectedContactId)
+      );
+    }
+  };
+
+  const handleUpdateGroup = () => {
+    if (membersToAdd.length > 0) {
+      dispatch(userActions.updateGroup(selectedGroup._id, membersToAdd));
+    }
+    setSelectedGroup(null);
   };
 
   return (
@@ -57,7 +94,13 @@ const Groups = () => {
           user.groups &&
           user.groups.map((group, index) => {
             return (
-              <Grid item lg={2} key={index}>
+              <Grid
+                item
+                lg={2}
+                key={index}
+                onClick={() => setSelectedGroup(group)}
+                className="groups__group"
+              >
                 {group.name}
               </Grid>
             );
@@ -78,6 +121,17 @@ const Groups = () => {
         >
           <AddGroupModal closeModal={closeModal} user={user} />
         </Modal>
+      )}
+      {selectedGroup && (
+        <GroupInfoModal
+          group={selectedGroup}
+          setSelectedGroup={setSelectedGroup}
+          handleDeleteGroup={handleDeleteGroup}
+          handleDeleteMember={handleDeleteMember}
+          handleAddMember={handleAddMember}
+          user={user}
+          handleUpdateGroup={handleUpdateGroup}
+        />
       )}
     </Grid>
   );

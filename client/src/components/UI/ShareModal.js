@@ -70,12 +70,15 @@ const ShareModal = ({ quizId, closeModal }) => {
     //eslint-disable-next-line
   }, []);
 
-  //add previously invited students to recipients list
+  //add previously invited contacts and groups to state so their boxes can be checked
   useEffect(() => {
     if (quiz && quiz.quizInvites.contacts) {
       setRecipientsContacts(
-        quiz.quizInvites.contacts.map((invite) => invite.id)
+        quiz.quizInvites.contacts.map((contact) => contact.id)
       );
+    }
+    if (quiz && quiz.quizInvites.groups) {
+      setRecipientsGroups(quiz.quizInvites.groups.map((groupId) => groupId));
     }
     //eslint-disable-next-line
   }, []);
@@ -127,8 +130,11 @@ const ShareModal = ({ quizId, closeModal }) => {
       newRecipientsList.push(contact._id);
     });
 
+    const groupsIds = [];
+
     if (recipientsGroups.length > 0) {
       recipientsGroups.forEach((group) => {
+        groupsIds.push(group._id);
         group.contacts.forEach((contact) => {
           newRecipientsList.push(contact);
         });
@@ -159,7 +165,9 @@ const ShareModal = ({ quizId, closeModal }) => {
     });
 
     dispatch(
-      quizActions.updateQuiz(quizId, { quizInvites: { contacts: quizInvites } })
+      quizActions.updateQuiz(quizId, {
+        quizInvites: { contacts: quizInvites, groups: groupsIds },
+      })
     ); //QUIZ INVITES SENT
     dispatch(quizActions.updateQuiz(quizId, { quizCodes: quizCodes }));
 
@@ -209,9 +217,9 @@ const ShareModal = ({ quizId, closeModal }) => {
               {user &&
                 user.groups &&
                 user.groups.map((group, index) => {
-                  let isChecked = false;
+                  let isChecked = recipientsGroups.includes(group._id);
                   for (let i = 0; i < recipientsGroups.length; i++) {
-                    if (recipientsGroups[i].name === group.name) {
+                    if (recipientsGroups[i]._id === group._id) {
                       isChecked = true;
                     }
                   }

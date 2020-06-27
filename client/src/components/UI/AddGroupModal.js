@@ -26,15 +26,14 @@ const AddGroupModal = ({ closeModal, user }) => {
 
   //HANDLERS
   const handleAddContact = (e) => {
-    const selectedContactId = e.target.value;
+    const selectedContact = JSON.parse(e.target.value);
     if (e.target.checked) {
-      setGroupMemberList([...groupMemberList, selectedContactId]);
+      setGroupMemberList([...groupMemberList, selectedContact]);
     } else {
-      setGroupMemberList(
-        groupMemberList.filter(
-          (recipient) => recipient._id !== selectedContactId
-        )
+      const updatedList = groupMemberList.filter(
+        (member) => member._id !== selectedContact._id
       );
+      setGroupMemberList(updatedList);
     }
   };
 
@@ -44,6 +43,10 @@ const AddGroupModal = ({ closeModal, user }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (groupName === "" || groupMemberList.length === 0) {
+      alert("Please add group info and at least one member");
+      return;
+    }
     const group = {
       name: groupName,
       contacts: groupMemberList,
@@ -84,7 +87,7 @@ const AddGroupModal = ({ closeModal, user }) => {
                   type="checkbox"
                   name={contact}
                   onChange={handleAddContact}
-                  value={contact._id}
+                  value={JSON.stringify(contact)}
                 />
               </Grid>
             ))}
