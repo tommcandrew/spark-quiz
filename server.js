@@ -471,6 +471,24 @@ app.post("/deleteContact", auth, (req, res) => {
     });
 });
 
+app.post("/deleteGroup", auth, (req, res) => {
+  const id = req.user.id;
+  const { groupId } = req.body;
+  User.findById(id)
+    .then((user) => {
+      const updatedGroups = user.groups.filter(
+        (group) => group._id.toString() !== groupId
+      );
+      user.groups = updatedGroups;
+      user.save().then(() => {
+        res.status(200).send({ msg: "Group deleted" });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 app.post("/updateContact", auth, (req, res) => {
   const id = req.user.id;
   const { contactId, updatedContact } = req.body;
@@ -478,13 +496,11 @@ app.post("/updateContact", auth, (req, res) => {
     .then((user) => {
       user.contacts.forEach((contact) => {
         if (contact._id.toString() === contactId) {
-          console.log("found contact with matching id");
           contact.name = updatedContact.name;
           contact.email = updatedContact.email;
         }
       });
       user.save().then(() => {
-        console.log("contact updated");
         res.status(200).send({ msg: "Contact deleted" });
       });
     })
@@ -496,6 +512,7 @@ app.post("/updateContact", auth, (req, res) => {
 app.post("/addGroup", auth, (req, res) => {
   const id = req.user.id;
   const { group } = req.body;
+  console.log(group);
   User.findById(id)
     .then((user) => {
       user.groups.push(group);
