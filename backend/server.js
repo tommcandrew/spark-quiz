@@ -262,7 +262,7 @@ app.get("/fetchQuiz", auth, (req, res) => {
   Quiz.find().then((quizzes) => {
     const matchingQuizArray = [];
     quizzes.forEach((quiz) => {
-      if (quiz.quizInvites.includes(id)) {
+      if (quiz.quizInvites.contacts.includes(id)) {
         matchingQuizArray.push(quiz);
       }
     });
@@ -399,7 +399,7 @@ app.post("/publishQuiz", auth, (req, res) => {
   )
     .then((quiz) => {
       emailInvites(
-        quiz.quizInvites,
+        quiz.quizInvites.contacts,
         quiz.quizName,
         quiz.quizAuthor,
         quiz.quizSubject
@@ -419,9 +419,9 @@ const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   const mailOptions = {
     from: "Quiz Master",
     //emailList will go here
-    to: ["thomasdarragh88@gmail.com", "zehrataqi@gmail.com"],
+    to: ["thomasdarragh88@gmail.com"],
     subject: "Quiz Master Invitation",
-    html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: ${quizName}</strong></p><br><p><strong>Subject: ${quizSubject}</strong></p><br><p><strong>Author: ${quizAuthor}</strong></p><br><a href="#">Go to Quiz Master</a>`,
+    html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><a href="#">Go to Quiz Master</a>`,
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -467,6 +467,72 @@ app.post("/addContact", auth, (req, res) => {
     });
 });
 
+app.post("/deleteContact", auth, (req, res) => {
+  const id = req.user.id;
+  const { contactId } = req.body;
+  User.findById(id)
+    .then((user) => {
+      const updatedContacts = user.contacts.filter(
+        (contact) => contact._id.toString() !== contactId
+      );
+      user.contacts = updatedContacts;
+
+      //remove contact from any groups
+      user.groups.forEach((group) => {
+        group.contacts = [
+          ...group.contacts.filter(
+            (contact) => contact._id.toString() !== contactId
+          ),
+        ];
+      });
+
+      user.save().then(() => {
+        res.status(200).send({ msg: "Contact deleted" });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/deleteGroup", auth, (req, res) => {
+  const id = req.user.id;
+  const { groupId } = req.body;
+  User.findById(id)
+    .then((user) => {
+      const updatedGroups = user.groups.filter(
+        (group) => group._id.toString() !== groupId
+      );
+      user.groups = updatedGroups;
+      user.save().then(() => {
+        res.status(200).send({ msg: "Group deleted" });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/updateContact", auth, (req, res) => {
+  const id = req.user.id;
+  const { contactId, updatedContact } = req.body;
+  User.findById(id)
+    .then((user) => {
+      user.contacts.forEach((contact) => {
+        if (contact._id.toString() === contactId) {
+          contact.name = updatedContact.name;
+          contact.email = updatedContact.email;
+        }
+      });
+      user.save().then(() => {
+        res.status(200).send({ msg: "Contact deleted" });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 app.post("/addGroup", auth, (req, res) => {
   const id = req.user.id;
   const { group } = req.body;
@@ -475,6 +541,53 @@ app.post("/addGroup", auth, (req, res) => {
       user.groups.push(group);
       user.save().then(() => {
         res.status(200).send();
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/deleteMember", auth, (req, res) => {
+  const id = req.user.id;
+  const { groupId, memberId } = req.body;
+  User.findById(id)
+    .then((user) => {
+      const updatedGroups = user.groups.map((group) => {
+        if (group._id.toString() === groupId) {
+          group.contacts = [
+            ...group.contacts.filter(
+              (contact) => contact._id.toString() !== memberId
+            ),
+          ];
+        }
+        return group;
+      });
+      user.save().then(() => {
+        res.status(200).send({ msg: "Member deleted" });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+app.post("/updateGroup", auth, (req, res) => {
+  const id = req.user.id;
+  const { groupId, membersToAdd } = req.body;
+  console.log("update group request received");
+  console.log(groupId);
+  console.log(membersToAdd);
+  User.findById(id)
+    .then((user) => {
+      const updatedGroups = user.groups.map((group) => {
+        if (group._id.toString() === groupId) {
+          group.contacts = [...group.contacts, ...membersToAdd];
+        }
+        return group;
+      });
+      user.groups = updatedGroups;
+      user.save().then(() => {
+        res.status(200).send({ msg: "Group updated" });
       });
     })
     .catch((err) => {

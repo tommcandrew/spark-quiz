@@ -121,6 +121,7 @@ export default function CreateQuiz(props) {
   //HOOKS
   useEffect(() => {
     if (questionToEdit !== "") showModal("addNewQuestion");
+    //eslint-disable-next-line
   }, [questionToEdit]);
 
   //HANDLERS
@@ -137,8 +138,23 @@ export default function CreateQuiz(props) {
   };
 
   const publishQuiz = () => {
+    if (
+      quiz.quizInvites.contacts.length === 0 ||
+      quiz.quizInvites.groups.length === 0
+    ) {
+      if (
+        window.confirm(
+          "You are publishing a quiz without any invites. Continue?"
+        )
+      ) {
+        dispatch(quizActions.publishQuiz(quiz._id));
+        //maybe redirect to My Quizzes here?
+      } else {
+        return;
+      }
+    }
+    //repetition!
     dispatch(quizActions.publishQuiz(quiz._id));
-    //maybe redirect to My Quizzes here?
   };
 
   function closeModal() {

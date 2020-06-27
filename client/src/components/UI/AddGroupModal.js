@@ -1,132 +1,103 @@
-import React, { useState, useEffect } from "react";
-import * as userActions from "../../store/actions/quizzesListActions";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import * as userActions from "../../store/actions/userActions";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		flex: 1
-	},
-	paper: {
-		padding: theme.spacing(2),
-		textAlign: "center",
-		color: theme.palette.text.secondary
-	}
+  root: {
+    flex: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  },
 }));
 
 //MAIN
 const AddGroupModal = ({ closeModal, user }) => {
-	const classes = useStyles();
-	const dispatch = useDispatch();
-	const [ groupMemberList, setGroupMemberList ] = useState([]);
-	const [ groupName, setGroupName ] = useState("");
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const [groupMemberList, setGroupMemberList] = useState([]);
+  const [groupName, setGroupName] = useState("");
 
-	//HOOKS
+  //HOOKS
 
-	//HANDLERS
-	const handleAddContact = (e) => {
-		const selectedContactId = e.target.value;
-		if (e.target.checked) {
-			setGroupMemberList([ ...groupMemberList, selectedContactId ]);
-		} else {
-			setGroupMemberList(groupMemberList.filter((recipient) => recipient._id !== selectedContactId));
-		}
-	};
+  //HANDLERS
+  const handleAddContact = (e) => {
+    const selectedContact = JSON.parse(e.target.value);
+    if (e.target.checked) {
+      setGroupMemberList([...groupMemberList, selectedContact]);
+    } else {
+      const updatedList = groupMemberList.filter(
+        (member) => member._id !== selectedContact._id
+      );
+      setGroupMemberList(updatedList);
+    }
+  };
 
-	const handleGroupName = (e) => {
-		setGroupName(e.target.value)
-	}
+  const handleGroupName = (e) => {
+    setGroupName(e.target.value);
+  };
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		const group = {
-			name: groupName,
-			contacts: JSON.stringify(groupMemberList)
-		}
-		dispatch(userActions.addGroup(group))
-		closeModal()
-	}
-	//RETURN
-	return (
-		<div className={classes.root}>
-			<form onSubmit={handleSubmit}>
-				<Grid container spacing={2} justify="center" alignItems="flex-start">
-					<Grid item xs={12}>
-						<Typography variant="h5" style={{ textAlign: "center" }}>
-							Make a group
-						</Typography>
-					</Grid>
-					<Grid item xs={12} style={{ textAlign: "center" }}>
-						<TextField id="standard-basic" label="Group Name" onChange={handleGroupName}/>
-					</Grid>
-					<Grid item container spacing={2} xs={12} style={{ overflowY: "scroll" }} />
-					{user &&
-						user.contacts &&
-						user.contacts.map((contact, index) => (
-							<Grid item lg={3} key={index}>
-								<label htmlFor={contact.name}>{contact.name}</label>
-								<input type="checkbox" name={contact} onChange={handleAddContact} value={contact._id} />
-							</Grid>
-						))}
-				</Grid>
-				<Grid item xs={12}>
-					<Button type="submit">Done</Button>
-				</Grid>
-			</form>
-		</div>
-	);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (groupName === "" || groupMemberList.length === 0) {
+      alert("Please add group info and at least one member");
+      return;
+    }
+    const group = {
+      name: groupName,
+      contacts: groupMemberList,
+    };
+    dispatch(userActions.addGroup(group));
+    closeModal();
+  };
+  //RETURN
+  return (
+    <div className={classes.root}>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2} justify="center" alignItems="flex-start">
+          <Grid item xs={12}>
+            <Typography variant="h5" style={{ textAlign: "center" }}>
+              Make a group
+            </Typography>
+          </Grid>
+          <Grid item xs={12} style={{ textAlign: "center" }}>
+            <TextField
+              id="standard-basic"
+              label="Group Name"
+              onChange={handleGroupName}
+            />
+          </Grid>
+          <Grid
+            item
+            container
+            spacing={2}
+            xs={12}
+            style={{ overflowY: "scroll" }}
+          />
+          {user &&
+            user.contacts &&
+            user.contacts.map((contact, index) => (
+              <Grid item lg={3} key={index}>
+                <label htmlFor={contact.name}>{contact.name}</label>
+                <input
+                  type="checkbox"
+                  name={contact}
+                  onChange={handleAddContact}
+                  value={JSON.stringify(contact)}
+                />
+              </Grid>
+            ))}
+        </Grid>
+        <Grid item xs={12}>
+          <Button type="submit">Done</Button>
+        </Grid>
+      </form>
+    </div>
+  );
 };
 
 export default AddGroupModal;
-
-// const AddGroupModal = ({handleSubmit, user }) => {
-
-// 	const handleAddContact = (e) => {
-// 		if (e.target.checked) {
-// 			setGroupMemberList([ ...groupMemberList, e.target.value ]);
-// 		} else {
-// 			setGroupMemberList(groupMemberList.filter((contact) => contact !== e.target.value));
-// 		}
-// 	};
-
-// 	const handleGroupName = (e) => {
-// 		setGroupName(e.target.value);
-// 	};
-
-// 	const handleDone = () => {
-// 		console.log(groupName)
-// 		handleSubmit(groupName, groupMemberList);
-
-// 	}
-
-// 	return (
-// 		<div className="addContactModal__wrapper">
-// 			<div className="addContactModal__content">
-// 					<div>
-// 						<label htmlFor="groupName">Group Name: </label>
-// 						<input type="text" name="groupName" id="groupName" onChange={handleGroupName} />
-// 						<h5>Add contacts to Group</h5>
-
-// 								return (
-// 									<div key={index}>
-// 										<label htmlFor={contact.name}>{contact.name}</label>
-// 										<input
-// 											type="checkbox"
-// 											id={contact}
-// 											onChange={handleAddContact}
-// 											value={contact}
-// 											//checked={isChecked}
-// 										/>
-// 									</div>
-// 								);
-// 							})}
-// 					</div>
-// 					<button onClick= {handleDone}>Save</button>
-
-// 			</div>
-// 		</div>
-// 	);
-// };
-
-// export default AddGroupModal;

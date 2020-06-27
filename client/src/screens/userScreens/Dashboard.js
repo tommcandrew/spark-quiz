@@ -116,6 +116,15 @@ function Dashboard(props) {
 		[ user, getUser ]
 	);
 
+  const getUser = () => {
+    dispatch(authActions.loadUser());
+  };
+
+  useEffect(() => {
+    getUser();
+    //eslint-disable-next-line
+  }, []);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
