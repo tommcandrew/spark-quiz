@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import * as userActions from "../../store/actions/userActions";
+import * as userActions from "../../store/actions/quizzesListActions";
 import * as quizActions from "../../store/actions/quizActions";
 import {
   Card,
@@ -28,16 +28,16 @@ const useStyles = makeStyles((theme) => ({
 const UserQuizzes = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const quizzes = useSelector((state) => state.user.quizzes);
+  const quizzes = useSelector((state) => state.quizzesList.quizzes);
 
   useEffect(() => {
     dispatch(userActions.fetchQuizzes());
   }, [dispatch]);
 
-  const handleOpenCreateQuiz = (quiz) => {
+	const handleOpenCreateQuiz = (quiz) => {
     dispatch(quizActions.setCurrentQuiz(quiz));
     props.history.push({
-      pathname: "/dashboard/createQuiz",
+      pathname: "/dashboard/updatequiz",
     });
   };
 
@@ -50,12 +50,12 @@ const UserQuizzes = (props) => {
 		<Grid container spacing={2} className={classes.root}>
 			<Grid item xs={12} xl={12}>
 				<Typography variant="h5" align="center">
-					My Quizes
+					My Quizzes
 				</Typography>
 			</Grid>
 			{quizzes.length === 0 && (
 				<Grid item xl={12}>
-					<Typography>You have no quizes</Typography>
+					<Typography>You have no quizzes</Typography>
 				</Grid>
 			)}
 			{quizzes &&

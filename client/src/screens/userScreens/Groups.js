@@ -70,8 +70,8 @@ const Groups = (props) => {
 			<Grid item container xl={12} spacing={2}>
 				{user &&
 					user.groups && 
-					user.groups.map((group) => {
-						return (<Grid item lg={2}>
+					user.groups.map((group, index) => {
+						return (<Grid item lg={2} key={index}>
 							{group.name}
 						</Grid>)
 				})}

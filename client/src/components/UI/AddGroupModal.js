@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as userActions from "../../store/actions/userActions";
+import * as userActions from "../../store/actions/quizzesListActions";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography, TextField, Button } from "@material-ui/core";

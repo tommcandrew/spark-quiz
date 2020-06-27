@@ -3,8 +3,7 @@ import AddQuestionModal from "../../components/UI/AddQuestionModal";
 import PreviewQuestions from "../../components/UI/PreviewQuestions";
 import QuizOptionsModal from "../../components/UI/QuizOptionsModal";
 import ShareModal from "../../components/UI/ShareModal";
-import * as quizActions from "../../store/actions/quizActions";
-import * as userActions from "../../store/actions/userActions";
+import * as quizActions from "../../store/actions/quizActions"; 
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Button, Box, Typography, Grid } from "@material-ui/core";
@@ -73,12 +72,22 @@ const customStyles = {
 export default function CreateQuiz(props) {
   const dispatch = useDispatch();
   const [displayedComponent, setDisplayedComponent] = useState();
-  const quiz = useSelector((state) => state.quiz);
+  const quiz =useSelector((state)=> state.quiz)
+  const quizId = useSelector((state) => state.quiz._id);
   const [quizName, setQuizName] = useState("");
   const [quizSubject, setQuizSubject] = useState("");
   const [modalIsOpen, setIsOpen] = useState(false);
   const [questionToEdit, setQuestionToEdit] = useState("");
   const classes = useStyles();
+
+  const getQuiz =() => {
+       dispatch(quizActions.loadQuiz())
+  }
+  
+  useEffect(() => {
+    if (quizId === ""){
+    getQuiz()}
+  }, [])
 
   //HANDLERS
   const showModal = (screen) => {
@@ -122,7 +131,6 @@ export default function CreateQuiz(props) {
   const handleCreate = () => {
     if (quizName.length !== 0 && quizSubject.length !== 0) {
       dispatch(quizActions.createQuiz(quizName, quizSubject));
-      dispatch(userActions.addQuiz(quizName, quizSubject, false));
       setQuizName(quiz.quizName);
       setQuizSubject(quiz.quizSubject);
     } else console.log("plz fill the fields");
@@ -140,7 +148,7 @@ export default function CreateQuiz(props) {
   //RETURN
   return (
     <Fragment>
-      {quiz._id.length <= 0 && (
+      {!quizId && (
         <div className={classes.quizNameContainer}>
           <Grid container spacing={2} justify="center">
             <Grid item xs={12} md={6}>

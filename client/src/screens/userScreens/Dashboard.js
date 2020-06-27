@@ -1,5 +1,5 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, {useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
@@ -102,6 +102,19 @@ function Dashboard(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const user = useSelector(state => state.auth.user);
+
+ const getUser = async() =>{
+		await dispatch(authActions.loadUser());
+	}
+	useEffect(
+		() => {
+			if (!user) {
+				getUser();
+			}
+		},
+		[ user, getUser ]
+	);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -145,7 +158,7 @@ function Dashboard(props) {
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
-              <ListItemText primary="My Quizes" />
+              <ListItemText primary="My Quizzes" />
             </ListItem>
           </Link>
 
@@ -257,6 +270,7 @@ function Dashboard(props) {
             <Switch>
               <Route exact path={path} component={WelcomScreen} />
               <Route path={`${url}/myquizzes`} component={UserQuizzes} />
+              <Route path={`${url}/updatequiz`} component={CreateQuiz} />
               <Route path={`${url}/createquiz`} component={CreateQuiz} />
               <Route path={`${url}/contacts`} component={Contacts} />
               <Route path={`${url}/groups`} component={Groups} />
