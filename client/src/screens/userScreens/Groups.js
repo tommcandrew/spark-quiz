@@ -43,10 +43,7 @@ const Groups = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(selectedGroup);
-  }, [selectedGroup]);
+  const [membersToAdd, setMembersToAdd] = useState([]);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -59,6 +56,26 @@ const Groups = () => {
 
   const handleDeleteMember = (memberId) => {
     dispatch(userActions.deleteMember(selectedGroup._id, memberId));
+    //unfortunately "selectedGroup" doesn't update after adding/removing members so the GroupInfoModal does not reflect changes until refresh
+  };
+
+  const handleAddMember = (e) => {
+    const selectedContactId = e.target.value;
+    const selectedContact = user.contacts.find(
+      (contact) => contact._id === selectedContactId
+    );
+
+    if (e.target.checked) {
+      setMembersToAdd([...membersToAdd, selectedContact]);
+    } else {
+      setMembersToAdd(
+        membersToAdd.filter((member) => member._id !== selectedContactId)
+      );
+    }
+  };
+
+  const handleUpdateGroup = () => {
+    dispatch(userActions.updateGroup(selectedGroup._id, membersToAdd));
   };
 
   return (
@@ -107,6 +124,9 @@ const Groups = () => {
           setSelectedGroup={setSelectedGroup}
           handleDeleteGroup={handleDeleteGroup}
           handleDeleteMember={handleDeleteMember}
+          handleAddMember={handleAddMember}
+          user={user}
+          handleUpdateGroup={handleUpdateGroup}
         />
       )}
     </Grid>

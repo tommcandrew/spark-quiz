@@ -6,6 +6,9 @@ const GroupInfoModal = ({
   setSelectedGroup,
   handleDeleteGroup,
   handleDeleteMember,
+  handleAddMember,
+  user,
+  handleUpdateGroup,
 }) => {
   return (
     <div className="groupInfoModal__wrapper">
@@ -44,6 +47,24 @@ const GroupInfoModal = ({
             Delete group
           </button>
         </form>
+        <form>
+          <h2>Add member to group</h2>
+          {user &&
+            user.contacts &&
+            user.contacts.map((contact, index) => {
+              return (
+                <div key={index}>
+                  <label htmlFor={contact.name}>{contact.name}</label>
+                  <input
+                    type="checkbox"
+                    onChange={handleAddMember}
+                    value={contact._id}
+                  />
+                </div>
+              );
+            })}
+        </form>
+        <button onClick={handleUpdateGroup}>Done</button>
       </div>
     </div>
   );

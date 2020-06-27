@@ -531,7 +531,6 @@ app.post("/deleteMember", auth, (req, res) => {
     .then((user) => {
       const updatedGroups = user.groups.map((group) => {
         if (group._id.toString() === groupId) {
-          console.log("found group");
           group.contacts = [
             ...group.contacts.filter(
               (contact) => contact._id.toString() !== memberId
@@ -542,6 +541,29 @@ app.post("/deleteMember", auth, (req, res) => {
       });
       user.save().then(() => {
         res.status(200).send({ msg: "Member deleted" });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+app.post("/updateGroup", auth, (req, res) => {
+  const id = req.user.id;
+  const { groupId, membersToAdd } = req.body;
+  console.log("update group request received");
+  console.log(groupId);
+  console.log(membersToAdd);
+  User.findById(id)
+    .then((user) => {
+      const updatedGroups = user.groups.map((group) => {
+        if (group._id.toString() === groupId) {
+          group.contacts = [...group.contacts, ...membersToAdd];
+        }
+        return group;
+      });
+      user.groups = updatedGroups;
+      user.save().then(() => {
+        res.status(200).send({ msg: "Group updated" });
       });
     })
     .catch((err) => {

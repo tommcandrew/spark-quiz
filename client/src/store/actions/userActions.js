@@ -135,7 +135,26 @@ export const deleteMember = (groupId, memberId) => {
         tokenConfig(token)
       )
       .then(() => {
-        console.log("loading user");
+        dispatch(loadUser());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const updateGroup = (groupId, membersToAdd) => {
+  console.log("update group action");
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    console.log("calling axios");
+    return axios
+      .post(
+        "http://localhost:5000/updateGroup",
+        { groupId, membersToAdd },
+        tokenConfig(token)
+      )
+      .then(() => {
         dispatch(loadUser());
       })
       .catch((err) => {
