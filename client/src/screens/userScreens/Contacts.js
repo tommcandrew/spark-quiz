@@ -38,7 +38,6 @@ const Contacts = () => {
     const updatedContact = { name, email };
     dispatch(userActions.updateContact(selectedContact._id, updatedContact));
     setShowAddContactModal(false);
-
     setSelectedContact(null);
   };
 

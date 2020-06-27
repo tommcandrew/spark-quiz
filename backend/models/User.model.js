@@ -18,9 +18,9 @@ const User = new Schema({
     {
       id: String,
       name: String,
-      contacts: [String]
-    }
-  ]
+      contacts: [{}],
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", User);
