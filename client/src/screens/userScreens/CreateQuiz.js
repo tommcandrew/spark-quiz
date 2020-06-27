@@ -145,6 +145,8 @@ export default function CreateQuiz(props) {
         return;
       }
     }
+    //repetition!
+    dispatch(quizActions.publishQuiz(quiz._id));
   };
 
   function closeModal() {
