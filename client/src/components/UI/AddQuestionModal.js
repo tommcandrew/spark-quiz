@@ -60,7 +60,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
   const handleAddText = () => {
     setAddedMedia([
       ...addedMedia,
-      { file: { type: "text/plain", text: "" }, id: Date.now() },
+      { file: { mediaType: "text/plain", data: "" }, id: Date.now() },
     ]);
   };
 
@@ -94,7 +94,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
   const handleTextChange = (e) => {
     const addedMediaCopy = [...addedMedia];
-    addedMediaCopy[e.target.dataset.index].file.text = e.target.value;
+    addedMediaCopy[e.target.dataset.index].file.data = e.target.value;
     setAddedMedia([...addedMediaCopy]);
   };
 
@@ -134,9 +134,13 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const addedText = addedMedia.filter(
-      (media) => media.file.type === "text/plain"
-    );
+    //don't need id we added in backend so just sending file
+    let addedText = addedMedia
+      .filter(
+        (media) =>
+          media.file.mediaType === "text/plain" && media.file.data !== ""
+      )
+      .map((obj) => obj.file);
     const questionObject = {
       id: new Date().getUTCMilliseconds(),
       questionType: questionType,

@@ -19,6 +19,7 @@ const Quiz = new Schema(
         question: String,
         media: [
           {
+            //can't use just "type" because it's a special word and it's causing me some problems in front end!!!
             mediaType: String,
             data: Schema.Types.Mixed,
           },
