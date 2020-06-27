@@ -453,6 +453,28 @@ app.post("/addContact", auth, (req, res) => {
     });
 });
 
+app.post("/deleteContact", auth, (req, res) => {
+  const id = req.user.id;
+  const { contactId } = req.body;
+  console.log(typeof contactId);
+  console.log(contactId);
+  User.findById(id)
+    .then((user) => {
+      const updatedContacts = user.contacts.filter(
+        (contact) => contact._id.toString() !== contactId
+      );
+      console.log(updatedContacts);
+      user.contacts = updatedContacts;
+      user.save().then(() => {
+        console.log("contact deleted");
+        res.status(200).send();
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 app.post("/addGroup", auth, (req, res) => {
   const id = req.user.id;
   const { group } = req.body;

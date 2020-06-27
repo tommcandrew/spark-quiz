@@ -23,6 +23,10 @@ const Contacts = () => {
     setShowAddContactModal(false);
   };
 
+  const handleDeleteContact = (contactId) => {
+    dispatch(userActions.deleteContact(contactId));
+  };
+
   return (
     <div className="contacts__wrapper">
       <h1 className="contacts__title">Contacts</h1>
@@ -36,6 +40,12 @@ const Contacts = () => {
             user.contacts.map((contact, index) => (
               <div key={index} className="contacts__contact">
                 {contact.name}
+                <span
+                  className="contacts__delete"
+                  onClick={() => handleDeleteContact(contact._id)}
+                >
+                  &times;
+                </span>
               </div>
             ))}
         </div>
