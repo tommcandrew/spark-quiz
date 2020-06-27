@@ -397,7 +397,8 @@ app.post("/publishQuiz", auth, (req, res) => {
         quiz.quizInvites.contacts,
         quiz.quizName,
         quiz.quizAuthor,
-        quiz.quizSubject
+        quiz.quizSubject,
+        quiz.quizCodes
       );
       res.status(200).send();
     })
@@ -406,24 +407,30 @@ app.post("/publishQuiz", auth, (req, res) => {
     });
 });
 
-const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
-  let emailList = [];
-  quizInvites.forEach((contact) => {
-    emailList.push(contact.email);
-  });
-  const mailOptions = {
-    from: "Quiz Master",
-    //emailList will go here
-    to: ["thomasdarragh88@gmail.com"],
-    subject: "Quiz Master Invitation",
-    html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><a href="#">Go to Quiz Master</a>`,
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email(s) sent");
-    }
+const emailInvites = (
+  quizInvites,
+  quizName,
+  quizAuthor,
+  quizSubject,
+  quizCodes
+) => {
+  quizInvites.forEach((contact, index) => {
+    //I'm assuming we need to send a separate email for each recipient like this in a loop beacuse the quizCode will be different for each one
+    const mailOptions = {
+      from: "Quiz Master",
+      //put "contact.email" here
+      to: ["thomasdarragh88@gmail.com"],
+      subject: "Quiz Master Invitation",
+      //need a better way to retrieve recipient's quizCode
+      html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><p>Log in with code: ${quizCodes[index].code}</p><br><a href="#">Go to Quiz Master</a>`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email(s) sent");
+      }
+    });
   });
 };
 
@@ -569,9 +576,6 @@ app.post("/deleteMember", auth, (req, res) => {
 app.post("/updateGroup", auth, (req, res) => {
   const id = req.user.id;
   const { groupId, membersToAdd } = req.body;
-  console.log("update group request received");
-  console.log(groupId);
-  console.log(membersToAdd);
   User.findById(id)
     .then((user) => {
       const updatedGroups = user.groups.map((group) => {
