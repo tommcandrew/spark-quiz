@@ -129,12 +129,15 @@ app.post("/login", (req, res) => {
 //we should have an "invite id" later which is unique to the student AND the quiz
 app.post("/studentLogin", (req, res) => {
   const { id } = req.body;
+  console.log(id);
   Quiz.find()
     .then((quizzes) => {
       let found = "";
       quizzes.forEach((quiz) => {
-        quiz.codes.forEach((c) => {
+        quiz.quizCodes.forEach((c) => {
+          console.log(c);
           if (c.code === id) {
+            console.log("found quiz with code - signing in");
             found = c;
             jwt.sign({ c, role: "student" }, "secretkey", (err, token) => {
               res.status(200).send({
@@ -153,11 +156,15 @@ app.post("/studentLogin", (req, res) => {
         });
       });
       if (found === "") {
+        console.log("quiz not found");
         res.status(403).send({ msg: "invalid code" });
         return;
       }
     })
-    .catch((err) => res.status(500).send({ msg: err }));
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ msg: err });
+    });
 });
 
 app.post("/addQuestion", (req, res) => {
