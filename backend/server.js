@@ -131,12 +131,15 @@ app.post("/login", (req, res) => {
 //we should have an "invite id" later which is unique to the student AND the quiz
 app.post("/studentLogin", (req, res) => {
   const { id } = req.body;
+  console.log(id);
   Quiz.find()
     .then((quizzes) => {
       let found = "";
       quizzes.forEach((quiz) => {
-        quiz.codes.forEach((c) => {
+        quiz.quizCodes.forEach((c) => {
+          console.log(c);
           if (c.code === id) {
+            console.log("found quiz with code - signing in");
             found = c;
             jwt.sign({ c, role: "student" }, "secretkey", (err, token) => {
               res.status(200).send({
@@ -155,11 +158,15 @@ app.post("/studentLogin", (req, res) => {
         });
       });
       if (found === "") {
+        console.log("quiz not found");
         res.status(403).send({ msg: "invalid code" });
         return;
       }
     })
-    .catch((err) => res.status(500).send({ msg: err }));
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ msg: err });
+    });
 });
 
 app.post("/addQuestion", (req, res) => {
@@ -178,6 +185,8 @@ app.post("/addQuestion", (req, res) => {
       });
     }
   }
+
+  console.log(questionParsed);
 
   //then find quiz that was previously saved and push the new question onto the questions array
   Quiz.findById(_id)
@@ -402,7 +411,8 @@ app.post("/publishQuiz", auth, (req, res) => {
         quiz.quizInvites.contacts,
         quiz.quizName,
         quiz.quizAuthor,
-        quiz.quizSubject
+        quiz.quizSubject,
+        quiz.quizCodes
       );
       res.status(200).send();
     })
@@ -411,24 +421,30 @@ app.post("/publishQuiz", auth, (req, res) => {
     });
 });
 
-const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
-  let emailList = [];
-  quizInvites.forEach((contact) => {
-    emailList.push(contact.email);
-  });
-  const mailOptions = {
-    from: "Quiz Master",
-    //emailList will go here
-    to: ["thomasdarragh88@gmail.com"],
-    subject: "Quiz Master Invitation",
-    html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><a href="#">Go to Quiz Master</a>`,
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email(s) sent");
-    }
+const emailInvites = (
+  quizInvites,
+  quizName,
+  quizAuthor,
+  quizSubject,
+  quizCodes
+) => {
+  quizInvites.forEach((contact, index) => {
+    //I'm assuming we need to send a separate email for each recipient like this in a loop beacuse the quizCode will be different for each one
+    const mailOptions = {
+      from: "Quiz Master",
+      //put "contact.email" here
+      to: ["thomasdarragh88@gmail.com"],
+      subject: "Quiz Master Invitation",
+      //need a better way to retrieve recipient's quizCode
+      html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><p>Log in with code: ${quizCodes[index].code}</p><br><a href="#">Go to Quiz Master</a>`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email(s) sent");
+      }
+    });
   });
 };
 
@@ -574,9 +590,6 @@ app.post("/deleteMember", auth, (req, res) => {
 app.post("/updateGroup", auth, (req, res) => {
   const id = req.user.id;
   const { groupId, membersToAdd } = req.body;
-  console.log("update group request received");
-  console.log(groupId);
-  console.log(membersToAdd);
   User.findById(id)
     .then((user) => {
       const updatedGroups = user.groups.map((group) => {

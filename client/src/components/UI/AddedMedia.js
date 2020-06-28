@@ -6,17 +6,19 @@ const styles = {
   },
 };
 
+//text has a "mediaType" and all other file types have a "type"
+
 const AddedMedia = ({ media, handleRemoveMedia, handleTextChange, index }) => {
   return (
     <div>
-      {media.file.type.includes("image") && (
+      {media.file.type && media.file.type.includes("image") && (
         <img
           style={styles.addedImage}
           src={URL.createObjectURL(media.file)}
           alt=""
         />
       )}
-      {media.file.type.includes("video") && (
+      {media.file.type && media.file.type.includes("video") && (
         <video width="320" height="240" controls>
           <source
             type={media.file.type}
@@ -24,7 +26,7 @@ const AddedMedia = ({ media, handleRemoveMedia, handleTextChange, index }) => {
           />
         </video>
       )}
-      {media.file.type.includes("audio") && (
+      {media.file.type && media.file.type.includes("audio") && (
         <audio controls>
           <source
             src={URL.createObjectURL(media.file)}
@@ -32,7 +34,7 @@ const AddedMedia = ({ media, handleRemoveMedia, handleTextChange, index }) => {
           />
         </audio>
       )}
-      {media.file.type.includes("text") && (
+      {media.file.mediaType && media.file.mediaType.includes("text") && (
         <textarea
           rows="5"
           value={media.file.text}

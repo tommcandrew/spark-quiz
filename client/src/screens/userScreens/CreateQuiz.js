@@ -139,8 +139,9 @@ export default function CreateQuiz(props) {
 
   const publishQuiz = () => {
     if (
-      quiz.quizInvites.contacts.length === 0 ||
-      quiz.quizInvites.groups.length === 0
+      //probably easier to just create empty contacts and groups arrays on initial state object in quizReducer
+      !quiz.quizInvites.contacts ||
+      quiz.quizInvites.contacts.length === 0
     ) {
       if (
         window.confirm(
