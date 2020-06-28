@@ -143,7 +143,6 @@ const ShareModal = ({ quizId, closeModal }) => {
 
     newRecipientsList = [...new Set(newRecipientsList)]; //aray of non duplicate selected contact ids
     let quizInvites = [];
-    let quizCodes = [];
     newRecipientsList.forEach((r) => {
       user.contacts.forEach((u) => {
         if (u._id === r) {
@@ -154,11 +153,7 @@ const ShareModal = ({ quizId, closeModal }) => {
             //using both "id" and "_id" is not ideal!
             id: u._id,
             //when adding someone to invites array, in DB they seem to be assigned a Mongo ID which I don't understand
-          });
-          quizCodes.push({
-            //maybe use a library or something for more secure code
             code: Math.floor(Math.random() * 1000),
-            contactId: u._id,
           });
         }
       });
@@ -169,7 +164,6 @@ const ShareModal = ({ quizId, closeModal }) => {
         quizInvites: { contacts: quizInvites, groups: groupsIds },
       })
     ); //QUIZ INVITES SENT
-    dispatch(quizActions.updateQuiz(quizId, { quizCodes: quizCodes }));
 
     closeModal();
   };
