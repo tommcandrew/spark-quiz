@@ -41,11 +41,10 @@ export default (state = initalState, action) => {
     case CREATE_QUIZ:
       return {
         ...state,
-        _id: action.payload._id,
-        quizName: action.payload.quizName,
-        quizSubject: action.payload.quizSubject,
+        ...action.payload
       };
     case SET_CURRENT_QUIZ:
+      console.log("in reducer")
       return {
         ...state,
         ...action.payload,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddGroupModal from "../../components/UI/AddGroupModal";
 import Modal from "react-modal";
-import * as userActions from "../../store/actions/userActions";
+import * as userActions from "../../store/actions/quizzesListActions";
 import { Grid, Typography, makeStyles } from "@material-ui/core";
 import GroupInfoModal from "../../components/UI/GroupInfoModal";
 import "./Groups.css";
