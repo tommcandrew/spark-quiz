@@ -20,9 +20,9 @@ const Home = (props) => {
 
   const studentLoginHandler = async (e) => {
     e.preventDefault();
-    const id = e.target.code.value;
-    await dispatch(authActions.studentLogin(id));
-    
+    const studentCode = e.target.code.value;
+    await dispatch(authActions.studentLogin(studentCode));
+
     props.history.push("/quiz");
     //don't forget error handling
   };
@@ -37,7 +37,7 @@ const Home = (props) => {
           width={50}
           height={50}
           className={classes.large}
-          variant= "square"
+          variant="square"
         />
         <Typography component="h1" variant="h5">
           Hello There!
@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px",
     border: "1px solid",
     borderColor: theme.palette.primary,
-    borderRadius: "10px"
+    borderRadius: "10px",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
