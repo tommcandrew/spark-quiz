@@ -79,7 +79,6 @@ export const deleteQuestion = (id) => {
 };
 
 export const setCurrentQuiz = (quiz) => {
-	console.log(quiz)
 	return({
 			type: SET_CURRENT_QUIZ,
 			payload: quiz
