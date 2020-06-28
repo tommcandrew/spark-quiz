@@ -97,6 +97,14 @@ export default function CreateQuiz(props) {
           <AddQuestionModal
             closeModal={closeModal}
             quiz={quiz}
+          />
+        );
+        break;
+      case "editQuestion":
+        setDisplayedComponent(
+          <AddQuestionModal
+            closeModal={closeModal}
+            quiz={quiz}
             questionToEdit={questionToEdit}
           />
         );
@@ -118,9 +126,9 @@ export default function CreateQuiz(props) {
     return;
   };
 
-  //HOOKS
+
   useEffect(() => {
-    if (questionToEdit !== "") showModal("addNewQuestion");
+    if (questionToEdit !== "") showModal("editQuestion");
     //eslint-disable-next-line
   }, [questionToEdit]);
 
@@ -128,6 +136,7 @@ export default function CreateQuiz(props) {
   const editQuestion = (id) => {
     setQuestionToEdit(id);
   };
+
 
   const handleCreate = () => {
     if (quizName.length !== 0 && quizSubject.length !== 0) {
