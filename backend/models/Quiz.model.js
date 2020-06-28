@@ -8,7 +8,7 @@ const Quiz = new Schema(
     quizAuthor: String,
     quizSubject: String,
     quizInvites: {
-      contacts: [{ email: String, name: String, id: String }],
+      contacts: [{ email: String, name: String, id: String, code: String }],
       groups: [String],
     },
     quizPublished: Boolean,

@@ -127,31 +127,30 @@ app.post("/login", (req, res) => {
   });
 });
 
-//logging in with contact id for now - will return most recent quiz if there's more than one
-//we should have an "invite id" later which is unique to the student AND the quiz
 app.post("/studentLogin", (req, res) => {
-  const { id } = req.body;
-  console.log(id);
+  const { studentCode } = req.body;
   Quiz.find()
     .then((quizzes) => {
       let found = "";
       quizzes.forEach((quiz) => {
-        quiz.quizCodes.forEach((c) => {
-          console.log(c);
-          if (c.code === id) {
-            console.log("found quiz with code - signing in");
-            found = c;
-            jwt.sign({ c, role: "student" }, "secretkey", (err, token) => {
-              res.status(200).send({
-                quiz: quiz, //here we do not need to send the entire quiz
-                token,
-                user: {
-                  code: c.code,
-                  contactId: c.contactId,
-                  role: "student",
-                },
-              });
-            });
+        quiz.quizInvites.contacts.forEach((contact) => {
+          if (contact.code === studentCode) {
+            found = contact.code;
+            jwt.sign(
+              { code: contact.code, role: "student" },
+              "secretkey",
+              (err, token) => {
+                res.status(200).send({
+                  quiz: quiz, //here we do not need to send the entire quiz
+                  token,
+                  user: {
+                    code: contact.code,
+                    contactId: contact.id,
+                    role: "student",
+                  },
+                });
+              }
+            );
             return;
           }
           if (found !== "") return;
@@ -408,11 +407,10 @@ app.post("/publishQuiz", auth, (req, res) => {
   )
     .then((quiz) => {
       emailInvites(
-        quiz.quizInvites.contacts,
+        quiz.quizInvites,
         quiz.quizName,
         quiz.quizAuthor,
-        quiz.quizSubject,
-        quiz.quizCodes
+        quiz.quizSubject
       );
       res.status(200).send();
     })
@@ -428,15 +426,14 @@ const emailInvites = (
   quizSubject,
   quizCodes
 ) => {
-  quizInvites.forEach((contact, index) => {
+  quizInvites.contacts.forEach((contact) => {
     //I'm assuming we need to send a separate email for each recipient like this in a loop beacuse the quizCode will be different for each one
     const mailOptions = {
       from: "Quiz Master",
       //put "contact.email" here
       to: ["thomasdarragh88@gmail.com"],
       subject: "Quiz Master Invitation",
-      //need a better way to retrieve recipient's quizCode
-      html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><p>Log in with code: ${quizCodes[index].code}</p><br><a href="#">Go to Quiz Master</a>`,
+      html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><p>Log in with code: ${contact.code}</p><br><a href="#">Go to Quiz Master</a>`,
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
