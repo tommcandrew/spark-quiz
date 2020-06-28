@@ -54,30 +54,6 @@ export const loadQuiz = () => {
 	};
 };
 
-export const addNewQuestion = (formData) => {
-	return (dispatch) => {
-		axios
-			.post("http://localhost:5000/addQuestion", formData)
-			.then((res) => {
-				dispatch({
-					type: ADD_NEW_QUESTION,
-					payload: res.data.quiz
-				});
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-};
-
-export const deleteQuestion = (id) => {
-	//no back end call made
-	return {
-		type: DELETE_QUESTION,
-		id: id
-	};
-};
-
 export const setCurrentQuiz = (quiz) => {
 	return({
 			type: SET_CURRENT_QUIZ,
@@ -96,6 +72,40 @@ export const clearCurrentQuiz = () => {
 	};
 };
 
+export const addNewQuestion = (formData) => {
+	return (dispatch) => {
+		axios
+			.post("http://localhost:5000/addQuestion", formData)
+			.then((res) => {
+				dispatch({
+					type: ADD_NEW_QUESTION,
+					payload: res.data.quiz
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+};
+
+export const deleteQuestion = (id) => {
+	return async (dispatch, getState) => {
+		const quizId = getState().auth.quizId;
+		const token = getState().auth.token;
+		return await axios.post(
+			"http://localhost:5000/deleteQuestion",
+			{ quizId: quizId, questionId: id },
+			tokenConfig(token)
+		).then(() => {
+			dispatch({
+				type: DELETE_QUESTION,
+				id: id
+			})
+		})
+	};
+};
+
+
 export const updateQuiz = (_id, update) => {
 	return (dispatch) => {
 		axios
@@ -112,6 +122,7 @@ export const updateQuiz = (_id, update) => {
 	};
 };
 
+//IS THIS FUNCTION BEING USED?
 export const fetchQuiz = () => {
 	return (dispatch, getState) => {
 		const token = getState().auth.token;
