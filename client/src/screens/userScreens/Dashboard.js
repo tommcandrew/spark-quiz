@@ -104,17 +104,6 @@ function Dashboard(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const user = useSelector(state => state.auth.user);
 
- const getUser = async() =>{
-		await dispatch(authActions.loadUser());
-	}
-	useEffect(
-		() => {
-			if (!user) {
-				getUser();
-			}
-		},
-		[ user, getUser ]
-	);
 
   const getUser = () => {
     dispatch(authActions.loadUser());

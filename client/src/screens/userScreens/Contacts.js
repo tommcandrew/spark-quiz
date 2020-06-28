@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AddContactModal from "../../components/UI/AddContactModal";
 import { useDispatch, useSelector } from "react-redux";
-import * as userActions from "../../store/actions/userActions";
+import * as userActions from "../../store/actions/quizzesListActions";
 import "./Contacts.css";
 import ContactInfoModal from "../../components/UI/ContactInfoModal";
 

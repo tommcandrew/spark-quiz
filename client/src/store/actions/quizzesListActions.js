@@ -25,6 +25,16 @@ export const fetchQuizzes = () => {
   };
 };
 
+export const addQuiz = (quizName, quizSubject, quizPublished) => {
+  return {
+    type: ADD_QUIZ,
+    payload: {
+      quizName,
+      quizSubject,
+      quizPublished,
+    },
+  };
+};
 
 export const addContact = (contact) => {
   return (dispatch, getState) => {
@@ -44,6 +54,60 @@ export const addContact = (contact) => {
   };
 };
 
+export const deleteContact = (contactId) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post(
+        "http://localhost:5000/deleteContact",
+        { contactId },
+        tokenConfig(token)
+      )
+      .then(() => {
+        dispatch(loadUser());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const deleteGroup = (groupId) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post(
+        "http://localhost:5000/deleteGroup",
+        { groupId },
+        tokenConfig(token)
+      )
+      .then(() => {
+        dispatch(loadUser());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const updateContact = (contactId, updatedContact) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post(
+        "http://localhost:5000/updateContact",
+        { contactId, updatedContact },
+        tokenConfig(token)
+      )
+      .then(() => {
+        dispatch(loadUser());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 export const addGroup = (group) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
@@ -54,6 +118,42 @@ export const addGroup = (group) => {
           type: ADD_GROUP,
           payload: group,
         });
+        dispatch(loadUser());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const deleteMember = (groupId, memberId) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post(
+        "http://localhost:5000/deleteMember",
+        { groupId, memberId },
+        tokenConfig(token)
+      )
+      .then(() => {
+        dispatch(loadUser());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const updateGroup = (groupId, membersToAdd) => {
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    return axios
+      .post(
+        "http://localhost:5000/updateGroup",
+        { groupId, membersToAdd },
+        tokenConfig(token)
+      )
+      .then(() => {
         dispatch(loadUser());
       })
       .catch((err) => {
