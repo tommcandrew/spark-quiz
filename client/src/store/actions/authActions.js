@@ -13,6 +13,8 @@ export const STUDENT_LOGIN_SUCCESS = "STUDENT_LOGIN_SUCCESS";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const CLEAR_STUDENT = "CLEAR_STUDENT";
+export const SET_CURRENT_QUIZ_IN_LS = "SET_CURRENT_QUIZ_IN_LS"
+export const CLEAR_QUIZ_FROM_LS = "CLEAR_QUIZ_FROM_LS"
 
 //check token and load user. This function will be called all the time
 export const loadUser = () => {
@@ -20,8 +22,7 @@ export const loadUser = () => {
     //user loading
     dispatch({ type: USER_LOADING }); //user is loading to true
     const token = getState().auth.token;
-
-    axios
+    return axios
       .get("http://localhost:5000/user", tokenConfig(token))
       .then((res) =>
         dispatch({
@@ -94,11 +95,6 @@ export const login = ({ email, password }) => {
   };
 };
 
-export const logout = () => {
-  return (dispatch) => {
-    dispatch({ type: LOGOUT_SUCCESS });
-  };
-};
 
 //set up config/headers and token
 export const tokenConfig = (token) => {
@@ -190,3 +186,29 @@ export const resetPassword = (email) => {
       });
   };
 };
+
+export const logout = () => {
+  return (dispatch) => {
+    dispatch({ type: LOGOUT_SUCCESS });
+  };
+};
+
+//QUIZ ACTIONS 
+
+export const setCurrentQuizInLS = (id) => {
+  return  (dispatch) => {
+    dispatch({
+      type: SET_CURRENT_QUIZ_IN_LS,
+      quizId: id 
+    });
+  };
+}
+
+export const clearQuizFromLS = () => {
+  return async (dispatch) => {
+    await dispatch({ type: CLEAR_QUIZ_FROM_LS });
+  };
+};
+
+
+

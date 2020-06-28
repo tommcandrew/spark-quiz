@@ -5,7 +5,7 @@ import ReduxThunk from "redux-thunk";
 import "./app.css";
 import errorReducer from "./store/reducers/errorReducer";
 import authReducer from "./store/reducers/authReducer";
-import userReducer from "./store/reducers/userReducer";
+import quizzesListReducer from "./store/reducers/quizzesListReducer";
 import quizReducer from "./store/reducers/quizReducer";
 import quizScoreReducer from "./store/reducers/quizScoreReducer"
 import MainNavigation from "./components/navigation/MainNavigation";
@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
   quiz: quizReducer,
   error: errorReducer,
   auth: authReducer,
-  user: userReducer,
+  quizzesList: quizzesListReducer,
   score: quizScoreReducer,
 });
 
