@@ -1,7 +1,6 @@
 import React from "react";
 
 const QuizMedia = ({ media }) => {
-  console.log(media);
   return (
     <div className="quiz__media">
       {media.mediaType.includes("image") && (
