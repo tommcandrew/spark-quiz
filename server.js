@@ -163,20 +163,20 @@ app.post("/addQuestion", (req, res) => {
 	//parse question as it was stringified in order to send
 	const questionParsed = JSON.parse(questionObject);
 	//since FormData separated the media from the rest of the question, loop over media and insert back into question object
+	
 	const mediaFiles = req.files;
 	if (mediaFiles) {
 		const keys = Object.keys(mediaFiles);
 		for (key of keys) {
 			//probably a good idea to check that the media prop exists and add if not
 			questionParsed.media.push({
+				name: mediaFiles[key].name,
 				mediaType: mediaFiles[key].mimetype,
 				data: mediaFiles[key].data
 			});
+			console.log(key)
 		}
 	}
-
-	console.log(questionParsed);
-
 	//then find quiz that was previously saved and push the new question onto the questions array
 	Quiz.findById(_id)
 		.then((quiz) => {
@@ -195,6 +195,40 @@ app.post("/addQuestion", (req, res) => {
 			console.log(err);
 		});
 });
+
+app.post("/editQuestion", (req, res) => {
+	const { _id, questionObject } = req.body;
+	const questionParsed = JSON.parse(questionObject);
+	const mediaFiles = req.files;
+	if (mediaFiles) {
+		const keys = Object.keys(mediaFiles);
+		for (key of keys) {
+			questionParsed.media.push({
+				mediaType: mediaFiles[key].mimetype,
+				data: mediaFiles[key].data
+			});
+		}
+	}
+	Quiz.findById(_id)
+		.then((quiz) => {
+			const updatedQuizQuestions = quiz.quizQuestions.map(question => {
+				if (question._id = questionParsed.id) {
+					question = questionParsed
+				}
+				return question;
+			})
+			quiz.quizQuestions = updatedQuizQuestions;
+			quiz.save().then((quiz) => { res.status(200).send({ quiz }); })
+				.catch((err) => {
+					console.log(err);
+					res.status(400).send({ msg: "Unable to add question to quiz" });
+				});
+			
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+})
 
 app.post("/deleteQuestion", auth, (req, res) => {
 	console.log("in server");
