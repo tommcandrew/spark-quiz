@@ -38,15 +38,15 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
-	const [ addedMedia, setAddedMedia ] = useState([]);
-	const [ retrivedMedia, setRetrivedMedia ] = useState([]);
-	const [ questionType, setQuestionType ] = useState("multipleChoice");
-	const [ multipleChoiceOptions, setMultipleChoiceOptions ] = useState([ "", "" ]);
-	const [ selectedMultipleChoiceOption, setSelectedMultipleChoiceOption ] = useState(null);
-	const [ selectedTrueFalse, setSelectedTrueFalse ] = useState();
-	const [ question, setQuestion ] = useState("");
-	const [ points, setPoints ] = useState(null);
-	const questionTypes = [ "trueFalse", "multipleChoice" ];
+	const [addedMedia, setAddedMedia] = useState([]);
+	const [retrivedMedia, setRetrivedMedia] = useState([])
+	const [questionType, setQuestionType] = useState("multipleChoice");
+	const [multipleChoiceOptions, setMultipleChoiceOptions] = useState(["", ""]);
+	const [selectedMultipleChoiceOption, setSelectedMultipleChoiceOption] = useState(null);
+	const [selectedTrueFalse, setSelectedTrueFalse] = useState();
+	const [question, setQuestion] = useState("");
+	const [points, setPoints] = useState(null);
+	const questionTypes = ["trueFalse", "multipleChoice"];
 	const qToEdit = useSelector((state) =>
 		state.quiz.quizQuestions.find((question) => {
 			return question._id === questionToEdit;
@@ -54,13 +54,12 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 	);
 
 	const urltoFile = async (url, filename, mimeType) => {
-		console.log(url)
 		return await fetch(url)
-			.then(function(res) {
+			.then(function (res) {
 				return res.arrayBuffer();
 			})
-			.then(function(buf) {
-				return new File([ buf ], filename, { type: mimeType });
+			.then(function (buf) {
+				return new File([buf], filename, { type: mimeType });
 			});
 	}
 	//Usage example:
@@ -68,39 +67,31 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 	// 	console.log(file);
 	// });
 
-	useEffect(() => {
-		if (retrivedMedia.length > 0) {
-			retrivedMedia.map(async (media) => {
-				console.log(media)
-		// urltoFile(`data:${media.mediaType};base64,${media.data}`, "test", `${media.mediaType}`).then((file) => {
-		// 	setAddedMedia([
-		// 		...addedMedia,
-		// 		{
-		// 			file: file,
-		// 			id: Date.now()
-		// 		}
-		// 	]);
-		// });
-			});
-			console.log(addedMedia)
-		}
-			
-	}, [retrivedMedia])
-
+	
 	useEffect(() => {
 		if (qToEdit) {
 			setQuestion(qToEdit.question);
-			setRetrivedMedia(qToEdit.media);
 			setQuestionType(qToEdit.questionType);
 			setMultipleChoiceOptions(
-				qToEdit.answers.multipleChoiceOptions ? qToEdit.answers.multipleChoiceOptions : [ "", "" ]
+				qToEdit.answers.multipleChoiceOptions ? qToEdit.answers.multipleChoiceOptions : ["", ""]
 			);
 			setSelectedMultipleChoiceOption(qToEdit.answers.multipleChoiceAnswer);
 			setSelectedTrueFalse(qToEdit.answers.trueFalseAnswer);
 			setPoints(qToEdit.points);
+			qToEdit.media.map(async (media) => {
+				if (media.mediaType === "text/plain") {
+					setRetrivedMedia(retrivedMedia.push( { file: { mediaType: "text/plain", text: media.data }, id: Date.now() }))
+				} else {
+					await urltoFile(`data:${media.mediaType};base64,${media.data}`, `${media.name}`, `${media.mediaType}`).then((file) => {
+					setRetrivedMedia(retrivedMedia.push({file: file, id: Date.now()}))
+				});
+				}
+				})
+			setAddedMedia(retrivedMedia)
 			console.log(retrivedMedia)
+			
 		}
-	}, []);
+	}, [qToEdit]);
 
 	//HANDLERS
 	const handleAddText = () => {
@@ -123,8 +114,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 		}
 		setAddedMedia([
 			...addedMedia,
-			{
-				file: file,
+			{file: file,
 				//need some kind of id to be able to remove media after adding it
 				id: Date.now()
 			}

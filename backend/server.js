@@ -166,15 +166,23 @@ app.post("/addQuestion", (req, res) => {
 	
 	const mediaFiles = req.files;
 	if (mediaFiles) {
-		const keys = Object.keys(mediaFiles);
+		if (Array.isArray(mediaFiles.file)) {
+			mediaFiles.file.map(f => {
+			questionParsed.media.push({
+				mediaType: f.mimetype,
+				data: f.data,
+				name: f.name
+			})
+		})
+		} else {
+			const keys = Object.keys(mediaFiles);
 		for (key of keys) {
 			//probably a good idea to check that the media prop exists and add if not
 			questionParsed.media.push({
-				name: mediaFiles[key].name,
 				mediaType: mediaFiles[key].mimetype,
 				data: mediaFiles[key].data
 			});
-			console.log(key)
+		}
 		}
 	}
 	//then find quiz that was previously saved and push the new question onto the questions array
@@ -201,12 +209,23 @@ app.post("/editQuestion", (req, res) => {
 	const questionParsed = JSON.parse(questionObject);
 	const mediaFiles = req.files;
 	if (mediaFiles) {
-		const keys = Object.keys(mediaFiles);
+		if (Array.isArray(mediaFiles.file)) {
+			mediaFiles.file.map(f => {
+			questionParsed.media.push({
+				mediaType: f.mimetype,
+				data: f.data,
+				name: f.name
+			})
+		})
+		} else {
+			const keys = Object.keys(mediaFiles);
 		for (key of keys) {
+			//probably a good idea to check that the media prop exists and add if not
 			questionParsed.media.push({
 				mediaType: mediaFiles[key].mimetype,
 				data: mediaFiles[key].data
 			});
+		}
 		}
 	}
 	Quiz.findById(_id)
@@ -231,11 +250,9 @@ app.post("/editQuestion", (req, res) => {
 })
 
 app.post("/deleteQuestion", auth, (req, res) => {
-	console.log("in server");
 	const { quizId, questionId } = req.body;
 	Quiz.findById(quizId)
 		.then((quiz) => {
-			console.log(quiz);
 			const updatedQuestions = quiz.quizQuestions.filter((question) => question._id.toString() !== questionId);
 			quiz.quizQuestions = updatedQuestions;
 			quiz.save().then(() => {

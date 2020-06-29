@@ -46,7 +46,6 @@ export default (state = initalState, action) => {
         ...action.payload
       };
     case SET_CURRENT_QUIZ:
-      console.log("in reducer")
       return {
         ...state,
         ...action.payload,

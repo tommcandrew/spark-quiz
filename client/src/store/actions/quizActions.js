@@ -41,7 +41,8 @@ export const loadQuiz = () => {
 	return async(dispatch, getState) => {
 		const quizId = getState().auth.quizId;
 		const token = getState().auth.token;
-		return axios
+		if (quizId) {
+			return axios
 			.post("http://localhost:5000/quiz", { quizId }, tokenConfig(token))
 			.then((res) => {dispatch({
 					type: CREATE_QUIZ,
@@ -52,14 +53,20 @@ export const loadQuiz = () => {
 			.catch((err) => {
 				console.log(err);
 			});
+		}
+		
 	};
 };
 
 export const setCurrentQuiz = (quiz) => {
-	return({
+	return async (dispatch) => {
+		dispatch(setCurrentQuizInLS(quiz._id))
+		dispatch({
 			type: SET_CURRENT_QUIZ,
 			payload: quiz
 		});
+	}
+		
 	};
 
 
