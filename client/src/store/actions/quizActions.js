@@ -3,6 +3,7 @@ import {setCurrentQuizInLS,clearQuizFromLS, loadUser } from "../actions/authActi
 // import { returnErrors, clearErrors } from "../actions/errorActions";
 import { tokenConfig } from "./authActions";
 export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
+export const EDIT_QUESTION = "EDIT_QUESTION";
 export const DELETE_QUESTION = "DELETE_QUESTION";
 export const CREATE_QUIZ = "CREATE_QUIZ";
 export const FETCH_QUIZZES = "FETCH_QUIZZES";
@@ -87,6 +88,22 @@ export const addNewQuestion = (formData) => {
 			});
 	};
 };
+
+export const editQuestion = (formData) => {
+	return async (dispatch, getState) => {
+		console.log("in action")
+		const token = getState().auth.token;
+		return await axios.post("http://localhost:5000/editQuestion",
+			formData,
+			tokenConfig(token)
+		).then((res) => {
+			dispatch({
+				type: EDIT_QUESTION,
+				payload: res.data.quiz
+			})
+		})
+	}
+}
 
 export const deleteQuestion = (id) => {
 	return async (dispatch, getState) => {

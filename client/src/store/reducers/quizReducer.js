@@ -1,5 +1,6 @@
 import {
   ADD_NEW_QUESTION,
+  EDIT_QUESTION,
   DELETE_QUESTION,
   CREATE_QUIZ,
   SET_CURRENT_QUIZ,
@@ -22,6 +23,7 @@ const initalState = {
 export default (state = initalState, action) => {
   switch (action.type) {
     case ADD_NEW_QUESTION:
+      case EDIT_QUESTION:
       //update entire state with updated version of quiz
       return {
         ...state,

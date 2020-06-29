@@ -5,7 +5,6 @@ import camelToSentence from "../../utils/camelToSentence";
 import * as quizActions from "../../store/actions/quizActions";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Grid, Typography, Button, TextField } from "@material-ui/core";
-
 //STYLES
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -38,38 +37,71 @@ const supportedFileTypes = [
 const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	
+
 	const [ addedMedia, setAddedMedia ] = useState([]);
+	const [ retrivedMedia, setRetrivedMedia ] = useState([]);
 	const [ questionType, setQuestionType ] = useState("multipleChoice");
 	const [ multipleChoiceOptions, setMultipleChoiceOptions ] = useState([ "", "" ]);
 	const [ selectedMultipleChoiceOption, setSelectedMultipleChoiceOption ] = useState(null);
 	const [ selectedTrueFalse, setSelectedTrueFalse ] = useState();
 	const [ question, setQuestion ] = useState("");
 	const [ points, setPoints ] = useState(null);
-	const questionTypes = ["trueFalse", "multipleChoice"];
-	const qToEdit = (useSelector((state) =>
+	const questionTypes = [ "trueFalse", "multipleChoice" ];
+	const qToEdit = useSelector((state) =>
 		state.quiz.quizQuestions.find((question) => {
-			return (question._id === questionToEdit)
-		})))
-	
+			return question._id === questionToEdit;
+		})
+	);
+
+	const urltoFile = async (url, filename, mimeType) => {
+		console.log(url)
+		return await fetch(url)
+			.then(function(res) {
+				return res.arrayBuffer();
+			})
+			.then(function(buf) {
+				return new File([ buf ], filename, { type: mimeType });
+			});
+	}
+	//Usage example:
+	// urltoFile("data:text/plain;base64,aGVsbG8gd29ybGQ=", "hello.txt", "text/plain").then(function(file) {
+	// 	console.log(file);
+	// });
+
+	useEffect(() => {
+		if (retrivedMedia.length > 0) {
+			retrivedMedia.map(async (media) => {
+				console.log(media)
+		// urltoFile(`data:${media.mediaType};base64,${media.data}`, "test", `${media.mediaType}`).then((file) => {
+		// 	setAddedMedia([
+		// 		...addedMedia,
+		// 		{
+		// 			file: file,
+		// 			id: Date.now()
+		// 		}
+		// 	]);
+		// });
+			});
+			console.log(addedMedia)
+		}
+			
+	}, [retrivedMedia])
 
 	useEffect(() => {
 		if (qToEdit) {
 			setQuestion(qToEdit.question);
-		
-			//   setAddedMedia(qToEdit.media.map(m => {
-			//   	return { }
-			//   }));
+			setRetrivedMedia(qToEdit.media);
 			setQuestionType(qToEdit.questionType);
-			setMultipleChoiceOptions(qToEdit.answers.multipleChoiceOptions? qToEdit.answers.multipleChoiceOptions : ["", ""]);
+			setMultipleChoiceOptions(
+				qToEdit.answers.multipleChoiceOptions ? qToEdit.answers.multipleChoiceOptions : [ "", "" ]
+			);
 			setSelectedMultipleChoiceOption(qToEdit.answers.multipleChoiceAnswer);
-			setSelectedTrueFalse(qToEdit.answers.trueFalseAnswer)
+			setSelectedTrueFalse(qToEdit.answers.trueFalseAnswer);
 			setPoints(qToEdit.points);
-			
+			console.log(retrivedMedia)
 		}
-	}, [])
+	}, []);
 
-	
 	//HANDLERS
 	const handleAddText = () => {
 		setAddedMedia([ ...addedMedia, { file: { mediaType: "text/plain", data: "" }, id: Date.now() } ]);
@@ -77,7 +109,6 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
 	//saves the file in state which results in preview displaying on page
 	const handleAddFile = (e) => {
-
 		const file = e.target.files[0];
 		if (!file) {
 			return;
@@ -151,7 +182,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 			.filter((media) => media.file.mediaType === "text/plain" && media.file.data !== "")
 			.map((obj) => obj.file);
 		const questionObject = {
-			id: new Date().getUTCMilliseconds(),
+			id: qToEdit? qToEdit._id : new Date().getUTCMilliseconds().toString(),
 			questionType: questionType,
 			//adding text separately because FormData will ignore it
 			media: [ ...addedText ],
@@ -170,6 +201,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 		addedMedia.forEach((media) => {
 			formData.append("file", media.file);
 		});
+		qToEdit? await dispatch(quizActions.editQuestion(formData)):
 		await dispatch(quizActions.addNewQuestion(formData));
 		closeModal();
 	};
@@ -184,15 +216,19 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 			</Grid>
 			<Grid item xs={12} sm={6}>
 				<Paper className={classes.paper}>
-					{addedMedia.length <= 2 ?(<label htmlFor="myFile">
-						<input
-							id="myFile"
-							type="file"
-							onChange={handleAddFile}
-							accept={supportedFileTypes.toString()}
-						/>
-						Add Media
-					</label>) : <p>You can only add three media objects per question</p>}
+					{addedMedia.length <= 2 ? (
+						<label htmlFor="myFile">
+							<input
+								id="myFile"
+								type="file"
+								onChange={handleAddFile}
+								accept={supportedFileTypes.toString()}
+							/>
+							Add Media
+						</label>
+					) : (
+						<p>You can only add three media objects per question</p>
+					)}
 				</Paper>
 			</Grid>
 			<Grid item xs={12} sm={6}>
@@ -314,7 +350,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
 			<Grid item md={12} sm={12}>
 				<button type="submit" onClick={handleSubmit}>
-					Add question
+					{qToEdit ? <>Update Question</> : <>Add question</>}
 				</button>
 			</Grid>
 		</Grid>
