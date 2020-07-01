@@ -6,7 +6,7 @@ const QuizStart = ({ quiz, setQuizStarted }) => {
   return (
     <div className="quizStart__wrapper">
       <div className="quizStart__header">
-        <h1>{quiz.quizName}</h1>
+        <h1>Quiz Name: {quiz.quizName}</h1>
       </div>
       <div className="quizStart__content">
         <div className="quizStart__info">

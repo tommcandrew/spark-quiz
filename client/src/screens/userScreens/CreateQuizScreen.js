@@ -154,7 +154,7 @@ export default function CreateQuizScreen(props) {
 						<Box className={classes.button}>
 							<Typography variant="h6">Quiz Name: {quiz.quizName}</Typography>
 							{quiz.quizTimeLimit ? (
-								<Typography variant="body">Quiz Timelimit: {quiz.quizTimeLimit}</Typography>
+								<Typography>Quiz Timelimit: {quiz.quizTimeLimit}</Typography>
 							) : (
 								""
 							)}
