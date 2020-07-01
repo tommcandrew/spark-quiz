@@ -18,8 +18,8 @@ const auth = require("./middleware");
 const transporter = nodemailer.createTransport({
 	service: "gmail",
 	auth: {
-		user: "zehrataqi@gmail.com",
-		pass: 'ZEH2550AB1357/:'
+		user: "thomasdarragh88@gmail.com",
+		pass: process.env.EMAIL_PASSWORD
 	}
 });
 
@@ -474,9 +474,9 @@ const emailInvites = (
   quizInvites.contacts.forEach((contact) => {
     //I'm assuming we need to send a separate email for each recipient like this in a loop beacuse the quizCode will be different for each one
     const mailOptions = {
-      from: "zehrataqi@gmail.com",
+      from: "Quiz Master",
       //put "contact.email" here
-      to: [contact.email],
+      to: ["thomasdarragh88@gmail.com"],
       subject: "Quiz Master Invitation",
       html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><p>Log in with code: ${contact.code}</p><br><a href="#">Go to Quiz Master</a>`,
     };
