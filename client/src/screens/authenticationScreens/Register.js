@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import {
-  Button,
-  CssBaseline,
-  TextField,
-  Grid,
-  Typography,
-  Container,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import {Button, CssBaseline, TextField, Grid, Typography, Container, Avatar} from "@material-ui/core";
+import { Link } from "react-router-dom";
 import * as authActions from "../../store/actions/authActions";
+import { useStyles } from "../../style/authScreensStyles";
+
 
 const Register = props => {
   //STATE
@@ -20,9 +12,10 @@ const Register = props => {
   const [email, setEmail] = useState("testuser@test.com");
   const [password, setPassword] = useState("12345678");
   const [password2, setPassword2] = useState("12345678");
-  const token = useSelector(state =>state.auth.token)
-  const dispatch = useDispatch();
 
+
+  const token = useSelector(state => state.auth.token)
+  const dispatch = useDispatch();
   const classes = useStyles();
 
     //HOOKS
@@ -32,20 +25,16 @@ const Register = props => {
 
   //HANDLERS
   const handleRegister = async() => {
-    const registerDetails = {
-      name,
-      email,
-      password,
-      password2,
-    };
+    const registerDetails = {name, email, password, password2};
     await dispatch(authActions.register(registerDetails))
   };
 
+  //MAIN
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar} />
+        <Avatar className={classes.avatar}/>
         <Typography component="h1" variant="h5">
           Register
         </Typography>
@@ -132,24 +121,6 @@ const Register = props => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+
 
 export default Register;
