@@ -16,7 +16,20 @@ export const CLEAR_STUDENT = "CLEAR_STUDENT";
 export const SET_CURRENT_QUIZ_IN_LS = "SET_CURRENT_QUIZ_IN_LS"
 export const CLEAR_QUIZ_FROM_LS = "CLEAR_QUIZ_FROM_LS"
 
-//check token and load user. This function will be called all the time
+
+export const tokenConfig = (token) => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  if (token) {
+    config.headers["x-auth-token"] = token;
+  }
+  return config;
+};
+
+
 export const loadUser = () => {
   return async (dispatch, getState) => {
     //user loading
@@ -53,7 +66,7 @@ export const register = ({ name, email, password, password2 }) => {
         dispatch({
           type: CLEAR_ERRORS,
         });
-        dispatch(loadUser());
+        loadUser();
       })
       .catch((err) => {
         dispatch(
@@ -81,7 +94,7 @@ export const login = ({ email, password }) => {
         dispatch({
           type: CLEAR_ERRORS,
         });
-        dispatch(loadUser());
+        loadUser();
       })
       .catch((err) => {
         // dispatch(
@@ -93,22 +106,6 @@ export const login = ({ email, password }) => {
         console.log(getState().error.msg.msg);
       });
   };
-};
-
-
-//set up config/headers and token
-export const tokenConfig = (token) => {
-  const config = {
-    headers: {
-      "Content-type": "application/json",
-    },
-  };
-
-  //if token, add to headers
-  if (token) {
-    config.headers["x-auth-token"] = token;
-  }
-  return config;
 };
 
 export const studentLogin = (studentCode) => {
@@ -194,7 +191,6 @@ export const logout = () => {
 };
 
 //QUIZ ACTIONS 
-
 export const setCurrentQuizInLS = (id) => {
   return  (dispatch) => {
     dispatch({
@@ -209,6 +205,8 @@ export const clearQuizFromLS = () => {
     await dispatch({ type: CLEAR_QUIZ_FROM_LS });
   };
 };
+
+
 
 
 

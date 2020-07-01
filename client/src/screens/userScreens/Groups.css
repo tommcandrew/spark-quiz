@@ -1,9 +1,0 @@
-.groups__group {
-  cursor: pointer;
-  background: #f4f4f4;
-  border: 1px solid #333;
-}
-
-.groups__group:hover {
-  background: #e0dcdc;
-}

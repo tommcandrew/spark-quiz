@@ -3,7 +3,7 @@ import {
   DELETE_QUIZ,
   ADD_CONTACT,
   ADD_GROUP,
-} from "../actions/quizzesListActions";
+} from "../actions/userActions";
 
 const initalState = {
   quizzes: [],
