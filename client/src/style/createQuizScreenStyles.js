@@ -2,7 +2,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
   quizNameContainer: {
-    padding: "30px",
+    display: "flex",
+    justifyContent: "center"
   },
   makeNewQuizContainer: {
     width: "100%",

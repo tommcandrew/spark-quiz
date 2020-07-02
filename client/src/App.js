@@ -10,6 +10,7 @@ import quizReducer from "./store/reducers/quizReducer";
 import quizScoreReducer from "./store/reducers/quizScoreReducer";
 import MainNavigation from "./components/navigation/MainNavigation";
 import theme from "./style/theme";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import Modal from "react-modal";
 
@@ -37,6 +38,7 @@ export default function AppWrapper() {
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={theme}>
+				 <CssBaseline />
 				<MainNavigation />
 			</ThemeProvider>
 		</Provider>
