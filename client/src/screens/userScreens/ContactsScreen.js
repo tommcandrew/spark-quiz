@@ -20,32 +20,31 @@ const Contacts = () => {
 	function closeModal() {
 		setAddContactModalIsOpen(false);
 		setContactInfoModalIsOpen(false);
+		setSelectedContact(null);
 	}
 
 	const handleSubmit = (e) => {
+		
 		e.preventDefault();
 		const name = e.target.name.value;
 		const email = e.target.email.value;
 		dispatch(userActions.addContact({ name, email }));
+		closeModal()
 		e.target.reset();
-		setAddContactModalIsOpen(false);
-		setSelectedContact(null);
 	};
 
 	const handleDeleteContact = async () => {
 		await dispatch(userActions.deleteContact(selectedContact._id));
-		setContactInfoModalIsOpen(false);
-		setSelectedContact(null);
+		closeModal()
 	};
 
-	const handleUpdateContact = (e) => {
+	const handleUpdateContact = async(e) => {
 		e.preventDefault();
 		const name = e.target.name.value;
 		const email = e.target.email.value;
 		const updatedContact = { name, email };
-		dispatch(userActions.updateContact(selectedContact._id, updatedContact));
-		setAddContactModalIsOpen(false);
-		setSelectedContact(null);
+		await dispatch(userActions.updateContact(selectedContact._id, updatedContact));
+		closeModal()
 	};
 
 	//MAIN
@@ -105,6 +104,7 @@ const Contacts = () => {
 					setSelectedContact={setSelectedContact}
 					handleSubmit={handleUpdateContact}
 					handleDeleteContact={handleDeleteContact}
+					closeModal={closeModal}
 				/>
 			</Modal>
 		</Grid>

@@ -8,9 +8,12 @@ import ShareModal from "../../components/modals/ShareModal";
 import * as quizActions from "../../store/actions/quizActions";
 
 import { useStyles, customStyles } from "../../style/createQuizScreenStyles";
-import { Paper, Button, Box, Typography, Grid } from "@material-ui/core";
+import { Paper, Button, Box, Typography, Grid, TextField, Divider  } from "@material-ui/core";
 import clsx from "clsx";
 import Modal from "react-modal";
+import CustomSnackbar from "../../components/mui/Snackbar"
+import V from 'max-validator';
+import { createQuizValidation } from "../../utils/validation"
 
 //MAIN
 export default function CreateQuizScreen(props) {
@@ -22,7 +25,8 @@ export default function CreateQuizScreen(props) {
 	const [ quizName, setQuizName ] = useState("");
 	const [ quizSubject, setQuizSubject ] = useState("");
 	const [ modalIsOpen, setIsOpen ] = useState(false);
-	const [ questionToEdit, setQuestionToEdit ] = useState("");
+	const [questionToEdit, setQuestionToEdit] = useState("");
+	const [validationError, setValidationError] = useState("")
 
 	//ON PAGE RELOAD
 	const getQuiz = () => {
@@ -71,11 +75,17 @@ export default function CreateQuizScreen(props) {
 	};
 
 	const handleCreate = () => {
-		if (quizName.length !== 0 && quizSubject.length !== 0) {
+	setValidationError("")
+		const result = V.validate({quizName, quizSubject}, createQuizValidation);
+		if (result.hasError) {
+			if (result.getError("quizName")) setValidationError(result.getError("quizName"));
+			else if (result.getError("quizSubject") !== "") setValidationError(result.getError("quizSubject"))
+			return;
+		} else {
 			dispatch(quizActions.createQuiz(quizName, quizSubject));
 			setQuizName(quiz.quizName);
 			setQuizSubject(quiz.quizSubject);
-		} else console.log("plz fill the fields");
+		}
 	};
 
 	function closeModal() {
@@ -102,16 +112,32 @@ export default function CreateQuizScreen(props) {
 	//RETURN
 	return (
 		<Fragment>
+			{validationError !== "" &&
+				<CustomSnackbar
+				severity="error"
+				message={validationError}
+				handleClose={() => setValidationError("")}/>
+			}
 			{!quizId && (
-				<div className={classes.quizNameContainer}>
-					<Grid container spacing={2} justify="center">
-						<Grid item xs={12} md={6}>
-							<Typography variant="h5">Quiz name:</Typography>
+						<Grid container spacing={3} className={classes.quizNameContainer}>
+					
+						<Grid item xs={12} xl={12}>
+				<Typography variant="h4" align="center">
+					Add a new Quiz
+				</Typography>
+				      <Divider variant="middle"  />
 						</Grid>
+						<Grid container spacing={2} style={{ width: "400px" }}>
 						<Grid item xs={12} md={6}>
-							<input
+							<Typography variant="h5" align="center"  >Quiz name:</Typography>
+						</Grid>
+						<Grid item xs={12} md={6} align="center">
+							<TextField
 								type="text"
 								name="name"
+								variant="outlined"
+								color="secondary"
+								maxLength="15"
 								onChange={(event) => {
 									setQuizName(event.target.value);
 								}}
@@ -119,25 +145,27 @@ export default function CreateQuizScreen(props) {
 							/>
 						</Grid>
 						<Grid item xs={12} md={6}>
-							<Typography variant="h5">Quiz Subject</Typography>
+							<Typography variant="h5" align="center" >Quiz Subject</Typography>
 						</Grid>
-						<Grid item xs={12} md={6}>
-							<input
+						<Grid item xs={12} md={6} align="center">
+							<TextField
 								type="text"
 								name="subject"
+								variant="outlined"
+								color="secondary"
+								maxLength="15"
 								onChange={(event) => {
 									setQuizSubject(event.target.value);
 								}}
 								value={quizSubject}
 							/>
 						</Grid>
-						<Grid item xs={12} md={3}>
-							<Button onClick={handleCreate} variant="contained" color="primary">
+						<Grid item xs={12} align="center" >
+							<Button onClick={handleCreate} variant="contained" color="secondary">
 								Submit
 							</Button>
 						</Grid>
-					</Grid>
-				</div>
+					</Grid></Grid>
 			)}
 			{quiz._id.length > 0 && (
 				<div className={classes.makeNewQuizContainer}>
@@ -145,16 +173,17 @@ export default function CreateQuizScreen(props) {
 						isOpen={modalIsOpen}
 						onRequestClose={closeModal}
 						style={customStyles}
-						size="lg"
 						aria-labelledby="contained-modal-title-vcenter"
 						centered>
 						{displayedComponent} {/* can be either addquestion/ setQuizOptions /invite */}
 					</Modal>
 					<Paper className={clsx(classes.flexItem, classes.buttonContainer)}>
 						<Box className={classes.button}>
-							<Typography variant="h6">Quiz Name: {quiz.quizName}</Typography>
+							<Typography variant="body1">Quiz Name: </Typography>
+							<Typography variant="h4" color="secondary">
+							{quiz.quizName}</Typography>
 							{quiz.quizTimeLimit ? (
-								<Typography variant="body">Quiz Timelimit: {quiz.quizTimeLimit}</Typography>
+								<Typography>Quiz Timelimit: {quiz.quizTimeLimit}</Typography>
 							) : (
 								""
 							)}

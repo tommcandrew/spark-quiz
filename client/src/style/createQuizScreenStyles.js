@@ -2,7 +2,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
   quizNameContainer: {
-    padding: "30px",
+    display: "flex",
+    justifyContent: "center"
   },
   makeNewQuizContainer: {
     width: "100%",
@@ -49,12 +50,11 @@ export const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    height: "70%",
-    width: "80%",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "center",
     padding: "20px",
+    display: "inline",
   },
   overlay: { zIndex: 2000 },
 };

@@ -6,7 +6,8 @@ body,
 }
 
 body {
-  background-image: url("./assets/bg-blur2.jpg");
+  /* background-image: url("./assets/bg-blur2.jpg"); */
+  background-color:#efefef;
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;

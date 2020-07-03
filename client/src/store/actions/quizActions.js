@@ -103,14 +103,9 @@ export const addNewQuestion = (formData) => {
 
 export const editQuestion = (formData) => {
   return async (dispatch, getState) => {
-    console.log("in action");
     const token = getState().auth.token;
     return await axios
-      .post(
-        "http://localhost:5000/quiz/editQuestion",
-        formData,
-        tokenConfig(token)
-      )
+      .post("http://localhost:5000/editQuestion", formData, tokenConfig(token))
       .then((res) => {
         dispatch({
           type: EDIT_QUESTION,

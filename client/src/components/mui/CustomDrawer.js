@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 
@@ -10,11 +10,13 @@ import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import PeopleIcon from "@material-ui/icons/People";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import Logo from "../../assets/logo1.png";
+import Logo from "../../assets/images/logo1.png";
 import { useStyles } from "../../style/drawerStyles";
 
 const CustomDrawer = ({ url, clearQuizState }) => {
 	const classes = useStyles();
+	const [isSelected, setIsSelected] = useState("")
+
 	return (
 		<div>
 			<div className={clsx(classes.toolbar, classes.center)}>
@@ -26,7 +28,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
 					<Link to={`${url}`}>
 						<ListItem button>
 							<ListItemIcon>
-								<HomeIcon />
+								<HomeIcon color="secondary"/>
 							</ListItemIcon>
 							<ListItemText primary="Random" />
 						</ListItem>
@@ -35,7 +37,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
 					<Link to={`${url}/myquizzes`}>
 						<ListItem button>
 							<ListItemIcon>
-								<PersonIcon />
+								<PersonIcon color="secondary"/>
 							</ListItemIcon>
 							<ListItemText primary="My Quizzes" />
 						</ListItem>
@@ -44,7 +46,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
 					<Link to={`${url}/createquiz`} onClick={clearQuizState}>
 						<ListItem button>
 							<ListItemIcon>
-								<LibraryAddIcon />
+								<LibraryAddIcon color="secondary"/>
 							</ListItemIcon>
 							<ListItemText primary="Create new quiz" />
 						</ListItem>
@@ -53,7 +55,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
 					<Link to={`${url}/contacts`}>
 						<ListItem button>
 							<ListItemIcon>
-								<EmojiPeopleIcon />
+								<EmojiPeopleIcon color="secondary"/>
 							</ListItemIcon>
 							<ListItemText primary="Contacts" />
 						</ListItem>
@@ -62,7 +64,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
 					<Link to={`${url}/groups`}>
 						<ListItem button>
 							<ListItemIcon>
-								<PeopleIcon />
+								<PeopleIcon color="secondary"/>
 							</ListItemIcon>
 							<ListItemText primary="Groups" />
 						</ListItem>
@@ -71,7 +73,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
 					<Link to={`${url}/myAccount`}>
 						<ListItem button>
 							<ListItemIcon>
-								<AccountCircleIcon />
+								<AccountCircleIcon color="secondary"/>
 							</ListItemIcon>
 							<ListItemText primary="My Account" />
 						</ListItem>

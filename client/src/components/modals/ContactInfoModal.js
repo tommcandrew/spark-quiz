@@ -5,6 +5,7 @@ const ContactInfoModal = ({
   handleSubmit,
   setSelectedContact,
   handleDeleteContact,
+  closeModal
 }) => {
   return (
     <div className="contactInfoModal__wrapper">
@@ -30,7 +31,7 @@ const ContactInfoModal = ({
           </div>
           <div className="contactInfoModal__buttons">
             <button type="submit">Save</button>
-            <button type="button" onClick={() => setSelectedContact(null)}>
+            <button type="button" onClick={() => { closeModal(); setSelectedContact(null)}}>
               Cancel
             </button>
           </div>
