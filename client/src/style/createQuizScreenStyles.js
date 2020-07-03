@@ -50,12 +50,11 @@ export const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    height: "70%",
-    width: "80%",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "center",
     padding: "20px",
+    display: "inline",
   },
   overlay: { zIndex: 2000 },
 };

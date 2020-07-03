@@ -173,7 +173,6 @@ export default function CreateQuizScreen(props) {
 						isOpen={modalIsOpen}
 						onRequestClose={closeModal}
 						style={customStyles}
-						size="lg"
 						aria-labelledby="contained-modal-title-vcenter"
 						centered>
 						{displayedComponent} {/* can be either addquestion/ setQuizOptions /invite */}

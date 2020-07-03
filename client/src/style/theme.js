@@ -15,6 +15,9 @@ const theme = createMuiTheme({
 		},
 		h4: {
 			fontFamily: "Selitta"
+		},
+		h5: {
+			fontFamily: "Selitta"
 		}
 	},
 	overrides: {

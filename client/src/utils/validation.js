@@ -19,3 +19,8 @@ export const createQuizValidation = {
   quizName: 'required|string|min:2|max:15',
   quizSubject: 'required|string|min:2|max:15'
 }
+
+export const quizOptionsValidation = {
+  overallPoints: 'required|numeric|min:1|max:10',
+  
+};
