@@ -1,12 +1,10 @@
 const express = require("express");
 const fileUpload = require("express-fileupload");
-const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
 const PORT = 5000;
-const MONGO_URI = process.env.DB_CONNECT;
 const app = express();
 const User = require("./models/User.model");
 const Quiz = require("./models/Quiz.model");
@@ -25,19 +23,7 @@ const transporter = nodemailer.createTransport({
 
 app.listen(PORT, () => console.log("listening on port " + PORT));
 
-mongoose.connect(MONGO_URI, {
-  useFindAndModify: false,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-db.on("error", () => {
-  console.log("There was a problem connecting to the db");
-});
-db.once("open", () => {
-  console.log("Connected to db");
-});
+const db = require("./db");
 
 app.use(express.json());
 app.use(cors());
