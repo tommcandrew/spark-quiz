@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
-import { Button, CssBaseline, TextField, Grid, Typography, Container, Avatar } from "@material-ui/core";
+import { Button, TextField, Grid, Typography, Container, Avatar } from "@material-ui/core";
 import { useStyles } from "../../style/authScreensStyles";
+import CustomSnackbar from "../../components/mui/Snackbar"
+import V from 'max-validator';
+import { loginValidation } from "../../utils/validation"
 
 const Login = (props) => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
-
+	const [validationError, setValidationError] = useState("")
 	const [ email, setEmail ] = useState("testuser@test.com");
 	const [ password, setPassword ] = useState("12345678");
 	const { from } = props.location.state || { from: { pathname: "/dashboard" } };
@@ -16,14 +19,28 @@ const Login = (props) => {
 	//HANDLERS
 	const loginHandler = async () => {
 		const loginData = { email, password };
-		await dispatch(authActions.login(loginData));
+		setValidationError("")
+		const result = V.validate(loginData, loginValidation);
+		if (result.hasError) {
+			if (result.getError("email")) setValidationError(result.getError("email"));
+			else if (result.getError("password") !== "") setValidationError(result.getError("password"))
+			return;
+		} else {
+			await dispatch(authActions.login(loginData));
 		props.history.push(from);
+		}
 	};
 
 	//MAIN
 	return (
 		<Container component="main" maxWidth="xs">
-			<CssBaseline />
+			{validationError !== "" &&
+				<CustomSnackbar
+				severity="error"
+				message={validationError}
+				handleClose={() => setValidationError("")}/>
+			}
+			
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar} />
 				<Typography component="h1" variant="h5">
@@ -34,7 +51,6 @@ const Login = (props) => {
 						<Grid item xs={12}>
 							<TextField
 								variant="outlined"
-								required
 								fullWidth
 								id="email"
 								label="Email Address"
@@ -47,7 +63,6 @@ const Login = (props) => {
 						<Grid item xs={12}>
 							<TextField
 								variant="outlined"
-								required
 								fullWidth
 								name="password"
 								label="Password"

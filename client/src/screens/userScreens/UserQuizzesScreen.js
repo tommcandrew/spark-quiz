@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useStyles } from "../../style/userQuizzesScreenStyles";
 import * as userActions from "../../store/actions/userActions";
 import * as quizActions from "../../store/actions/quizActions";
-import { Card, CardContent, CardActions, Grid, Typography, Button } from "@material-ui/core";
+import { Card, CardContent, CardActions, Grid, Typography, Button, Divider } from "@material-ui/core";
 
 const UserQuizzesScreen = (props) => {
 	const dispatch = useDispatch();
@@ -33,11 +33,12 @@ const UserQuizzesScreen = (props) => {
 	return (
 		<Grid container spacing={2} className={classes.root}>
 			<Grid item xs={12} xl={12}>
-				<Typography variant="h5" align="center">
-					My Quizzes
+				<Typography variant="h4" align="center">
+					Your Quizzes
 				</Typography>
+				      <Divider variant="middle"  />
 			</Grid>
-			<Grid item container spacing={2} xs={12} xl={12} className={classes.list}>
+			<Grid item container spacing={0} xs={12} xl={12} justify="space-evenly" className={classes.list}>
 				{quizzes.length === 0 && (
 					<Grid item xl={12}>
 						<Typography>You have no quizzes</Typography>
@@ -45,22 +46,23 @@ const UserQuizzesScreen = (props) => {
 				)}
 				{quizzes &&
 					quizzes.map((quiz, index) => (
-						<Grid item xs={12} sm={6} md={6} key={index}>
+						<Grid item xs={12} sm={6} md={4} lg={3} key={index}>
 							<Card className={classes.card} key={quiz._id}>
 								<CardContent>
-									<Typography variant="h5" component="h2">
-										Quiz Name: {quiz.quizName}
-									</Typography>
-									<Typography variant="body2" component="p">
+									<div className={classes.quizName}>
+										<Typography variant="body1">Quiz Name:&nbsp;</Typography>
+										<Typography variant="h5" color="secondary">{quiz.quizName}</Typography>
+									</div>
+									<Typography variant="body1" component="p">
 										Subject: {quiz.quizSubject}
 									</Typography>
 									<br />
 								</CardContent>
 								<CardActions>
-									<Button size="small" onClick={() => handleOpenCreateQuiz(quiz)}>
+									<Button size="small" color="primary" onClick={() => handleOpenCreateQuiz(quiz)}>
 										{quiz.quizPublished? (<>Update</>): (<>Continue editing</>)}
 									</Button>
-									<Button size="small" onClick={() => handleDeleteQuiz(quiz._id)}>
+									<Button size="small" color="primary" onClick={() => handleDeleteQuiz(quiz._id)}>
 										Delete
 									</Button>
 								</CardActions>

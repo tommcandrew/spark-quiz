@@ -6,11 +6,14 @@ export const useStyles = makeStyles({
 		padding: "10px"
 	},
 	card: {
-		minWidth: 275,
-		margin: "5px"
+		maxWidth: "100%"
 	},
 	list: {
-		maxWidth: "95%",
 		overflowY: "scroll"
+	},
+	quizName: {
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "flex-end"
 	}
 });

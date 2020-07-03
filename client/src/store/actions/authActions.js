@@ -66,7 +66,7 @@ export const register = ({ name, email, password, password2 }) => {
         dispatch({
           type: CLEAR_ERRORS,
         });
-        loadUser();
+        dispatch(loadUser());
       })
       .catch((err) => {
         dispatch(
@@ -91,6 +91,7 @@ export const login = ({ email, password }) => {
           type: LOGIN_SUCCESS,
           payload: res.data,
         });
+        dispatch(loadUser());
         dispatch({
           type: CLEAR_ERRORS,
         });

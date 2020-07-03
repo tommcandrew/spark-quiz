@@ -39,6 +39,7 @@ export const useStyles = makeStyles((theme) => ({
 		padding: "40px"
 	},
 	mainContent: {
-		flexGrow: 1
+		flexGrow: 1,
+		backgroundColor: theme.palette.background.default
 	}
 }));

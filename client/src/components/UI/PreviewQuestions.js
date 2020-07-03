@@ -10,7 +10,7 @@ import {
   Paper,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Logo from "../../assets/logo1.png";
+import Logo from "../../assets/images/logo1.png";
 const useStyles = makeStyles((theme) => ({
   list: {
     width: "100%",

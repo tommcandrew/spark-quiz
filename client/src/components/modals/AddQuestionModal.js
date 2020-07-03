@@ -45,8 +45,14 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 							retrivedMedia.push({ file: { mediaType: "text/plain", text: media.data }, id: Date.now() })
 						);
 					} else {
+							let mediaData
+						if (typeof media.data === 'string') {
+							mediaData= media.data
+						} else {
+							mediaData = new Buffer(media.data.data).toString('base64')
+						}
 						await urltoFile(
-							`data:${media.mediaType};base64,${media.data}`,
+							`data:${media.mediaType};base64,${mediaData}`,
 							`${media.name}`,
 							`${media.mediaType}`
 						).then((file) => {
@@ -55,7 +61,6 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 					}
 				});
 				setAddedMedia(retrivedMedia);
-				console.log(retrivedMedia);
 			}
 		},
 		[ qToEdit ]

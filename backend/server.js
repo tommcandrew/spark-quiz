@@ -470,7 +470,6 @@ const emailInvites = (
   quizName,
   quizAuthor,
   quizSubject,
-  quizCodes
 ) => {
   quizInvites.contacts.forEach((contact) => {
     //I'm assuming we need to send a separate email for each recipient like this in a loop beacuse the quizCode will be different for each one

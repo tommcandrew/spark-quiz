@@ -68,7 +68,10 @@ const Dashboard = ({ window, history }, props) => {
 							className={classes.menuButton}>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="h5">Hello {user ? user.name : ""}</Typography>
+						<div style={{display: "flex", flexDirection: "row", alignItems: "flex-end"}}>
+						<Typography variant="h5">Hello, &nbsp; </Typography>
+						<Typography variant="h3" color="secondary"> {user ? user.name : ""}</Typography>
+						</div>
 						<Button color="inherit" className={classes.logoutButton} onClick={logoutHandler}>
 							Logout
 						</Button>

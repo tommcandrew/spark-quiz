@@ -19,7 +19,9 @@ export const useStyles = makeStyles((theme) => ({
     },
 	large: {
 		width: theme.spacing(12),
-		height: theme.spacing(12)
+    height: theme.spacing(12),
+    height: "150px",
+    width: "300px"
 	}
 }));
 
