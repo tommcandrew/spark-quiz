@@ -19,7 +19,15 @@ export const addQuestionModalStyles = makeStyles((theme) => ({
 		padding: theme.spacing(1),
 		textAlign: "center",
 		color: theme.palette.text.secondary,
-		width: "50%"
+	}, 
+	card: {
+		maxWidth: 345,
+	},
+	media: {
+    height: 140,
+	},
+	cardActionArea: {
+		width: "100%"
 	}
 }));
 

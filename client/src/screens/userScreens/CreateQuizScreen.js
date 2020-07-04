@@ -178,7 +178,7 @@ export default function CreateQuizScreen(props) {
 						{displayedComponent} {/* can be either addquestion/ setQuizOptions /invite */}
 					</Modal>
 					<Paper className={clsx(classes.flexItem, classes.buttonContainer)}>
-						<Box className={classes.button}>
+						<Box className={classes.titleContainer}>
 							<Typography variant="body1">Quiz Name: </Typography>
 							<Typography variant="h4" color="secondary">
 							{quiz.quizName}</Typography>
@@ -188,6 +188,7 @@ export default function CreateQuizScreen(props) {
 								""
 							)}
 						</Box>
+						<Box className={classes.buttons}>
 						<Button
 							variant="outlined"
 							color="primary"
@@ -212,7 +213,7 @@ export default function CreateQuizScreen(props) {
 						</Button>
 						<Button variant="contained" color="secondary" className={classes.button} onClick={publishQuiz}>
 							{quiz.quizPublished ? <>Update Quiz </> : <>Publish Quiz</>}
-						</Button>
+						</Button></Box>
 					</Paper>
 					<Paper className={classes.flexItem} style={{ flex: 3 }}>
 						<PreviewQuestions editQuestion={editQuestion} />
