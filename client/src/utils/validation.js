@@ -21,6 +21,6 @@ export const createQuizValidation = {
 }
 
 export const quizOptionsValidation = {
-  overallPoints: 'required|numeric|min:1|max:10',
+  points: 'required|number|between:1,10',
   
 };
