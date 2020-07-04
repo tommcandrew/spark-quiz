@@ -1,18 +1,33 @@
+//dependencies
 const express = require("express");
-const app = express();
+const mongoose = require("mongoose");
 const cors = require("cors");
-app.use(express.json());
 const dotenv = require("dotenv").config();
+
+const app = express();
+
+//environment variables
+const { MONGO_URI } = process.env;
+
+//middleware
 app.use(cors());
-const fileUpload = require("express-fileupload");
-app.use(fileUpload());
-const PORT = 5000;
+app.use(express.json());
+
+//connect to DB
+mongoose
+  .connect(MONGO_URI, {
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to db"))
+  .catch((err) => console.log("There was a problem connecting to the db"));
+
+//use routes
+app.use("/user", require("./routes/user"));
+app.use("/quiz", require("./routes/quiz"));
+app.use("/auth", require("./routes/auth"));
+
+//set up server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log("listening on port " + PORT));
-const Str = require("@supercharge/strings");
-const db = require("./db");
-const user = require("./userRoutes");
-const auth = require("./authRoutes.js");
-const quiz = require("./quizRoutes");
-app.use("/user", user);
-app.use("/auth", auth);
-app.use("/quiz", quiz);
