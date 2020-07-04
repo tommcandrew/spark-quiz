@@ -36,7 +36,10 @@ export const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		display: "flex",
 		marginTop: "64px",
-		padding: "40px"
+		padding: "20px",
+		[theme.breakpoints.up("md")]: {
+			padding: "10px"
+		}
 	},
 	mainContent: {
 		flexGrow: 1,

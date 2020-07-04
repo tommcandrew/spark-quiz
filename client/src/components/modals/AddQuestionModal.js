@@ -6,7 +6,19 @@ import * as quizActions from "../../store/actions/quizActions";
 import { modalRootStyles, addQuestionModalStyles } from "../../style/modalStyles";
 import camelToSentence from "../../utils/camelToSentence";
 import supportedFileTypes from "../../utils/supportedFileTypes";
-import { Paper, Grid, Typography, Button, TextField } from "@material-ui/core";
+import {
+	Paper,
+	Grid,
+	Typography,
+	Button,
+	TextField,
+	Divider,
+	Card,
+	CardActionArea,
+	CardMedia,
+	CardContent,
+	CardActions
+} from "@material-ui/core";
 
 const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 	const rootClasses = modalRootStyles();
@@ -45,11 +57,11 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 							retrivedMedia.push({ file: { mediaType: "text/plain", text: media.data }, id: Date.now() })
 						);
 					} else {
-							let mediaData
-						if (typeof media.data === 'string') {
-							mediaData= media.data
+						let mediaData;
+						if (typeof media.data === "string") {
+							mediaData = media.data;
 						} else {
-							mediaData = new Buffer(media.data.data).toString('base64')
+							mediaData = new Buffer(media.data.data).toString("base64");
 						}
 						await urltoFile(
 							`data:${media.mediaType};base64,${mediaData}`,
@@ -66,7 +78,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 		[ qToEdit ]
 	);
 
-	//FUNCTIONS 
+	//FUNCTIONS
 	const urltoFile = async (url, filename, mimeType) => {
 		return await fetch(url)
 			.then(function(res) {
@@ -188,152 +200,217 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
 	//RETURN
 	return (
-		<Grid className={rootClasses.root} container spacing={2}>
-			<Grid item xs={12} className={classes.paper}>
-				<Typography className={classes.paper} variant="h5">
-					Add Question
-				</Typography>
-			</Grid>
-			<Grid item xs={12} sm={6}>
-				<Paper className={classes.paper}>
-					{addedMedia.length <= 2 ? (
-						<label htmlFor="myFile">
-							<input
-								id="myFile"
-								type="file"
-								onChange={handleAddFile}
-								accept={supportedFileTypes.toString()}
-							/>
-							Add Media
-						</label>
-					) : (
-						<p>You can only add three media objects per question</p>
-					)}
-				</Paper>
-			</Grid>
-			<Grid item xs={12} sm={6}>
-				<Button variant="outlined" color="primary" onClick={handleAddText} className={classes.paper}>
-					Add Text
-				</Button>
-			</Grid>
+		<div className={rootClasses.root}>
+			<Grid container spacing={2} justify="center" alignItems="flex-start">
+				<Grid item xs={12}>
+					<Typography variant="h5" color="secondary" style={{ textAlign: "center" }}>
+						Add a Question
+					</Typography>
+					<Divider variant="middle" />
+				</Grid>
 
-			<Grid container item spacing={2} xl={12} style={{ minHeight: "150px" }}>
-				{addedMedia.map((media, index) => (
-					<Grid item xs={6} md={2} key={index}>
-						<AddedMedia
-							media={media}
-							handleRemoveMedia={handleRemoveMedia}
-							handleTextChange={handleTextChange}
-							key={index}
-							//passed into remove function to access item in addedMedia array in state
-							index={index}
-						/>
-					</Grid>
-				))}
-			</Grid>
+				<Grid item xs={12} container spacing={1} justify="centre">
+					<Grid item xs={6} md={4}>
+					<Card className={classes.card}>
+						<CardActionArea>
+							<CardMedia className={classes.media} />
+						</CardActionArea>
+						<CardActions className={classes.cardActionArea}>
+							<Button size="small" color="primary">
+								Add Media
+							</Button>
+							<Button size="small" color="primary">
+								Add Text
+							</Button>
+						</CardActions>
+						</Card></Grid>
+				
+					
+					<Grid item xs={6} md={4}>
+					<Card className={classes.card}>
+						<CardActionArea>
+							<CardMedia className={classes.media} />
+						</CardActionArea>
+						<CardActions className={classes.cardActionArea}>
+							<Button size="small" color="primary">
+								Add Media
+							</Button>
+							<Button size="small" color="primary">
+								Add Text
+							</Button>
+						</CardActions>
+						</Card></Grid>
+					
+					<Grid item xs={6} md={4}>
+					<Card className={classes.card}>
+						<CardActionArea>
+							<CardMedia className={classes.media} />
+						</CardActionArea>
+						<CardActions className={classes.cardActionArea}>
+							<Button size="small" color="primary">
+								Add Media
+							</Button>
+							<Button size="small" color="primary">
+								Add Text
+							</Button>
+						</CardActions>
+						</Card></Grid>
 
-			<Grid item xs={12} sm={6}>
-				<Paper className={classes.paper}>
-					<Typography htmlFor="questionType">Question type</Typography>
-					<select id="questionType" value={questionType} onChange={handleSelectQuestionType}>
-						{questionTypes.map((type, index) => (
-							<option key={index} value={type}>
-								{camelToSentence(type)}
-							</option>
-						))}
-					</select>
-				</Paper>
-			</Grid>
-			<Grid item md={6} sm={6} xs={false} />
-			<Grid item md={12}>
-				<TextField
-					variant="outlined"
-					fullWidth
-					label="Question"
-					value={question}
-					onChange={handleQuestionChange}
-					required
-				/>
-			</Grid>
+					
 
-			{questionType === "trueFalse" && (
-				<Fragment>
-					<Grid item md={6} sm={6}>
-						<input
-							type="radio"
-							value="true"
-							id="true"
-							checked={selectedTrueFalse === "true"}
-							onChange={handleTrueFalseSelect}
-							name="trueFalse"
-							required
-						/>
-						<label htmlFor="true">True</label>
-					</Grid>
-					<Grid item md={6} sm={6}>
-						<input
-							type="radio"
-							value="false"
-							id="false"
-							checked={selectedTrueFalse === "false"}
-							onChange={handleTrueFalseSelect}
-							name="trueFalse"
-						/>
-						<label htmlFor="false">False</label>
-					</Grid>
-				</Fragment>
-			)}
+        {/* <Paper className={classes.paper}>
+          {addedMedia.length <= 2 ? (
+            <label htmlFor="myFile">
+              <input
+                id="myFile"
+                type="file"
+                onChange={handleAddFile}
+                accept={supportedFileTypes.toString()}
+              />
+              Add Media
+            </label>
+          ) : (
+            <p>You can only add three media objects per question</p>
+          )}
+        </Paper>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={handleAddText}
+          className={classes.paper}
+        >
+          Add Text
+        </Button>
+      </Grid>
 
-			{questionType === "multipleChoice" && (
-				<Fragment>
-					<Grid item xs={12} md={12}>
-						<button type="button" onClick={handleAddMultipleChoiceOption}>
-							Add option
-						</button>
-					</Grid>
+      <Grid container item spacing={2} xl={12} style={{ minHeight: "150px" }}>
+        {addedMedia.map((media, index) => (
+          <Grid item xs={6} md={2} key={index}>
+            <AddedMedia
+              media={media}
+              handleRemoveMedia={handleRemoveMedia}
+              handleTextChange={handleTextChange}
+              key={index}
+              //passed into remove function to access item in addedMedia array in state
+              index={index}
+            />
+          </Grid>
+        ))}
+      </Grid> */}
 
-					{multipleChoiceOptions.map((option, index) => (
-						<Grid item md={6} xs={3} key={index}>
-							<label htmlFor={index}>{index + 1}.</label>
-							<textarea
-								type="text"
-								value={option}
-								onChange={handleMultipleChoiceOptionChange}
-								//needed to access item in multipleChoiceOptions array in state on change
-								data-index={index}
-								required
-							/>
+
+
+
+
+
+				
+				</Grid>
+
+				<Grid item xs={12} sm={6}>
+					<Paper className={classes.paper}>
+						<Typography htmlFor="questionType">Question type</Typography>
+						<select id="questionType" value={questionType} onChange={handleSelectQuestionType}>
+							{questionTypes.map((type, index) => (
+								<option key={index} value={type}>
+									{camelToSentence(type)}
+								</option>
+							))}
+						</select>
+					</Paper>
+				</Grid>
+				<Grid item md={6} sm={6} xs={false} />
+				<Grid item md={12}>
+					<TextField
+						variant="outlined"
+						fullWidth
+						label="Question"
+						value={question}
+						onChange={handleQuestionChange}
+						required
+					/>
+				</Grid>
+
+				{questionType === "trueFalse" && (
+					<Fragment>
+						<Grid item md={6} sm={6}>
 							<input
 								type="radio"
-								value={index}
-								checked={selectedMultipleChoiceOption === index.toString()}
-								onChange={handleMultipleChoiceOptionSelect}
+								value="true"
+								id="true"
+								checked={selectedTrueFalse === "true"}
+								onChange={handleTrueFalseSelect}
+								name="trueFalse"
 								required
 							/>
+							<label htmlFor="true">True</label>
 						</Grid>
-					))}
-				</Fragment>
-			)}
-
-			<Grid item md={12} sm={12}>
-				<p>Please select the correct answer.</p>
-			</Grid>
-
-			<Grid item md={12} xl={12}>
-				{quiz.quizPointsSystem === "eachQuestion" && (
-					<div>
-						<label htmlFor="points">Points:</label>
-						<input type="text" id="points" name="points" value={points} onChange={handlePointsChange} />
-					</div>
+						<Grid item md={6} sm={6}>
+							<input
+								type="radio"
+								value="false"
+								id="false"
+								checked={selectedTrueFalse === "false"}
+								onChange={handleTrueFalseSelect}
+								name="trueFalse"
+							/>
+							<label htmlFor="false">False</label>
+						</Grid>
+					</Fragment>
 				)}
-			</Grid>
 
-			<Grid item md={12} sm={12}>
-				<button type="submit" onClick={handleSubmit}>
-					{qToEdit ? <>Update Question</> : <>Add question</>}
-				</button>
+				{questionType === "multipleChoice" && (
+					<Fragment>
+						<Grid item xs={12} md={12}>
+							<button type="button" onClick={handleAddMultipleChoiceOption}>
+								Add option
+							</button>
+						</Grid>
+
+						{multipleChoiceOptions.map((option, index) => (
+							<Grid item md={6} xs={3} key={index}>
+								<label htmlFor={index}>{index + 1}.</label>
+								<textarea
+									type="text"
+									value={option}
+									onChange={handleMultipleChoiceOptionChange}
+									//needed to access item in multipleChoiceOptions array in state on change
+									data-index={index}
+									required
+								/>
+								<input
+									type="radio"
+									value={index}
+									checked={selectedMultipleChoiceOption === index.toString()}
+									onChange={handleMultipleChoiceOptionSelect}
+									required
+								/>
+							</Grid>
+						))}
+					</Fragment>
+				)}
+
+				<Grid item md={12} sm={12}>
+					<p>Please select the correct answer.</p>
+				</Grid>
+
+				<Grid item md={12} xl={12}>
+					{quiz.quizPointsSystem === "eachQuestion" && (
+						<div>
+							<label htmlFor="points">Points:</label>
+							<input type="text" id="points" name="points" value={points} onChange={handlePointsChange} />
+						</div>
+					)}
+				</Grid>
+
+				<Grid item md={12} sm={12}>
+					<button type="submit" onClick={handleSubmit}>
+						{/* {qToEdit ? <>Update Question</> : <>Add question</>} */}
+					</button>
+				</Grid>
 			</Grid>
-		</Grid>
+		</div>
 	);
 };
 export default AddQuestionModal;
