@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const checkAuth = require("./middleware");
-const User = require("./models/User.model");
+const checkAuth = require("../middleware");
+const User = require("../models/User.model");
 
 router.post("/addContact", checkAuth, (req, res) => {
   const id = req.user.id;

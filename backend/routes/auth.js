@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const checkAuth = require("./middleware");
-const User = require("./models/User.model");
+const checkAuth = require("../middleware");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const transporter = require("./nodemailer");
-const Quiz = require("./models/Quiz.model");
+const transporter = require("../nodemailer");
+const Quiz = require("../models/Quiz.model");
+const User = require("../models/User.model");
 
 router.post("/register", (req, res) => {
   const { name, email, password, password2 } = req.body;

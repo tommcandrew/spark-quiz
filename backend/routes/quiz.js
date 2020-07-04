@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const checkAuth = require("./middleware");
-const Quiz = require("./models/Quiz.model");
-const User = require("./models/User.model");
-const transporter = require("./nodemailer");
+const checkAuth = require("../middleware");
+const Quiz = require("../models/Quiz.model");
+const User = require("../models/User.model");
+const transporter = require("../nodemailer");
+const fileUpload = require("express-fileupload");
+router.use(fileUpload());
 
 router.post("/addQuestion", (req, res) => {
   const { _id, questionObject } = req.body;
