@@ -13,9 +13,8 @@ export const STUDENT_LOGIN_SUCCESS = "STUDENT_LOGIN_SUCCESS";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const CLEAR_STUDENT = "CLEAR_STUDENT";
-export const SET_CURRENT_QUIZ_IN_LS = "SET_CURRENT_QUIZ_IN_LS"
-export const CLEAR_QUIZ_FROM_LS = "CLEAR_QUIZ_FROM_LS"
-
+export const SET_CURRENT_QUIZ_IN_LS = "SET_CURRENT_QUIZ_IN_LS";
+export const CLEAR_QUIZ_FROM_LS = "CLEAR_QUIZ_FROM_LS";
 
 export const tokenConfig = (token) => {
   const config = {
@@ -29,14 +28,13 @@ export const tokenConfig = (token) => {
   return config;
 };
 
-
 export const loadUser = () => {
   return async (dispatch, getState) => {
     //user loading
     dispatch({ type: USER_LOADING }); //user is loading to true
     const token = getState().auth.token;
     return axios
-      .get("http://localhost:5000/user", tokenConfig(token))
+      .get("http://localhost:5000/user/user", tokenConfig(token))
       .then((res) =>
         dispatch({
           type: USER_LOADED,
@@ -57,7 +55,7 @@ export const register = ({ name, email, password, password2 }) => {
     const config = { headers: { "Content-Type": "application/json" } };
     const body = JSON.stringify({ name, email, password, password2 });
     return axios
-      .post("http://localhost:5000/register", body, config)
+      .post("http://localhost:5000/auth/register", body, config)
       .then((res) => {
         dispatch({
           type: REGISTER_SUCCESS,
@@ -85,7 +83,7 @@ export const login = ({ email, password }) => {
     const config = { headers: { "Content-Type": "application/json" } };
     const body = JSON.stringify({ email, password });
     return axios
-      .post("http://localhost:5000/login", body, config)
+      .post("http://localhost:5000/auth/login", body, config)
       .then((res) => {
         dispatch({
           type: LOGIN_SUCCESS,
@@ -114,7 +112,7 @@ export const studentLogin = (studentCode) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     return axios
-      .post("http://localhost:5000/studentLogin", { studentCode }, config)
+      .post("http://localhost:5000/auth/studentLogin", { studentCode }, config)
       .then((res) => {
         dispatch({
           type: STUDENT_LOGIN_SUCCESS,
@@ -143,7 +141,7 @@ export const deleteAccount = () => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
     return axios
-      .get("http://localhost:5000/deleteAccount", tokenConfig(token))
+      .get("http://localhost:5000/user/deleteAccount", tokenConfig(token))
       .then(() => {
         //is it ok to not return an action object for reducer? It seems unnecessary here.
         dispatch(logout());
@@ -159,7 +157,7 @@ export const changePassword = (currentPassword, newPassword) => {
     const token = getState().auth.token;
     return axios
       .post(
-        "http://localhost:5000/changePassword",
+        "http://localhost:5000/auth/changePassword",
         { currentPassword, newPassword },
         tokenConfig(token)
       )
@@ -175,7 +173,7 @@ export const changePassword = (currentPassword, newPassword) => {
 export const resetPassword = (email) => {
   return (dispatch, getState) => {
     return axios
-      .post("http://localhost:5000/resetPassword", { email })
+      .post("http://localhost:5000/auth/resetPassword", { email })
       .then((res) => {
         console.log(res);
       })
@@ -191,23 +189,18 @@ export const logout = () => {
   };
 };
 
-//QUIZ ACTIONS 
+//QUIZ ACTIONS
 export const setCurrentQuizInLS = (id) => {
-  return  (dispatch) => {
+  return (dispatch) => {
     dispatch({
       type: SET_CURRENT_QUIZ_IN_LS,
-      quizId: id 
+      quizId: id,
     });
   };
-}
+};
 
 export const clearQuizFromLS = () => {
   return async (dispatch) => {
     await dispatch({ type: CLEAR_QUIZ_FROM_LS });
   };
 };
-
-
-
-
-

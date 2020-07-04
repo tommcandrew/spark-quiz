@@ -7,12 +7,11 @@ export const DELETE_QUIZ = "DELETE_QUIZ";
 export const ADD_CONTACT = "ADD_CONTACT";
 export const ADD_GROUP = "ADD_GROUP";
 
-
 export const fetchQuizzes = () => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
     axios
-      .get("http://localhost:5000/fetchQuizzes", tokenConfig(token))
+      .get("http://localhost:5000/quiz/fetchQuizzes", tokenConfig(token))
       .then((res) => {
         dispatch({
           type: FETCH_QUIZZES,
@@ -40,7 +39,11 @@ export const addContact = (contact) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
     return axios
-      .post("http://localhost:5000/addContact", { contact }, tokenConfig(token))
+      .post(
+        "http://localhost:5000/user/addContact",
+        { contact },
+        tokenConfig(token)
+      )
       .then(() => {
         dispatch({
           type: ADD_CONTACT,
@@ -59,7 +62,7 @@ export const deleteContact = (contactId) => {
     const token = getState().auth.token;
     return axios
       .post(
-        "http://localhost:5000/deleteContact",
+        "http://localhost:5000/user/deleteContact",
         { contactId },
         tokenConfig(token)
       )
@@ -77,7 +80,7 @@ export const deleteGroup = (groupId) => {
     const token = getState().auth.token;
     return axios
       .post(
-        "http://localhost:5000/deleteGroup",
+        "http://localhost:5000/user/deleteGroup",
         { groupId },
         tokenConfig(token)
       )
@@ -95,7 +98,7 @@ export const updateContact = (contactId, updatedContact) => {
     const token = getState().auth.token;
     return axios
       .post(
-        "http://localhost:5000/updateContact",
+        "http://localhost:5000/user/updateContact",
         { contactId, updatedContact },
         tokenConfig(token)
       )
@@ -112,7 +115,11 @@ export const addGroup = (group) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
     return axios
-      .post("http://localhost:5000/addGroup", { group }, tokenConfig(token))
+      .post(
+        "http://localhost:5000/user/addGroup",
+        { group },
+        tokenConfig(token)
+      )
       .then(() => {
         dispatch({
           type: ADD_GROUP,
@@ -131,7 +138,7 @@ export const deleteMember = (groupId, memberId) => {
     const token = getState().auth.token;
     return axios
       .post(
-        "http://localhost:5000/deleteMember",
+        "http://localhost:5000/user/deleteMember",
         { groupId, memberId },
         tokenConfig(token)
       )
@@ -149,7 +156,7 @@ export const updateGroup = (groupId, membersToAdd) => {
     const token = getState().auth.token;
     return axios
       .post(
-        "http://localhost:5000/updateGroup",
+        "http://localhost:5000/user/updateGroup",
         { groupId, membersToAdd },
         tokenConfig(token)
       )
@@ -165,7 +172,7 @@ export const updateGroup = (groupId, membersToAdd) => {
 export const deleteQuiz = (id) => {
   return (dispatch) => {
     return axios
-      .post("http://localhost:5000/deleteQuiz", { _id: id })
+      .post("http://localhost:5000/quiz/deleteQuiz", { _id: id })
       .then(() => {
         dispatch({
           type: DELETE_QUIZ,

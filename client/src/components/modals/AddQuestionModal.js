@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import AddedMedia from "../UI/AddedMedia";
 import * as quizActions from "../../store/actions/quizActions";
 
-import { modalRootStyles, addQuestionModalStyles } from "../../style/modalStyles";
+import {
+  modalRootStyles,
+  addQuestionModalStyles,
+} from "../../style/modalStyles";
 import camelToSentence from "../../utils/camelToSentence";
 import supportedFileTypes from "../../utils/supportedFileTypes";
 import {
@@ -21,24 +24,27 @@ import {
 } from "@material-ui/core";
 
 const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
-	const rootClasses = modalRootStyles();
-	const classes = addQuestionModalStyles();
-	const dispatch = useDispatch();
+  const rootClasses = modalRootStyles();
+  const classes = addQuestionModalStyles();
+  const dispatch = useDispatch();
 
-	const [ addedMedia, setAddedMedia ] = useState([]);
-	const [ retrivedMedia, setRetrivedMedia ] = useState([]);
-	const [ questionType, setQuestionType ] = useState("multipleChoice");
-	const [ multipleChoiceOptions, setMultipleChoiceOptions ] = useState([ "", "" ]);
-	const [ selectedMultipleChoiceOption, setSelectedMultipleChoiceOption ] = useState(null);
-	const [ selectedTrueFalse, setSelectedTrueFalse ] = useState();
-	const [ question, setQuestion ] = useState("");
-	const [ points, setPoints ] = useState(null);
-	const questionTypes = [ "trueFalse", "multipleChoice" ];
-	const qToEdit = useSelector((state) =>
-		state.quiz.quizQuestions.find((question) => {
-			return question._id === questionToEdit;
-		})
-	);
+  const [addedMedia, setAddedMedia] = useState([]);
+  const [retrivedMedia, setRetrivedMedia] = useState([]);
+  const [questionType, setQuestionType] = useState("multipleChoice");
+  const [multipleChoiceOptions, setMultipleChoiceOptions] = useState(["", ""]);
+  const [
+    selectedMultipleChoiceOption,
+    setSelectedMultipleChoiceOption,
+  ] = useState(null);
+  const [selectedTrueFalse, setSelectedTrueFalse] = useState();
+  const [question, setQuestion] = useState("");
+  const [points, setPoints] = useState(null);
+  const questionTypes = ["trueFalse", "multipleChoice"];
+  const qToEdit = useSelector((state) =>
+    state.quiz.quizQuestions.find((question) => {
+      return question._id === questionToEdit;
+    })
+  );
 
 	useEffect(
 		() => {
@@ -93,110 +99,118 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 	// 	console.log(file);
 	// });
 
-	//HANDLERS
-	const handleAddText = () => {
-		setAddedMedia([ ...addedMedia, { file: { mediaType: "text/plain", data: "" }, id: Date.now() } ]);
-	};
+  //HANDLERS
+  const handleAddText = () => {
+    setAddedMedia([
+      ...addedMedia,
+      { file: { mediaType: "text/plain", data: "" }, id: Date.now() },
+    ]);
+  };
 
-	//saves the file in state which results in preview displaying on page
-	const handleAddFile = (e) => {
-		const file = e.target.files[0];
-		if (!file) {
-			return;
-		}
-		if (file.size >= 16000000) {
-			alert("File size limit is 16MB.");
-			return;
-		}
-		if (!supportedFileTypes.includes(file.type)) {
-			alert("File type not supported.");
-			return;
-		}
-		setAddedMedia([
-			...addedMedia,
-			{
-				file: file,
-				//need some kind of id to be able to remove media after adding it
-				id: Date.now()
-			}
-		]);
-	};
+  //saves the file in state which results in preview displaying on page
+  const handleAddFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    if (file.size >= 16000000) {
+      alert("File size limit is 16MB.");
+      return;
+    }
+    if (!supportedFileTypes.includes(file.type)) {
+      alert("File type not supported.");
+      return;
+    }
+    setAddedMedia([
+      ...addedMedia,
+      {
+        file: file,
+        //need some kind of id to be able to remove media after adding it
+        id: Date.now(),
+      },
+    ]);
+  };
 
-	const handleRemoveMedia = (mediaId) => {
-		setAddedMedia(addedMedia.filter((media) => media.id !== mediaId));
-	};
+  const handleRemoveMedia = (mediaId) => {
+    setAddedMedia(addedMedia.filter((media) => media.id !== mediaId));
+  };
 
-	const handleTextChange = (e) => {
-		const addedMediaCopy = [ ...addedMedia ];
-		addedMediaCopy[e.target.dataset.index].file.data = e.target.value;
-		setAddedMedia([ ...addedMediaCopy ]);
-	};
+  const handleTextChange = (e) => {
+    const addedMediaCopy = [...addedMedia];
+    addedMediaCopy[e.target.dataset.index].file.data = e.target.value;
+    setAddedMedia([...addedMediaCopy]);
+  };
 
-	const handleSelectQuestionType = (e) => {
-		setQuestionType(e.target.value);
-	};
+  const handleSelectQuestionType = (e) => {
+    setQuestionType(e.target.value);
+  };
 
-	const handleQuestionChange = (e) => {
-		setQuestion(e.target.value);
-	};
+  const handleQuestionChange = (e) => {
+    setQuestion(e.target.value);
+  };
 
-	const handleAddMultipleChoiceOption = () => {
-		if (multipleChoiceOptions.length < 6) {
-			setMultipleChoiceOptions([ ...multipleChoiceOptions, "" ]);
-		} else {
-			alert("Maximum 6 options.");
-		}
-	};
+  const handleAddMultipleChoiceOption = () => {
+    if (multipleChoiceOptions.length < 6) {
+      setMultipleChoiceOptions([...multipleChoiceOptions, ""]);
+    } else {
+      alert("Maximum 6 options.");
+    }
+  };
 
-	const handleTrueFalseSelect = (e) => {
-		setSelectedTrueFalse(e.target.value);
-	};
+  const handleTrueFalseSelect = (e) => {
+    setSelectedTrueFalse(e.target.value);
+  };
 
-	const handleMultipleChoiceOptionChange = (e) => {
-		const multipleChoiceOptionsCopy = [ ...multipleChoiceOptions ];
-		multipleChoiceOptionsCopy[e.target.dataset.index] = e.target.value;
-		setMultipleChoiceOptions([ ...multipleChoiceOptionsCopy ]);
-	};
+  const handleMultipleChoiceOptionChange = (e) => {
+    const multipleChoiceOptionsCopy = [...multipleChoiceOptions];
+    multipleChoiceOptionsCopy[e.target.dataset.index] = e.target.value;
+    setMultipleChoiceOptions([...multipleChoiceOptionsCopy]);
+  };
 
-	const handleMultipleChoiceOptionSelect = (e) => {
-		setSelectedMultipleChoiceOption(e.target.value);
-	};
+  const handleMultipleChoiceOptionSelect = (e) => {
+    setSelectedMultipleChoiceOption(e.target.value);
+  };
 
-	const handlePointsChange = (e) => {
-		setPoints(e.target.value);
-	};
+  const handlePointsChange = (e) => {
+    setPoints(e.target.value);
+  };
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		//don't need id we added in backend so just sending file
-		let addedText = addedMedia
-			.filter((media) => media.file.mediaType === "text/plain" && media.file.data !== "")
-			.map((obj) => obj.file);
-		const questionObject = {
-			id: qToEdit ? qToEdit._id : new Date().getUTCMilliseconds().toString(),
-			questionType: questionType,
-			//adding text separately because FormData will ignore it
-			media: [ ...addedText ],
-			question: question,
-			answers: {
-				trueFalseAnswer: questionType === "trueFalse" ? selectedTrueFalse : null,
-				multipleChoiceOptions: questionType === "multipleChoice" ? [ ...multipleChoiceOptions ] : null,
-				multipleChoiceAnswer: selectedMultipleChoiceOption
-			},
-			points: points
-		};
-		const questionObjectStringified = JSON.stringify(questionObject);
-		const formData = new FormData();
-		formData.append("_id", quiz._id);
-		formData.append("questionObject", questionObjectStringified);
-		addedMedia.forEach((media) => {
-			formData.append("file", media.file);
-		});
-		qToEdit
-			? await dispatch(quizActions.editQuestion(formData))
-			: await dispatch(quizActions.addNewQuestion(formData));
-		closeModal();
-	};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //don't need id we added in backend so just sending file
+    let addedText = addedMedia
+      .filter(
+        (media) =>
+          media.file.mediaType === "text/plain" && media.file.data !== ""
+      )
+      .map((obj) => obj.file);
+    const questionObject = {
+      id: qToEdit ? qToEdit._id : new Date().getUTCMilliseconds().toString(),
+      questionType: questionType,
+      //adding text separately because FormData will ignore it
+      media: [...addedText],
+      question: question,
+      answers: {
+        trueFalseAnswer:
+          questionType === "trueFalse" ? selectedTrueFalse : null,
+        multipleChoiceOptions:
+          questionType === "multipleChoice" ? [...multipleChoiceOptions] : null,
+        multipleChoiceAnswer: selectedMultipleChoiceOption,
+      },
+      points: points,
+    };
+    const questionObjectStringified = JSON.stringify(questionObject);
+    const formData = new FormData();
+    formData.append("_id", quiz._id);
+    formData.append("questionObject", questionObjectStringified);
+    addedMedia.forEach((media) => {
+      formData.append("file", media.file);
+    });
+    qToEdit
+      ? await dispatch(quizActions.editQuestion(formData))
+      : await dispatch(quizActions.addNewQuestion(formData));
+    closeModal();
+  };
 
 	//RETURN
 	return (
