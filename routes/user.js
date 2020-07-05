@@ -3,164 +3,148 @@ const router = express.Router();
 const checkAuth = require("../middleware");
 const User = require("../models/User.model");
 
-router.post("/addContact", checkAuth, (req, res) => {
+router.post("/addContact", checkAuth, async (req, res) => {
   const id = req.user.id;
   const { contact } = req.body;
-  User.findById(id)
-    .then((user) => {
-      user.contacts.push(contact);
-      user.save().then(() => {
-        res.status(200).send();
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const user = await User.findById(id);
+    user.contacts.push(contact);
+    await user.save();
+    res.status(200).send();
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-router.post("/deleteContact", checkAuth, (req, res) => {
+router.post("/deleteContact", checkAuth, async (req, res) => {
   const id = req.user.id;
   const { contactId } = req.body;
-  User.findById(id)
-    .then((user) => {
-      const updatedContacts = user.contacts.filter(
-        (contact) => contact._id.toString() !== contactId
-      );
-      user.contacts = updatedContacts;
-
-      //remove contact from any groups
-      user.groups.forEach((group) => {
-        group.contacts = [
-          ...group.contacts.filter(
-            (contact) => contact._id.toString() !== contactId
-          ),
-        ];
-      });
-
-      user.save().then(() => {
-        res.status(200).send({ msg: "Contact deleted" });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
+  try {
+    const user = await User.findById(id);
+    const updatedContacts = user.contacts.filter(
+      (contact) => contact._id.toString() !== contactId
+    );
+    user.contacts = updatedContacts;
+    user.groups.forEach((group) => {
+      group.contacts = [
+        ...group.contacts.filter(
+          (contact) => contact._id.toString() !== contactId
+        ),
+      ];
     });
+    await user.save();
+    res.status(200).send({ msg: "Contact deleted" });
+  } catch (err) {
+    console.log(Err);
+  }
 });
 
-router.post("/deleteGroup", checkAuth, (req, res) => {
+router.post("/deleteGroup", checkAuth, async (req, res) => {
   const id = req.user.id;
   const { groupId } = req.body;
-  User.findById(id)
-    .then((user) => {
-      const updatedGroups = user.groups.filter(
-        (group) => group._id.toString() !== groupId
-      );
-      user.groups = updatedGroups;
-      user.save().then(() => {
-        res.status(200).send({ msg: "Group deleted" });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const user = await User.findById(id);
+    const updatedGroups = user.groups.filter(
+      (group) => group._id.toString() !== groupId
+    );
+    user.groups = updatedGroups;
+    await user.save();
+    res.status(200).send({ msg: "Group deleted" });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-router.post("/updateContact", checkAuth, (req, res) => {
+router.post("/updateContact", checkAuth, async (req, res) => {
   const id = req.user.id;
   const { contactId, updatedContact } = req.body;
-  User.findById(id)
-    .then((user) => {
-      user.contacts.forEach((contact) => {
-        if (contact._id.toString() === contactId) {
-          contact.name = updatedContact.name;
-          contact.email = updatedContact.email;
-        }
-      });
-      user.save().then(() => {
-        res.status(200).send({ msg: "Contact deleted" });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
+  try {
+    const user = await User.findById(id);
+    user.contacts.forEach((contact) => {
+      if (contact._id.toString() === contactId) {
+        contact.name = updatedContact.name;
+        contact.email = updatedContact.email;
+      }
     });
+    await user.save();
+    res.status(200).send({ msg: "Contact deleted" });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-router.post("/addGroup", checkAuth, (req, res) => {
+router.post("/addGroup", checkAuth, async (req, res) => {
   const id = req.user.id;
   const { group } = req.body;
-  User.findById(id)
-    .then((user) => {
-      user.groups.push(group);
-      user.save().then(() => {
-        res.status(200).send();
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const user = await User.findById(id);
+    user.groups.push(group);
+    await user.save();
+    res.status(200).send();
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-router.post("/deleteMember", checkAuth, (req, res) => {
+router.post("/deleteMember", checkAuth, async (req, res) => {
   const id = req.user.id;
   const { groupId, memberId } = req.body;
-  User.findById(id)
-    .then((user) => {
-      const updatedGroups = user.groups.map((group) => {
-        if (group._id.toString() === groupId) {
-          group.contacts = [
-            ...group.contacts.filter(
-              (contact) => contact._id.toString() !== memberId
-            ),
-          ];
-        }
-        return group;
-      });
-      user.save().then(() => {
-        res.status(200).send({ msg: "Member deleted" });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
+  try {
+    const user = await User.findById(id);
+    const updatedGroups = user.groups.map((group) => {
+      if (group._id.toString() === groupId) {
+        group.contacts = [
+          ...group.contacts.filter(
+            (contact) => contact._id.toString() !== memberId
+          ),
+        ];
+      }
+      return group;
     });
+    user.groups = updatedGroups;
+    await user.save();
+    res.status(200).send({ msg: "Member deleted" });
+  } catch (err) {
+    console.log(err);
+  }
 });
-router.post("/updateGroup", checkAuth, (req, res) => {
+router.post("/updateGroup", checkAuth, async (req, res) => {
   const id = req.user.id;
   const { groupId, membersToAdd } = req.body;
-  User.findById(id)
-    .then((user) => {
-      const updatedGroups = user.groups.map((group) => {
-        if (group._id.toString() === groupId) {
-          group.contacts = [...group.contacts, ...membersToAdd];
-        }
-        return group;
-      });
-      user.groups = updatedGroups;
-      user.save().then(() => {
-        res.status(200).send({ msg: "Group updated" });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
+  try {
+    const user = await User.findById(id);
+    const updatedGroups = user.groups.map((group) => {
+      if (group._id.toString() === groupId) {
+        group.contacts = [...group.contacts, ...membersToAdd];
+      }
+      return group;
     });
+    user.groups = updatedGroups;
+    await user.save();
+    res.status(200).send({ msg: "Group updated" });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-router.get("/deleteAccount", checkAuth, (req, res) => {
+router.get("/deleteAccount", checkAuth, async (req, res) => {
   const id = req.user.id;
-  User.findByIdAndDelete(id)
-    .then(() => {
-      res.status(200).send({ msg: "User deleted" });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const user = await User.findByIdAndDelete(id);
+    res.status(200).send({ msg: "User deleted" });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-//to identify the user session
-router.get("/user", checkAuth, (req, res) => {
-  User.findById(req.user.id)
-    .select("-password")
-    .then((user) => {
-      res.json(user);
-    });
+router.get("/fetchUser", checkAuth, async (req, res) => {
+  console.log("fetch user request");
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.status(200).send({ user });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;
