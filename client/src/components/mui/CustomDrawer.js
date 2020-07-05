@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 import {
@@ -20,7 +20,6 @@ import { useStyles } from "../../style/drawerStyles";
 
 const CustomDrawer = ({ url, clearQuizState }) => {
   const classes = useStyles();
-  const [isSelected, setIsSelected] = useState("");
 
   return (
     <div>

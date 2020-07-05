@@ -67,7 +67,10 @@ const PreviewQuestions = (props) => {
                         className={classes.inline}
                         color="textPrimary"
                       >
-                        Quesiton: {question.question}
+                        Question:{" "}
+                        {question.question.length > 300
+                          ? question.question.slice(0, 295) + "..."
+                          : question.question}
                       </Typography>
                       <button
                         onClick={() => deleteQuestionHandler(question._id)}
@@ -84,23 +87,6 @@ const PreviewQuestions = (props) => {
             </ListItem>
           ))}
         </List>
-
-        //         <li key={index} className="list-item">
-        //           <p>Question Type: {question.questionType}</p>
-        //           <p>Question: {question.question}</p>
-        //           {question.questionType === "trueFalse" ? (
-        //             <p>correct answer is {question.answers.trueFalseAnswer}</p>
-        //           ) : (
-        //             <div>
-        //               Options:
-        //               {question.answers.multipleChoiceOptions.map(
-        //                 (option, i) => (
-        //                   <p key={i}>-{option}</p>
-        //                 )
-        //               )}
-        //               <p>
-        //                 correct answer: {question.answers.multipleChoiceAnswer}
-        //               </p>
       )}
     </>
   );
