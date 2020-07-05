@@ -3,17 +3,18 @@ const router = express.Router();
 const checkAuth = require("../middleware");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const transporter = require("../nodemailer");
+const { emailNewPassword } = require("../email");
 const Quiz = require("../models/Quiz.model");
 const User = require("../models/User.model");
+const validator = require("validator");
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   const { name, email, password, password2 } = req.body;
   if (password.length < 8) {
     res.status(500).send({ msg: "Password must have at least 8 characters" });
     return;
   }
-  if (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$/.test(email) === false) {
+  if (!validator.isEmail(email)) {
     res.status(400).send({ msg: "Please enter a valid email address" });
     return;
   }
@@ -21,187 +22,138 @@ router.post("/register", (req, res) => {
     res.status(400).send({ msg: "Passwords must match" });
     return;
   }
-
-  User.findOne({ email }).then((user) => {
-    if (user) {
-      res.status(403).send({ msg: "That email is already registered" });
-      return;
-    } else {
-      const user = new User({ name, email, password });
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(user.password, salt, (err, hash) => {
-          user.password = hash;
-          user.save().then((user) => {
-            jwt.sign(
-              { id: user._id, role: "teacher", name: user.name },
-              "secretkey",
-              (err, token) => {
-                res.send({
-                  token,
-                  user: {
-                    id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    role: "teacher",
-                    quizzes: [],
-                    contacts: [],
-                    groups: [],
-                  },
-                });
-              }
-            );
-          });
-        });
-      });
-    }
-  });
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    res.status(403).send({ msg: "That email is already registered" });
+    return;
+  } else {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    const user = await new User({ name, email, password: hash }).save();
+    const token = jwt.sign(
+      { id: user._id, role: "teacher", name: user.name },
+      "secretkey"
+    );
+    res.send({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: "teacher",
+        quizzes: [],
+        contacts: [],
+        groups: [],
+      },
+    });
+  }
 });
-router.post("/login", (req, res) => {
+
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email }).then((user) => {
-    if (!user) {
-      res.status(403).send({ msg: "That email is not registered" });
-    } else {
-      bcrypt.compare(password, user.password, (err, isSame) => {
-        if (err) {
-          res.status(403).send({ msg: "Problem comparing the passwords" });
-        } else {
-          if (!isSame) {
-            res.status(403).send({ msg: "Wrong password" });
-          } else {
-            jwt.sign(
-              { id: user._id, role: "teacher", name: user.name },
-              "secretkey",
-              (err, token) => {
-                res.status(200).send({
-                  token,
-                  user: {
-                    id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    role: "teacher",
-                  },
-                });
-              }
-            );
-          }
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(403).send({ msg: "That email is not registered" });
+  } else {
+    try {
+      const isSame = await bcrypt.compare(password, user.password);
+      if (!isSame) {
+        res.status(403).send({ msg: "Wrong password" });
+      } else {
+        const token = jwt.sign(
+          { id: user._id, role: "teacher", name: user.name },
+          "secretkey"
+        );
+        res.status(200).send({
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: "teacher",
+          },
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+});
+
+router.post("/studentLogin", async (req, res) => {
+  const { studentCode } = req.body;
+  try {
+    const quizzes = await Quiz.find();
+    let found;
+    quizzes.forEach((quiz) => {
+      quiz.quizInvites.contacts.forEach((contact) => {
+        if (contact.code === studentCode) {
+          found = contact.code;
+          const token = jwt.sign(
+            { code: contact.code, role: "student" },
+            "secretkey"
+          );
+          res.status(200).send({
+            quiz,
+            token,
+            user: {
+              code: contact.code,
+              contactId: contact.id,
+              role: "student",
+            },
+          });
+          return;
         }
       });
-    }
-  });
-});
-
-router.post("/studentLogin", (req, res) => {
-  const { studentCode } = req.body;
-  Quiz.find()
-    .then((quizzes) => {
-      let found = "";
-      quizzes.forEach((quiz) => {
-        quiz.quizInvites.contacts.forEach((contact) => {
-          if (contact.code === studentCode) {
-            found = contact.code;
-            jwt.sign(
-              { code: contact.code, role: "student" },
-              "secretkey",
-              (err, token) => {
-                res.status(200).send({
-                  quiz: quiz, //here we do not need to send the entire quiz
-                  token,
-                  user: {
-                    code: contact.code,
-                    contactId: contact.id,
-                    role: "student",
-                  },
-                });
-              }
-            );
-            return;
-          }
-          if (found !== "") return;
-        });
-      });
-      if (found === "") {
-        console.log("quiz not found");
-        res.status(403).send({ msg: "invalid code" });
-        return;
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ msg: err });
     });
+    if (!found) {
+      res.status(403).send({ msg: "invalid code" });
+      return;
+    }
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-router.post("/resetPassword", (req, res) => {
+router.post("/resetPassword", async (req, res) => {
   const { email } = req.body;
-  User.findOne({ email })
-    .then((user) => {
-      if (user) {
-        //will need to generate a random code
-        const tempPassword = "bananas";
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(tempPassword, salt, (err, hash) => {
-            user.password = hash;
-            user.save().then((user) => {
-              emailNewPassword(user.email, tempPassword);
-              res.status(200).send({ msg: "New password emailed" });
-            });
-          });
-        });
-      }
-    })
-    .catch((err) => {
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      //need to generate random password
+      const tempPassword = "bananas";
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(tempPassword, salt);
+      user.password = hash;
+      await user.save();
+      emailNewPassword(user.email);
+      res.status(200).send({ msg: "New password emailed" });
+    } else {
       res.status(400).send({ msg: "User not found" });
-    });
+    }
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-const emailNewPassword = (email, tempPassword) => {
-  const mailOptions = {
-    from: "Quiz Master",
-    //email goes here
-    to: "thomasdarragh88@gmail.com",
-    subject: "Password reset",
-    text:
-      "Your password has been reset. You're new temporary password is " +
-      tempPassword +
-      ".",
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email(s) sent");
-    }
-  });
-};
-
-router.post("/changepassword", checkAuth, (req, res) => {
+router.post("/changepassword", checkAuth, async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   const id = req.user.id;
-  User.findById(id)
-    .then((user) => {
-      bcrypt.compare(currentPassword, user.password, (err, isSame) => {
-        if (err) {
-          res.status(403).send({ msg: "Problem comparing the passwords" });
-        } else {
-          if (!isSame) {
-            res.status(403).send({ msg: "Passwords don't match" });
-          } else {
-            bcrypt.genSalt(10, (err, salt) => {
-              bcrypt.hash(newPassword, salt, (err, hash) => {
-                user.password = hash;
-                user.save().then(() => {
-                  res.status(200).send({ msg: "Password changed" });
-                });
-              });
-            });
-          }
-        }
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const user = await User.findById(id);
+    const isSame = await bcrypt.compare(currentPassword, user.password);
+    if (!isSame) {
+      res.status(403).send({ msg: "Passwords don't match" });
+    } else {
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(newPassword, salt);
+      user.password = hash;
+      await user.save();
+      res.status(200).send({ msg: "Password changed" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;
