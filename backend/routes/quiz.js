@@ -7,192 +7,125 @@ const { emailInvites } = require("../email");
 const fileUpload = require("express-fileupload");
 router.use(fileUpload());
 
-router.post("/addQuestion", (req, res) => {
-  const { _id, questionObject } = req.body;
-  //parse question as it was stringified in order to send
-  const questionParsed = JSON.parse(questionObject);
-  //since FormData separated the media from the rest of the question, loop over media and insert back into question object
-
-  const mediaFiles = req.files;
+const parseNewQuestion = (questionObject, mediaFiles) => {
+  const parsedQuestion = JSON.parse(questionObject);
   if (mediaFiles) {
     if (Array.isArray(mediaFiles.file)) {
-      mediaFiles.file.map((f) => {
-        questionParsed.media.push({
-          mediaType: f.mimetype,
-          data: f.data,
-          name: f.name,
+      mediaFiles.file.map((file) => {
+        parsedQuestion.media.push({
+          mediaType: file.mimetype,
+          data: file.data,
+          name: file.name,
         });
       });
     } else {
       const keys = Object.keys(mediaFiles);
       for (key of keys) {
-        //probably a good idea to check that the media prop exists and add if not
-        questionParsed.media.push({
+        parsedQuestion.media.push({
           mediaType: mediaFiles[key].mimetype,
           data: mediaFiles[key].data,
         });
       }
     }
   }
-  //then find quiz that was previously saved and push the new question onto the questions array
-  Quiz.findById(_id)
-    .then((quiz) => {
-      quiz.quizQuestions.push(questionParsed);
-      quiz
-        .save()
-        .then((quiz) => {
-          res.status(200).send({ quiz });
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(400).send({ msg: "Unable to add question to quiz" });
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+  return parsedQuestion;
+};
 
-router.post("/editQuestion", (req, res) => {
+router.post("/addQuestion", async (req, res) => {
   const { _id, questionObject } = req.body;
-  const questionParsed = JSON.parse(questionObject);
-  const mediaFiles = req.files;
-  if (mediaFiles) {
-    if (Array.isArray(mediaFiles.file)) {
-      mediaFiles.file.map((f) => {
-        questionParsed.media.push({
-          mediaType: f.mimetype,
-          data: f.data,
-          name: f.name,
-        });
-      });
-    } else {
-      const keys = Object.keys(mediaFiles);
-      for (key of keys) {
-        //probably a good idea to check that the media prop exists and add if not
-        questionParsed.media.push({
-          mediaType: mediaFiles[key].mimetype,
-          data: mediaFiles[key].data,
-        });
-      }
-    }
+  const parsedQuestion = parseNewQuestion(questionObject, req.files);
+  try {
+    const quiz = await Quiz.findById(_id);
+    quiz.quizQuestions.push(parsedQuestion);
+    await quiz.save();
+    res.status(200).send({ quiz });
+  } catch (err) {
+    res.status(400).send({ msg: "Unable to add question to quiz" });
   }
-  Quiz.findById(_id)
-    .then((quiz) => {
-      const updatedQuizQuestions = quiz.quizQuestions.map((question) => {
-        if ((question._id = questionParsed.id)) {
-          question = questionParsed;
-        }
-        return question;
-      });
-      quiz.quizQuestions = updatedQuizQuestions;
-      quiz
-        .save()
-        .then((quiz) => {
-          res.status(200).send({ quiz });
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(400).send({ msg: "Unable to add question to quiz" });
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 });
 
-router.post("/deleteQuestion", checkAuth, (req, res) => {
+router.post("/editQuestion", async (req, res) => {
+  const { _id, questionObject } = req.body;
+  const parsedQuestion = parseNewQuestion(questionObject, req.files);
+  try {
+    const quiz = await Quiz.findById(_id);
+    const updatedQuizQuestions = quiz.quizQuestions.map((question) => {
+      if ((question._id = parsedQuestion.id)) {
+        question = parsedQuestion;
+      }
+      return question;
+    });
+    quiz.quizQuestions = updatedQuizQuestions;
+    await quiz.save();
+    res.status(200).send({ quiz });
+  } catch (err) {
+    res.status(400).send({ msg: "Unable to add question to quiz" });
+  }
+});
+
+router.post("/deleteQuestion", checkAuth, async (req, res) => {
   const { quizId, questionId } = req.body;
-  Quiz.findById(quizId)
-    .then((quiz) => {
-      const updatedQuestions = quiz.quizQuestions.filter(
-        (question) => question._id.toString() !== questionId
-      );
-      quiz.quizQuestions = updatedQuestions;
-      quiz.save().then(() => {
-        res.status(200).send({ msg: "question deleted" });
-      });
-    })
-    .catch((err) => res.status(400).send({ msg: "quiz not found" }));
+  try {
+    const quiz = await Quiz.findById(quizId);
+    const updatedQuestions = quiz.quizQuestions.filter(
+      (question) => question._id.toString() !== questionId
+    );
+    quiz.quizQuestions = updatedQuestions;
+    await quiz.save();
+    res.status(200).send({ msg: "question deleted" });
+  } catch (err) {
+    res.status(400).send({ msg: "quiz not found" });
+  }
 });
 
-router.post("/createQuiz", checkAuth, (req, res) => {
+router.post("/createQuiz", checkAuth, async (req, res) => {
   const { quizName, quizSubject } = req.body;
   const quizAuthor = req.user.name;
-  new Quiz({
-    quizName,
-    quizAuthor,
-    quizSubject,
-    quizQuestions: [],
-    quizTimeLimit: null,
-    quizScores: [],
-    quizPublished: false,
-    quizPointsSystem: null,
-    quizOverallPoints: null,
-  })
-    .save()
-    .then((quiz) => {
-      User.findById(req.user.id).then((user) => {
-        user.quizzes.push(quiz._id);
-        user.save().then(() => {
-          res.status(200).send({ _id: quiz._id });
-        });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ msg: "Unable to save quiz" });
-    });
+  try {
+    const quiz = await new Quiz({
+      quizName,
+      quizAuthor,
+      quizSubject,
+      quizQuestions: [],
+      quizTimeLimit: null,
+      quizScores: [],
+      quizPublished: false,
+      quizPointsSystem: null,
+      quizOverallPoints: null,
+    }).save();
+    const user = await User.findById(req.user.id);
+    user.quizzes.push(quiz._id);
+    await user.save();
+    res.status(200).send({ _id: quiz._id });
+  } catch (err) {
+    res.status(500).send({ msg: "Unable to save quiz" });
+  }
 });
 
-router.post("/deleteQuiz", (req, res) => {
+router.post("/deleteQuiz", async (req, res) => {
   const { _id } = req.body;
-  Quiz.findByIdAndDelete(_id)
-    .then(() => {
-      res.status(200).send();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  await Quiz.findByIdAndDelete(_id);
+  try {
+    res.status(200).send();
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-router.get("/fetchQuizzes", checkAuth, (req, res) => {
+router.get("/fetchQuizzes", checkAuth, async (req, res) => {
   let userQuizzes = [];
-  User.findById(req.user.id)
-    .then((user) => {
-      Quiz.find().then((quizzes) => {
-        quizzes.forEach((quiz) => {
-          if (user.quizzes.includes(quiz._id)) {
-            userQuizzes.push(quiz);
-          }
-        });
-        res.status(200).send({ quizzes: userQuizzes });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-//get quiz for student that is logged in (same as /studentLogin function but without jwt)
-router.get("/fetchQuiz", checkAuth, (req, res) => {
-  const id = req.user.id;
-  Quiz.find().then((quizzes) => {
-    const matchingQuizArray = [];
+  try {
+    const user = await User.findById(req.user.id);
+    const quizzes = await Quiz.find();
     quizzes.forEach((quiz) => {
-      if (quiz.quizInvites.contacts.includes(id)) {
-        matchingQuizArray.push(quiz);
+      if (user.quizzes.includes(quiz._id)) {
+        userQuizzes.push(quiz);
       }
     });
-    if (matchingQuizArray.length > 0) {
-      const matchingQuiz = matchingQuizArray[0];
-      res.status(200).send({ quiz: matchingQuiz });
-    } else {
-      console.log("no quiz found");
-    }
-  }).catch = (err) => {
+    res.status(200).send({ quizzes: userQuizzes });
+  } catch (err) {
     console.log(err);
-  };
+  }
 });
 
 router.post("/updateQuiz", (req, res) => {
