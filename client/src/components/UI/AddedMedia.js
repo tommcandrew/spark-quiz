@@ -1,25 +1,28 @@
 import React from "react";
+import {	Card, CardActions, Button
+} from "@material-ui/core";
+import { addQuestionModalStyles } from "../../style/modalStyles";
+import DeleteIcon from '@material-ui/icons/Delete';
 
-const styles = {
-  addedImage: {
-    maxWidth: "50%",
-  },
-};
+
+
 
 //text has a "mediaType" and all other file types have a "type"
 
 const AddedMedia = ({ media, handleRemoveMedia, handleTextChange, index }) => {
+  const classes = addQuestionModalStyles();
   return (
-    <div>
-      {media.file.type && media.file.type.includes("image") && (
+						<Card className={classes.card}>
+      <div className={classes.addedMediaContainer} >
+        {media.file.type && media.file.type.includes("image") && (
         <img
-          style={styles.addedImage}
+          className={classes.addedMedia}
           src={URL.createObjectURL(media.file)}
           alt=""
         />
       )}
       {media.file.type && media.file.type.includes("video") && (
-        <video width="320" height="240" controls>
+        <video controls className={classes.addedMedia}>
           <source
             type={media.file.type}
             src={URL.createObjectURL(media.file)}
@@ -27,7 +30,7 @@ const AddedMedia = ({ media, handleRemoveMedia, handleTextChange, index }) => {
         </video>
       )}
       {media.file.type && media.file.type.includes("audio") && (
-        <audio controls>
+        <audio controls className={classes.addedMedia}>
           <source
             src={URL.createObjectURL(media.file)}
             type={media.file.type}
@@ -39,11 +42,26 @@ const AddedMedia = ({ media, handleRemoveMedia, handleTextChange, index }) => {
           rows="5"
           value={media.file.text}
           onChange={handleTextChange}
-          data-index={index}
+            data-index={index}
+            className={classes.addedMedia}
         ></textarea>
       )}
-      <button onClick={() => handleRemoveMedia(media.id)}>Remove</button>
-    </div>
+              </div>
+      <CardActions className={classes.cardActions}>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<DeleteIcon />}
+          onClick={() => handleRemoveMedia(media.id)}>Remove</Button>
+              </CardActions>
+						</Card>
+
+
+
+
+
+   
+  
   );
 };
 
