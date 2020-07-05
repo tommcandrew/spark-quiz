@@ -44,25 +44,6 @@ router.post("/addQuestion", async (req, res) => {
   }
 });
 
-router.post("/editQuestion", async (req, res) => {
-  const { _id, questionObject } = req.body;
-  const parsedQuestion = parseNewQuestion(questionObject, req.files);
-  try {
-    const quiz = await Quiz.findById(_id);
-    const updatedQuizQuestions = quiz.quizQuestions.map((question) => {
-      if ((question._id = parsedQuestion.id)) {
-        question = parsedQuestion;
-      }
-      return question;
-    });
-    quiz.quizQuestions = updatedQuizQuestions;
-    await quiz.save();
-    res.status(200).send({ quiz });
-  } catch (err) {
-    res.status(400).send({ msg: "Unable to add question to quiz" });
-  }
-});
-
 router.post("/deleteQuestion", checkAuth, async (req, res) => {
   const { quizId, questionId } = req.body;
   try {
@@ -128,106 +109,73 @@ router.get("/fetchQuizzes", checkAuth, async (req, res) => {
   }
 });
 
-router.post("/updateQuiz", (req, res) => {
+router.post("/editQuestion", async (req, res) => {
+  const { _id, questionObject } = req.body;
+  const parsedQuestion = parseNewQuestion(questionObject, req.files);
+  try {
+    const quiz = await Quiz.findById(_id);
+    const updatedQuizQuestions = quiz.quizQuestions.map((question) => {
+      if ((question._id = parsedQuestion.id)) {
+        question = parsedQuestion;
+      }
+      return question;
+    });
+    quiz.quizQuestions = updatedQuizQuestions;
+    await quiz.save();
+    res.status(200).send({ quiz });
+  } catch (err) {
+    res.status(400).send({ msg: "Unable to add question to quiz" });
+  }
+});
+
+router.post("/updateQuiz", async (req, res) => {
   const { _id, update } = req.body;
-  //should insert field if doesn't exist but not working
-  Quiz.findOneAndUpdate(
-    { _id: _id },
-    { $set: update },
-    { new: true, upsert: true, useFindAndmodify: false }
-  )
-    .then(() => {
-      res.status(200).send();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-router.post("/submit", (req, res) => {
-  const { studentId, _id, submittedAnswers } = req.body;
-  Quiz.findById(_id)
-    .then((quiz) => {
-      let results = [];
-      quiz.questions.forEach((question, index) => {
-        if (question.questionType === "trueFalse") {
-          if (question.answers.trueFalseAnswer === submittedAnswers[index]) {
-            results.push({ question: index, correct: true });
-          } else {
-            results.push({ question: index, correct: false });
-          }
-        } else if (question.questionType === "multipleChoice") {
-          if (
-            question.answers.multipleChoiceAnswer === submittedAnswers[index]
-          ) {
-            results.push({ question: index, correct: true });
-          } else {
-            results.push({ question: index, correct: false });
-          }
-        }
-      });
-      const scoreObject = {
-        studentId,
-        results,
-      };
-      quiz.quizScores.push(scoreObject);
-      res.status(200).send({ msg: "Quiz submitted", results });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-router.post("/quizscores", checkAuth, (req, res) => {
-  let { _id, scoreObject } = req.body;
-  scoreObject = JSON.parse(scoreObject);
-  Quiz.findById(_id)
-    .then((quiz) => {
-      quiz.quizScores.push(scoreObject);
-      quiz
-        .save()
-        .then((quiz) => {
-          res.status(200).send({ quiz });
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(400).send({ msg: "unable to add scores" });
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    await Quiz.findOneAndUpdate(
+      { _id: _id },
+      { $set: update },
+      { new: true, upsert: true, useFindAndmodify: false }
+    );
+    res.status(200).send();
+  } catch {
+    await Quiz.findOneAndUpdate(
+      { _id: _id },
+      { $set: update },
+      { new: true, upsert: true, useFindAndmodify: false }
+    );
+    res.status(200).send();
+  }
 });
 
 //to identify the quiz
-router.post("/quiz", (req, res) => {
+router.post("/fetchQuiz", async (req, res) => {
   const { quizId } = req.body;
-  Quiz.findById(quizId)
-    .then((quiz) => {
-      res.status(200).send({ quiz });
-    })
-    .catch((err) => res.status(404).send({ msg: "quiz not found" }));
+  try {
+    const quiz = await Quiz.findById(quizId);
+    res.status(200).send({ quiz });
+  } catch (err) {
+    res.status(404).send({ msg: "quiz not found" });
+  }
 });
 
-router.post("/publishQuiz", checkAuth, (req, res) => {
+router.post("/publishQuiz", checkAuth, async (req, res) => {
   const { quizId } = req.body;
-  Quiz.findOneAndUpdate(
-    { _id: quizId },
-    { $set: { quizPublished: true } },
-    { new: true, upsert: true, useFindAndmodify: false }
-  )
-    .then((quiz) => {
-      emailInvites(
-        quiz.quizInvites,
-        quiz.quizName,
-        quiz.quizAuthor,
-        quiz.quizSubject
-      );
-      res.status(200).send();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const quiz = await Quiz.findOneAndUpdate(
+      { _id: quizId },
+      { $set: { quizPublished: true } },
+      { new: true, upsert: true, useFindAndmodify: false }
+    );
+    emailInvites(
+      quiz.quizInvites,
+      quiz.quizName,
+      quiz.quizAuthor,
+      quiz.quizSubject
+    );
+    res.status(200).send();
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;
