@@ -158,7 +158,9 @@ router.get("/deleteAccount", checkAuth, (req, res) => {
 router.get("/user", checkAuth, (req, res) => {
   User.findById(req.user.id)
     .select("-password")
-    .then((user) => res.json(user));
+    .then((user) => {
+      res.json(user);
+    });
 });
 
 module.exports = router;

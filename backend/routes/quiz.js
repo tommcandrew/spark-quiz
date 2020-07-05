@@ -3,7 +3,7 @@ const router = express.Router();
 const checkAuth = require("../middleware");
 const Quiz = require("../models/Quiz.model");
 const User = require("../models/User.model");
-const transporter = require("../nodemailer");
+const { emailInvites } = require("../email");
 const fileUpload = require("express-fileupload");
 router.use(fileUpload());
 
@@ -296,31 +296,5 @@ router.post("/publishQuiz", checkAuth, (req, res) => {
       console.log(err);
     });
 });
-
-const emailInvites = (
-  quizInvites,
-  quizName,
-  quizAuthor,
-  quizSubject,
-  quizCodes
-) => {
-  quizInvites.contacts.forEach((contact) => {
-    //I'm assuming we need to send a separate email for each recipient like this in a loop beacuse the quizCode will be different for each one
-    const mailOptions = {
-      from: "Quiz Master",
-      //put "contact.email" here
-      to: ["thomasdarragh88@gmail.com"],
-      subject: "Quiz Master Invitation",
-      html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><p>Log in with code: ${contact.code}</p><br><a href="#">Go to Quiz Master</a>`,
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email(s) sent");
-      }
-    });
-  });
-};
 
 module.exports = router;
