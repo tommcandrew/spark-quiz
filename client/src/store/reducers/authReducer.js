@@ -9,13 +9,10 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   CLEAR_STUDENT,
-  SET_CURRENT_QUIZ_IN_LS,
-  CLEAR_QUIZ_FROM_LS,
 } from "../actions/authActions";
 
 const initialState = {
   token: localStorage.getItem("token"),
-  quizId: localStorage.getItem("quizId"),
   isAuthenticated: null,
   isLoading: false,
   user: null,
@@ -72,12 +69,6 @@ export default function (state = initialState, action) {
         isLoading: false,
         studentToken: "",
       };
-    case SET_CURRENT_QUIZ_IN_LS:
-      localStorage.setItem("quizId", action.quizId);
-      return state;
-    case CLEAR_QUIZ_FROM_LS:
-      localStorage.removeItem("quizId");
-      return state;
     default:
       return state;
   }

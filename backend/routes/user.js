@@ -138,7 +138,6 @@ router.get("/deleteAccount", checkAuth, async (req, res) => {
 });
 
 router.get("/fetchUser", checkAuth, async (req, res) => {
-  console.log("fetch user request");
   try {
     const user = await User.findById(req.user.id).select("-password");
     res.status(200).send({ user });

@@ -13,8 +13,6 @@ export const STUDENT_LOGIN_SUCCESS = "STUDENT_LOGIN_SUCCESS";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const CLEAR_STUDENT = "CLEAR_STUDENT";
-export const SET_CURRENT_QUIZ_IN_LS = "SET_CURRENT_QUIZ_IN_LS";
-export const CLEAR_QUIZ_FROM_LS = "CLEAR_QUIZ_FROM_LS";
 
 export const tokenConfig = (token) => {
   const config = {
@@ -186,21 +184,5 @@ export const resetPassword = (email) => {
 export const logout = () => {
   return (dispatch) => {
     dispatch({ type: LOGOUT_SUCCESS });
-  };
-};
-
-//QUIZ ACTIONS
-export const setCurrentQuizInLS = (id) => {
-  return (dispatch) => {
-    dispatch({
-      type: SET_CURRENT_QUIZ_IN_LS,
-      quizId: id,
-    });
-  };
-};
-
-export const clearQuizFromLS = () => {
-  return async (dispatch) => {
-    await dispatch({ type: CLEAR_QUIZ_FROM_LS });
   };
 };

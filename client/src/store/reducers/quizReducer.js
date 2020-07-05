@@ -19,12 +19,10 @@ const initalState = {
   quizInvites: [],
 };
 
-//changing cases to strings because of strange error
 export default (state = initalState, action) => {
   switch (action.type) {
     case ADD_NEW_QUESTION:
-      case EDIT_QUESTION:
-      //update entire state with updated version of quiz
+    case EDIT_QUESTION:
       return {
         ...state,
         _id: action.payload._id,
@@ -43,14 +41,16 @@ export default (state = initalState, action) => {
     case CREATE_QUIZ:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     case SET_CURRENT_QUIZ:
+      localStorage.setItem("quizId", action.payload._id);
       return {
         ...state,
         ...action.payload,
       };
     case CLEAR_CURRENT_QUIZ:
+      localStorage.removeItem("quizId");
       return {
         ...initalState,
       };
@@ -59,7 +59,6 @@ export default (state = initalState, action) => {
         ...state,
         ...action.payload,
       };
-    //don't think we need to return anything here
     case PUBLISH_QUIZ:
       return {
         ...state,
