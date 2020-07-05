@@ -3,7 +3,7 @@ const router = express.Router();
 const checkAuth = require("../middleware");
 const Quiz = require("../models/Quiz.model");
 
-router.post("/quizscores", checkAuth, async (req, res) => {
+router.post("/saveScores", checkAuth, async (req, res) => {
   let { _id, scoreObject } = req.body;
   scoreObject = JSON.parse(scoreObject);
   try {
@@ -46,3 +46,5 @@ router.post("/submit", async (req, res) => {
     console.log(err);
   }
 });
+
+module.exports = router;

@@ -51,7 +51,11 @@ export const loadQuiz = () => {
     const token = getState().auth.token;
     if (quizId) {
       return axios
-        .post("http://localhost:5000/quiz/quiz", { quizId }, tokenConfig(token))
+        .post(
+          "http://localhost:5000/quiz/fetchQuiz",
+          { quizId },
+          tokenConfig(token)
+        )
         .then((res) => {
           dispatch({
             type: CREATE_QUIZ,
@@ -105,7 +109,11 @@ export const editQuestion = (formData) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     return await axios
-      .post("http://localhost:5000/editQuestion", formData, tokenConfig(token))
+      .post(
+        "http://localhost:5000/quiz/editQuestion",
+        formData,
+        tokenConfig(token)
+      )
       .then((res) => {
         dispatch({
           type: EDIT_QUESTION,
@@ -142,24 +150,6 @@ export const updateQuiz = (_id, update) => {
         dispatch({
           type: UPDATE_QUIZ,
           payload: update,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-};
-
-//IS THIS FUNCTION BEING USED?
-export const fetchQuiz = () => {
-  return (dispatch, getState) => {
-    const token = getState().auth.token;
-    return axios
-      .get("http://localhost:5000/quiz/fetchQuiz", tokenConfig(token))
-      .then((res) => {
-        dispatch({
-          type: SET_CURRENT_QUIZ,
-          payload: res.data.quiz,
         });
       })
       .catch((err) => {

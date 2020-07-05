@@ -34,11 +34,11 @@ export const loadUser = () => {
     dispatch({ type: USER_LOADING }); //user is loading to true
     const token = getState().auth.token;
     return axios
-      .get("http://localhost:5000/user/user", tokenConfig(token))
+      .get("http://localhost:5000/user/fetchUser", tokenConfig(token))
       .then((res) =>
         dispatch({
           type: USER_LOADED,
-          payload: res.data,
+          payload: res.data.user,
         })
       )
       .catch((err) => {
