@@ -1,10 +1,4 @@
 import axios from "axios";
-import {
-  setCurrentQuizInLS,
-  clearQuizFromLS,
-  loadUser,
-} from "../actions/authActions";
-// import { returnErrors, clearErrors } from "../actions/errorActions";
 import { tokenConfig } from "./authActions";
 export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
 export const EDIT_QUESTION = "EDIT_QUESTION";
@@ -37,7 +31,10 @@ export const createQuiz = (quizName, quizSubject) => {
             _id: res.data._id,
           },
         });
-        dispatch(setCurrentQuizInLS(res.data._id));
+        dispatch({
+          type: SET_CURRENT_QUIZ,
+          payload: res.data,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -47,28 +44,38 @@ export const createQuiz = (quizName, quizSubject) => {
 
 export const loadQuiz = () => {
   return async (dispatch, getState) => {
-    const quizId = getState().auth.quizId;
-    const token = getState().auth.token;
+    const quizId = localStorage.getItem("quizId");
     if (quizId) {
-      return axios
-        .post("http://localhost:5000/quiz/quiz", { quizId }, tokenConfig(token))
-        .then((res) => {
-          dispatch({
-            type: CREATE_QUIZ,
-            payload: res.data.quiz,
+      const token = getState().auth.token;
+      if (quizId) {
+        return axios
+          .post(
+            "http://localhost:5000/quiz/fetchQuiz",
+            { quizId },
+            tokenConfig(token)
+          )
+          .then((res) => {
+            dispatch({
+              type: CREATE_QUIZ,
+              payload: res.data.quiz,
+            });
+            dispatch({
+              type: SET_CURRENT_QUIZ,
+              payload: res.data.quiz,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
           });
-          dispatch(setCurrentQuizInLS(res.data.quiz._id));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      } else {
+        console.log("no quiz id in local storage");
+      }
     }
   };
 };
 
 export const setCurrentQuiz = (quiz) => {
   return async (dispatch) => {
-    dispatch(setCurrentQuizInLS(quiz._id));
     dispatch({
       type: SET_CURRENT_QUIZ,
       payload: quiz,
@@ -78,7 +85,6 @@ export const setCurrentQuiz = (quiz) => {
 
 export const clearCurrentQuiz = () => {
   return async (dispatch) => {
-    await dispatch(clearQuizFromLS());
     await dispatch({
       type: CLEAR_CURRENT_QUIZ,
     });
@@ -105,7 +111,11 @@ export const editQuestion = (formData) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     return await axios
-      .post("http://localhost:5000/quiz/editQuestion", formData, tokenConfig(token))
+      .post(
+        "http://localhost:5000/quiz/editQuestion",
+        formData,
+        tokenConfig(token)
+      )
       .then((res) => {
         dispatch({
           type: EDIT_QUESTION,
@@ -142,24 +152,6 @@ export const updateQuiz = (_id, update) => {
         dispatch({
           type: UPDATE_QUIZ,
           payload: update,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-};
-
-//IS THIS FUNCTION BEING USED?
-export const fetchQuiz = () => {
-  return (dispatch, getState) => {
-    const token = getState().auth.token;
-    return axios
-      .get("http://localhost:5000/quiz/fetchQuiz", tokenConfig(token))
-      .then((res) => {
-        dispatch({
-          type: SET_CURRENT_QUIZ,
-          payload: res.data.quiz,
         });
       })
       .catch((err) => {

@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-function checkAuth(req, res, next) {
+const checkAuth = (req, res, next) => {
   const token = req.header("x-auth-token");
-
   //chceck for token
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });
@@ -19,6 +18,6 @@ function checkAuth(req, res, next) {
       });
     }
   }
-}
+};
 
 module.exports = checkAuth;

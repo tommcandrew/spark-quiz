@@ -1,4 +1,4 @@
-import Axios from "axios";
+import axios from "axios";
 import { tokenConfig } from "./authActions";
 export const SET_STUDENT = "SET_STUDENT";
 export const SET_QUESTION_ANSWER = "SET_QUESTION_ANSWER";
@@ -23,11 +23,12 @@ export const finishQuiz = () => {
     const formData = new FormData();
     formData.append("_id", quizId);
     formData.append("scoreObject", scoreObject);
-    Axios.post(
-      "http://localhost:5000/quiz/quizscores",
-      formData,
-      tokenConfig(token)
-    )
+    axios
+      .post(
+        "http://localhost:5000/student/saveScores",
+        formData,
+        tokenConfig(token)
+      )
       .then((res) => {
         dispatch({
           type: FINISH_QUIZ,
@@ -59,16 +60,3 @@ export const setOverallScore = (score) => {
     });
   };
 };
-
-// export const setStudent = (contactId) => {
-//     return (dispatch) => {
-//         axios.post("http://localhost:5000/", formData)
-//             .then((res) => {
-//           dispatch({
-//               type: SET_STUDENT,
-//               id: contactId
-//           })
-//             }).catch((err) => {
-//                 console.log(err)
-//             })
-// }}

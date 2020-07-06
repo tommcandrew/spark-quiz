@@ -11,9 +11,9 @@ import { createQuizScreenStyles, customStyles, screenLayoutStyles } from "../../
 import { Paper, Button, Box, Typography, Grid, TextField, Divider  } from "@material-ui/core";
 import clsx from "clsx";
 import Modal from "react-modal";
-import CustomSnackbar from "../../components/mui/Snackbar"
-import V from 'max-validator';
-import { createQuizValidation } from "../../utils/validation"
+import CustomSnackbar from "../../components/mui/Snackbar";
+import V from "max-validator";
+import { createQuizValidation } from "../../utils/validation";
 
 //MAIN
 export default function CreateQuizScreen(props) {
@@ -29,86 +29,99 @@ export default function CreateQuizScreen(props) {
 	const [questionToEdit, setQuestionToEdit] = useState("");
 	const [validationError, setValidationError] = useState("")
 
-	//ON PAGE RELOAD
-	const getQuiz = () => {
-		dispatch(quizActions.loadQuiz());
-	};
-	useEffect(() => {
-		if (quizId === "") {
-			getQuiz();
-		}
-	}, []);
+  //ON PAGE RELOAD
+  const getQuiz = () => {
+    dispatch(quizActions.loadQuiz());
+  };
+  useEffect(() => {
+    if (quizId === "") {
+      getQuiz();
+    }
+  }, []);
 
-	//OTHER HOOKS
-	useEffect(
-		() => {
-			if (questionToEdit !== "") showModal("editQuestion");
-		},
-		[ questionToEdit ]
-	);
+  //OTHER HOOKS
+  useEffect(() => {
+    if (questionToEdit !== "") showModal("editQuestion");
+  }, [questionToEdit]);
 
-	//HANDLERS
-	const showModal = (screen) => {
-		switch (screen) {
-			case "addNewQuestion":
-				setDisplayedComponent(<AddQuestionModal closeModal={closeModal} quiz={quiz} />);
-				break;
-			case "editQuestion":
-				setDisplayedComponent(
-					<AddQuestionModal closeModal={closeModal} quiz={quiz} questionToEdit={questionToEdit} />
-				);
-				break;
-			case "quizOptions":
-				setDisplayedComponent(<QuizOptionsModal quizId={quiz._id} closeModal={closeModal} />);
-				break;
-			case "invite":
-				setDisplayedComponent(<ShareModal quizId={quiz._id} closeModal={closeModal} />);
-				break;
-			default:
-				return;
-		}
-		setIsOpen(true);
-		return;
-	};
+  //HANDLERS
+  const showModal = (screen) => {
+    switch (screen) {
+      case "addNewQuestion":
+        setDisplayedComponent(
+          <AddQuestionModal closeModal={closeModal} quiz={quiz} />
+        );
+        break;
+      case "editQuestion":
+        setDisplayedComponent(
+          <AddQuestionModal
+            closeModal={closeModal}
+            quiz={quiz}
+            questionToEdit={questionToEdit}
+          />
+        );
+        break;
+      case "quizOptions":
+        setDisplayedComponent(
+          <QuizOptionsModal quizId={quiz._id} closeModal={closeModal} />
+        );
+        break;
+      case "invite":
+        setDisplayedComponent(
+          <ShareModal quizId={quiz._id} closeModal={closeModal} />
+        );
+        break;
+      default:
+        return;
+    }
+    setIsOpen(true);
+    return;
+  };
 
-	const editQuestion = (id) => {
-		setQuestionToEdit(id);
-	};
+  const editQuestion = (id) => {
+    setQuestionToEdit(id);
+  };
 
-	const handleCreate = () => {
-	setValidationError("")
-		const result = V.validate({quizName, quizSubject}, createQuizValidation);
-		if (result.hasError) {
-			if (result.getError("quizName")) setValidationError(result.getError("quizName"));
-			else if (result.getError("quizSubject") !== "") setValidationError(result.getError("quizSubject"))
-			return;
-		} else {
-			dispatch(quizActions.createQuiz(quizName, quizSubject));
-			setQuizName(quiz.quizName);
-			setQuizSubject(quiz.quizSubject);
-		}
-	};
+  const handleCreate = () => {
+    setValidationError("");
+    const result = V.validate({ quizName, quizSubject }, createQuizValidation);
+    if (result.hasError) {
+      if (result.getError("quizName"))
+        setValidationError(result.getError("quizName"));
+      else if (result.getError("quizSubject") !== "")
+        setValidationError(result.getError("quizSubject"));
+      return;
+    } else {
+      dispatch(quizActions.createQuiz(quizName, quizSubject));
+      setQuizName(quiz.quizName);
+      setQuizSubject(quiz.quizSubject);
+    }
+  };
 
-	function closeModal() {
-		setIsOpen(false);
-	}
+  function closeModal() {
+    setIsOpen(false);
+  }
 
-	const publishQuiz = () => {
-		if (
-			//probably easier to just create empty contacts and groups arrays on initial state object in quizReducer
-			!quiz.quizInvites.contacts ||
-			quiz.quizInvites.contacts.length === 0
-		) {
-			if (window.confirm("You are publishing a quiz without any invites. Continue?")) {
-				dispatch(quizActions.publishQuiz(quiz._id));
-				//maybe redirect to My Quizzes here?
-			} else {
-				return;
-			}
-		}
-		//repetition!
-		dispatch(quizActions.publishQuiz(quiz._id));
-	};
+  const publishQuiz = () => {
+    if (
+      //probably easier to just create empty contacts and groups arrays on initial state object in quizReducer
+      !quiz.quizInvites.contacts ||
+      quiz.quizInvites.contacts.length === 0
+    ) {
+      if (
+        window.confirm(
+          "You are publishing a quiz without any invites. Continue?"
+        )
+      ) {
+        dispatch(quizActions.publishQuiz(quiz._id));
+        //maybe redirect to My Quizzes here?
+      } else {
+        return;
+      }
+    }
+    //repetition!
+    dispatch(quizActions.publishQuiz(quiz._id));
+  };
 
 	//RETURN
 	return (
@@ -204,22 +217,29 @@ export default function CreateQuizScreen(props) {
 							Add Question
 						</Button>
 
-						<Button
-							variant="outlined"
-							color="primary"
-							className={classes.button}
-							onClick={() => showModal("invite")}>
-							Invite
-						</Button>
-						<Button variant="contained" color="secondary" className={classes.button} onClick={publishQuiz}>
-							{quiz.quizPublished ? <>Update Quiz </> : <>Publish Quiz</>}
-						</Button></Box>
-					</Paper>
-					<Paper className={classes.flexItem} style={{ flex: 3 }}>
-						<PreviewQuestions editQuestion={editQuestion} />
-					</Paper>
-				</div>
-			)}
-		</Fragment>
-	);
+              <Button
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+                onClick={() => showModal("invite")}
+              >
+                Invite
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={publishQuiz}
+              >
+                {quiz.quizPublished ? <>Update Quiz </> : <>Publish Quiz</>}
+              </Button>
+            </Box>
+          </Paper>
+          <Paper className={classes.flexItem} style={{ flex: 3 }}>
+            <PreviewQuestions editQuestion={editQuestion} />
+          </Paper>
+        </div>
+      )}
+    </Fragment>
+  );
 }
