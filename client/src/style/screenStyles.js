@@ -1,6 +1,48 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export const useStyles = makeStyles((theme) => ({
+export const screenLayoutStyles = makeStyles({
+root: {
+		flexGrow: 1,
+		padding: "10px"
+	},
+})
+
+export const customStyles = {
+	content: {
+		top: "50%",
+		left: "50%",
+		right: "auto",
+		bottom: "auto",
+		marginRight: "-50%",
+		transform: "translate(-50%, -50%)",
+		display: "flex",
+		alignItems: "flex-start",
+		justifyContent: "center",
+		padding: "20px",
+    display: "inline",
+    maxWidth: "90%",
+    maxHeight: "65%",
+	},
+	overlay: { zIndex: 2000 }
+};
+
+
+export const userQuizzesScreenStyle = makeStyles({
+	card: {
+		maxWidth: "100%"
+	},
+	list: {
+		overflowY: "scroll"
+	},
+	quizName: {
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "flex-end"
+	}
+});
+
+
+export const createQuizScreenStyles = makeStyles((theme) => ({
 	quizNameContainer: {
 		display: "flex",
 		justifyContent: "center"
@@ -64,21 +106,22 @@ export const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-export const customStyles = {
-	content: {
-		top: "50%",
-		left: "50%",
-		right: "auto",
-		bottom: "auto",
-		marginRight: "-50%",
-		transform: "translate(-50%, -50%)",
-		display: "flex",
-		alignItems: "flex-start",
-		justifyContent: "center",
-		padding: "20px",
-    display: "inline",
-    maxWidth: "90%",
-    maxHeight: "65%",
-	},
-	overlay: { zIndex: 2000 }
-};
+export const contactsScreenStyles = makeStyles({
+    listItem: {
+        height: "30px",
+        width: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+    }
+})
+
+export const groupsScreenStyles = makeStyles(() => ({
+	listItem: {
+        height: "100px",
+        width: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+    }
+}));

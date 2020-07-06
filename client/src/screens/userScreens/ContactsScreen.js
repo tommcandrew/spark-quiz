@@ -3,14 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import * as userActions from "../../store/actions/userActions";
 import ContactInfoModal from "../../components/modals/ContactInfoModal";
 import AddContactModal from "../../components/modals/AddContactModal";
-import { contactsScreenStyles } from "../../style/contactsStyles";
-import { customStyles } from "../../style/createQuizScreenStyles";
-import { Typography, Grid, Paper } from "@material-ui/core";
+import { contactsScreenStyles, screenLayoutStyles, customStyles } from "../../style/screenStyles";
+import { Typography, Grid, Paper, Divider, Input, InputAdornment, Button } from "@material-ui/core";
 import Modal from "react-modal";
+import SearchIcon from '@material-ui/icons/Search';
 
 const Contacts = () => {
 	const dispatch = useDispatch();
 	const classes = contactsScreenStyles();
+	const root = screenLayoutStyles();
 	const user = useSelector((state) => state.auth.user);
 
 	const [ selectedContact, setSelectedContact ] = useState(null);
@@ -20,17 +21,11 @@ const Contacts = () => {
 	function closeModal() {
 		setAddContactModalIsOpen(false);
 		setContactInfoModalIsOpen(false);
-		setSelectedContact(null);
 	}
 
-	const handleSubmit = (e) => {
-		
-		e.preventDefault();
-		const name = e.target.name.value;
-		const email = e.target.email.value;
+	const handleSubmit = (name, email) => {
 		dispatch(userActions.addContact({ name, email }));
 		closeModal()
-		e.target.reset();
 	};
 
 	const handleDeleteContact = async () => {
@@ -49,38 +44,52 @@ const Contacts = () => {
 
 	//MAIN
 	return (
-		<Grid container className={classes.root} spacing={2}>
-			<Grid item xl={12}>
-				<Typography variant="h5">Contacts</Typography>
+		<Grid container spacing={2} className={root.root}>
+			<Grid item xs={12} xl={12}>
+				<Typography variant="h4" align="center">
+					Create a new Quiz
+				</Typography>
+				      <Divider variant="middle"  />
 			</Grid>
-			<Grid item xl={12}>
-				<input type="text" placeholder="Search" />
+			<Grid item xl={12} xs={12}>
+				<Input
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          }
+        />
 			</Grid>
-			<Grid item xl={12} xs={12} container spacing={3} className={classes.list}>
+			<Grid item xs={12} container spacing={3} className={classes.list}>
 				{user &&
 					user.contacts &&
 					user.contacts.map((contact, index) => (
 						<Grid
 							item
-							lg={4}
+							lg={3}
+							md={4}
 							xs={12}
 							key={index}
 							onClick={() => {
 								setContactInfoModalIsOpen(true);
 								setSelectedContact(contact);
 							}}>
-							<Paper>{contact.name}</Paper>
+							<Paper className={classes.listItem}>
+								<Typography>
+								{contact.name}</Typography>
+							</Paper>
 						</Grid>
 					))}
 			</Grid>
 			<Grid item xs={12} xl={12}>
-				<button
+				<Button
+					variant="contained"
+					color="secondary"
 					onClick={() => {
 						setAddContactModalIsOpen(true);
-					}}
-					type="button">
+					}}>
 					Add Contact
-				</button>
+				</Button>
 			</Grid>
 			<Modal
 				isOpen={addContactModalIsOpen}
@@ -89,7 +98,7 @@ const Contacts = () => {
 				size="lg"
 				aria-labelledby="contained-modal-title-vcenter"
 				centered>
-				<AddContactModal handleSubmit={handleSubmit} />
+				<AddContactModal handleSubmit={handleSubmit} closeModal={closeModal}/>
 			</Modal>
 
 			<Modal

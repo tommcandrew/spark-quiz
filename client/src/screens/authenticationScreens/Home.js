@@ -20,7 +20,7 @@ const Home = (props) => {
 		e.preventDefault();
 		setValidationError("")
 		const studentCode = e.target.code.value;
-			const result = V.validate({studentCode}, studentLoginValidation);
+			const result = V.validate({code: studentCode}, studentLoginValidation);
 		if (result.hasError) {
 			setValidationError(result.getError("code"));
 			return;

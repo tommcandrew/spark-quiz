@@ -77,8 +77,6 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 			let points = e.target.overallPoints.value;
 			const result = V.validate({ points }, quizOptionsValidation);
 			if (result.hasError) {
-				console.log("result has error");
-				console.log(result.getError("points"));
 				setValidationError(result.getError("points"));
 				isValid = false;
 				return;

@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Modal from "react-modal";
-import AddGroupModal from "../../components/UI/AddGroupModal";
+import AddGroupModal from "../../components/modals/AddGroupModal";
 import * as userActions from "../../store/actions/userActions";
-import GroupInfoModal from "../../components/UI/GroupInfoModal";
-import { Grid, Typography } from "@material-ui/core";
-import { useStyles, customStyles } from "../../style/groupsScreenStyles";
+import GroupInfoModal from "../../components/modals/GroupInfoModal";
+import { Typography, Grid, Paper, Divider, Input, InputAdornment, Button } from "@material-ui/core";
+import { groupsScreenStyles, screenLayoutStyles, customStyles } from "../../style/screenStyles";
+
+import SearchIcon from "@material-ui/icons/Search";
 
 const Groups = () => {
-	const classes = useStyles();
+	const classes = groupsScreenStyles();
+	const root = screenLayoutStyles();
 	const user = useSelector((state) => state.auth.user);
-	const [ modalIsOpen, setIsOpen ] = useState(false);
+	const dispatch = useDispatch();
 	const [ selectedGroupId, setSelectedGroupId ] = useState(null);
 	const [ selectedGroup, setSelectedGroup ] = useState(null);
-	const dispatch = useDispatch();
+	const [ addGroupModalIsOpen, setAddGroupModalIsOpen ] = useState(false);
+	const [ groupInfoModalIsOpen, setGroupInfoModalIsOpen ] = useState(false);
 	const [ membersToAdd, setMembersToAdd ] = useState([]);
 
 	const closeModal = () => {
-		setIsOpen(false);
+		setAddGroupModalIsOpen(false);
+		setGroupInfoModalIsOpen(false);
 	};
 
 	useEffect(
@@ -58,13 +63,73 @@ const Groups = () => {
 	};
 
 	return (
-		<Grid container spacing={2} className={classes.root}>
+		<Grid container spacing={2} className={root.root}>
 			<Grid item xs={12} xl={12}>
-				<Typography variant="h5" align="center">
-					Groups
+				<Typography variant="h4" align="center">
+					Create a new Quiz
 				</Typography>
+				<Divider variant="middle" />
 			</Grid>
-			<Grid item container xl={12} spacing={2}>
+			<Grid item xl={12} xs={12}>
+				<Input
+					startAdornment={
+						<InputAdornment position="start">
+							<SearchIcon />
+						</InputAdornment>
+					}
+				/>
+			</Grid>
+			<Grid item xs={12} container spacing={3}>
+				{user &&
+					user.groups &&
+					user.groups.map((group, index) => {
+						return (
+							<Grid item lg={3} md={4} xs={12} key={index} onClick={() => {
+								setSelectedGroupId(group._id);
+								setGroupInfoModalIsOpen(true)
+							}}>
+								<Paper className={classes.listItem}>
+									<Typography>Group name:&nbsp; {group.name}</Typography>
+								</Paper>
+							</Grid>
+						);
+					})}
+			</Grid>
+			<Grid item xs={12} xl={12}>
+				<Button variant="contained" color="secondary" onClick={() => setAddGroupModalIsOpen(true)}>
+					Add Group
+				</Button>
+			</Grid>
+			<Modal
+				isOpen={addGroupModalIsOpen}
+				onRequestClose={closeModal}
+				style={customStyles}
+				size="lg"
+				centered>
+				<AddGroupModal closeModal={closeModal} user={user} />
+			</Modal>
+
+			<Modal
+				isOpen={groupInfoModalIsOpen}
+				onRequestClose={closeModal}
+				style={customStyles}
+				size="lg"
+				centered>
+				<GroupInfoModal
+					selectedGroup={selectedGroup}
+					setSelectedGroupId={setSelectedGroupId}
+					handleDeleteGroup={handleDeleteGroup}
+					handleDeleteMember={handleDeleteMember}
+					handleAddMember={handleAddMember}
+					user={user}
+					handleUpdateGroup={handleUpdateGroup}
+				/>
+			</Modal>
+		</Grid>
+	);
+
+	{
+		/* <Grid item container xl={12} spacing={2}>
 				{user &&
 					user.groups &&
 					user.groups.map((group, index) => {
@@ -107,7 +172,8 @@ const Groups = () => {
 				/>
 			)}
 		</Grid>
-	);
+	); */
+	}
 };
 
 export default Groups;

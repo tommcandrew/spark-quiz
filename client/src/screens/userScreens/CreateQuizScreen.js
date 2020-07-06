@@ -7,7 +7,7 @@ import QuizOptionsModal from "../../components/modals/QuizOptionsModal";
 import ShareModal from "../../components/modals/ShareModal";
 import * as quizActions from "../../store/actions/quizActions";
 
-import { useStyles, customStyles } from "../../style/createQuizScreenStyles";
+import { createQuizScreenStyles, customStyles, screenLayoutStyles } from "../../style/screenStyles";
 import { Paper, Button, Box, Typography, Grid, TextField, Divider  } from "@material-ui/core";
 import clsx from "clsx";
 import Modal from "react-modal";
@@ -20,7 +20,8 @@ export default function CreateQuizScreen(props) {
 	const dispatch = useDispatch();
 	const quiz = useSelector((state) => state.quiz);
 	const quizId = useSelector((state) => state.quiz._id);
-	const classes = useStyles();
+	const classes = createQuizScreenStyles();
+	const root = screenLayoutStyles();
 	const [ displayedComponent, setDisplayedComponent ] = useState();
 	const [ quizName, setQuizName ] = useState("");
 	const [ quizSubject, setQuizSubject ] = useState("");
@@ -119,14 +120,13 @@ export default function CreateQuizScreen(props) {
 				handleClose={() => setValidationError("")}/>
 			}
 			{!quizId && (
-						<Grid container spacing={3} className={classes.quizNameContainer}>
-					
-						<Grid item xs={12} xl={12}>
+						<Grid container spacing={2} className={root.root}>
+			<Grid item xs={12} xl={12}>
 				<Typography variant="h4" align="center">
-					Add a new Quiz
+					Create a new Quiz
 				</Typography>
 				      <Divider variant="middle"  />
-						</Grid>
+			</Grid>
 						<Grid container spacing={2} style={{ width: "400px" }}>
 						<Grid item xs={12} md={6}>
 							<Typography variant="h5" align="center"  >Quiz name:</Typography>
