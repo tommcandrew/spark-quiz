@@ -127,7 +127,7 @@ export const editQuestion = (formData) => {
 
 export const deleteQuestion = (id) => {
   return async (dispatch, getState) => {
-    const quizId = getState().auth.quizId;
+    const quizId = getState().quiz._id;
     const token = getState().auth.token;
     return await axios
       .post(
