@@ -133,7 +133,7 @@ const ShareModal = ({ quizId, closeModal }) => {
 					recipientsContacts.length > 0 &&
 					recipientsContacts.map((recipient, index) => {
 						let contactObject = user.contacts.find((contact) => contact._id === recipient);
-						return (<span key={index}>{contactObject.name}</span>)
+						if(contactObject)return (<span key={index}>{contactObject.name}</span>)
 					})}
 				{recipientsGroups &&
 					recipientsGroups.length > 0 &&

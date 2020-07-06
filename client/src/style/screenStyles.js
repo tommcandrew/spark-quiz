@@ -120,8 +120,9 @@ export const groupsScreenStyles = makeStyles(() => ({
 	listItem: {
         height: "100px",
         width: "200px",
-        display: "flex",
+		display: "flex",
+		flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "space-evenly"
     }
 }));

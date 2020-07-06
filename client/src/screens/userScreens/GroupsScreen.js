@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import CustomSnackbar from "../../components/mui/Snackbar";
 import Modal from "react-modal";
 import AddGroupModal from "../../components/modals/AddGroupModal";
 import * as userActions from "../../store/actions/userActions";
@@ -17,8 +18,8 @@ const Groups = () => {
 	const [ selectedGroupId, setSelectedGroupId ] = useState(null);
 	const [ selectedGroup, setSelectedGroup ] = useState(null);
 	const [ addGroupModalIsOpen, setAddGroupModalIsOpen ] = useState(false);
-	const [ groupInfoModalIsOpen, setGroupInfoModalIsOpen ] = useState(false);
-	const [ membersToAdd, setMembersToAdd ] = useState([]);
+	const [groupInfoModalIsOpen, setGroupInfoModalIsOpen] = useState(false);
+	const [warningMessage, setWarningMessage] = useState("");
 
 	const closeModal = () => {
 		setAddGroupModalIsOpen(false);
@@ -37,36 +38,39 @@ const Groups = () => {
 
 	const handleDeleteGroup = () => {
 		dispatch(userActions.deleteGroup(selectedGroup._id));
-		setSelectedGroupId(null);
+		closeModal();
 	};
 
-	const handleDeleteMember = (memberId) => {
-		dispatch(userActions.deleteMember(selectedGroup._id, memberId));
-	};
+	// const handleDeleteMember = (memberId) => {
+	// 	dispatch(userActions.deleteMember(selectedGroup._id, memberId));
+	// };
 
-	const handleAddMember = (e) => {
-		const selectedContactId = e.target.value;
-		const selectedContact = user.contacts.find((contact) => contact._id === selectedContactId);
+	// const handleAddMember = (e) => {
+	// 	const selectedContactId = e.target.value;
+	// 	const selectedContact = user.contacts.find((contact) => contact._id === selectedContactId);
 
-		if (e.target.checked) {
-			setMembersToAdd([ ...membersToAdd, selectedContact ]);
-		} else {
-			setMembersToAdd(membersToAdd.filter((member) => member._id !== selectedContactId));
-		}
-	};
+	// 	if (e.target.checked) {
+	// 		setMembersToAdd([ ...membersToAdd, selectedContact ]);
+	// 	} else {
+	// 		setMembersToAdd(membersToAdd.filter((member) => member._id !== selectedContactId));
+	// 	}
+	// };
 
-	const handleUpdateGroup = () => {
-		if (membersToAdd.length > 0) {
-			dispatch(userActions.updateGroup(selectedGroup._id, membersToAdd));
-		}
-		setSelectedGroupId(null);
+	const handleUpdateGroup = (groupName, members) => {
+		setWarningMessage("")
+		if(!members.length || !members ) {setWarningMessage("It is not advised to make an empty group")}
+		dispatch(userActions.updateGroup(selectedGroup._id, groupName, members));
+		closeModal()
 	};
 
 	return (
 		<Grid container spacing={2} className={root.root}>
+			{warningMessage !== "" && (
+				<CustomSnackbar severity="warning" message={warningMessage} handleClose={() => setWarningMessage("")} />
+			)}
 			<Grid item xs={12} xl={12}>
 				<Typography variant="h4" align="center">
-					Create a new Quiz
+					Groups
 				</Typography>
 				<Divider variant="middle" />
 			</Grid>
@@ -84,12 +88,23 @@ const Groups = () => {
 					user.groups &&
 					user.groups.map((group, index) => {
 						return (
-							<Grid item lg={3} md={4} xs={12} key={index} onClick={() => {
-								setSelectedGroupId(group._id);
-								setGroupInfoModalIsOpen(true)
-							}}>
+							<Grid
+								item
+								lg={3}
+								md={4}
+								xs={12}
+								key={index}
+								onClick={() => {
+									setSelectedGroupId(group._id);
+									setGroupInfoModalIsOpen(true);
+								}}>
 								<Paper className={classes.listItem}>
 									<Typography>Group name:&nbsp; {group.name}</Typography>
+									{group.contacts.length === 0 && (
+										<Typography variant="caption" display="block" color="secondary" gutterBottom>
+											No members in this group. Click to add
+										</Typography>
+									)}
 								</Paper>
 							</Grid>
 						);
@@ -100,80 +115,21 @@ const Groups = () => {
 					Add Group
 				</Button>
 			</Grid>
-			<Modal
-				isOpen={addGroupModalIsOpen}
-				onRequestClose={closeModal}
-				style={customStyles}
-				size="lg"
-				centered>
+			<Modal isOpen={addGroupModalIsOpen} onRequestClose={closeModal} style={customStyles} size="lg" centered>
 				<AddGroupModal closeModal={closeModal} user={user} />
 			</Modal>
 
-			<Modal
-				isOpen={groupInfoModalIsOpen}
-				onRequestClose={closeModal}
-				style={customStyles}
-				size="lg"
-				centered>
+			<Modal isOpen={groupInfoModalIsOpen} onRequestClose={closeModal} style={customStyles} size="lg" centered>
 				<GroupInfoModal
 					selectedGroup={selectedGroup}
-					setSelectedGroupId={setSelectedGroupId}
+					closeModal={closeModal}
 					handleDeleteGroup={handleDeleteGroup}
-					handleDeleteMember={handleDeleteMember}
-					handleAddMember={handleAddMember}
 					user={user}
 					handleUpdateGroup={handleUpdateGroup}
 				/>
 			</Modal>
 		</Grid>
 	);
-
-	{
-		/* <Grid item container xl={12} spacing={2}>
-				{user &&
-					user.groups &&
-					user.groups.map((group, index) => {
-						return (
-							<Grid
-								item
-								lg={2}
-								key={index}
-								onClick={() => setSelectedGroupId(group._id)}
-								className="groups__group">
-								{group.name}
-							</Grid>
-						);
-					})}
-			</Grid>
-			<button onClick={() => setIsOpen(true)} type="button">
-				Add Group
-			</button>
-			{modalIsOpen && (
-				<Modal
-					isOpen={modalIsOpen}
-					onRequestClose={closeModal}
-					style={customStyles}
-					contentLabel="Example Modal"
-					size="lg"
-					aria-labelledby="contained-modal-title-vcenter"
-					centered>
-					<AddGroupModal closeModal={closeModal} user={user} />
-				</Modal>
-			)}
-			{selectedGroup && (
-				<GroupInfoModal
-					selectedGroup={selectedGroup}
-					setSelectedGroupId={setSelectedGroupId}
-					handleDeleteGroup={handleDeleteGroup}
-					handleDeleteMember={handleDeleteMember}
-					handleAddMember={handleAddMember}
-					user={user}
-					handleUpdateGroup={handleUpdateGroup}
-				/>
-			)}
-		</Grid>
-	); */
-	}
 };
 
 export default Groups;

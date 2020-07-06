@@ -151,13 +151,13 @@ export const deleteMember = (groupId, memberId) => {
   };
 };
 
-export const updateGroup = (groupId, membersToAdd) => {
+export const updateGroup = (groupId, groupName, members) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
     return axios
       .post(
         "http://localhost:5000/user/updateGroup",
-        { groupId, membersToAdd },
+        { groupId, groupName, members },
         tokenConfig(token)
       )
       .then(() => {

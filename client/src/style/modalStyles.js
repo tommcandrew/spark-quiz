@@ -43,3 +43,9 @@ export const shareModalStyles = makeStyles((theme) => ({
   },
 }));
 
+export const groupInfoModalStyles = makeStyles((theme) =>({
+	nonGroupMembersContainer: {
+		border: `1px solid ${theme.palette.primary.main}`,
+		borderRadius: "3px",
+	}
+}))

@@ -23,19 +23,17 @@ const Contacts = () => {
 		setContactInfoModalIsOpen(false);
 	}
 
-	const handleSubmit = (name, email) => {
+	const handleAddContact = (name, email) => {
 		dispatch(userActions.addContact({ name, email }));
 		closeModal()
 	};
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    dispatch(userActions.addContact({ name, email }));
+	const handleUpdateContact = ( name, email ) => {
+		  const updatedContact = { name, email };
+    dispatch(userActions.updateContact(selectedContact._id, updatedContact));
     closeModal();
-    e.target.reset();
   };
+
 
   const handleDeleteContact = () => {
     dispatch(userActions.deleteContact(selectedContact._id));
@@ -47,7 +45,7 @@ const Contacts = () => {
 		<Grid container spacing={2} className={root.root}>
 			<Grid item xs={12} xl={12}>
 				<Typography variant="h4" align="center">
-					Create a new Quiz
+					Contacts
 				</Typography>
 				      <Divider variant="middle"  />
 			</Grid>
@@ -98,73 +96,22 @@ const Contacts = () => {
 				size="lg"
 				aria-labelledby="contained-modal-title-vcenter"
 				centered>
-				<AddContactModal handleSubmit={handleSubmit} closeModal={closeModal}/>
+				<AddContactModal handleSubmit={handleAddContact} closeModal={closeModal}/>
+			</Modal>
+			<Modal
+				isOpen={contactInfoModalIsOpen}
+				onRequestClose={closeModal}
+				style={customStyles}
+				size="lg"
+				aria-labelledby="contained-modal-title-vcenter"
+				centered>
+				<ContactInfoModal contact={selectedContact}
+					handleSubmit={handleUpdateContact}
+					handleDeleteContact={handleDeleteContact}
+					closeModal={closeModal}/>
 			</Modal>
 
-  //MAIN
-  return (
-    <Grid container className={classes.root} spacing={2}>
-      <Grid item xl={12}>
-        <Typography variant="h5">Contacts</Typography>
-      </Grid>
-      <Grid item xl={12}>
-        <input type="text" placeholder="Search" />
-      </Grid>
-      <Grid item xl={12} xs={12} container spacing={3} className={classes.list}>
-        {user &&
-          user.contacts &&
-          user.contacts.map((contact, index) => (
-            <Grid
-              item
-              lg={4}
-              xs={12}
-              key={index}
-              onClick={() => {
-                setContactInfoModalIsOpen(true);
-                setSelectedContact(contact);
-              }}
-            >
-              <Paper>{contact.name}</Paper>
-            </Grid>
-          ))}
-      </Grid>
-      <Grid item xs={12} xl={12}>
-        <button
-          onClick={() => {
-            setAddContactModalIsOpen(true);
-          }}
-          type="button"
-        >
-          Add Contact
-        </button>
-      </Grid>
-      <Modal
-        isOpen={addContactModalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <AddContactModal handleSubmit={handleSubmit} />
-      </Modal>
-
-      <Modal
-        isOpen={contactInfoModalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <ContactInfoModal
-          contact={selectedContact}
-          setSelectedContact={setSelectedContact}
-          handleSubmit={handleUpdateContact}
-          handleDeleteContact={handleDeleteContact}
-          closeModal={closeModal}
-        />
-      </Modal>
+  
     </Grid>
   );
 };

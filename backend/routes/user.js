@@ -110,12 +110,13 @@ router.post("/deleteMember", checkAuth, async (req, res) => {
 });
 router.post("/updateGroup", checkAuth, async (req, res) => {
   const id = req.user.id;
-  const { groupId, membersToAdd } = req.body;
+  const { groupId, groupName, members} = req.body;
   try {
     const user = await User.findById(id);
     const updatedGroups = user.groups.map((group) => {
       if (group._id.toString() === groupId) {
-        group.contacts = [...group.contacts, ...membersToAdd];
+        group.name= groupName
+        group.contacts = members
       }
       return group;
     });

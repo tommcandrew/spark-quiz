@@ -8,14 +8,14 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import V from "max-validator";
 import { contactValidation } from "../../utils/validation";
 
-const ContactInfoModal = ({ contact, handleSubmit, setSelectedContact, handleDeleteContact, closeModal }) => {
+const ContactInfoModal = ({ contact, handleSubmit, handleDeleteContact, closeModal }) => {
 	const [ validationError, setValidationError ] = useState("");
 	const rootClasses = modalRootStyles();
 
 	const internalSubmit = (e) => {
 		e.preventDefault();
 		const email = e.target.email.value
-		const name=  e.target.name.value
+		const name = e.target.name.value
 		setValidationError("")
 		const result = V.validate({email, name }, contactValidation);
 			if (result.hasError) {
@@ -23,9 +23,10 @@ const ContactInfoModal = ({ contact, handleSubmit, setSelectedContact, handleDel
 					setValidationError(result.getError("name"))
 					return;
 				} else setValidationError(result.getError("email"))
-				
-		}
-		else handleSubmit(name, email)
+				return;
+			}
+		
+		else{ handleSubmit(name, email)}
 	}
 
 	return (
