@@ -1,3 +1,6 @@
+import V from "max-validator";
+
+
 export const registerValidation = {
   name: "required|string|min:2|max:30",
   email: "required|email|max:50",
@@ -20,5 +23,12 @@ export const createQuizValidation = {
 };
 
 export const quizOptionsValidation = {
-  points: "required|number|between:1,10",
+  points: 'required|number|between:1,10',
+  
 };
+
+export const contactValidation = {
+  name: 'required|string|min:2|max:30',
+  email: 'required|email|max:50',
+  
+}

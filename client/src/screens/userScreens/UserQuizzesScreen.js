@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useStyles } from "../../style/userQuizzesScreenStyles";
+import {screenLayoutStyles, userQuizzesScreenStyle } from "../../style/screenStyles"
 import * as userActions from "../../store/actions/userActions";
 import * as quizActions from "../../store/actions/quizActions";
 import { Card, CardContent, CardActions, Grid, Typography, Button, Divider } from "@material-ui/core";
 
 const UserQuizzesScreen = (props) => {
 	const dispatch = useDispatch();
-	const classes = useStyles();
+	const classes = userQuizzesScreenStyle();
+	const root = screenLayoutStyles();
 	const quizzes = useSelector((state) => state.quizzesList.quizzes);
 
 	//on page reload
@@ -31,7 +32,7 @@ const UserQuizzesScreen = (props) => {
 	};
 
 	return (
-		<Grid container spacing={2} className={classes.root}>
+		<Grid container spacing={2} className={root.root}>
 			<Grid item xs={12} xl={12}>
 				<Typography variant="h4" align="center">
 					Your Quizzes

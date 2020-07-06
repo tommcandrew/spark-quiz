@@ -76,39 +76,29 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
     e.preventDefault();
     const selectedTimeLimit = e.target.timeLimit.value;
 
-    let isValid = true;
-    if (selectedQuizPointsSystem === "overall") {
-      setOverallPoints(e.target.overallPoints.value);
-      let points = e.target.overallPoints.value;
-      const result = V.validate({ points }, quizOptionsValidation);
-      if (result.hasError) {
-        console.log("result has error");
-        console.log(result.getError("points"));
-        setValidationError(result.getError("points"));
-        isValid = false;
-        return;
-      }
-      if (isValid === true) {
-        if (selectedQuizPointsSystem === "overall") {
-          dispatch(
-            quizActions.updateQuiz(quizId, { quizOverallPoints: points })
-          );
-        }
-      }
-    }
-    if (isValid === true) {
-      if (selectedTimeLimit) {
-        dispatch(
-          quizActions.updateQuiz(quizId, { quizTimeLimit: selectedTimeLimit })
-        );
-      }
-      if (selectedQuizPointsSystem) {
-        dispatch(
-          quizActions.updateQuiz(quizId, {
-            quizPointsSystem: selectedQuizPointsSystem,
-          })
-        );
-      }
+		let isValid = true;
+		if (selectedQuizPointsSystem === "overall") {
+			setOverallPoints(e.target.overallPoints.value);
+			let points = e.target.overallPoints.value;
+			const result = V.validate({ points }, quizOptionsValidation);
+			if (result.hasError) {
+				setValidationError(result.getError("points"));
+				isValid = false;
+				return;
+			}
+			if (isValid === true) {
+				if (selectedQuizPointsSystem === "overall") {
+					dispatch(quizActions.updateQuiz(quizId, { quizOverallPoints: points }));
+				}
+			}
+		}
+		if (isValid === true) {
+			if (selectedTimeLimit) {
+				dispatch(quizActions.updateQuiz(quizId, { quizTimeLimit: selectedTimeLimit }));
+			}
+				if (selectedQuizPointsSystem) {
+					dispatch(quizActions.updateQuiz(quizId, { quizPointsSystem: selectedQuizPointsSystem }));
+				}
 
       closeModal();
     }

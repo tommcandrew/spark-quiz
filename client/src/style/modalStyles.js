@@ -15,20 +15,25 @@ export const quizOptionsModalStyles = makeStyles((theme)=> ({
 }))
 
 export const addQuestionModalStyles = makeStyles((theme) => ({
-	paper: {
-		padding: theme.spacing(1),
-		textAlign: "center",
-		color: theme.palette.text.secondary,
-	}, 
 	card: {
-		maxWidth: 345,
+		height: "280px",
+		margin: "auto",
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center"
 	},
-	media: {
-    height: 140,
+	addedMediaContainer: {
+		width: "75%",
+		height: "75%",
 	},
-	cardActionArea: {
+	addedMedia: {
+		height: "100%",
 		width: "100%"
-	}
+	},
+	cardActions: {
+		width: "100%"
+	},
 }));
 
 export const shareModalStyles = makeStyles((theme) => ({
@@ -37,3 +42,10 @@ export const shareModalStyles = makeStyles((theme) => ({
     marginTop: "10px",
   },
 }));
+
+export const groupInfoModalStyles = makeStyles((theme) =>({
+	nonGroupMembersContainer: {
+		border: `1px solid ${theme.palette.primary.main}`,
+		borderRadius: "3px",
+	}
+}))
