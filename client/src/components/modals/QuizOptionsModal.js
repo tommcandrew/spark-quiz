@@ -75,9 +75,10 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const selectedTimeLimit = e.target.timeLimit.value;
+    const p = e.target.points.value;
 
 		let isValid = true;
-		if (selectedQuizPointsSystem === "overall") {
+		if (p === "overall") {
 			setOverallPoints(e.target.overallPoints.value);
 			let points = e.target.overallPoints.value;
 			const result = V.validate({ points }, quizOptionsValidation);
@@ -87,7 +88,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 				return;
 			}
 			if (isValid === true) {
-				if (selectedQuizPointsSystem === "overall") {
+				if (p === "overall") {
 					dispatch(quizActions.updateQuiz(quizId, { quizOverallPoints: points }));
 				}
 			}
@@ -96,8 +97,8 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 			if (selectedTimeLimit) {
 				dispatch(quizActions.updateQuiz(quizId, { quizTimeLimit: selectedTimeLimit }));
 			}
-				if (selectedQuizPointsSystem) {
-					dispatch(quizActions.updateQuiz(quizId, { quizPointsSystem: selectedQuizPointsSystem }));
+				if (p) {
+					dispatch(quizActions.updateQuiz(quizId, { quizPointsSystem: p }));
 				}
 
       closeModal();

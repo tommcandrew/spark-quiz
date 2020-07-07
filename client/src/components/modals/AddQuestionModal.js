@@ -181,7 +181,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 			if (questionType === "multipleChoice") {
 			let hasErr = false;
 			multipleChoiceOptions.map((option) => {
-				const result = V.validate({ option }, { option: "required|string|min:1|max:10" });
+				const result = V.validate({ option }, { option: "required|string|min:1|max:30" });
 				if (result.hasError) {
 					setValidationError(result.getError("option"));
 					console.log(result.getError("option"));
@@ -280,7 +280,8 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 				</Grid>
 
 				<Grid item xl={12} container spacing={3} justify="center">
-					{addedMedia.map((media, index) => (
+					
+					{addedMedia && addedMedia.map((media, index) => (
 						<Grid item xs={6} md={4} key={index}>
 							<AddedMedia
 								media={media}

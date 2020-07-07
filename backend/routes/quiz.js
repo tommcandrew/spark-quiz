@@ -111,11 +111,11 @@ router.get("/fetchQuizzes", checkAuth, async (req, res) => {
 
 router.post("/editQuestion", async (req, res) => {
   const { _id, questionObject } = req.body;
-  const parsedQuestion = parseNewQuestion(questionObject, req.files);
+  const parsedQuestion = parseNewQuestion(questionObject, req.files)
   try {
     const quiz = await Quiz.findById(_id);
     const updatedQuizQuestions = quiz.quizQuestions.map((question) => {
-      if ((question._id = parsedQuestion.id)) {
+      if (question._id.toString() === parsedQuestion.id) {
         question = parsedQuestion;
       }
       return question;
