@@ -26,7 +26,6 @@ export default function CreateQuizScreen(props) {
 	const [ quizName, setQuizName ] = useState("");
 	const [ quizSubject, setQuizSubject ] = useState("");
 	const [ modalIsOpen, setIsOpen ] = useState(false);
-	const [questionToEdit, setQuestionToEdit] = useState("");
 	const [validationError, setValidationError] = useState("")
 
   //ON PAGE RELOAD
@@ -40,9 +39,7 @@ export default function CreateQuizScreen(props) {
   }, []);
 
   //OTHER HOOKS
-  useEffect(() => {
-    if (questionToEdit !== "") showModal("editQuestion");
-  }, [questionToEdit]);
+
 
   //HANDLERS
   const showModal = (screen) => {
@@ -50,15 +47,6 @@ export default function CreateQuizScreen(props) {
       case "addNewQuestion":
         setDisplayedComponent(
           <AddQuestionModal closeModal={closeModal} quiz={quiz} />
-        );
-        break;
-      case "editQuestion":
-        setDisplayedComponent(
-          <AddQuestionModal
-            closeModal={closeModal}
-            quiz={quiz}
-            questionToEdit={questionToEdit}
-          />
         );
         break;
       case "quizOptions":
@@ -79,7 +67,14 @@ export default function CreateQuizScreen(props) {
   };
 
   const editQuestion = (id) => {
-    setQuestionToEdit(id);
+    setIsOpen(true);
+    setDisplayedComponent(
+          <AddQuestionModal
+            closeModal={closeModal}
+            quiz={quiz}
+            questionToEdit={id}
+          />
+        )
   };
 
   const handleCreate = () => {
@@ -196,7 +191,7 @@ export default function CreateQuizScreen(props) {
 							<Typography variant="h4" color="secondary">
 							{quiz.quizName}</Typography>
 							{quiz.quizTimeLimit ? (
-								<Typography>Quiz Timelimit: {quiz.quizTimeLimit}</Typography>
+								<Typography>Quiz Timelimit: {(quiz.quizTimeLimit==="false")? <>No limit</> : quiz.quizTimeLimit}</Typography>
 							) : (
 								""
 							)}

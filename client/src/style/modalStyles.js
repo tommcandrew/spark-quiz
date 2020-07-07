@@ -38,8 +38,12 @@ export const addQuestionModalStyles = makeStyles((theme) => ({
 
 export const shareModalStyles = makeStyles((theme) => ({
   container: {
-    backgroundColor: theme.palette.background.paper,
-    marginTop: "10px",
+    width: "100%",
+		border: `1px solid ${theme.palette.primary.main}`,
+		borderTop: 0,
+		height: "200px",
+		overflowY: "scroll",
+		boxShadow: "0 3px 3px rgba(0,0,0,0.2)"
   },
 }));
 
@@ -47,5 +51,6 @@ export const groupInfoModalStyles = makeStyles((theme) =>({
 	nonGroupMembersContainer: {
 		border: `1px solid ${theme.palette.primary.main}`,
 		borderRadius: "3px",
+		
 	}
 }))
