@@ -1,7 +1,8 @@
 import axios from "axios";
-import { returnErrors } from "./errorActions";
+import { returnErrors, clearErrors } from "./errorActions";
 import { CLEAR_ERRORS } from "./errorActions";
 import { SET_CURRENT_QUIZ } from "./quizActions";
+import {loading, loaded} from "./errorActions";
 import { setStudent } from "./quizScoreActions";
 export const USER_LOADED = "USER_LOADED";
 export const USER_LOADING = "USER_LOADING";
@@ -26,24 +27,35 @@ export const tokenConfig = (token) => {
   return config;
 };
 
+// EROR AND LOADING MANAGED 
+
 export const loadUser = () => {
   return async (dispatch, getState) => {
-    //user loading
-    dispatch({ type: USER_LOADING }); //user is loading to true
+    dispatch({ type: USER_LOADING
+     }); //user is loading to true
     const token = getState().auth.token;
     return axios
       .get("http://localhost:5000/user/fetchUser", tokenConfig(token))
-      .then((res) =>
+      .then((res) => {
         dispatch({
           type: USER_LOADED,
           payload: res.data.user,
         })
-      )
+      })
       .catch((err) => {
-       
-        dispatch({
-          type: AUTH_ERROR,
-        });
+        if (!err.response) {
+          dispatch(
+            returnErrors({ msg: "Server is down. Please try again later" }, 500, "REGISTER_FAIL")
+          );
+        }
+        else {
+          dispatch({
+            type: AUTH_ERROR,
+          });
+           dispatch(
+          returnErrors({msg: "Something went wrong. Please login Again"},  err.response.status)
+        );
+        }
       });
   };
 };
@@ -52,6 +64,7 @@ export const register = ({ name, email, password, password2 }) => {
   return (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
     const body = JSON.stringify({ name, email, password, password2 });
+    dispatch(loading("Registering User. Please Wait"));
     return axios
       .post("http://localhost:5000/auth/register", body, config)
       .then((res) => {
@@ -59,25 +72,32 @@ export const register = ({ name, email, password, password2 }) => {
           type: REGISTER_SUCCESS,
           payload: res.data,
         });
-        dispatch({
-          type: CLEAR_ERRORS,
-        });
+        dispatch(clearErrors());
+        dispatch(loaded());
         dispatch(loadUser());
       })
       .catch((err) => {
-        dispatch(
+        dispatch(loaded())
+        if (!err.response) {
+          dispatch(
+          returnErrors({msg: "Server is down. Please try again later"}, 500, "SERVER_ERROR")
+        );
+        }
+        else {
+          dispatch(
           returnErrors(err.response.data, err.response.status, "REGISTER_FAIL")
         );
+        }
         dispatch({
           type: REGISTER_FAIL,
         });
-        console.log(getState().error.msg.msg);
       });
   };
 };
 
 export const login = ({ email, password }) => {
   return (dispatch, getState) => {
+    dispatch(loading("Logging In. Please Wait"));
     const config = { headers: { "Content-Type": "application/json" } };
     const body = JSON.stringify({ email, password });
     return axios
@@ -92,19 +112,29 @@ export const login = ({ email, password }) => {
           type: CLEAR_ERRORS,
         });
         loadUser();
+        dispatch(loaded());
       })
       .catch((err) => {
-        // dispatch(
-        //   returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
-        // );
-        dispatch({
-          type: LOGIN_FAIL,
-        });
-        console.log(getState().error.msg.msg);
+        dispatch(loaded());
+        if (!err.response) {
+          dispatch(
+            returnErrors({ msg: "Server is down. Please try again later" }, 500, "LOGIN_FAIL")
+          );
+        }
+        else {
+          dispatch(
+            returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
+          );
+          dispatch({
+            type: LOGIN_FAIL,
+          });
+        }
       });
   };
 };
 
+
+// NOT ERROR MANAGED
 export const studentLogin = (studentCode) => {
   return (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
@@ -129,12 +159,6 @@ export const studentLogin = (studentCode) => {
   };
 };
 
-export const clearStudent = () => {
-  return async (dispatch) => {
-    dispatch({ type: CLEAR_STUDENT });
-  };
-};
-
 export const deleteAccount = () => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
@@ -149,6 +173,7 @@ export const deleteAccount = () => {
       });
   };
 };
+
 
 export const changePassword = (currentPassword, newPassword) => {
   return (dispatch, getState) => {
@@ -168,6 +193,13 @@ export const changePassword = (currentPassword, newPassword) => {
   };
 };
 
+
+export const clearStudent = () => {
+  return async (dispatch) => {
+    dispatch({ type: CLEAR_STUDENT });
+  };
+};
+
 export const resetPassword = (email) => {
   return (dispatch, getState) => {
     return axios
@@ -180,6 +212,10 @@ export const resetPassword = (email) => {
       });
   };
 };
+
+
+
+
 
 export const logout = () => {
   return (dispatch) => {

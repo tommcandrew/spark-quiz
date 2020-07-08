@@ -1,24 +1,36 @@
-import {GET_ERRORS, CLEAR_ERRORS} from '../actions/errorActions';
+import {GET_ERRORS, CLEAR_ERRORS, LOADED, LOADING} from '../actions/errorActions';
 
 const initalState = {
-  msg: {},
-  status: null,
-  id: null,
+  errorMsg: "",
+  errorStatus: null,
+  errorId: null,
+  loading: false,
+  loadingMsg: "Please wait"
 };
 
 export default function (state = initalState, action) {
   switch (action.type) {
+    case LOADING: 
+      return {...state,
+        loading: true,
+        loadingMsg: action.msg
+      }
+    case LOADED: 
+      return {...state,
+        loading: false,
+        loadingMsg: ""
+      }
     case GET_ERRORS:
-      return {
-        msg: action.payload.msg,
-        status: action.payload.status,
-        id: action.payload.id,
+      return {...state,
+        errorMsg: action.payload.msg.msg,
+        errorStatus: action.payload.status,
+        errorId: action.payload.id,
       };
     case CLEAR_ERRORS:
-      return {
-        msg: {},
-        status: null,
-        id: null,
+      return {...state,
+        errorMsg: {},
+        errorStatus: "",
+        errorId: null,
       };
     default:
       return state;

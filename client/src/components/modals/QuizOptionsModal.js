@@ -24,7 +24,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
   const prevState = useSelector((state) => state.quiz);
   const [selectOptions, setSelectOptions] = useState([]);
   const [selectedQuizPointsSystem, setSelectedQuizPointsSystem] = useState();
-  const [overallPoints, setOverallPoints] = useState("");
+  //const [overallPoints, setOverallPoints] = useState("");
   const [validationError, setValidationError] = useState("");
   const dispatch = useDispatch();
 
@@ -33,12 +33,12 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
     if (prevState.quizPointsSystem !== "") {
       setSelectedQuizPointsSystem(prevState.prevQuizPointsSystem);
     }
-    if (
-      prevState.quizPointsSystem === "overall" &&
-      prevState.quizOverallPoints
-    ) {
-      setOverallPoints(prevState.quizOverallPoints);
-    }
+    // if (
+    //   prevState.quizPointsSystem === "overall" &&
+    //   prevState.quizOverallPoints
+    // ) {
+    //   setOverallPoints(prevState.quizOverallPoints);
+    // }
   }, []);
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 
 		let isValid = true;
 		if (p === "overall") {
-			setOverallPoints(e.target.overallPoints.value);
+			// setOverallPoints(e.target.overallPoints.value);
 			let points = e.target.overallPoints.value;
 			const result = V.validate({ points }, quizOptionsValidation);
 			if (result.hasError) {

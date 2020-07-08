@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { modalRootStyles } from "../../style/modalStyles";
 import { useSelector, useDispatch } from "react-redux";
-import { Grid, Typography, Divider, Button, TextField } from "@material-ui/core";
+import { Grid, Typography, Divider, Button } from "@material-ui/core";
 import CustomSnackbar from "../mui/Snackbar";
 import * as quizActions from "../../store/actions/quizActions";
 

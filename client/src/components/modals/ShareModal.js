@@ -18,7 +18,7 @@ import {
 import SwipeableViews from "react-swipeable-views";
 import PropTypes from "prop-types";
 import * as quizActions from "../../store/actions/quizActions";
-import V from "max-validator";
+
 
 //MUI TAB FUNCTIONS
 function TabPanel(props) {

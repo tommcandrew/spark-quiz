@@ -15,7 +15,6 @@ export const customStyles = {
 		bottom: "auto",
 		marginRight: "-50%",
 		transform: "translate(-50%, -50%)",
-		display: "flex",
 		alignItems: "flex-start",
 		justifyContent: "center",
 		padding: "20px",
