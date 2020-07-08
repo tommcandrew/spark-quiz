@@ -38,7 +38,7 @@ const Home = (props) => {
 
   //MAIN
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" data-testid="home-wrapper">
       {validationError !== "" && (
         <CustomSnackbar
           severity="error"

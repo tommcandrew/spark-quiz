@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const WelcomeScreen = () => {
-    return (
-        <div>
-            Welcome!
-        </div>
-    )
-}
+  return <div data-testid="welcome-wrapper">Welcome!</div>;
+};
 
-export default WelcomeScreen
+export default WelcomeScreen;
