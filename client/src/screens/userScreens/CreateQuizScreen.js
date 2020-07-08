@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddQuestionModal from "../../components/modals/AddQuestionModal";
 import PreviewQuestions from "../../components/UI/PreviewQuestions";
 import QuizOptionsModal from "../../components/modals/QuizOptionsModal";
+import PublishQuizConfirmationModal from "../../components/modals/PublishQuizConfirmationModal"
 import ShareModal from "../../components/modals/ShareModal";
 import * as quizActions from "../../store/actions/quizActions";
 
@@ -54,10 +55,17 @@ export default function CreateQuizScreen(props) {
           <QuizOptionsModal quizId={quiz._id} closeModal={closeModal} />
         );
         break;
-      case "invite":
+		case "invite":
+			setDisplayedComponent(
+				<ShareModal quizId={quiz._id} closeModal={closeModal} />
+			);
+			break;
+         case "publish":
         setDisplayedComponent(
-          <ShareModal quizId={quiz._id} closeModal={closeModal} />
+          <PublishQuizConfirmationModal closeModal={closeModal}/>
         );
+        
+
         break;
       default:
         return;
@@ -97,26 +105,7 @@ export default function CreateQuizScreen(props) {
     setIsOpen(false);
   }
 
-  const publishQuiz = () => {
-    if (
-      //probably easier to just create empty contacts and groups arrays on initial state object in quizReducer
-      !quiz.quizInvites.contacts ||
-      quiz.quizInvites.contacts.length === 0
-    ) {
-      if (
-        window.confirm(
-          "You are publishing a quiz without any invites. Continue?"
-        )
-      ) {
-        dispatch(quizActions.publishQuiz(quiz._id));
-        //maybe redirect to My Quizzes here?
-      } else {
-        return;
-      }
-    }
-    //repetition!
-    dispatch(quizActions.publishQuiz(quiz._id));
-  };
+
 
 	//RETURN
 	return (
@@ -224,8 +213,7 @@ export default function CreateQuizScreen(props) {
                 variant="contained"
                 color="secondary"
                 className={classes.button}
-                onClick={publishQuiz}
-              >
+              onClick={() => showModal("publish")}>
                 {quiz.quizPublished ? <>Update Quiz </> : <>Publish Quiz</>}
               </Button>
             </Box>

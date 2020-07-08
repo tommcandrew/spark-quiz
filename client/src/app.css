@@ -1,71 +1,41 @@
-html,
-body,
-#root {
-  height: vh;
-  width: vw;
-}
 
+
+* {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        background: transparent;
+       
+    }
+
+    #root, body{
+      overflow-x: hidden;
+      overflow-y: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .full{
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+
+    }
+
+    ._loading_overlay_content{
+      color: #ff3b3f
+    }
+    
 body {
   /* background-image: url("./assets/bg-blur2.jpg"); */
   background-color:#efefef;
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: cover;
+  background-size: cover; 
+  
   /* overflow: hidden; */
-}
-
-ul {
-  list-style: none;
-}
-
-a {
-  text-decoration: none;
-  color: black;
-}
-
-.create-quiz-container {
-  height: 90%;
-  width: 75%;
-  float: right;
-  display: flex;
-  flex-direction: row;
-  border: 1px solid black;
-  justify-content: space-evenly;
-}
-.container-1 {
-  height: 500px;
-  width: 300px;
-  flex-direction: column;
-}
-.container-2 {
-  height: 500px;
-  width: 600px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.add-question-container {
-  display: flex;
-  flex-direction: column;
-}
-.question-list {
-  width: 100%;
-}
-.list-item {
-  list-style-type: none;
-  border: 1px solid black;
-  padding: 10px;
-  width: 90%;
-}
-
-.userQuizes {
-  height: 90%;
-  width: 75%;
-  float: right;
-  display: flex;
-  flex-direction: row;
-  border: 1px solid black;
-  justify-content: space-evenly;
 }

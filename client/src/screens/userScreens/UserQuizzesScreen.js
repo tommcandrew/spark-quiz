@@ -6,18 +6,12 @@ import * as quizActions from "../../store/actions/quizActions";
 import { Card, CardContent, CardActions, Grid, Typography, Button, Divider } from "@material-ui/core";
 
 const UserQuizzesScreen = (props) => {
+	
 	const dispatch = useDispatch();
 	const classes = userQuizzesScreenStyle();
 	const root = screenLayoutStyles();
 	const quizzes = useSelector((state) => state.quizzesList.quizzes);
 
-	//on page reload
-	useEffect(
-		() => {
-			dispatch(userActions.fetchQuizzes());
-		},
-		[ dispatch ]
-	);
 
 	//HANDLERS
 	const handleOpenCreateQuiz = (quiz) => {

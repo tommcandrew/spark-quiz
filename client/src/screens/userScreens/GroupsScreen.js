@@ -41,21 +41,6 @@ const Groups = () => {
 		closeModal();
 	};
 
-	// const handleDeleteMember = (memberId) => {
-	// 	dispatch(userActions.deleteMember(selectedGroup._id, memberId));
-	// };
-
-	// const handleAddMember = (e) => {
-	// 	const selectedContactId = e.target.value;
-	// 	const selectedContact = user.contacts.find((contact) => contact._id === selectedContactId);
-
-	// 	if (e.target.checked) {
-	// 		setMembersToAdd([ ...membersToAdd, selectedContact ]);
-	// 	} else {
-	// 		setMembersToAdd(membersToAdd.filter((member) => member._id !== selectedContactId));
-	// 	}
-	// };
-
 	const handleUpdateGroup = (groupName, members) => {
 		setWarningMessage("")
 		if(!members.length || !members ) {setWarningMessage("It is not advised to make an empty group")}

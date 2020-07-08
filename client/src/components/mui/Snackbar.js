@@ -20,7 +20,7 @@ export default function CustomSnackbar({ severity, message, handleClose }) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Snackbar open autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={severity}>
           {message}
         </Alert>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { modalRootStyles, groupInfoModalStyles } from "../../style/modalStyles";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import {
@@ -10,7 +10,6 @@ import {
 	Chip,
 	FormControlLabel,
 	Checkbox,
-	Paper
 } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import CloseIcon from "@material-ui/icons/Close";
@@ -22,7 +21,7 @@ const GroupInfoModal = ({ selectedGroup, closeModal, handleDeleteGroup, user, ha
 	const [ nonGroupContacts, setNonGroupContacts ] = useState(
 		user.contacts.filter(function(obj) {
 			return !selectedGroup.contacts.some(function(obj2) {
-				return obj._id == obj2._id;
+				return obj._id === obj2._id;
 			});
 		})
 	);
