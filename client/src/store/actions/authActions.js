@@ -2,7 +2,7 @@ import axios from "axios";
 import { returnErrors, clearErrors } from "./errorActions";
 import { CLEAR_ERRORS } from "./errorActions";
 import { SET_CURRENT_QUIZ } from "./quizActions";
-import {loading, loaded} from "./errorActions";
+import { loading, loaded } from "./errorActions";
 import { setStudent } from "./quizScoreActions";
 export const USER_LOADED = "USER_LOADED";
 export const USER_LOADING = "USER_LOADING";
@@ -27,12 +27,11 @@ export const tokenConfig = (token) => {
   return config;
 };
 
-// EROR AND LOADING MANAGED 
+// EROR AND LOADING MANAGED
 
 export const loadUser = () => {
   return async (dispatch, getState) => {
-    dispatch({ type: USER_LOADING
-     }); //user is loading to true
+    dispatch({ type: USER_LOADING }); //user is loading to true
     const token = getState().auth.token;
     return axios
       .get("http://localhost:5000/user/fetchUser", tokenConfig(token))
@@ -40,21 +39,27 @@ export const loadUser = () => {
         dispatch({
           type: USER_LOADED,
           payload: res.data.user,
-        })
+        });
       })
       .catch((err) => {
         if (!err.response) {
           dispatch(
-            returnErrors({ msg: "Server is down. Please try again later" }, 500, "REGISTER_FAIL")
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "REGISTER_FAIL"
+            )
           );
-        }
-        else {
+        } else {
           dispatch({
             type: AUTH_ERROR,
           });
-           dispatch(
-          returnErrors({msg: "Something went wrong. Please login Again"},  err.response.status)
-        );
+          dispatch(
+            returnErrors(
+              { msg: "Something went wrong. Please login Again" },
+              err.response.status
+            )
+          );
         }
       });
   };
@@ -77,16 +82,23 @@ export const register = ({ name, email, password, password2 }) => {
         dispatch(loadUser());
       })
       .catch((err) => {
-        dispatch(loaded())
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-          returnErrors({msg: "Server is down. Please try again later"}, 500, "SERVER_ERROR")
-        );
-        }
-        else {
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
           dispatch(
-          returnErrors(err.response.data, err.response.status, "REGISTER_FAIL")
-        );
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "REGISTER_FAIL"
+            )
+          );
         }
         dispatch({
           type: REGISTER_FAIL,
@@ -118,10 +130,13 @@ export const login = ({ email, password }) => {
         dispatch(loaded());
         if (!err.response) {
           dispatch(
-            returnErrors({ msg: "Server is down. Please try again later" }, 500, "LOGIN_FAIL")
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "LOGIN_FAIL"
+            )
           );
-        }
-        else {
+        } else {
           dispatch(
             returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
           );
@@ -132,7 +147,6 @@ export const login = ({ email, password }) => {
       });
   };
 };
-
 
 // NOT ERROR MANAGED
 export const studentLogin = (studentCode) => {
@@ -174,7 +188,6 @@ export const deleteAccount = () => {
   };
 };
 
-
 export const changePassword = (currentPassword, newPassword) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
@@ -192,7 +205,6 @@ export const changePassword = (currentPassword, newPassword) => {
       });
   };
 };
-
 
 export const clearStudent = () => {
   return async (dispatch) => {
@@ -212,10 +224,6 @@ export const resetPassword = (email) => {
       });
   };
 };
-
-
-
-
 
 export const logout = () => {
   return (dispatch) => {

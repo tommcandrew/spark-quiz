@@ -93,8 +93,11 @@ const Dashboard = ({ window, history }, props) => {
               }}
             >
               <Typography variant="h5">Hello, &nbsp; </Typography>
-              <Typography variant="h3" color="secondary">
-                {" "}
+              <Typography
+                variant="h3"
+                color="secondary"
+                data-testid="user-name"
+              >
                 {user ? user.name : ""}
               </Typography>
             </div>
@@ -102,6 +105,7 @@ const Dashboard = ({ window, history }, props) => {
               color="inherit"
               className={classes.logoutButton}
               onClick={logoutHandler}
+              data-testid="logout-button"
             >
               Logout
             </Button>

@@ -16,31 +16,29 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 const rootReducer = combineReducers({
-	quiz: quizReducer,
-	error: errorReducer,
-	auth: authReducer,
-	quizzesList: userReducer,
-	score: quizScoreReducer
+  quiz: quizReducer,
+  error: errorReducer,
+  auth: authReducer,
+  quizzesList: userReducer,
+  score: quizScoreReducer,
 });
 
 const composeEnhancers =
-	typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(
-				{
-					// Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-				}
-			)
-		: compose;
+  typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+      })
+    : compose;
 const enhancer = composeEnhancers(applyMiddleware(ReduxThunk));
 export const store = createStore(rootReducer, enhancer);
 
 export default function AppWrapper() {
-	return (
-		<Provider store={store}>
-			<ThemeProvider theme={theme}>
-				 <CssBaseline />
-				<MainNavigation />
-			</ThemeProvider>
-		</Provider>
-	);
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <MainNavigation />
+      </ThemeProvider>
+    </Provider>
+  );
 }
