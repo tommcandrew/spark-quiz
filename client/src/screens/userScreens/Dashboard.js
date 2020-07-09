@@ -32,8 +32,10 @@ import MyAccountScreen from "./MyAccountScreen";
 
 import * as quizActions from "../../store/actions/quizActions";
 import * as authActions from "../../store/actions/authActions";
+import * as userActions from "../../store/actions/userActions";
 
 const Dashboard = ({ window, history }, props) => {
+  console.log("i am being called again")
   const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
@@ -47,10 +49,11 @@ const Dashboard = ({ window, history }, props) => {
   //USER VERIFICATION ON RELOADS
   const getUser = () => {
     dispatch(authActions.loadUser());
+    dispatch(userActions.fetchQuizzes())
   };
   useEffect(() => {
     if (!user) getUser();
-  }, [user]);
+  }, []);
 
   //HANDLERS
   const handleDrawerToggle = () => {

@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
-  CssBaseline,
   Container,
-  Typography,
   TextField,
 } from "@material-ui/core/";
 import { useStyles } from "../../style/authScreensStyles";

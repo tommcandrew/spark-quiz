@@ -3,11 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "@material-ui/core/styles";
 import { modalRootStyles, shareModalStyles } from "../../style/modalStyles";
 import CustomSnackbar from "../../components/mui/Snackbar";
-import { Typography, Tab, Tabs, AppBar, Box, Grid, Divider, Button, FormControlLabel, Checkbox } from "@material-ui/core";
+import {
+	Typography,
+	Tab,
+	Tabs,
+	AppBar,
+	Box,
+	Grid,
+	Divider,
+	Button,
+	FormControlLabel,
+	Checkbox
+} from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
 import PropTypes from "prop-types";
 import * as quizActions from "../../store/actions/quizActions";
-import V from "max-validator";
+
 
 //MUI TAB FUNCTIONS
 function TabPanel(props) {
@@ -93,11 +104,10 @@ const ShareModal = ({ quizId, closeModal }) => {
 		if (recipientsGroups.length > 0) {
 			recipientsGroups.map((id) => {
 				let groupObject = user.groups.find((group) => group._id === id);
-				groupObject.contacts.map((contact) => newRecipientsList.push(contact._id));
+				if(groupObject) groupObject.contacts.map((contact) => newRecipientsList.push(contact._id));
 			});
 		}
 		newRecipientsList = [ ...new Set(newRecipientsList) ]; //aray of non duplicate selected contact ids
-		console.log(newRecipientsList);
 		let quizInvites = [];
 		newRecipientsList.forEach((r) => {
 			user.contacts.forEach((u) => {
@@ -115,13 +125,17 @@ const ShareModal = ({ quizId, closeModal }) => {
 			});
 		});
 
-		dispatch(
-			quizActions.updateQuiz(quizId, {
-				quizInvites: { contacts: quizInvites, groups: recipientsGroups }
-			})
-		); //QUIZ INVITES SENT
-
-		closeModal();
+		if (!quizInvites || !quizInvites.length) {
+			setValidationError("Your quiz invites are empty. Please add students");
+			return;
+		} else {
+			dispatch(
+				quizActions.updateQuiz(quizId, {
+					quizInvites: { contacts: quizInvites, groups: recipientsGroups }
+				})
+			); //QUIZ INVITES SENT
+			closeModal();
+		}
 	};
 
 	//RETURN
@@ -130,7 +144,7 @@ const ShareModal = ({ quizId, closeModal }) => {
 			{validationError !== "" && (
 				<CustomSnackbar severity="error" message={validationError} handleClose={() => setValidationError("")} />
 			)}
-			<Grid container spacing={3} justify="center" alignItems="flex-start">
+			<Grid container spacing={2} justify="center" alignItems="flex-start">
 				<Grid item xs={12}>
 					<Typography variant="h5" color="secondary" style={{ textAlign: "center" }}>
 						Invite Students
@@ -138,18 +152,34 @@ const ShareModal = ({ quizId, closeModal }) => {
 					<Divider variant="middle" />
 				</Grid>
 
-				<Grid item xs={12} xl={12} container>
+				<Grid item xs={12} xl={12} container style={{ justifyContent: "flex-start" }}>
+					<Grid item xs={6} md={3} lg={1}>
+						Invited:
+					</Grid>
 					{recipientsContacts &&
 						recipientsContacts.length > 0 &&
 						recipientsContacts.map((recipient, index) => {
 							let contactObject = user.contacts.find((contact) => contact._id === recipient);
-							if (contactObject) { return (<Grid item xs={6} md={3} lg={1}key={index}>{contactObject.name}</Grid> )}
+							if (contactObject) {
+								return (
+									<Grid item xs={6} md={3} lg={1} key={index}>
+										{contactObject.name}
+									</Grid>
+								);
+							}
 						})}
 					{recipientsGroups &&
 						recipientsGroups.length > 0 &&
 						recipientsGroups.map((recipient, index) => {
 							let groupObject = user.groups.find((group) => group._id === recipient);
-							if (groupObject){ return (<Grid item xs={6} md={4} md={3} lg={1} key={index}>{groupObject.name}</Grid> )}
+							if (groupObject) {
+								return (
+									<Grid item xs={6} md={4} md={3} lg={1} key={index}>
+										{groupObject.name}
+										{ !groupObject.contacts.length? <>(empty group)</>: <> </>}
+									</Grid>
+								);
+							}
 						})}
 				</Grid>
 
@@ -195,8 +225,7 @@ const ShareModal = ({ quizId, closeModal }) => {
 						</Grid>
 					</TabPanel>
 					<TabPanel value={value} index={1} dir={theme.direction}>
-
-							<Grid container spacing={2}>
+						<Grid container spacing={2}>
 							{user &&
 								user.contacts &&
 								user.contacts.map((contact, index) => {
@@ -207,9 +236,9 @@ const ShareModal = ({ quizId, closeModal }) => {
 												control={
 													<Checkbox
 														id={contact._id}
-												onChange={handleAddContact}
-												value={contact._id}
-												checked={isChecked}
+														onChange={handleAddContact}
+														value={contact._id}
+														checked={isChecked}
 													/>
 												}
 												label={contact.name}
@@ -223,10 +252,14 @@ const ShareModal = ({ quizId, closeModal }) => {
 
 				<Grid item xl={12} container spacing={2}>
 					<Grid item md={6}>
-						<Button onClick={handleComplete}>Done</Button>
+						<Button variant="contained" color="secondary" onClick={handleComplete}>
+							Done
+						</Button>
 					</Grid>
 					<Grid item md={6}>
-						<Button onClick={closeModal}>Cancel</Button>
+						<Button variant="contained" color="secondary" onClick={closeModal}>
+							Cancel
+						</Button>
 					</Grid>
 				</Grid>
 			</Grid>
