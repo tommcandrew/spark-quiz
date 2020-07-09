@@ -29,7 +29,7 @@ let page;
 beforeAll(async () => {
   browser = await puppeteer.launch({
     headless: false,
-    slowMo: 200,
+    slowMo: 100,
   });
   page = await browser.newPage();
 });
