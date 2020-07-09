@@ -34,33 +34,33 @@ beforeAll(async () => {
   page = await browser.newPage();
 });
 
-// describe("Login", () => {
-//   test("users can login and will see name displayed in greeting", async () => {
-//     await page.goto(routes.public.login);
-//     await page.waitForSelector("[data-testid=login-form]");
-//     await page.click("input[name=email]");
-//     await page.type("input[name=email]", person.email);
-//     await page.click("input[name=password]");
-//     await page.type("input[name=password]", person.password);
-//     await page.click("[data-testid=login-button]");
-//     await page.waitForSelector("[data-testid=user-name]");
-//   }, 1600000);
-// });
+describe("Login", () => {
+  test("users can login and will see name displayed in greeting", async () => {
+    await page.goto(routes.public.login);
+    await page.waitForSelector("[data-testid=login-form]");
+    await page.click("input[name=email]");
+    await page.type("input[name=email]", person.email);
+    await page.click("input[name=password]");
+    await page.type("input[name=password]", person.password);
+    await page.click("[data-testid=login-button]");
+    await page.waitForSelector("[data-testid=user-name]");
+  }, 1600000);
+});
 
-// describe("Logout", () => {
-//   test("users can logout", async () => {
-//     await page.waitForSelector("[data-testid=logout-button]");
-//     await page.click("[data-testid=logout-button]");
-//     await page.waitForSelector("[data-testid=home-wrapper]");
-//   }, 9000000);
-// });
+describe("Logout", () => {
+  test("users can logout", async () => {
+    await page.waitForSelector("[data-testid=logout-button]");
+    await page.click("[data-testid=logout-button]");
+    await page.waitForSelector("[data-testid=home-wrapper]");
+  }, 9000000);
+});
 
-// describe("Unathorized view", () => {
-//   test("users that are not logged in are redirected to sign in page if they try to access private route", async () => {
-//     await page.goto(routes.private.home);
-//     await page.waitForSelector("[data-testid=login-form]");
-//   }, 9000000);
-// });
+describe("Unathorized view", () => {
+  test("users that are not logged in are redirected to sign in page if they try to access private route", async () => {
+    await page.goto(routes.private.home);
+    await page.waitForSelector("[data-testid=login-form]");
+  }, 9000000);
+});
 
 describe("Register", () => {
   test("users can register and will see name displayed in greeting", async () => {
@@ -89,25 +89,25 @@ afterAll(() => {
   browser.close();
 });
 
-// import authReducer from "../store/reducers/authReducer";
-// import { USER_LOADING } from "../store/actions/authActions";
+import authReducer from "../store/reducers/authReducer";
+import { USER_LOADING } from "../store/actions/authActions";
 
-// describe("Auth reducer", () => {
-//   test("should return default state", () => {
-//     const newState = authReducer(undefined, {});
-//     const initialState = {
-//       token: localStorage.getItem("token"),
-//       isAuthenticated: null,
-//       isLoading: false,
-//       user: null,
-//       role: "",
-//       studentToken: "",
-//     };
-//     expect(newState).toEqual(initialState);
-//   });
+describe("Auth reducer", () => {
+  test("should return default state", () => {
+    const newState = authReducer(undefined, {});
+    const initialState = {
+      token: localStorage.getItem("token"),
+      isAuthenticated: null,
+      isLoading: false,
+      user: null,
+      role: "",
+      studentToken: "",
+    };
+    expect(newState).toEqual(initialState);
+  });
 
-//   test("should return new state if receiving type", () => {
-//     const newState = authReducer(undefined, { type: USER_LOADING });
-//     expect(newState.isLoading).toBe(true);
-//   });
-// });
+  test("should return new state if receiving type", () => {
+    const newState = authReducer(undefined, { type: USER_LOADING });
+    expect(newState.isLoading).toBe(true);
+  });
+});
