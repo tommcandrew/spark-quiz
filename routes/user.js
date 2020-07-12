@@ -8,6 +8,17 @@ router.post("/addContact", checkAuth, async (req, res) => {
   const { contact } = req.body;
   try {
     const user = await User.findById(id);
+    let existingContactEmails = [];
+    user.contacts.forEach((contact) =>
+      existingContactEmails.push(contact.email)
+    );
+    if (existingContactEmails.includes(contact.email)) {
+      console.log("A contact with that email already exists.");
+      res
+        .status(400)
+        .send({ msg: "A contact with that email already exists." });
+      return;
+    }
     user.contacts.push(contact);
     await user.save();
     res.status(200).send();
