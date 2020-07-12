@@ -78,6 +78,12 @@ router.post("/addGroup", checkAuth, async (req, res) => {
   const { group } = req.body;
   try {
     const user = await User.findById(id);
+    let existingGroups = [];
+    user.groups.forEach((group) => existingGroups.push(group.name));
+    if (existingGroups.includes(group.name)) {
+      console.log("Group already exists");
+      res.status(400).send({ msg: "Group already exists" });
+    }
     user.groups.push(group);
     await user.save();
     res.status(200).send();
@@ -110,13 +116,13 @@ router.post("/deleteMember", checkAuth, async (req, res) => {
 });
 router.post("/updateGroup", checkAuth, async (req, res) => {
   const id = req.user.id;
-  const { groupId, groupName, members} = req.body;
+  const { groupId, groupName, members } = req.body;
   try {
     const user = await User.findById(id);
     const updatedGroups = user.groups.map((group) => {
       if (group._id.toString() === groupId) {
-        group.name= groupName
-        group.contacts = members
+        group.name = groupName;
+        group.contacts = members;
       }
       return group;
     });
