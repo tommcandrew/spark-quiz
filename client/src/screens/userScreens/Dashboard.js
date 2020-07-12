@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 import {
   AppBar,
-  CssBaseline,
   Drawer,
   Hidden,
   IconButton,
@@ -35,7 +34,6 @@ import * as authActions from "../../store/actions/authActions";
 import * as userActions from "../../store/actions/userActions";
 
 const Dashboard = ({ window, history }, props) => {
-  console.log("i am being called again")
   const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
@@ -47,8 +45,8 @@ const Dashboard = ({ window, history }, props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   //USER VERIFICATION ON RELOADS
-  const getUser = () => {
-    dispatch(authActions.loadUser());
+  const getUser = async() => {
+    await dispatch(authActions.loadUser());
     dispatch(userActions.fetchQuizzes())
   };
   useEffect(() => {
@@ -73,7 +71,6 @@ const Dashboard = ({ window, history }, props) => {
   return (
     <Router>
       <div className={classes.root}>
-        <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolbarItems}>
             <IconButton

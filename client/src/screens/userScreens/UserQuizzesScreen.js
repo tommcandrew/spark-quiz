@@ -4,7 +4,7 @@ import {screenLayoutStyles, userQuizzesScreenStyle } from "../../style/screenSty
 import * as userActions from "../../store/actions/userActions";
 import * as quizActions from "../../store/actions/quizActions";
 import { Card, CardContent, CardActions, Grid, Typography, Button, Divider } from "@material-ui/core";
-
+import "../../app.css"
 const UserQuizzesScreen = (props) => {
 	
 	const dispatch = useDispatch();
@@ -26,38 +26,40 @@ const UserQuizzesScreen = (props) => {
 	};
 
 	return (
-		<Grid container spacing={2} className={root.root}>
+		<Grid container spacing={1} className={root.root} justify="center" style={{"overflow": "visible"}}>
 			<Grid item xs={12} xl={12}>
 				<Typography variant="h4" align="center">
 					Your Quizzes
 				</Typography>
 				      <Divider variant="middle"  />
 			</Grid>
-			<Grid item container spacing={0} xs={12} xl={12} justify="space-evenly" className={classes.list}>
+			<Grid item container spacing={2} xs={12} xl={12} justify="flex-start" className={classes.list}>
 				{quizzes.length === 0 && (
-					<Grid item xl={12}>
+					<Grid item xl={12} >
 						<Typography>You have no quizzes</Typography>
 					</Grid>
 				)}
 				{quizzes &&
 					quizzes.map((quiz, index) => (
-						<Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+						<Grid item xs={12} sm={6} md={4} lg={3} key={index} className="zoom">
 							<Card className={classes.card} key={quiz._id}>
 								<CardContent>
 									<div className={classes.quizName}>
 										<Typography variant="body1">Quiz Name:&nbsp;</Typography>
-										<Typography variant="h5" color="secondary">{quiz.quizName}</Typography>
+										<Typography variant="h4" color="primary">{quiz.quizName}</Typography>
 									</div>
+									<div className={classes.quizName}>
 									<Typography variant="body1" component="p">
-										Subject: {quiz.quizSubject}
-									</Typography>
+										Subject: &nbsp; </Typography>
+										<Typography variant="h5" color="primary"> {quiz.quizSubject}
+									</Typography></div>
 									<br />
 								</CardContent>
 								<CardActions>
-									<Button size="small" color="primary" onClick={() => handleOpenCreateQuiz(quiz)}>
+									<Button size="medium" className={classes.button} onClick={() => handleOpenCreateQuiz(quiz)}>
 										{quiz.quizPublished? (<>Update</>): (<>Continue editing</>)}
 									</Button>
-									<Button size="small" color="primary" onClick={() => handleDeleteQuiz(quiz._id)}>
+									<Button size="small" className={classes.button} onClick={() => handleDeleteQuiz(quiz._id)}>
 										Delete
 									</Button>
 								</CardActions>

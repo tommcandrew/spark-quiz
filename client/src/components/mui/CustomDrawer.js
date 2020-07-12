@@ -7,6 +7,7 @@ import {
   ListItemText,
   ListItem,
   Divider,
+  Typography
 } from "@material-ui/core";
 import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import HomeIcon from "@material-ui/icons/Home";
@@ -29,57 +30,57 @@ const CustomDrawer = ({ url, clearQuizState }) => {
       <Divider />
       <div className={classes.list}>
         <List component="nav" aria-label="side drawer">
-          <Link to={`${url}`} onClick={clearQuizState}>
+          <Link to={`${url}`} onClick={clearQuizState} style={{textDecoration: "none"}}>
             <ListItem button>
               <ListItemIcon>
-                <HomeIcon color="secondary" />
+                <HomeIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary="Random" />
+              <ListItemText primary={<Typography variant="button" color="textPrimary">Home</Typography>}/>
             </ListItem>
           </Link>
 
-          <Link to={`${url}/myquizzes`} onClick={clearQuizState}>
+          <Link to={`${url}/myquizzes`} onClick={clearQuizState} style={{textDecoration: "none"}}>
             <ListItem button>
               <ListItemIcon>
-                <PersonIcon color="secondary" />
+                <PersonIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary="My Quizzes" />
+              <ListItemText primary={<Typography variant="button" color="textPrimary">My quizzes</Typography>}/> 
             </ListItem>
           </Link>
 
-          <Link to={`${url}/createquiz`} onClick={clearQuizState}>
+          <Link to={`${url}/createquiz`} onClick={clearQuizState} style={{textDecoration: "none"}}>
             <ListItem button>
               <ListItemIcon>
-                <LibraryAddIcon color="secondary" />
+                <LibraryAddIcon color="primary"/>
               </ListItemIcon>
-              <ListItemText primary="Create new quiz" />
+              <ListItemText primary={<Typography variant="button" color="textPrimary">Create new quiz</Typography>} />
             </ListItem>
           </Link>
 
-          <Link to={`${url}/contacts`} onClick={clearQuizState}>
+          <Link to={`${url}/contacts`} onClick={clearQuizState} style={{textDecoration: "none"}}>
             <ListItem button>
               <ListItemIcon>
-                <EmojiPeopleIcon color="secondary" />
+                <EmojiPeopleIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary="Contacts" />
+              <ListItemText primary={<Typography variant="button" color="textPrimary">Contacts</Typography>}/>
             </ListItem>
           </Link>
 
-          <Link to={`${url}/groups`} onClick={clearQuizState}>
+          <Link to={`${url}/groups`} onClick={clearQuizState} style={{textDecoration: "none"}}>
             <ListItem button>
               <ListItemIcon>
-                <PeopleIcon color="secondary" />
+                <PeopleIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary="Groups" />
+              <ListItemText primary={<Typography variant="button" color="textPrimary">Groups</Typography>}/> 
             </ListItem>
           </Link>
 
-          <Link to={`${url}/myAccount`} onClick={clearQuizState}>
+          <Link to={`${url}/myAccount`} onClick={clearQuizState} style={{textDecoration: "none"}}>
             <ListItem button>
               <ListItemIcon>
-                <AccountCircleIcon color="secondary" />
+                <AccountCircleIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary="My Account" />
+              <ListItemText primary={<Typography variant="button" color="textPrimary">My account</Typography>}/>
             </ListItem>
           </Link>
         </List>
