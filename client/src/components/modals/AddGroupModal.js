@@ -40,7 +40,6 @@ const AddGroupModal = ({ closeModal, user }) => {
   const handleSubmit = (e) => {
     setValidationError("");
     e.preventDefault();
-    //is this good code? (I've done same in backend)
     let existingGroups = [];
     user.groups.forEach((group) => existingGroups.push(group.name));
     if (existingGroups.includes(groupName)) {
