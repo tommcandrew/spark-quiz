@@ -1,6 +1,6 @@
 import axios from "axios";
-import { tokenConfig, loadUser} from "./authActions";
-import { loading, loaded, returnErrors} from "./errorActions";
+import { tokenConfig, loadUser } from "./authActions";
+import { loading, loaded, returnErrors } from "./errorActions";
 export const FETCH_QUIZZES = "FETCH_QUIZZES";
 export const ADD_QUIZ = "ADD_QUIZ";
 export const DELETE_QUIZ = "DELETE_QUIZ";
@@ -10,28 +10,34 @@ export const ADD_GROUP = "ADD_GROUP";
 export const fetchQuizzes = () => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
-    dispatch(loading("Fetching quizzes"))
+    dispatch(loading("Fetching quizzes"));
     axios
       .get("http://localhost:5000/quiz/fetchQuizzes", tokenConfig(token))
       .then((res) => {
-        dispatch(loaded())
+        dispatch(loaded());
         dispatch({
           type: FETCH_QUIZZES,
           payload: res.data.quizzes,
-        })
-        
+        });
       })
       .catch((err) => {
-        dispatch(loaded())
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-          returnErrors({msg: "Server is down. Please try again later"}, 500, "SERVER_ERROR")
-        );
-        }
-        else {
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
           dispatch(
-          returnErrors(err.response.data, err.response.status, "FETCHING_QUIZZES_FAIL")
-        );
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "FETCHING_QUIZZES_FAIL"
+            )
+          );
         }
       });
   };
@@ -50,7 +56,7 @@ export const addQuiz = (quizName, quizSubject, quizPublished) => {
 
 export const addContact = (contact) => {
   return (dispatch, getState) => {
-    dispatch(loading("Adding Student"))
+    dispatch(loading("Adding Student"));
     const token = getState().auth.token;
     return axios
       .post(
@@ -64,19 +70,26 @@ export const addContact = (contact) => {
           payload: contact,
         });
         dispatch(loadUser());
-        dispatch(loaded())
+        dispatch(loaded());
       })
       .catch((err) => {
-        dispatch(loaded())
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-          returnErrors({msg: "Server is down. Please try again later"}, 500, "SERVER_ERROR")
-        );
-        }
-        else {
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
           dispatch(
-          returnErrors(err.response.data, err.response.status, "CONTACT_UPLOAD_FAIL")
-        );
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "CONTACT_UPLOAD_FAIL"
+            )
+          );
         }
       });
   };
@@ -85,7 +98,7 @@ export const addContact = (contact) => {
 export const deleteContact = (contactId) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
-    dispatch(loading("Deleting contact"))
+    dispatch(loading("Deleting contact"));
     return axios
       .post(
         "http://localhost:5000/user/deleteContact",
@@ -94,28 +107,35 @@ export const deleteContact = (contactId) => {
       )
       .then(() => {
         dispatch(loadUser());
-        dispatch(loaded())
+        dispatch(loaded());
       })
       .catch((err) => {
-        dispatch(loaded())
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-            returnErrors({ msg: "Server is down. Please try again later" }, 500, "SERVER_ERROR")
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
           );
-        }
-        else {
+        } else {
           dispatch(
-            returnErrors(err.response.data, err.response.status, "DELETE_CONTACT_FAIL")
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "DELETE_CONTACT_FAIL"
+            )
           );
         }
       });
-  }
+  };
 };
 
 export const deleteGroup = (groupId) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
-    dispatch(loading("Deleting group"))
+    dispatch(loading("Deleting group"));
     return axios
       .post(
         "http://localhost:5000/user/deleteGroup",
@@ -124,19 +144,26 @@ export const deleteGroup = (groupId) => {
       )
       .then(() => {
         dispatch(loadUser());
-        dispatch(loaded())
+        dispatch(loaded());
       })
       .catch((err) => {
-        dispatch(loaded())
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-          returnErrors({msg: "Server is down. Please try again later"}, 500, "SERVER_ERROR")
-        );
-        }
-        else {
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
           dispatch(
-          returnErrors(err.response.data, err.response.status, "DELETE_GROUP_FAIL")
-        );
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "DELETE_GROUP_FAIL"
+            )
+          );
         }
       });
   };
@@ -144,7 +171,7 @@ export const deleteGroup = (groupId) => {
 
 export const updateContact = (contactId, updatedContact) => {
   return (dispatch, getState) => {
-    dispatch(loading("Updating contact"))
+    dispatch(loading("Updating contact"));
     const token = getState().auth.token;
     return axios
       .post(
@@ -154,19 +181,26 @@ export const updateContact = (contactId, updatedContact) => {
       )
       .then(() => {
         dispatch(loadUser());
-        dispatch(loaded())
+        dispatch(loaded());
       })
       .catch((err) => {
-        dispatch(loaded())
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-          returnErrors({msg: "Server is down. Please try again later"}, 500, "SERVER_ERROR")
-        );
-        }
-        else {
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
           dispatch(
-          returnErrors(err.response.data, err.response.status, "UDPDATE_CONTACT_FAIL")
-        );
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "UDPDATE_CONTACT_FAIL"
+            )
+          );
         }
       });
   };
@@ -214,7 +248,7 @@ export const deleteMember = (groupId, memberId) => {
 
 export const updateGroup = (groupId, groupName, members) => {
   return (dispatch, getState) => {
-    dispatch(loading("Updating group"))
+    dispatch(loading("Updating group"));
     const token = getState().auth.token;
     return axios
       .post(
@@ -224,18 +258,25 @@ export const updateGroup = (groupId, groupName, members) => {
       )
       .then(() => {
         dispatch(loadUser());
-        dispatch(loaded())
+        dispatch(loaded());
       })
       .catch((err) => {
         dispatch(loaded());
         if (!err.response) {
           dispatch(
-            returnErrors({ msg: "Server is down. Please try again later" }, 500, "SERVER_ERROR")
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
           );
-        }
-        else {
+        } else {
           dispatch(
-            returnErrors(err.response.data, err.response.status, "UPDATE_GROUP_FAIL")
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "UPDATE_GROUP_FAIL"
+            )
           );
         }
       });
@@ -243,28 +284,41 @@ export const updateGroup = (groupId, groupName, members) => {
 };
 
 export const deleteQuiz = (id) => {
-  return (dispatch) => {
-    dispatch(loading("Deleting quiz"))
+  return (dispatch, getState) => {
+    dispatch(loading("Deleting quiz"));
+    const token = getState().auth.token;
+
     return axios
-      .post("http://localhost:5000/quiz/deleteQuiz", { _id: id })
+      .post(
+        "http://localhost:5000/quiz/deleteQuiz",
+        { _id: id },
+        tokenConfig(token)
+      )
       .then(() => {
         dispatch({
           type: DELETE_QUIZ,
           payload: id,
         });
-        dispatch(loaded())
+        dispatch(loaded());
       })
       .catch((err) => {
-        dispatch(loaded())
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-          returnErrors({msg: "Server is down. Please try again later"}, 500, "SERVER_ERROR")
-        );
-        }
-        else {
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
           dispatch(
-          returnErrors(err.response.data, err.response.status, "DELETE_FAILED")
-        );
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "DELETE_FAILED"
+            )
+          );
         }
       });
   };

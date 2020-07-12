@@ -83,11 +83,18 @@ router.post("/createQuiz", checkAuth, async (req, res) => {
   }
 });
 
-router.post("/deleteQuiz", async (req, res) => {
+router.post("/deleteQuiz", checkAuth, async (req, res) => {
   const { _id } = req.body;
-  await Quiz.findByIdAndDelete(_id);
   try {
-    res.status(200).send();
+    await Quiz.findByIdAndDelete(_id);
+    const user = await User.findById(req.user.id);
+    console.log(user);
+    const updatedQuizArray = user.quizzes.filter((quizId) => quizId !== _id);
+    console.log(updatedQuizArray);
+    user.quizzes = updatedQuizArray;
+    console.log("saving user");
+    await user.save();
+    res.status(200).send({ msg: "Quiz deleted" });
   } catch (err) {
     console.log(err);
   }
@@ -111,7 +118,7 @@ router.get("/fetchQuizzes", checkAuth, async (req, res) => {
 
 router.post("/editQuestion", async (req, res) => {
   const { _id, questionObject } = req.body;
-  const parsedQuestion = parseNewQuestion(questionObject, req.files)
+  const parsedQuestion = parseNewQuestion(questionObject, req.files);
   try {
     const quiz = await Quiz.findById(_id);
     const updatedQuizQuestions = quiz.quizQuestions.map((question) => {
