@@ -12,7 +12,13 @@ export const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.up("sm")]: {
 			width: drawerWidth,
 			flexShrink: 0
-		}
+		},
+		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)"
+		
+	},
+	drawerPaper: {
+		width: drawerWidth,
+		backgroundColor: "transparent",
 	},
 	appBar: {
 		[theme.breakpoints.up("sm")]: {
@@ -29,9 +35,7 @@ export const useStyles = makeStyles((theme) => ({
 	toolbarItems: {
 		justifyContent: "space-between"
 	},
-	drawerPaper: {
-		width: drawerWidth
-	},
+	
 	content: {
 		flexGrow: 1,
 		display: "flex",
@@ -39,10 +43,12 @@ export const useStyles = makeStyles((theme) => ({
 		padding: "20px",
 		[theme.breakpoints.up("md")]: {
 			padding: "10px"
-		}
+		},
+		
 	},
 	mainContent: {
 		flexGrow: 1,
-		backgroundColor: theme.palette.background.default
+		backgroundColor: "transparent",
+		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)"
 	}
 }));

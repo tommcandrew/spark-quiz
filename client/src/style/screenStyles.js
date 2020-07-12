@@ -26,19 +26,28 @@ export const customStyles = {
 };
 
 
-export const userQuizzesScreenStyle = makeStyles({
+export const userQuizzesScreenStyle = makeStyles(theme=> ({
 	card: {
-		maxWidth: "100%"
+		maxWidth: "100%",
+		height: "100%",
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "space-evenly"
 	},
 	list: {
-		overflowY: "scroll"
+		overflowY: "scroll",
+		overflowX: "hidden"
 	},
+
 	quizName: {
 		display: "flex",
 		flexDirection: "row",
 		alignItems: "flex-end"
+	}, 
+	button: {
+		color: theme.palette.transition2.main
 	}
-});
+}));
 
 
 export const createQuizScreenStyles = makeStyles((theme) => ({

@@ -79,7 +79,6 @@ export const register = ({ name, email, password, password2 }) => {
         });
         dispatch(clearErrors());
         dispatch(loaded());
-        dispatch(loadUser());
       })
       .catch((err) => {
         dispatch(loaded());

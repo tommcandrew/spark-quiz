@@ -1,47 +1,33 @@
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
-import CarroisGothic from "../assets/fonts/CarroisGothic-Regular.ttf";
-import bitwise from "../assets/fonts/bitwise.ttf";
-import Selitta from "../assets/fonts/Selitta.ttf";
+
 
 const theme = createMuiTheme({
 	typography: {
-		fontFamily: "bitwise",
 		button: {
-			fontFamily: 'CarroisGothic',
-			textTransform: 'none'
+			textTransform: 'none',
 		},
-		h3: {
-			fontFamily: "Selitta"
-		},
-		h4: {
-			fontFamily: "Selitta"
-		},
-		h5: {
-			fontFamily: "Selitta"
-		}
-	},
-	overrides: {
-		MuiCssBaseline: {
-			"@global": {
-				"@font-face": [ bitwise ]
-			}
+		body1: {
+			fontSize: "1.1rem"
 		}
 	},
 	palette: {
 		primary: {
-			light: "#767676",
-			main: "#a9a9a9",
-			dark: "#bababa",
-			contrastText: "#000"
-		},
-		secondary: {
-			light: "#b2292c",
-			main: "#ff3b3f",
-			dark: "#ff6265",
+			light: "#475359",
+			main: "#1A2930",
+			dark: "#121c21",
 			contrastText: "#fff"
 		},
+		secondary: {
+			light: "#f8d764",
+			main: "#F7CE3E",
+			dark: "#ac902b",
+			contrastText: "#000"
+		},
 		transition: {
-			main: "#ceabf2"
+			main: "#dc9596"
+		},
+		transition2: {
+			main: "#883955"
 		},
 		background: {
 			default: "#efefef"
