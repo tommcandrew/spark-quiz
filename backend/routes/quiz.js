@@ -88,11 +88,8 @@ router.post("/deleteQuiz", checkAuth, async (req, res) => {
   try {
     await Quiz.findByIdAndDelete(_id);
     const user = await User.findById(req.user.id);
-    console.log(user);
     const updatedQuizArray = user.quizzes.filter((quizId) => quizId !== _id);
-    console.log(updatedQuizArray);
     user.quizzes = updatedQuizArray;
-    console.log("saving user");
     await user.save();
     res.status(200).send({ msg: "Quiz deleted" });
   } catch (err) {
@@ -178,6 +175,11 @@ router.post("/publishQuiz", checkAuth, async (req, res) => {
       quiz.quizName,
       quiz.quizAuthor,
       quiz.quizSubject
+    );
+    await Quiz.findOneAndUpdate(
+      { _id: quizId },
+      { $set: { "quizInvites.new": [] } },
+      { new: true, upsert: true, useFindAndmodify: false }
     );
     res.status(200).send();
   } catch (err) {

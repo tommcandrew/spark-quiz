@@ -30,7 +30,8 @@ const emailNewPassword = (email) => {
 };
 
 const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
-  quizInvites.contacts.forEach((contact) => {
+  console.log("email array");
+  quizInvites.new.forEach((contact) => {
     const mailOptions = {
       from: "Quiz Master",
       //email array goes here

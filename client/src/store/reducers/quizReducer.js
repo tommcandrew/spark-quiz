@@ -16,7 +16,11 @@ const initalState = {
   quizQuestions: [],
   quizTimeLimit: "",
   quizPointsSystem: "",
-  quizInvites: [],
+  quizInvites: {
+    contacts: [],
+    groups: [],
+    new: [],
+  },
 };
 
 export default (state = initalState, action) => {
