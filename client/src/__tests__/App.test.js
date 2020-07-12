@@ -10,7 +10,7 @@ const newPerson = {
   email: faker.internet.email(),
   password: faker.internet.password(),
 };
-const appUrlBase = "https://localhost:3000";
+const appUrlBase = "http://localhost:3000";
 const routes = {
   public: {
     register: `${appUrlBase}/register`,
