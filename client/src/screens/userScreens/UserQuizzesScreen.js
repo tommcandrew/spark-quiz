@@ -28,7 +28,7 @@ const UserQuizzesScreen = (props) => {
 	return (
 		<Grid container spacing={1} className={root.root} justify="center" style={{"overflow": "visible"}}>
 			<Grid item xs={12} xl={12}>
-				<Typography variant="h4" align="center">
+				<Typography variant="h6" align="center">
 					Your Quizzes
 				</Typography>
 				      <Divider variant="middle"  />
@@ -41,18 +41,16 @@ const UserQuizzesScreen = (props) => {
 				)}
 				{quizzes &&
 					quizzes.map((quiz, index) => (
-						<Grid item xs={12} sm={6} md={4} lg={3} key={index} className="zoom">
+						<Grid item xs={12} sm={12} md={6} lg={4} key={index} className="zoom">
 							<Card className={classes.card} key={quiz._id}>
 								<CardContent>
 									<div className={classes.quizName}>
 										<Typography variant="body1">Quiz Name:&nbsp;</Typography>
 										<Typography variant="h4" color="primary">{quiz.quizName}</Typography>
 									</div>
-									<div className={classes.quizName}>
 									<Typography variant="body1" component="p">
-										Subject: &nbsp; </Typography>
-										<Typography variant="h5" color="primary"> {quiz.quizSubject}
-									</Typography></div>
+										Subject: {quiz.quizSubject}
+									</Typography>
 									<br />
 								</CardContent>
 								<CardActions>
