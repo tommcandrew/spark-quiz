@@ -74,35 +74,53 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-router.post("/studentLogin", async (req, res) => {
+router.post("/studentLogin", async(req, res) => {
 	const { studentCode } = req.body;
 	try {
 		const quizzes = await Quiz.find();
 		let found;
+		let lastQuestionSubmitted = 0;
 		quizzes.forEach((quiz) => {
-			quiz.quizInvites.contacts.forEach( (contact) => {
+			quiz.quizInvites.contacts.forEach((contact) => {
 				if (contact.code === studentCode) {
-					quiz.quizScores.push({
-						studentId: contact.id,
-						results: [],
-						overallScore: 0
-					});
-					quiz.save()
+					const scoreFromDb = quiz.quizScores.find(score => score.studentId === contact.id)
+					if (scoreFromDb) {
+						if (scoreFromDb.quizCompleted) {
+							res.status(403).send({ msg: "invalid code" })
+							return
+						}
+						else { //quiz is not completed
+							lastQuestionSubmitted = scoreFromDb.results.length;
+						}
+					}
+					else {
+						quiz.quizScores.push({
+							studentId: contact.id,
+							results: [],
+							overallScore: 0,
+							quizCompleted: false
+						});
+						quiz.save()
+					}
+					
 					found = contact.code;
 					const token = jwt.sign({ code: contact.code, role: "student" }, "secretkey");
+					
+
 					res.status(200).send({
 						quiz: {
 							_id: quiz._id,
 							quizName: quiz.quizName,
 							quizAuthor: quiz.quizAuthor,
 							quizSubject: quiz.quizSubject,
-							quizQuestions: quiz.quizQuestions,
+							quizQuestions: quiz.quizQuestions.slice(lastQuestionSubmitted, quiz.quizQuestions.length),
 							points: quiz.points,
 							quizTimeLimit: quiz.quizTimeLimit,
 							quizPointsSystem: quiz.quizPointsSystem,
 							quizOverallPoints: quiz.quizOverallPoints,
 							overallScore: quiz.overallScore
 						},
+						quizQuestionNumber: lastQuestionSubmitted,
 						token,
 						user: {
 							code: contact.code,
@@ -110,8 +128,10 @@ router.post("/studentLogin", async (req, res) => {
 						}
 					});
 				}
+			
+			})
+		
 			});
-		});
 		if (!found) {
 			res.status(403).send({ msg: "invalid code" });
 			return;

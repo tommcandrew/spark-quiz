@@ -157,7 +157,8 @@ export const studentLogin =  (studentCode) => {
         dispatch(setStudent({
           quiz: res.data.quiz,
           token: res.data.token,
-          user: res.data.user
+          user: res.data.user,
+          questionNumber: res.data.quizQuestionNumber
         }))
         dispatch(loaded())
       })

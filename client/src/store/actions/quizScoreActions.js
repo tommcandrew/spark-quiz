@@ -8,7 +8,7 @@ export const SET_OVERALLSCORE = "SET_OVERALLSCORE";
 export const FINISH_QUIZ = "FINISH_QUIZ";
 export const SET_OVERALL_SCORE = "SET_OVERALL_SCORE";
 
-export const setStudent = ({ quiz, token, user }) => {
+export const setStudent = ({ quiz, token, user, questionNumber }) => {
 	return async (dispatch) => {
 		await dispatch({
 			type: STUDENT_LOGIN_SUCCESS,
@@ -24,7 +24,11 @@ export const setStudent = ({ quiz, token, user }) => {
 		});
 		await dispatch({
 			type: SET_STUDENT,
-			id: user.contactId
+			payload: {
+				id: user.contactId,
+			questionNumber: parseInt(questionNumber)
+			}
+			
 		});
 	};
 };
@@ -58,6 +62,7 @@ export const setQuestionAnswer = (question, answer) => {
 		axios
 			.post("http://localhost:5000/student/saveAnswer", {quizId, studentId, question, answer}, tokenConfig(token))
 			.then(res => {
+				console.log("answer saved to db")
 				dispatch({
 					type: SET_QUESTION_ANSWER,
 					payload: {
@@ -82,8 +87,7 @@ export const setOverallScore = (score) => {
 		return axios
 			.post("http://localhost:5000/student/saveScore", {quizId, studentId, newScore}, tokenConfig(token))
 			.then((res) => {
-				console.log(res.data.msg)
-				console.log("okay")
+				console.log("score saved to db")
 				dispatch({
 					type: SET_OVERALL_SCORE,
 					score: newScore

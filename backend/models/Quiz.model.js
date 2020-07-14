@@ -39,6 +39,7 @@ const Quiz = new Schema(
     quizScores: [
       {
         studentId: String,
+        quizCompleted: Boolean,
         results: [
           {
             question: Number,

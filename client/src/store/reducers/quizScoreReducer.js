@@ -2,7 +2,8 @@ import { SET_STUDENT, SET_QUESTION_ANSWER, FINISH_QUIZ, SET_OVERALL_SCORE } from
 
 const initalState = {
 		studentId: "",
-		results: [],
+	results: [],
+		questionNumber: 0,
 		overallScore: 0,
 		
 };
@@ -12,7 +13,8 @@ export default (state = initalState, action) => {
 		case SET_STUDENT:
             return {
                 ...state,
-				studentId: action.id,
+				studentId: action.payload.id,
+				questionNumber: action.payload.questionNumber
 			};
 		case SET_QUESTION_ANSWER:
 			return {
