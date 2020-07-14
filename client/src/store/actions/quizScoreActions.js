@@ -3,7 +3,7 @@ import { tokenConfig, STUDENT_LOGIN_SUCCESS } from "./authActions";
 import { loading, loaded } from "./errorActions";
 import { SET_CURRENT_QUIZ } from "./quizActions";
 export const SET_STUDENT = "SET_STUDENT";
-export const SET_QUESTION_ANSWER = "SET_QUESTION_ANSWER";
+export const SET_NEW_QUESTION_NUMBER = "SET_NEW_QUESTION_NUMBER";
 export const SET_OVERALLSCORE = "SET_OVERALLSCORE";
 export const FINISH_QUIZ = "FINISH_QUIZ";
 export const SET_OVERALL_SCORE = "SET_OVERALL_SCORE";
@@ -36,13 +36,10 @@ export const setStudent = ({ quiz, token, user, questionNumber }) => {
 export const finishQuiz = () => {
 	return (dispatch, getState) => {
 		const token = getState().auth.studentToken;
-		let scoreObject = JSON.stringify(getState().score);
+		const studentId = getState().auth.user.contactId
 		const quizId = getState().quiz._id;
-		const formData = new FormData();
-		formData.append("_id", quizId);
-		formData.append("scoreObject", scoreObject);
 		axios
-			.post("http://localhost:5000/student/saveScores", formData, tokenConfig(token))
+			.post("http://localhost:5000/student/finishQuiz", {quizId, studentId}, tokenConfig(token))
 			.then((res) => {
 				dispatch({
 					type: FINISH_QUIZ
@@ -54,21 +51,19 @@ export const finishQuiz = () => {
 	};
 };
 
-export const setQuestionAnswer = (question, answer) => {
+export const setQuestionAnswer = ( answer) => {
 	return (dispatch, getState) => {
 		const token = getState().auth.studentToken;
 		const studentId = getState().auth.user.contactId
 		const quizId = getState().quiz._id
-		axios
-			.post("http://localhost:5000/student/saveAnswer", {quizId, studentId, question, answer}, tokenConfig(token))
-			.then(res => {
-				console.log("answer saved to db")
+		const questionNumber = parseInt(getState().score.questionNumber + 1)
+		return axios
+			.post("http://localhost:5000/student/saveAnswer", {quizId, studentId, questionNumber, answer}, tokenConfig(token))
+			.then((res) => {
+				console.log("successfully set the answer")
 				dispatch({
-					type: SET_QUESTION_ANSWER,
-					payload: {
-						question: question,
-						correct: answer
-					}
+					type: SET_NEW_QUESTION_NUMBER,
+					questionNumber: questionNumber
 				})
 			})
 			.catch((err) => {
@@ -78,7 +73,6 @@ export const setQuestionAnswer = (question, answer) => {
 };
 
 export const setOverallScore = (score) => {
-	console.log("in setting score")
 	return (dispatch, getState) => {
 			const token = getState().auth.studentToken;
 		const studentId = getState().auth.user.contactId
@@ -87,7 +81,6 @@ export const setOverallScore = (score) => {
 		return axios
 			.post("http://localhost:5000/student/saveScore", {quizId, studentId, newScore}, tokenConfig(token))
 			.then((res) => {
-				console.log("score saved to db")
 				dispatch({
 					type: SET_OVERALL_SCORE,
 					score: newScore

@@ -1,8 +1,7 @@
-import { SET_STUDENT, SET_QUESTION_ANSWER, FINISH_QUIZ, SET_OVERALL_SCORE } from "../actions/quizScoreActions";
+import { SET_STUDENT, SET_NEW_QUESTION_NUMBER, FINISH_QUIZ, SET_OVERALL_SCORE } from "../actions/quizScoreActions";
 
 const initalState = {
 		studentId: "",
-	results: [],
 		questionNumber: 0,
 		overallScore: 0,
 		
@@ -16,16 +15,18 @@ export default (state = initalState, action) => {
 				studentId: action.payload.id,
 				questionNumber: action.payload.questionNumber
 			};
-		case SET_QUESTION_ANSWER:
+		case SET_NEW_QUESTION_NUMBER:
+			console.log(action.questionNumber)
 			return {
 				...state,
-				results: [...state.results, action.payload]
-			}
-		case SET_OVERALL_SCORE: 
+				questionNumber: parseInt(action.questionNumber)
+			};
+		case SET_OVERALL_SCORE:
+			console.log(action.score)
 			return {
 				...state,
-				overallScore: action.score
-			}
+				overallScore: parseInt(action.score)
+			};
 		case FINISH_QUIZ: 
 			return initalState
 		default:

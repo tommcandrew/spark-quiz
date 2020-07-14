@@ -25,11 +25,11 @@ const Quiz = ({ history }) => {
 
 	
 	const getQuiz = async () => {
-		if (quiz._id === ""){
+		if (quiz._id === "" && finished===false){
 		console.log("function in use effect running")
     await dispatch(authActions.studentReload());}
   };
-  useEffect(() => {
+	useEffect(() => {
      getQuiz();
   }, []);
 
@@ -68,11 +68,10 @@ const Quiz = ({ history }) => {
 	};
 
 	const handleClick = async (optionIndex, isCorrect) => {
-		console.log(isCorrect)
 		if (timeUp) return;
 		setSelectedOption(optionIndex);
 
-		await dispatch(quizScoreActions.setQuestionAnswer(currentQuestionIndex + 1, isCorrect));
+		await dispatch(quizScoreActions.setQuestionAnswer(isCorrect));
 		if (isCorrect) {
 			if (quizPointsSystem === "overall") {
 				await dispatch(quizScoreActions.setOverallScore(quiz.quizOverallPoints));
@@ -86,7 +85,7 @@ const Quiz = ({ history }) => {
 
 	return (
 		<div className="quiz__wrapper">
-			{/* {quiz.quizQuestions.length === 0 && <h1>No quiz in state.</h1>} */}
+			{quiz.quizQuestions.length === 0 && <h1>No quiz in state.</h1>}
 
 			{!quizStarted && <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />}
 
@@ -94,7 +93,6 @@ const Quiz = ({ history }) => {
 				<Fragment>
 					{finished && <Finish history={history} quiz={quiz} />}
 					{!finished &&
-					quiz.quizQuestions.length > 0 && (
 						<div className="quiz__content">
 							<div className="quiz__info">
 								<div className="quiz__progress">
@@ -166,7 +164,7 @@ const Quiz = ({ history }) => {
 								</div>
 							</div>
 						</div>
-					)}
+					}
 				</Fragment>
 			)}
 		</div>
