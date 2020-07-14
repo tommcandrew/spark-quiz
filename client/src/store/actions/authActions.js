@@ -154,11 +154,13 @@ export const studentLogin =  (studentCode) => {
     return axios
       .post("http://localhost:5000/auth/studentLogin", { studentCode }, config)
       .then((res) => {
+        console.log(res.data)
         dispatch(setStudent({
           quiz: res.data.quiz,
           token: res.data.token,
           user: res.data.user,
-          questionNumber: res.data.quizQuestionNumber
+          questionNumber: res.data.quizQuestionNumber,
+          pointsScored: res.data.pointsScored
         }))
         dispatch(loaded())
       })

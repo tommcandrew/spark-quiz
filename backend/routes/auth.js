@@ -80,6 +80,7 @@ router.post("/studentLogin", async(req, res) => {
 		const quizzes = await Quiz.find();
 		let found;
 		let lastQuestionSubmitted = 0;
+		let quizScores = 0;
 		quizzes.forEach((quiz) => {
 			quiz.quizInvites.contacts.forEach((contact) => {
 				if (contact.code === studentCode) {
@@ -91,6 +92,7 @@ router.post("/studentLogin", async(req, res) => {
 						}
 						else { //quiz is not completed
 							lastQuestionSubmitted = scoreFromDb.results.length;
+							quizScores = scoreFromDb.overallScore
 						}
 					}
 					else {
@@ -121,6 +123,7 @@ router.post("/studentLogin", async(req, res) => {
 							overallScore: quiz.overallScore
 						},
 						quizQuestionNumber: lastQuestionSubmitted,
+						pointsScored: quizScores,
 						token,
 						user: {
 							code: contact.code,

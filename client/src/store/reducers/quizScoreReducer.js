@@ -13,7 +13,8 @@ export default (state = initalState, action) => {
             return {
                 ...state,
 				studentId: action.payload.id,
-				questionNumber: action.payload.questionNumber
+				questionNumber: action.payload.questionNumber,
+				overallScore: action.payload.pointsScored
 			};
 		case SET_NEW_QUESTION_NUMBER:
 			console.log(action.questionNumber)
