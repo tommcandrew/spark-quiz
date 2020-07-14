@@ -5,7 +5,7 @@ const checkAuth = require("../middleware");
 const Quiz = require("../models/Quiz.model");
 const { update } = require("../models/Quiz.model");
 
-router.get("/quizReload", checkAuth, async (req, res) => {
+router.get("/quizReload", checkAuth, async(req, res) => {
 	const studentCode = req.user.code;
 	try {
 		const quizzes = await Quiz.find();
@@ -48,6 +48,7 @@ router.get("/quizReload", checkAuth, async (req, res) => {
 });
 
 router.post("/saveAnswer", checkAuth, async (req, res) => {
+	console.log("in save answer")
 	let { quizId, studentId, question, answer } = req.body;
 	try {
 		const quiz = await Quiz.findById(quizId);
@@ -62,6 +63,7 @@ router.post("/saveAnswer", checkAuth, async (req, res) => {
 
 router.post("/saveScore", checkAuth, async (req, res) => {
 	let { quizId, studentId, newScore } = req.body;
+	console.log("in save score")
 
 	try {
 		const quiz = await Quiz.findById(quizId);
