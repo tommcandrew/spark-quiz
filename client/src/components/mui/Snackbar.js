@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     "& > * + *": {
       marginTop: theme.spacing(2),
     },
+    backgroundColor: theme.palette.secondary.main
   },
 }));
 

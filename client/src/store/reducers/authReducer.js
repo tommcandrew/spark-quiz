@@ -13,6 +13,7 @@ import {
 
 const initialState = {
   token: localStorage.getItem("token"),
+  code: localStorage.getItem("code"),
   isAuthenticated: null,
   isLoading: false,
   user: null,
@@ -46,6 +47,8 @@ export default function (state = initialState, action) {
         user: action.payload.user,
       };
     case STUDENT_LOGIN_SUCCESS:
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("role", "student");
       return {
         ...state,
         isAuthenticated: true,

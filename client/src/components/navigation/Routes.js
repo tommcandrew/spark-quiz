@@ -3,8 +3,9 @@ import { Redirect, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export const StudentRoute = ({ component: Component, ...rest }) => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const isStudent = useSelector((state) => state.auth.studentToken);
+  const isAuthenticated = localStorage.getItem("token");
+  const isStudent = localStorage.getItem("role") === "student" ? true : false;
+
   return (
     <Route
       {...rest}
@@ -48,7 +49,7 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
 export const PublicRoute = ({ component: Component, ...rest }) => {
   const isAuthenticated = localStorage.getItem("token");
   const isTeacher = localStorage.getItem("role") === "teacher" ? true : false;
-  const isStudent = useSelector((state) => state.auth.studentToken);
+  const isStudent = localStorage.getItem("role") ==="student"? true: false
   return (
     <Route
       {...rest}

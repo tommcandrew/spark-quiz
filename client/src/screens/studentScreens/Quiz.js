@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as quizActions from "../../store/actions/quizActions";
+import * as authActions from "../../store/actions/authActions"
 import * as quizScoreActions from "../../store/actions/quizScoreActions";
 import QuizStart from "./QuizStart";
 import QuizOption from "../../components/student/QuizOption";
@@ -20,7 +21,17 @@ const Quiz = ({ history }) => {
 	const [ timeUp, setTimeUp ] = useState(false);
 	const timeLimit = parseInt(quiz.quizTimeLimit) * 60;
 	const [ quizStarted, setQuizStarted ] = useState(false);
-	const [ finished, setFinished ] = useState(false);
+	const [finished, setFinished] = useState(false);
+
+	
+	const getQuiz = async () => {
+		if (quiz._id === ""){
+		console.log("function in use effect running")
+    await dispatch(authActions.studentReload());}
+  };
+  useEffect(() => {
+     getQuiz();
+  }, []);
 
 	//make a nicer notification
 	useEffect(
@@ -49,7 +60,6 @@ const Quiz = ({ history }) => {
 
 	const goToNextQuestion = () => {
 		if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
-			console.log("finished");
 			setFinished(true);
 		} else {
 			setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -58,16 +68,17 @@ const Quiz = ({ history }) => {
 	};
 
 	const handleClick = async (optionIndex, isCorrect) => {
+		console.log(isCorrect)
 		if (timeUp) return;
 		setSelectedOption(optionIndex);
 
 		await dispatch(quizScoreActions.setQuestionAnswer(currentQuestionIndex + 1, isCorrect));
 		if (isCorrect) {
 			if (quizPointsSystem === "overall") {
-				dispatch(quizScoreActions.setOverallScore(quiz.quizOverallPoints));
+				await dispatch(quizScoreActions.setOverallScore(quiz.quizOverallPoints));
 			}
 			if (quizPointsSystem === "eachQuestion") {
-				dispatch(quizScoreActions.setOverallScore(quiz.quizQuestions[currentQuestionIndex].points));
+				await dispatch(quizScoreActions.setOverallScore(quiz.quizQuestions[currentQuestionIndex].points));
 			}
 		}
 		animateNextQuestion(goToNextQuestion);
@@ -90,7 +101,9 @@ const Quiz = ({ history }) => {
 									Question {currentQuestionIndex + 1}/
 									{quiz.quizQuestions.length}
 								</div>
+								{quiz.quizTimeLimit !=="false" &&
 								<QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
+								}
 							</div>
 
 							<div className="quiz__questionContent">

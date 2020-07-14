@@ -22,7 +22,7 @@ export default (state = initalState, action) => {
 		case SET_OVERALL_SCORE: 
 			return {
 				...state,
-				overallScore: state.overallScore +action.score
+				overallScore: action.score
 			}
 		case FINISH_QUIZ: 
 			return initalState
