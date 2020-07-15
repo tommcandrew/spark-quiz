@@ -11,6 +11,7 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 		const quizzes = await Quiz.find();
 		let found;
 		let lastQuestionSubmitted = 0;
+		let quizScores = 0;
 		quizzes.forEach((quiz) => {
 			quiz.quizInvites.contacts.forEach((contact) => {
 				if (contact.code === studentCode) {
@@ -22,6 +23,7 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 						}
 						else { //quiz is not completed
 							lastQuestionSubmitted = scoreFromDb.results.length;
+							quizScores = scoreFromDb.overallScore
 						}
 					}
 					else {
@@ -35,9 +37,6 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 					}
 					
 					found = contact.code;
-					const token = jwt.sign({ code: contact.code, role: "student" }, "secretkey");
-					
-
 					res.status(200).send({
 						quiz: {
 							_id: quiz._id,
@@ -52,7 +51,7 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 							overallScore: quiz.overallScore
 						},
 						quizQuestionNumber: lastQuestionSubmitted,
-						token,
+						pointsScored: quizScores,
 						user: {
 							code: contact.code,
 							contactId: contact.id
@@ -115,8 +114,9 @@ try {
 	const quiz = await Quiz.findById(quizId);
 	const newScore = quiz.quizScores.find(score => score.studentId === studentId)
 	newScore.quizCompleted = true
-	Quiz.save()
-	res.status(200).send({msg: "quiz submitted"})
+	await quiz.save().then(() =>res.status(200).send({msg: "quiz submitted"})
+	).catch(err=> res.status(400).send({msg: err}))
+	
 }catch (err) {
 	console.log(err);
 	res.status(400).send({msg: err})

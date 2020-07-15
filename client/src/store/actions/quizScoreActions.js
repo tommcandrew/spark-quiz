@@ -1,12 +1,37 @@
 import axios from "axios";
-import { tokenConfig, STUDENT_LOGIN_SUCCESS } from "./authActions";
+import { tokenConfig, STUDENT_LOGIN_SUCCESS, STUDENT_RELOAD_SUCCESS  } from "./authActions";
 import { loading, loaded } from "./errorActions";
-import { SET_CURRENT_QUIZ } from "./quizActions";
+import { SET_CURRENT_QUIZ, RESET_CURRENT_QUIZ} from "./quizActions";
 export const SET_STUDENT = "SET_STUDENT";
 export const SET_NEW_QUESTION_NUMBER = "SET_NEW_QUESTION_NUMBER";
 export const SET_OVERALLSCORE = "SET_OVERALLSCORE";
 export const FINISH_QUIZ = "FINISH_QUIZ";
 export const SET_OVERALL_SCORE = "SET_OVERALL_SCORE";
+export const RESET_STUDENT = "RESET_STUDENT"
+
+export const resetStudent = ({ quiz, user, questionNumber, pointsScored }) => {
+	return async (dispatch) => {
+		await dispatch({
+			type: STUDENT_RELOAD_SUCCESS,
+			payload: {
+				user: user
+			}
+		});
+		await dispatch({
+			type: RESET_CURRENT_QUIZ,
+			payload: quiz
+		});
+		await dispatch({
+			type: SET_STUDENT,
+			payload: {
+				id: user.contactId,
+				questionNumber: parseInt(questionNumber),
+				pointsScored: pointsScored
+			}
+			
+		})
+	}
+}
 
 export const setStudent = ({ quiz, token, user, questionNumber, pointsScored }) => {
 	return async (dispatch) => {
@@ -34,15 +59,17 @@ export const setStudent = ({ quiz, token, user, questionNumber, pointsScored }) 
 	};
 };
 
-export const finishQuiz = () => {
+export const finishQuiz =  () => {
 	return (dispatch, getState) => {
 		const token = getState().auth.studentToken;
 		const studentId = getState().auth.user.contactId
 		const quizId = getState().quiz._id;
-		axios
+		return axios
 			.post("http://localhost:5000/student/finishQuiz", {quizId, studentId}, tokenConfig(token))
 			.then((res) => {
-				dispatch({
+				console.log("in res of save quiz")
+				console.log(res)
+				 dispatch({
 					type: FINISH_QUIZ
 				});
 			})

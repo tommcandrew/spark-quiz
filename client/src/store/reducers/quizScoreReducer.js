@@ -28,8 +28,8 @@ export default (state = initalState, action) => {
 				...state,
 				overallScore: parseInt(action.score)
 			};
-		case FINISH_QUIZ: 
-			return initalState
+		case FINISH_QUIZ:
+			return initalState;
 		default:
 			return state;
 	}

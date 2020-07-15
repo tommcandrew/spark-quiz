@@ -25,7 +25,7 @@ const Quiz = ({ history }) => {
 
 	
 	const getQuiz = async () => {
-		if (quiz._id === "" && finished===false){
+		if (quiz._id === "" && !finished){
 		console.log("function in use effect running")
     await dispatch(authActions.studentReload());}
   };
@@ -47,15 +47,17 @@ const Quiz = ({ history }) => {
 
 	useEffect(
 		() => {
-			async function fetchData() {
-				if (finished) {
-					await dispatch(quizScoreActions.finishQuiz());
-					await dispatch(quizActions.clearCurrentQuiz());
+			 async function fetchData() {
+				 if (finished) {
+					console.log("in finished")
+					 await dispatch(quizScoreActions.finishQuiz());
+					 await dispatch(quizActions.clearCurrentQuiz());
+					 await await dispatch(authActions.clearStudent());
 				}
 			}
 			fetchData();
 		},
-		[ finished, dispatch ]
+		[finished ]
 	); // Or [] if effect doesn't need props or state
 
 	const goToNextQuestion = () => {

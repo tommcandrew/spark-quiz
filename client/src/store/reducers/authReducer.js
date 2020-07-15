@@ -9,6 +9,7 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   CLEAR_STUDENT,
+  STUDENT_RELOAD_SUCCESS
 } from "../actions/authActions";
 
 const initialState = {
@@ -55,6 +56,14 @@ export default function (state = initialState, action) {
         isLoading: false,
         user: action.payload.user,
         studentToken: action.payload.token,
+      };
+      case STUDENT_RELOAD_SUCCESS: 
+      return {
+        ...state,
+        isAuthenticated: true,
+        isLoading: false,
+        user: action.payload.user,
+        studentToken: localStorage.getItem("token"),
       };
     case CLEAR_STUDENT:
     case AUTH_ERROR:

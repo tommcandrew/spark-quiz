@@ -2,7 +2,8 @@ import axios from "axios";
 import { returnErrors, clearErrors } from "./errorActions";
 import { CLEAR_ERRORS } from "./errorActions";
 import { loading, loaded } from "./errorActions";
-import { setStudent } from "./quizScoreActions";
+import { setStudent, resetStudent } from "./quizScoreActions";
+export const STUDENT_RELOAD_SUCCESS ="STUDENT_RELOAD_SUCCESS"
 export const USER_LOADED = "USER_LOADED";
 export const USER_LOADING = "USER_LOADING";
 export const AUTH_ERROR = "AUTH_ERROR";
@@ -154,7 +155,6 @@ export const studentLogin =  (studentCode) => {
     return axios
       .post("http://localhost:5000/auth/studentLogin", { studentCode }, config)
       .then((res) => {
-        console.log(res.data)
         dispatch(setStudent({
           quiz: res.data.quiz,
           token: res.data.token,
@@ -189,21 +189,18 @@ export const studentReload = () => {
     else {
       console.log("reloading")
       const token = getState().auth.token;
-    dispatch(loading("Reloading quiz"))
     return axios
       .get("http://localhost:5000/student/quizReload", tokenConfig(token))
       .then((res) => {
         console.log(res.data)
-        dispatch(setStudent({
+        dispatch( resetStudent({
           quiz: res.data.quiz,
-          token: res.data.token,
           user: res.data.user,
-           questionNumber: res.data.quizQuestionNumber
+          questionNumber: res.data.quizQuestionNumber,
+           pointsScored: res.data.pointsScored
         }))
-        dispatch(loaded())
       })
        .catch((err) => {
-        dispatch(loaded());
         if (!err.response) {
           dispatch(
             returnErrors(

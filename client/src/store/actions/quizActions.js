@@ -13,6 +13,7 @@ export const ADD_TIME_LIMIT = "ADD_TIME_LIMIT";
 export const UPDATE_QUIZ = "UPDATE_QUIZ";
 export const FETCH_QUIZ = "FETCH_QUIZ";
 export const PUBLISH_QUIZ = "PUBLISH_QUIZ";
+export const RESET_CURRENT_QUIZ = "RESET_CURRENT_QUIZ"
 
 export const createQuiz = (quizName, quizSubject) => {
   return async (dispatch, getState) => {
