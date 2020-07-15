@@ -18,15 +18,12 @@ export const setStudent = (contactId) => {
 export const finishQuiz = () => {
   return (dispatch, getState) => {
     const token = getState().auth.studentToken;
-    let scoreObject = JSON.stringify(getState().score);
+    let scoreObject = getState().score;
     const quizId = getState().quiz._id;
-    const formData = new FormData();
-    formData.append("_id", quizId);
-    formData.append("scoreObject", scoreObject);
     axios
       .post(
         "http://localhost:5000/student/saveScores",
-        formData,
+        { quizId, scoreObject },
         tokenConfig(token)
       )
       .then((res) => {
