@@ -187,20 +187,23 @@ export const studentReload = () => {
   return async (dispatch, getState) => {
     if (getState().quiz._id !== "") return;
     else {
-      console.log("reloading")
+      
       const token = getState().auth.token;
+      dispatch(loading("Reloading"))
     return axios
       .get("http://localhost:5000/student/quizReload", tokenConfig(token))
       .then((res) => {
-        console.log(res.data)
+       
         dispatch( resetStudent({
           quiz: res.data.quiz,
           user: res.data.user,
           questionNumber: res.data.quizQuestionNumber,
            pointsScored: res.data.pointsScored
         }))
+         dispatch(loaded())
       })
-       .catch((err) => {
+      .catch((err) => {
+         dispatch(loaded())
         if (!err.response) {
           dispatch(
             returnErrors(
