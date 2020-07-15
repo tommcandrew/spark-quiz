@@ -28,6 +28,7 @@ import CreateQuizScreen from "./CreateQuizScreen";
 import ContactsScreen from "./ContactsScreen";
 import GroupsScreen from "./GroupsScreen";
 import MyAccountScreen from "./MyAccountScreen";
+import Statistics from "./Statistics";
 
 import * as quizActions from "../../store/actions/quizActions";
 import * as authActions from "../../store/actions/authActions";
@@ -45,9 +46,9 @@ const Dashboard = ({ window, history }, props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   //USER VERIFICATION ON RELOADS
-  const getUser = async() => {
+  const getUser = async () => {
     await dispatch(authActions.loadUser());
-    dispatch(userActions.fetchQuizzes())
+    dispatch(userActions.fetchQuizzes());
   };
   useEffect(() => {
     if (!user) getUser();
@@ -149,6 +150,7 @@ const Dashboard = ({ window, history }, props) => {
               <Route path={`${url}/contacts`} component={ContactsScreen} />
               <Route path={`${url}/groups`} component={GroupsScreen} />
               <Route path={`${url}/myAccount`} component={MyAccountScreen} />
+              <Route path={`${url}/statistics`} component={Statistics} />
             </Switch>
           </Paper>
         </main>
