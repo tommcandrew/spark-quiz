@@ -18,6 +18,7 @@ import {
 import SwipeableViews from "react-swipeable-views";
 import PropTypes from "prop-types";
 import * as quizActions from "../../store/actions/quizActions";
+import * as userActions from "../../store/actions/userActions";
 
 //MUI TAB FUNCTIONS
 function TabPanel(props) {
@@ -123,23 +124,6 @@ const ShareModal = ({ quizId, closeModal }) => {
       });
     }
     recipientsList = [...new Set(recipientsList)]; //aray of non duplicate selected contact ids
-    // let quizInvites = [];
-
-    // recipientsList.forEach((recipient) => {
-    //   user.contacts.forEach((contact) => {
-    //     if (contact._id === recipient) {
-    //       quizInvites.push({
-    //         email: contact.email,
-    //         name: contact.name,
-    //         //I'm adding ID field here to be able to check if contact rendered in list has already been invited or not
-    //         //using both "id" and "_id" is not ideal!
-    //         id: contact._id,
-    //         //when adding someone to invites array, in DB they seem to be assigned a Mongo ID which I don't understand
-    //         code: Math.floor(Math.random() * 1000),
-    //       });
-    //     }
-    //   });
-    // });
 
     //filter above list to create array of just contacts who are newly invited
     let newRecipients = recipientsList.filter((contactId) => {
@@ -149,6 +133,11 @@ const ShareModal = ({ quizId, closeModal }) => {
         return contactId;
       }
     });
+
+    //get list of contacts who have been uninvited
+    const uninvited = previouslyInvitedContacts.filter(
+      (contact) => !recipientsList.includes(contact)
+    );
 
     //create invites array of newly invited contacts with invite codes
     const quizInvites = [];
@@ -165,21 +154,18 @@ const ShareModal = ({ quizId, closeModal }) => {
       });
     });
 
-    if (!quizInvites || !quizInvites.length) {
-      setValidationError("Your quiz invites are empty. Please add students");
-      return;
-    } else {
-      dispatch(
-        quizActions.updateQuiz(quizId, {
-          quizInvites: {
-            contacts: [...quiz.quizInvites.contacts, ...quizInvites],
-            groups: recipientsGroups,
-            new: quizInvites,
-          },
-        })
-      );
-      closeModal();
-    }
+    dispatch(
+      quizActions.updateQuiz(quizId, {
+        quizInvites: {
+          contacts: [...quiz.quizInvites.contacts, ...quizInvites].filter(
+            (contact) => !uninvited.includes(contact.id)
+          ),
+          groups: recipientsGroups,
+          new: quizInvites,
+        },
+      })
+    );
+    closeModal();
   };
 
   return (

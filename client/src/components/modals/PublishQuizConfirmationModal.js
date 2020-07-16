@@ -139,6 +139,20 @@ const CreateQuizConfirmationModal = ({ closeModal }) => {
               )}
             </Typography>
           </Grid>
+          <Grid item xs={12} md={12}>
+            <Typography>
+              Number of new invitations to be sent:{" "}
+              {quiz.quizInvites.new ? (
+                quiz.quizInvites.new.length >= 0 ? (
+                  <> {quiz.quizInvites.new.length}</>
+                ) : (
+                  <> None </>
+                )
+              ) : (
+                <>None </>
+              )}
+            </Typography>
+          </Grid>
           <Grid item xl={12} container spacing={2}>
             <Grid item xs={12} sm={6}>
               <Button variant="outlined" color="secondary" onClick={closeModal}>
