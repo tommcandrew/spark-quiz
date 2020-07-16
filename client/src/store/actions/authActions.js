@@ -4,6 +4,8 @@ import { CLEAR_ERRORS } from "./errorActions";
 import { SET_CURRENT_QUIZ } from "./quizActions";
 import { loading, loaded } from "./errorActions";
 import { setStudent } from "./quizScoreActions";
+import { fetchQuizzes } from "./userActions";
+
 export const USER_LOADED = "USER_LOADED";
 export const USER_LOADING = "USER_LOADING";
 export const AUTH_ERROR = "AUTH_ERROR";
@@ -40,6 +42,7 @@ export const loadUser = () => {
           type: USER_LOADED,
           payload: res.data.user,
         });
+        dispatch(fetchQuizzes());
       })
       .catch((err) => {
         if (!err.response) {
