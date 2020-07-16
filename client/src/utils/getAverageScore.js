@@ -1,7 +1,5 @@
-//this function can definitely be refactored
 //getting average number of questions because number could change (e.g. teacher could add one)
-
-const getAverageScore = (quiz) => {
+export const getAverageScore = (quiz) => {
   if (quiz) {
     let averageNumQuestions = 0;
     quiz.quizScores.forEach((scoreObj) => {
@@ -21,8 +19,10 @@ const getAverageScore = (quiz) => {
     averageCorrectAnswers = (
       averageCorrectAnswers / quiz.quizScores.length
     ).toFixed(2);
-    let averageScorePercentage =
-      (averageCorrectAnswers / averageNumQuestions) * 100;
+    let averageScorePercentage = (
+      (averageCorrectAnswers / averageNumQuestions) *
+      100
+    ).toFixed(2);
 
     return {
       averageCorrectAnswers,
@@ -31,5 +31,3 @@ const getAverageScore = (quiz) => {
     };
   }
 };
-
-export default getAverageScore;

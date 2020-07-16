@@ -1,13 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import getAverageScore from "../../utils/getAverageScore";
-import getAverageTimeTaken from "../../utils/getAverageTimeTaken";
+import { getAverageScore } from "../../utils/getAverageScore";
+import { getAverageTimeTaken } from "../../utils/getAverageTimeTaken";
+import { getAverageQuestionScore } from "../../utils/getAverageQuestionScore";
 import { Typography } from "@material-ui/core";
 
 const Statistics = () => {
   const quiz = useSelector((state) => state.quiz);
   const averageScoreObj = getAverageScore(quiz);
   const averageTimeTaken = getAverageTimeTaken(quiz);
+  const questionPassRatesArr = getAverageQuestionScore(quiz);
 
   return (
     <div>
@@ -29,6 +31,15 @@ const Statistics = () => {
             %
           </div>
           <div>Average time to complete: {averageTimeTaken}</div>
+          <ul>
+            Individual question pass rates:
+            {questionPassRatesArr.map((percentage, index) => (
+              <li>
+                Question {index + 1}: {percentage}% (
+                {quiz.quizQuestions[index].question})
+              </li>
+            ))}
+          </ul>
         </>
       )}
     </div>

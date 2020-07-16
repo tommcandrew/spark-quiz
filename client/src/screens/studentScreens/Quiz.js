@@ -22,6 +22,7 @@ const Quiz = ({ history }) => {
   const [quizStarted, setQuizStarted] = useState(false);
   const [finished, setFinished] = useState(false);
   const [timeTaken, setTimeTaken] = useState(0);
+  const [answerIsSelected, setAnswerIsSelected] = useState(false);
 
   useEffect(() => {
     if (quiz.timeLimit) {
@@ -53,18 +54,18 @@ const Quiz = ({ history }) => {
 
   const goToNextQuestion = () => {
     if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
-      console.log("finished");
       setFinished(true);
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedOption(null);
     }
+    setAnswerIsSelected(false);
   };
 
   const handleClick = async (optionIndex, isCorrect) => {
-    if (timeUp) return;
+    if (timeUp || answerIsSelected) return;
+    setAnswerIsSelected(true);
     setSelectedOption(optionIndex);
-
     await dispatch(
       quizScoreActions.setQuestionAnswer(currentQuestionIndex + 1, isCorrect)
     );
