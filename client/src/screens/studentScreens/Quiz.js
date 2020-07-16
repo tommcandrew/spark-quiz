@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as quizActions from "../../store/actions/quizActions";
 import * as quizScoreActions from "../../store/actions/quizScoreActions";
 import QuizStart from "./QuizStart";
 import QuizOption from "../../components/student/QuizOption";
@@ -58,13 +57,6 @@ const Quiz = ({ history }) => {
     }
   }, [timeUp]);
 
-  useEffect(() => {
-    if (finished) {
-      dispatch(quizScoreActions.finishQuiz(timeTaken));
-      dispatch(quizActions.clearCurrentQuiz());
-    }
-  }, [finished, dispatch]); // Or [] if effect doesn't need props or state
-
   const goToNextQuestion = () => {
     if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
       setFinished(true);
@@ -108,7 +100,14 @@ const Quiz = ({ history }) => {
       )}
       {quizStarted && (
         <Fragment>
-          {finished && <Finish history={history} quiz={quiz} />}
+          {finished && (
+            <Finish
+              history={history}
+              quiz={quiz}
+              timeTaken={timeTaken}
+              setQuizStarted={setQuizStarted}
+            />
+          )}
           {!finished && quiz.quizQuestions.length > 0 && (
             <div className="quiz__content">
               <div className="quiz__info">

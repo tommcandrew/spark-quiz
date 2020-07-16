@@ -15,7 +15,7 @@ export const setStudent = (contactId) => {
   };
 };
 
-export const finishQuiz = (timeTaken) => {
+export const finishQuiz = (timeTaken, name) => {
   return (dispatch, getState) => {
     const token = getState().auth.studentToken;
     let scoreObject = getState().score;
@@ -23,7 +23,7 @@ export const finishQuiz = (timeTaken) => {
     axios
       .post(
         "http://localhost:5000/student/saveScores",
-        { quizId, scoreObject, timeTaken },
+        { quizId, scoreObject, timeTaken, name },
         tokenConfig(token)
       )
       .then((res) => {

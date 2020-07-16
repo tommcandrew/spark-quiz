@@ -30,7 +30,18 @@ const QuizStart = ({ quiz, setQuizStarted, quizTaken }) => {
                   <th>Score</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                {quiz.quizScores.map((scoreObj, index) => (
+                  <tr key={index}>
+                    <td>
+                      {scoreObj.studentName
+                        ? scoreObj.studentName
+                        : "Anonymous"}
+                    </td>
+                    <td>{scoreObj.overallScore}</td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
         </div>

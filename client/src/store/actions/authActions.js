@@ -151,7 +151,6 @@ export const login = ({ email, password }) => {
 export const studentLogin = (studentCode) => {
   return (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
-
     return axios
       .post("http://localhost:5000/auth/studentLogin", { studentCode }, config)
       .then((res) => {
