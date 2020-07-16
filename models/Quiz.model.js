@@ -38,6 +38,7 @@ const Quiz = new Schema(
     quizScores: [
       {
         studentId: String,
+        studentName: String,
         results: [
           {
             question: Number,
