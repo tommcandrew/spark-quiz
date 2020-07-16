@@ -20,8 +20,11 @@ const Statistics = () => {
           <div>Invites: {quiz.quizInvites.contacts.length}</div>
           <div>Quiz completed: {quiz.quizScores.length} times</div>
           <div>
-            Average score: {averageScoreObj.averageCorrectAnswers}/
+            Average score (fraction): {averageScoreObj.averageCorrectAnswers}/
             {averageScoreObj.averageNumQuestions}
+          </div>
+          <div>
+            Averagescore (percentage): {averageScoreObj.averageScorePercentage}%
           </div>
         </>
       )}
