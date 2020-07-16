@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as authActions from "../../store/actions/authActions";
 import * as quizScoreActions from "../../store/actions/quizScoreActions";
-import * as quizActions from "../../store/actions/quizActions";
 
 const Finish = ({ quiz, history, timeTaken, setQuizStarted }) => {
   const dispatch = useDispatch();
@@ -11,8 +9,6 @@ const Finish = ({ quiz, history, timeTaken, setQuizStarted }) => {
 
   const doneHandler = async () => {
     dispatch(quizScoreActions.finishQuiz(timeTaken, name));
-    dispatch(authActions.clearStudent());
-    dispatch(quizActions.clearCurrentQuiz());
     //to redirect to QuizStart (not an ideal method)
     setQuizStarted(false);
   };

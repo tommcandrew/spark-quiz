@@ -1,5 +1,7 @@
 import axios from "axios";
 import { tokenConfig } from "./authActions";
+import { loadQuiz } from "./quizActions";
+
 export const SET_STUDENT = "SET_STUDENT";
 export const SET_QUESTION_ANSWER = "SET_QUESTION_ANSWER";
 export const SET_OVERALLSCORE = "SET_OVERALLSCORE";
@@ -30,6 +32,7 @@ export const finishQuiz = (timeTaken, name) => {
         dispatch({
           type: FINISH_QUIZ,
         });
+        dispatch(loadQuiz());
       })
       .catch((err) => {
         console.log(err);

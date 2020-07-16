@@ -1,8 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import "./QuizStart.css";
 
 //this component is rendered as a child of Quiz
-const QuizStart = ({ quiz, setQuizStarted, quizTaken }) => {
+const QuizStart = ({ setQuizStarted, quizTaken }) => {
+  const quiz = useSelector((state) => state.quiz);
+
   return (
     <div className="quizStart__wrapper">
       <div className="quizStart__header">
