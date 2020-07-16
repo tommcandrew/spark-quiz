@@ -1,12 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import getAverageScore from "../../utils/getAverageScore";
+import getAverageTimeTaken from "../../utils/getAverageTimeTaken";
 import { Typography } from "@material-ui/core";
 
 const Statistics = () => {
   const quiz = useSelector((state) => state.quiz);
-
   const averageScoreObj = getAverageScore(quiz);
+  const averageTimeTaken = getAverageTimeTaken(quiz);
 
   return (
     <div>
@@ -24,8 +25,10 @@ const Statistics = () => {
             {averageScoreObj.averageNumQuestions}
           </div>
           <div>
-            Averagescore (percentage): {averageScoreObj.averageScorePercentage}%
+            Average score (percentage): {averageScoreObj.averageScorePercentage}
+            %
           </div>
+          <div>Average time to complete: {averageTimeTaken}</div>
         </>
       )}
     </div>
