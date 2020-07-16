@@ -13,7 +13,6 @@ const Quiz = new Schema(
       new: [{ email: String, name: String, id: String, code: String }],
     },
     quizPublished: Boolean,
-    quizCodes: [{ code: String, contactId: String }],
     quizQuestions: [
       {
         questionType: String,
