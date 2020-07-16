@@ -21,12 +21,20 @@ const Quiz = ({ history }) => {
   const [timeLimit, setTimeLimit] = useState(null);
   const [quizStarted, setQuizStarted] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [timeTaken, setTimeTaken] = useState(0);
+  const [answerIsSelected, setAnswerIsSelected] = useState(false);
 
   useEffect(() => {
     if (quiz.timeLimit) {
       setTimeLimit(parseInt(quiz.timeLimit) * 60);
     }
-  });
+    const timer = setInterval(() => {
+      setTimeTaken((current) => current + 1000);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   //make a nicer notification
   useEffect(() => {
@@ -38,29 +46,26 @@ const Quiz = ({ history }) => {
   }, [timeUp]);
 
   useEffect(() => {
-    async function fetchData() {
-      if (finished) {
-        await dispatch(quizScoreActions.finishQuiz());
-        await dispatch(quizActions.clearCurrentQuiz());
-      }
+    if (finished) {
+      dispatch(quizScoreActions.finishQuiz(timeTaken));
+      dispatch(quizActions.clearCurrentQuiz());
     }
-    fetchData();
   }, [finished, dispatch]); // Or [] if effect doesn't need props or state
 
   const goToNextQuestion = () => {
     if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
-      console.log("finished");
       setFinished(true);
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedOption(null);
     }
+    setAnswerIsSelected(false);
   };
 
   const handleClick = async (optionIndex, isCorrect) => {
-    if (timeUp) return;
+    if (timeUp || answerIsSelected) return;
+    setAnswerIsSelected(true);
     setSelectedOption(optionIndex);
-
     await dispatch(
       quizScoreActions.setQuestionAnswer(currentQuestionIndex + 1, isCorrect)
     );

@@ -1,73 +1,87 @@
-
 @font-face {
-    font-family: 'buttonFont'; /*a name to be used later*/
-    src: url("./assets/fonts/Comfortaa-Bold.ttf") /*URL to font*/
+  font-family: "buttonFont"; /*a name to be used later*/
+  src: url("./assets/fonts/Comfortaa-Bold.ttf"); /*URL to font*/
 }
 @font-face {
-    font-family: 'headingFont'; /*a name to be used later*/
-    src: url("./assets/fonts/CaviarDreams_Bold.ttf") /*URL to font*/
+  font-family: "headingFont"; /*a name to be used later*/
+  src: url("./assets/fonts/CaviarDreams_Bold.ttf"); /*URL to font*/
 }
 @font-face {
-    font-family: 'bodyFont'; /*a name to be used later*/
-    src: url("./assets/fonts/Butler_Regular.otf") /*URL to font*/
+  font-family: "bodyFont"; /*a name to be used later*/
+  src: url("./assets/fonts/Butler_Regular.otf"); /*URL to font*/
 }
 
 * {
-        margin: 0;
-        padding: 0;
-        border: 0;
-        outline: 0;
-        font-size: 100%;
-        vertical-align: baseline;
-        background: transparent;
-       
-    }
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
 
-    #root, body{
-      overflow-x: hidden;
-      overflow-y: hidden;
-      height: 100vh;
-      width: 100vw;
-      
-    }
+#root,
+body {
+  overflow-x: hidden;
+  /* overflow-y: hidden; */
+  height: 100vh;
+  width: 100vw;
+}
 
-    .full{
-      width: 100%;
-      height: 100%;
-      margin: 0 auto;
+.full {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
 
-    }
+._loading_overlay_content {
+  color: #f7ce3e;
+}
 
-    ._loading_overlay_content{
-      color: #F7CE3E
-    }
-
-
-    .zoom {
-  transition: all .2s ease-in-out  !important; /* Animation */
+.zoom {
+  transition: all 0.2s ease-in-out !important; /* Animation */
   height: 250px;
-} 
-   .zoom:hover {
-  transform: scale(1.1)  !important; /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+.zoom:hover {
+  transform: scale(
+    1.1
+  ) !important; /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
 body {
-  background: rgb(206,227,243);
-background: linear-gradient(170deg, rgba(206,227,243,1) 0%, rgba(220,149,150,1) 100%);  background-attachment: fixed;
-  background-size: cover; 
-  font-family: 'bodyFont' !important
+  background: rgb(206, 227, 243);
+  background: linear-gradient(
+    170deg,
+    rgba(206, 227, 243, 1) 0%,
+    rgba(220, 149, 150, 1) 100%
+  );
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: "bodyFont" !important;
   /* overflow: hidden; */
 }
-.css-df17o1{
-  z-index: 2000  ! important 
+.css-df17o1 {
+  z-index: 2000 !important;
 }
 
-body, input{
-  font-family: 'headingFont' !important
+body,
+input {
+  font-family: "headingFont" !important;
 }
-h1,h2,h3,h4,h5{
-  font-family: 'headingFont' !important
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "headingFont" !important;
 }
 
-button, a, span {
+button,
+a,
+span {
   font-family: "buttonFont" !important;
+}
+
+.stats__chart {
+  width: 80%;
 }
