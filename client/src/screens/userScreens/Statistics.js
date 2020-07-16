@@ -4,12 +4,29 @@ import { getAverageScore } from "../../utils/getAverageScore";
 import { getAverageTimeTaken } from "../../utils/getAverageTimeTaken";
 import { getAverageQuestionScore } from "../../utils/getAverageQuestionScore";
 import { Typography } from "@material-ui/core";
+import BarChart from "../../components/UI/BarChart";
 
 const Statistics = () => {
   const quiz = useSelector((state) => state.quiz);
   const averageScoreObj = getAverageScore(quiz);
   const averageTimeTaken = getAverageTimeTaken(quiz);
   const questionPassRatesArr = getAverageQuestionScore(quiz);
+
+  const chartData = {
+    labels: quiz.quizQuestions.map(
+      (question, index) => `Question ${index + 1}`
+    ),
+
+    datasets: [
+      {
+        label: "Pass rate",
+        backgroundColor: "rgba(75,192,192,1)",
+        borderColor: "rgba(0,0,0,1)",
+        borderWidth: 2,
+        data: questionPassRatesArr,
+      },
+    ],
+  };
 
   return (
     <div>
@@ -31,15 +48,9 @@ const Statistics = () => {
             %
           </div>
           <div>Average time to complete: {averageTimeTaken}</div>
-          <ul>
-            Individual question pass rates:
-            {questionPassRatesArr.map((percentage, index) => (
-              <li>
-                Question {index + 1}: {percentage}% (
-                {quiz.quizQuestions[index].question})
-              </li>
-            ))}
-          </ul>
+          <div className="stats__chart">
+            <BarChart chartData={chartData} />
+          </div>
         </>
       )}
     </div>
