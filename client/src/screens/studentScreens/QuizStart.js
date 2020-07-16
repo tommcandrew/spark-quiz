@@ -21,29 +21,31 @@ const QuizStart = ({ quiz, setQuizStarted, quizTaken }) => {
         </div>
         <div className="quizStart__scores">
           {quizTaken && <h5>You have already taken this quiz.</h5>}
-          <div className="quizStart__table-wrapper">
-            <h1>Scores</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Score</th>
-                </tr>
-              </thead>
-              <tbody>
-                {quiz.quizScores.map((scoreObj, index) => (
-                  <tr key={index}>
-                    <td>
-                      {scoreObj.studentName
-                        ? scoreObj.studentName
-                        : "Anonymous"}
-                    </td>
-                    <td>{scoreObj.overallScore}</td>
+          {quiz.quizPointsSystem && (
+            <div className="quizStart__table-wrapper">
+              <h1>Scores</h1>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Score</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {quiz.quizScores.map((scoreObj, index) => (
+                    <tr key={index}>
+                      <td>
+                        {scoreObj.studentName
+                          ? scoreObj.studentName
+                          : "Anonymous"}
+                      </td>
+                      <td>{scoreObj.overallScore}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </div>
