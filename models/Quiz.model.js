@@ -47,11 +47,10 @@ const Quiz = new Schema(
         ],
         overallScore: Number,
         timeTaken: Number,
-        //HOW TO DO THE DATE? DB IS NOT ABLE TO ACCPET DATE: {}
-        // date: {
-        //   type: Date,
-        //   default: Date.now,
-        // },
+        completedAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
   },
