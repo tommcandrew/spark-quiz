@@ -32,6 +32,7 @@ const QuizStart = ({ setQuizStarted, quizTaken }) => {
                   <tr>
                     <th>Name</th>
                     <th>Score</th>
+                    <th>Completed</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,7 @@ const QuizStart = ({ setQuizStarted, quizTaken }) => {
                           : "Anonymous"}
                       </td>
                       <td>{scoreObj.overallScore}</td>
+                      <td>{scoreObj.completedAt}</td>
                     </tr>
                   ))}
                 </tbody>
