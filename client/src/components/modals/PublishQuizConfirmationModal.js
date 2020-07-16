@@ -172,24 +172,3 @@ const CreateQuizConfirmationModal = ({ closeModal }) => {
 };
 
 export default CreateQuizConfirmationModal;
-
-//   const publishQuiz = () => {
-//     if (
-//       //probably easier to just create empty contacts and groups arrays on initial state object in quizReducer
-//       !quiz.quizInvites.contacts ||
-//       quiz.quizInvites.contacts.length === 0
-//     ) {
-//       if (
-//         window.confirm(
-//           "You are publishing a quiz without any invites. Continue?"
-//         )
-//       ) {
-//         dispatch(quizActions.publishQuiz(quiz._id));
-//         //maybe redirect to My Quizzes here?
-//       } else {
-//         return;
-//       }
-//     }
-//     //repetition!
-//     dispatch(quizActions.publishQuiz(quiz._id));
-//   };

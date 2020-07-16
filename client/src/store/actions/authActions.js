@@ -157,7 +157,7 @@ export const studentLogin = (studentCode) => {
       .then((res) => {
         dispatch({
           type: STUDENT_LOGIN_SUCCESS,
-          payload: { token: res.data.token },
+          payload: { token: res.data.token, user: res.data.user },
         });
         //not sure if we should use same state to store quiz for student as for teacher when creating
         dispatch({

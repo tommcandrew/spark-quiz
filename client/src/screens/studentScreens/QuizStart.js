@@ -2,7 +2,7 @@ import React from "react";
 import "./QuizStart.css";
 
 //this component is rendered as a child of Quiz
-const QuizStart = ({ quiz, setQuizStarted }) => {
+const QuizStart = ({ quiz, setQuizStarted, quizTaken }) => {
   return (
     <div className="quizStart__wrapper">
       <div className="quizStart__header">
@@ -14,10 +14,13 @@ const QuizStart = ({ quiz, setQuizStarted }) => {
             <li>Author: {quiz.quizAuthor}</li>
             <li>Subject: {quiz.quizSubject}</li>
             <li>Time limit: {quiz.quizTimeLimit || "none"}</li>
-            <button onClick={() => setQuizStarted(true)}>Start Quiz</button>
+            {!quizTaken && (
+              <button onClick={() => setQuizStarted(true)}>Start Quiz</button>
+            )}
           </ul>
         </div>
         <div className="quizStart__scores">
+          {quizTaken && <h5>You have already taken this quiz.</h5>}
           <div className="quizStart__table-wrapper">
             <h1>Scores</h1>
             <table>

@@ -14,6 +14,7 @@ const Quiz = ({ history }) => {
   const dispatch = useDispatch();
 
   const quiz = useSelector((state) => state.quiz);
+  const student = useSelector((state) => state.auth.user);
   const quizPointsSystem = quiz.quizPointsSystem;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -23,18 +24,30 @@ const Quiz = ({ history }) => {
   const [finished, setFinished] = useState(false);
   const [timeTaken, setTimeTaken] = useState(0);
   const [answerIsSelected, setAnswerIsSelected] = useState(false);
+  const [quizTaken, setQuizTaken] = useState(false);
 
   useEffect(() => {
+    const completedStudents = quiz.quizScores.map(
+      (scoreObj) => scoreObj.studentId
+    );
+    if (completedStudents.includes(student.contactId)) {
+      setQuizTaken(true);
+    }
     if (quiz.timeLimit) {
       setTimeLimit(parseInt(quiz.timeLimit) * 60);
     }
-    const timer = setInterval(() => {
-      setTimeTaken((current) => current + 1000);
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
   }, []);
+
+  useEffect(() => {
+    if (quizStarted) {
+      const timer = setInterval(() => {
+        setTimeTaken((current) => current + 1000);
+      }, 1000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [quizStarted]);
 
   //make a nicer notification
   useEffect(() => {
@@ -66,7 +79,7 @@ const Quiz = ({ history }) => {
     if (timeUp || answerIsSelected) return;
     setAnswerIsSelected(true);
     setSelectedOption(optionIndex);
-    await dispatch(
+    dispatch(
       quizScoreActions.setQuestionAnswer(currentQuestionIndex + 1, isCorrect)
     );
     if (isCorrect) {
@@ -87,9 +100,12 @@ const Quiz = ({ history }) => {
   return (
     <div className="quiz__wrapper">
       {!quizStarted && (
-        <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />
+        <QuizStart
+          quiz={quiz}
+          setQuizStarted={setQuizStarted}
+          quizTaken={quizTaken}
+        />
       )}
-
       {quizStarted && (
         <Fragment>
           {finished && <Finish history={history} quiz={quiz} />}
