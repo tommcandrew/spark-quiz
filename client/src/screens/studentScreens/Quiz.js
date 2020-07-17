@@ -35,6 +35,7 @@ const Quiz = ({ history }) => {
     if (quiz.timeLimit) {
       setTimeLimit(parseInt(quiz.timeLimit) * 60);
     }
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {

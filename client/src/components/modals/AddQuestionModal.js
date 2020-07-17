@@ -6,11 +6,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import CreateIcon from "@material-ui/icons/Create";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import V from "max-validator";
-import { addQuestionValidation } from "../../utils/validation";
-import {
-  modalRootStyles,
-  addQuestionModalStyles,
-} from "../../style/modalStyles";
+import { modalRootStyles } from "../../style/modalStyles";
 import camelToSentence from "../../utils/camelToSentence";
 import supportedFileTypes from "../../utils/supportedFileTypes";
 import {
@@ -24,10 +20,8 @@ import {
 
 const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
   const rootClasses = modalRootStyles();
-  const classes = addQuestionModalStyles();
   const dispatch = useDispatch();
   const [validationError, setValidationError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [addedMedia, setAddedMedia] = useState([]);
   const [retrivedMedia, setRetrivedMedia] = useState([]);
   const [questionType, setQuestionType] = useState("trueFalse");
@@ -86,6 +80,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
       });
       setAddedMedia(retrivedMedia);
     }
+    //eslint-disable-next-line
   }, [qToEdit]);
 
   //FUNCTIONS
@@ -202,7 +197,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
     } else {
       if (questionType === "multipleChoice") {
         let hasErr = false;
-        multipleChoiceOptions.map((option) => {
+        multipleChoiceOptions.forEachs((option) => {
           const result = V.validate(
             { option },
             { option: "required|string|min:1|max:30" }

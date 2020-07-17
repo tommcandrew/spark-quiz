@@ -24,7 +24,7 @@ const Home = (props) => {
       setValidationError(result.getError("code"));
       return;
     } else {
-      dispatch(authActions.studentLogin(studentCode));
+      await dispatch(authActions.studentLogin(studentCode));
       props.history.push("/quiz");
     }
   };

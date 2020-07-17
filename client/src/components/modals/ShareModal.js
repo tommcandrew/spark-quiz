@@ -18,7 +18,6 @@ import {
 import SwipeableViews from "react-swipeable-views";
 import PropTypes from "prop-types";
 import * as quizActions from "../../store/actions/quizActions";
-import * as userActions from "../../store/actions/userActions";
 
 //MUI TAB FUNCTIONS
 function TabPanel(props) {
@@ -76,6 +75,7 @@ const ShareModal = ({ quizId, closeModal }) => {
     if (quiz && quiz.quizInvites.groups) {
       setRecipientsGroups(quiz.quizInvites.groups.map((groupId) => groupId));
     }
+    //eslint-disable-next-line
   }, []);
 
   //HANDLERS
@@ -115,10 +115,10 @@ const ShareModal = ({ quizId, closeModal }) => {
     //create an array of unique contacts based on addded contacts and groups
     let recipientsList = [...recipientsContacts];
     if (recipientsGroups.length > 0) {
-      recipientsGroups.map((id) => {
+      recipientsGroups.forEach((id) => {
         let groupObject = user.groups.find((group) => group._id === id);
         if (groupObject)
-          groupObject.contacts.map((contact) =>
+          groupObject.contacts.forEach((contact) =>
             recipientsList.push(contact._id)
           );
       });
@@ -126,13 +126,9 @@ const ShareModal = ({ quizId, closeModal }) => {
     recipientsList = [...new Set(recipientsList)]; //aray of non duplicate selected contact ids
 
     //filter above list to create array of just contacts who are newly invited
-    let newRecipients = recipientsList.filter((contactId) => {
-      if (previouslyInvitedContacts.includes(contactId)) {
-        return;
-      } else {
-        return contactId;
-      }
-    });
+    let newRecipients = recipientsList.filter(
+      (contactId) => !previouslyInvitedContacts.includes(contactId)
+    );
 
     //get list of contacts who have been uninvited
     const uninvited = previouslyInvitedContacts.filter(
@@ -221,7 +217,7 @@ const ShareModal = ({ quizId, closeModal }) => {
               );
               if (groupObject) {
                 return (
-                  <Grid item xs={6} md={4} md={3} lg={1} key={index}>
+                  <Grid item xs={6} md={3} lg={1} key={index}>
                     {groupObject.name}
                     {!groupObject.contacts.length ? <>(empty group)</> : <> </>}
                   </Grid>

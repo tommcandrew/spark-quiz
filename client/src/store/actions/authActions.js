@@ -161,7 +161,6 @@ export const studentLogin = (studentCode) => {
           type: STUDENT_LOGIN_SUCCESS,
           payload: { token: res.data.token, user: res.data.user },
         });
-        //not sure if we should use same state to store quiz for student as for teacher when creating
         dispatch({
           type: SET_CURRENT_QUIZ,
           payload: res.data.quiz,
@@ -180,7 +179,6 @@ export const deleteAccount = () => {
     return axios
       .get("http://localhost:5000/user/deleteAccount", tokenConfig(token))
       .then(() => {
-        //is it ok to not return an action object for reducer? It seems unnecessary here.
         dispatch(logout());
       })
       .catch((err) => {
@@ -204,12 +202,6 @@ export const changePassword = (currentPassword, newPassword) => {
       .catch((err) => {
         console.log(err);
       });
-  };
-};
-
-export const clearStudent = () => {
-  return async (dispatch) => {
-    dispatch({ type: CLEAR_STUDENT });
   };
 };
 
