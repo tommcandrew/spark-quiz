@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import "./QuizStart.css";
 
 //this component is rendered as a child of Quiz

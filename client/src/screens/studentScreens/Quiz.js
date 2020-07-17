@@ -87,7 +87,15 @@ const Quiz = ({ history }) => {
   return (
     <div className="quiz__wrapper">
       {!quizStarted && (
+<<<<<<< HEAD
         <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />
+=======
+        <QuizStart
+          quiz={quiz}
+          setQuizStarted={setQuizStarted}
+          quizTaken={quizTaken}
+        />
+>>>>>>> parent of e383585... add logout button for student
       )}
 
       {quizStarted && (
