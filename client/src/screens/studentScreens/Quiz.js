@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as quizScoreActions from "../../store/actions/quizScoreActions";
+import * as quizActions from "../../store/actions/quizActions";
 import QuizStart from "./QuizStart";
 import QuizOption from "../../components/student/QuizOption";
 import QuizTimer from "../../components/student/QuizTimer";
@@ -25,15 +26,24 @@ const Quiz = ({ history }) => {
   const [answerIsSelected, setAnswerIsSelected] = useState(false);
   const [quizTaken, setQuizTaken] = useState(false);
 
+  const getQuiz = () => {
+    dispatch(quizActions.loadQuiz());
+  };
+
   useEffect(() => {
-    const completedStudents = quiz.quizScores.map(
-      (scoreObj) => scoreObj.studentId
-    );
-    if (completedStudents.includes(student.contactId)) {
-      setQuizTaken(true);
+    if (quiz.quizName === "") {
+      getQuiz();
     }
-    if (quiz.timeLimit) {
-      setTimeLimit(parseInt(quiz.timeLimit) * 60);
+    if (quiz && student) {
+      const completedStudents = quiz.quizScores.map(
+        (scoreObj) => scoreObj.studentId
+      );
+      if (completedStudents.includes(student.contactId)) {
+        setQuizTaken(true);
+      }
+      if (quiz.timeLimit) {
+        setTimeLimit(parseInt(quiz.timeLimit) * 60);
+      }
     }
     //eslint-disable-next-line
   }, []);

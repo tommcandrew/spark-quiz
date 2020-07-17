@@ -33,7 +33,7 @@ export const tokenConfig = (token) => {
 
 export const loadUser = () => {
   return async (dispatch, getState) => {
-    dispatch({ type: USER_LOADING }); //user is loading to true
+    dispatch({ type: USER_LOADING });
     const token = getState().auth.token;
     return axios
       .get("http://localhost:5000/user/fetchUser", tokenConfig(token))
