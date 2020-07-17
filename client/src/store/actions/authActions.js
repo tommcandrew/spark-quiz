@@ -150,7 +150,6 @@ export const login = ({ email, password }) => {
   };
 };
 
-// NOT ERROR MANAGED
 export const studentLogin = (studentCode) => {
   return (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
