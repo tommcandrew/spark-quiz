@@ -55,7 +55,7 @@ const QuizStart = ({ setQuizStarted, quizTaken, history }) => {
                           : "Anonymous"}
                       </td>
                       <td>{scoreObj.overallScore}</td>
-                      <td>{scoreObj.completedAt}</td>
+                      <td>{new Date(scoreObj.completedAt).toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>

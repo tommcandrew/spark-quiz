@@ -19,7 +19,7 @@ export const setStudent = (contactId) => {
 
 export const finishQuiz = (timeTaken, name) => {
   return (dispatch, getState) => {
-    const token = getState().auth.studentToken;
+    const token = getState().auth.token;
     let scoreObject = getState().score;
     const quizId = getState().quiz._id;
     axios
