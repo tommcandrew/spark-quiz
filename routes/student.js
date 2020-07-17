@@ -4,10 +4,13 @@ const checkAuth = require("../middleware");
 const Quiz = require("../models/Quiz.model");
 
 router.post("/saveScores", checkAuth, async (req, res) => {
-  let { quizId, scoreObject, timeTaken } = req.body;
+  let { quizId, scoreObject, timeTaken, name } = req.body;
   try {
     const quiz = await Quiz.findById(quizId);
     scoreObject.timeTaken = timeTaken;
+    if (name) {
+      scoreObject.studentName = name;
+    }
     quiz.quizScores.push(scoreObject);
     await quiz.save();
     res.status(200).send({ quiz });
