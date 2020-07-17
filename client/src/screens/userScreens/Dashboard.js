@@ -52,6 +52,7 @@ const Dashboard = ({ window, history }, props) => {
   };
   useEffect(() => {
     if (!user) getUser();
+    //eslint-disable-next-line
   }, []);
 
   //HANDLERS

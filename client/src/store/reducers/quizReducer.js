@@ -4,7 +4,6 @@ import {
   DELETE_QUESTION,
   CREATE_QUIZ,
   SET_CURRENT_QUIZ,
-  CLEAR_CURRENT_QUIZ,
   UPDATE_QUIZ,
   PUBLISH_QUIZ,
 } from "../actions/quizActions";
@@ -53,11 +52,6 @@ export default (state = initalState, action) => {
       return {
         ...state,
         ...action.payload,
-      };
-    case CLEAR_CURRENT_QUIZ:
-      localStorage.removeItem("quizId");
-      return {
-        ...initalState,
       };
     case UPDATE_QUIZ:
       return {

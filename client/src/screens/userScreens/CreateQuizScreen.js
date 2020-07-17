@@ -4,12 +4,24 @@ import { useDispatch, useSelector } from "react-redux";
 import AddQuestionModal from "../../components/modals/AddQuestionModal";
 import PreviewQuestions from "../../components/UI/PreviewQuestions";
 import QuizOptionsModal from "../../components/modals/QuizOptionsModal";
-import PublishQuizConfirmationModal from "../../components/modals/PublishQuizConfirmationModal"
+import PublishQuizConfirmationModal from "../../components/modals/PublishQuizConfirmationModal";
 import ShareModal from "../../components/modals/ShareModal";
 import * as quizActions from "../../store/actions/quizActions";
 
-import { createQuizScreenStyles, customStyles, screenLayoutStyles } from "../../style/screenStyles";
-import { Paper, Button, Box, Typography, Grid, TextField, Divider  } from "@material-ui/core";
+import {
+  createQuizScreenStyles,
+  customStyles,
+  screenLayoutStyles,
+} from "../../style/screenStyles";
+import {
+  Paper,
+  Button,
+  Box,
+  Typography,
+  Grid,
+  TextField,
+  Divider,
+} from "@material-ui/core";
 import clsx from "clsx";
 import Modal from "react-modal";
 import CustomSnackbar from "../../components/mui/Snackbar";
@@ -18,16 +30,16 @@ import { createQuizValidation } from "../../utils/validation";
 
 //MAIN
 export default function CreateQuizScreen(props) {
-	const dispatch = useDispatch();
-	const quiz = useSelector((state) => state.quiz);
-	const quizId = useSelector((state) => state.quiz._id);
-	const classes = createQuizScreenStyles();
-	const root = screenLayoutStyles();
-	const [ displayedComponent, setDisplayedComponent ] = useState();
-	const [ quizName, setQuizName ] = useState("");
-	const [ quizSubject, setQuizSubject ] = useState("");
-	const [ modalIsOpen, setIsOpen ] = useState(false);
-	const [validationError, setValidationError] = useState("")
+  const dispatch = useDispatch();
+  const quiz = useSelector((state) => state.quiz);
+  const quizId = useSelector((state) => state.quiz._id);
+  const classes = createQuizScreenStyles();
+  const root = screenLayoutStyles();
+  const [displayedComponent, setDisplayedComponent] = useState();
+  const [quizName, setQuizName] = useState("");
+  const [quizSubject, setQuizSubject] = useState("");
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [validationError, setValidationError] = useState("");
 
   //ON PAGE RELOAD
   const getQuiz = () => {
@@ -37,10 +49,10 @@ export default function CreateQuizScreen(props) {
     if (quizId === "") {
       getQuiz();
     }
+    //eslint-disable-next-line
   }, []);
 
   //OTHER HOOKS
-
 
   //HANDLERS
   const showModal = (screen) => {
@@ -55,16 +67,15 @@ export default function CreateQuizScreen(props) {
           <QuizOptionsModal quizId={quiz._id} closeModal={closeModal} />
         );
         break;
-		case "invite":
-			setDisplayedComponent(
-				<ShareModal quizId={quiz._id} closeModal={closeModal} />
-			);
-			break;
-         case "publish":
+      case "invite":
         setDisplayedComponent(
-          <PublishQuizConfirmationModal closeModal={closeModal}/>
+          <ShareModal quizId={quiz._id} closeModal={closeModal} />
         );
-        
+        break;
+      case "publish":
+        setDisplayedComponent(
+          <PublishQuizConfirmationModal closeModal={closeModal} />
+        );
 
         break;
       default:
@@ -77,12 +88,12 @@ export default function CreateQuizScreen(props) {
   const editQuestion = (id) => {
     setIsOpen(true);
     setDisplayedComponent(
-          <AddQuestionModal
-            closeModal={closeModal}
-            quiz={quiz}
-            questionToEdit={id}
-          />
-        )
+      <AddQuestionModal
+        closeModal={closeModal}
+        quiz={quiz}
+        questionToEdit={id}
+      />
+    );
   };
 
   const handleCreate = () => {
@@ -105,101 +116,121 @@ export default function CreateQuizScreen(props) {
     setIsOpen(false);
   }
 
-
-
-	//RETURN
-	return (
-		<Fragment>
-			{validationError !== "" &&
-				<CustomSnackbar
-				severity="error"
-				message={validationError}
-				handleClose={() => setValidationError("")}/>
-			}
-			{!quizId && (
-						<Grid container spacing={2} className={root.root}>
-			<Grid item xs={12} xl={12}>
-				<Typography variant="h4" align="center">
-					Create a new Quiz
-				</Typography>
-				      <Divider variant="middle"  />
-			</Grid>
-						<Grid container spacing={2} style={{ width: "400px" }}>
-						<Grid item xs={12} md={6}>
-							<Typography variant="h5" align="center"  >Quiz name:</Typography>
-						</Grid>
-						<Grid item xs={12} md={6} align="center">
-							<TextField
-								type="text"
-								name="name"
-								variant="outlined"
-								color="secondary"
-								maxLength="15"
-								onChange={(event) => {
-									setQuizName(event.target.value);
-								}}
-								value={quizName}
-							/>
-						</Grid>
-						<Grid item xs={12} md={6}>
-							<Typography variant="h5" align="center" >Quiz Subject</Typography>
-						</Grid>
-						<Grid item xs={12} md={6} align="center">
-							<TextField
-								type="text"
-								name="subject"
-								variant="outlined"
-								color="secondary"
-								maxLength="15"
-								onChange={(event) => {
-									setQuizSubject(event.target.value);
-								}}
-								value={quizSubject}
-							/>
-						</Grid>
-						<Grid item xs={12} align="center" >
-							<Button onClick={handleCreate} variant="contained" color="secondary">
-								Submit
-							</Button>
-						</Grid>
-					</Grid></Grid>
-			)}
-			{quiz._id.length > 0 && (
-				<div className={classes.makeNewQuizContainer}>
-					<Modal
-						isOpen={modalIsOpen}
-						onRequestClose={closeModal}
-						style={customStyles}
-						aria-labelledby="contained-modal-title-vcenter"
-						centered>
-						{displayedComponent} {/* can be either addquestion/ setQuizOptions /invite */}
-					</Modal>
-					<Paper className={clsx(classes.flexItem, classes.buttonContainer)}>
-						<Box className={classes.titleContainer}>
-							<Typography variant="body1">Quiz Name: </Typography>
-							<Typography variant="h4" color="secondary">
-							{quiz.quizName}</Typography>
-							{quiz.quizTimeLimit ? (
-								<Typography>Quiz Timelimit: {(quiz.quizTimeLimit==="false")? <>No limit</> : quiz.quizTimeLimit}</Typography>
-							) : (
-								""
-							)}
-						</Box>
-						<Box className={classes.buttons}>
-						<Button
-							variant="outlined"
-							color="primary"
-							className={classes.button}
-							onClick={() => showModal("quizOptions")}>
-							Quiz Options
-						</Button>
-						<Button
-							variant="outlined"
-							color="primary"
-							className={classes.button}
-							onClick={() => showModal("addNewQuestion")}>
-							Add Question
-						</Button>
+  //RETURN
+  return (
+    <Fragment>
+      {validationError !== "" && (
+        <CustomSnackbar
+          severity="error"
+          message={validationError}
+          handleClose={() => setValidationError("")}
+        />
+      )}
+      {!quizId && (
+        <Grid container spacing={2} className={root.root}>
+          <Grid item xs={12} xl={12}>
+            <Typography variant="h4" align="center">
+              Create a new Quiz
+            </Typography>
+            <Divider variant="middle" />
+          </Grid>
+          <Grid container spacing={2} style={{ width: "400px" }}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h5" align="center">
+                Quiz name:
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6} align="center">
+              <TextField
+                type="text"
+                name="name"
+                variant="outlined"
+                color="secondary"
+                maxLength="15"
+                onChange={(event) => {
+                  setQuizName(event.target.value);
+                }}
+                value={quizName}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h5" align="center">
+                Quiz Subject
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6} align="center">
+              <TextField
+                type="text"
+                name="subject"
+                variant="outlined"
+                color="secondary"
+                maxLength="15"
+                onChange={(event) => {
+                  setQuizSubject(event.target.value);
+                }}
+                value={quizSubject}
+              />
+            </Grid>
+            <Grid item xs={12} align="center">
+              <Button
+                onClick={handleCreate}
+                variant="contained"
+                color="secondary"
+              >
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      )}
+      {quiz._id.length > 0 && (
+        <div className={classes.makeNewQuizContainer}>
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            style={customStyles}
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+          >
+            {displayedComponent}{" "}
+            {/* can be either addquestion/ setQuizOptions /invite */}
+          </Modal>
+          <Paper className={clsx(classes.flexItem, classes.buttonContainer)}>
+            <Box className={classes.titleContainer}>
+              <Typography variant="body1">Quiz Name: </Typography>
+              <Typography variant="h4" color="secondary">
+                {quiz.quizName}
+              </Typography>
+              {quiz.quizTimeLimit ? (
+                <Typography>
+                  Quiz Timelimit:{" "}
+                  {quiz.quizTimeLimit === "false" ? (
+                    <>No limit</>
+                  ) : (
+                    quiz.quizTimeLimit
+                  )}
+                </Typography>
+              ) : (
+                ""
+              )}
+            </Box>
+            <Box className={classes.buttons}>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+                onClick={() => showModal("quizOptions")}
+              >
+                Quiz Options
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+                onClick={() => showModal("addNewQuestion")}
+              >
+                Add Question
+              </Button>
 
               <Button
                 variant="outlined"
@@ -213,7 +244,8 @@ export default function CreateQuizScreen(props) {
                 variant="contained"
                 color="secondary"
                 className={classes.button}
-              onClick={() => showModal("publish")}>
+                onClick={() => showModal("publish")}
+              >
                 {quiz.quizPublished ? <>Update Quiz </> : <>Publish Quiz</>}
               </Button>
             </Box>

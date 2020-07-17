@@ -19,8 +19,8 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [validationError, setValidationError] = useState("");
-  const [email, setEmail] = useState("test@test.com");
-  const [password, setPassword] = useState("12345678");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { from } = props.location.state || { from: { pathname: "/dashboard" } };
 
   //HANDLERS
@@ -108,6 +108,15 @@ const Login = (props) => {
               <Link to="/forgotPassword">
                 <Typography href="#" variant="body2">
                   I forgot my password
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link to="/">
+                <Typography href="#" variant="body2">
+                  Have a code?
                 </Typography>
               </Link>
             </Grid>

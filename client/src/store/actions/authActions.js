@@ -4,6 +4,8 @@ import { CLEAR_ERRORS } from "./errorActions";
 import { SET_CURRENT_QUIZ } from "./quizActions";
 import { loading, loaded } from "./errorActions";
 import { setStudent } from "./quizScoreActions";
+import { fetchQuizzes } from "./userActions";
+
 export const USER_LOADED = "USER_LOADED";
 export const USER_LOADING = "USER_LOADING";
 export const AUTH_ERROR = "AUTH_ERROR";
@@ -31,7 +33,7 @@ export const tokenConfig = (token) => {
 
 export const loadUser = () => {
   return async (dispatch, getState) => {
-    dispatch({ type: USER_LOADING }); //user is loading to true
+    dispatch({ type: USER_LOADING });
     const token = getState().auth.token;
     return axios
       .get("http://localhost:5000/user/fetchUser", tokenConfig(token))
@@ -40,6 +42,7 @@ export const loadUser = () => {
           type: USER_LOADED,
           payload: res.data.user,
         });
+        dispatch(fetchQuizzes());
       })
       .catch((err) => {
         if (!err.response) {
@@ -147,19 +150,16 @@ export const login = ({ email, password }) => {
   };
 };
 
-// NOT ERROR MANAGED
 export const studentLogin = (studentCode) => {
   return (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
-
     return axios
       .post("http://localhost:5000/auth/studentLogin", { studentCode }, config)
       .then((res) => {
         dispatch({
           type: STUDENT_LOGIN_SUCCESS,
-          payload: { token: res.data.token },
+          payload: { token: res.data.token, user: res.data.user },
         });
-        //not sure if we should use same state to store quiz for student as for teacher when creating
         dispatch({
           type: SET_CURRENT_QUIZ,
           payload: res.data.quiz,
@@ -167,7 +167,23 @@ export const studentLogin = (studentCode) => {
         dispatch(setStudent(res.data.user.contactId));
       })
       .catch((err) => {
-        console.log(err);
+        dispatch(loaded());
+        if (!err.response) {
+          dispatch(
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "LOGIN_FAIL"
+            )
+          );
+        } else {
+          dispatch(
+            returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
+          );
+          dispatch({
+            type: LOGIN_FAIL,
+          });
+        }
       });
   };
 };
@@ -178,7 +194,6 @@ export const deleteAccount = () => {
     return axios
       .get("http://localhost:5000/user/deleteAccount", tokenConfig(token))
       .then(() => {
-        //is it ok to not return an action object for reducer? It seems unnecessary here.
         dispatch(logout());
       })
       .catch((err) => {
@@ -202,12 +217,6 @@ export const changePassword = (currentPassword, newPassword) => {
       .catch((err) => {
         console.log(err);
       });
-  };
-};
-
-export const clearStudent = () => {
-  return async (dispatch) => {
-    dispatch({ type: CLEAR_STUDENT });
   };
 };
 

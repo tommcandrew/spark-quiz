@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Avatar,
-  Button,
-  Container,
-  TextField,
-} from "@material-ui/core/";
+import { Avatar, Button, Container, TextField } from "@material-ui/core/";
 import { useStyles } from "../../style/authScreensStyles";
 import logo from "../../assets/images/logo1.png";
 import * as authActions from "../../store/actions/authActions";

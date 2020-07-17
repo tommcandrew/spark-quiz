@@ -1,5 +1,6 @@
 import axios from "axios";
 import { tokenConfig } from "./authActions";
+import { fetchQuizzes } from "./userActions";
 import { loading, loaded, returnErrors } from "./errorActions";
 export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
 export const EDIT_QUESTION = "EDIT_QUESTION";
@@ -17,7 +18,7 @@ export const PUBLISH_QUIZ = "PUBLISH_QUIZ";
 export const createQuiz = (quizName, quizSubject) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    dispatch(loading("Creating new quiz"))
+    dispatch(loading("Creating new quiz"));
     return axios
       .post(
         "http://localhost:5000/quiz/createQuiz",
@@ -37,23 +38,31 @@ export const createQuiz = (quizName, quizSubject) => {
           type: SET_CURRENT_QUIZ,
           payload: res.data,
         });
-        dispatch(loaded())
+        dispatch(fetchQuizzes());
+        dispatch(loaded());
       })
       .catch((err) => {
-        dispatch(loaded())
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-            returnErrors({ msg: "Server is down. Please try again later" }, 500, "SERVER_ERROR")
-          )
-        }
-        else {
-          dispatch(
-            returnErrors(err.response.data, err.response.status, "CREATE_QUIZ_FAIL")
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
           );
-        };
-      })
+        } else {
+          dispatch(
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "CREATE_QUIZ_FAIL"
+            )
+          );
+        }
+      });
   };
-}
+};
 
 export const loadQuiz = () => {
   return async (dispatch, getState) => {
@@ -89,28 +98,28 @@ export const loadQuiz = () => {
 
 export const setCurrentQuiz = (quiz) => {
   return async (dispatch) => {
-    dispatch(loading("Loading the quiz"))
+    dispatch(loading("Loading the quiz"));
     dispatch({
       type: SET_CURRENT_QUIZ,
       payload: quiz,
     });
-    dispatch(loaded())
+    dispatch(loaded());
   };
 };
 
 export const clearCurrentQuiz = () => {
   return async (dispatch) => {
-    dispatch(loading("Clearing the quiz"))
+    dispatch(loading("Clearing the quiz"));
     await dispatch({
       type: CLEAR_CURRENT_QUIZ,
     });
-    dispatch(loaded())
+    dispatch(loaded());
   };
 };
 
 export const addNewQuestion = (formData) => {
   return (dispatch) => {
-    dispatch(loading("Adding question"))
+    dispatch(loading("Adding question"));
     axios
       .post("http://localhost:5000/quiz/addQuestion", formData)
       .then((res) => {
@@ -118,28 +127,35 @@ export const addNewQuestion = (formData) => {
           type: ADD_NEW_QUESTION,
           payload: res.data.quiz,
         });
-        dispatch(loaded())
+        dispatch(loaded());
       })
-       .catch(err => {
-        dispatch(loaded())
+      .catch((err) => {
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-            returnErrors({ msg: "Server is down. Please try again later" }, 500, "SERVER_ERROR")
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
+          dispatch(
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "EDIT_QUESTION_FAIL"
+            )
           );
         }
-        else {
-          dispatch(
-            returnErrors(err.response.data, err.response.status, "EDIT_QUESTION_FAIL")
-          )
-        }
-      })
+      });
   };
 };
 
 export const editQuestion = (formData) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    dispatch(loading("Updating question"))
+    dispatch(loading("Updating question"));
     return await axios
       .post(
         "http://localhost:5000/quiz/editQuestion",
@@ -151,22 +167,29 @@ export const editQuestion = (formData) => {
           type: EDIT_QUESTION,
           payload: res.data.quiz,
         });
-        dispatch(loaded())
+        dispatch(loaded());
       })
-      .catch(err => {
-        dispatch(loaded())
+      .catch((err) => {
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-            returnErrors({ msg: "Server is down. Please try again later" }, 500, "SERVER_ERROR")
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
+          dispatch(
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "EDIT_QUESTION_FAIL"
+            )
           );
         }
-        else {
-          dispatch(
-            returnErrors(err.response.data, err.response.status, "EDIT_QUESTION_FAIL")
-          )
-        }
-      })
-  }
+      });
+  };
 };
 
 export const deleteQuestion = (id) => {
@@ -189,9 +212,8 @@ export const deleteQuestion = (id) => {
 };
 
 export const updateQuiz = (_id, update) => {
-  
   return (dispatch) => {
-    dispatch(loading("Updating quiz"))
+    dispatch(loading("Updating quiz"));
     axios
       .post("http://localhost:5000/quiz/updateQuiz", { _id, update })
       .then(() => {
@@ -199,7 +221,7 @@ export const updateQuiz = (_id, update) => {
           type: UPDATE_QUIZ,
           payload: update,
         });
-        dispatch(loaded())
+        dispatch(loaded());
       })
       .catch((err) => {
         console.log(err);
@@ -210,7 +232,7 @@ export const updateQuiz = (_id, update) => {
 export const publishQuiz = (quizId) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
-    dispatch(loading("Uploading quiz"))
+    dispatch(loading("Uploading quiz"));
     return axios
       .post(
         "http://localhost:5000/quiz/publishQuiz",
@@ -218,21 +240,29 @@ export const publishQuiz = (quizId) => {
         tokenConfig(token)
       )
       .then((res) => {
-        dispatch(clearCurrentQuiz())
-        dispatch(loaded())
+        dispatch(clearCurrentQuiz());
+        dispatch(fetchQuizzes());
+        dispatch(loaded());
       })
-       .catch(err => {
-        dispatch(loaded())
+      .catch((err) => {
+        dispatch(loaded());
         if (!err.response) {
           dispatch(
-            returnErrors({ msg: "Server is down. Please try again later" }, 500, "SERVER_ERROR")
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
+          dispatch(
+            returnErrors(
+              err.response.data,
+              err.response.status,
+              "QUIZ_PUBLISH_FAIL"
+            )
           );
         }
-        else {
-          dispatch(
-            returnErrors(err.response.data, err.response.status, "QUIZ_PUBLISH_FAIL")
-          )
-        }
-      })
+      });
   };
 };
