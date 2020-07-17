@@ -18,8 +18,11 @@ const CreateQuizConfirmationModal = ({ closeModal }) => {
       setValidationError("Add some questions first");
       return;
     }
-    if (!quiz.quizPointsSystem === "") {
-      setValidationError("Points system not selected");
+    if (
+      quiz.quizPointsSystem === "eachQuestion" &&
+      quiz.quizQuestions.filter((question) => question.points === "").length > 0
+    ) {
+      setValidationError("Please assign points to all questions");
       return;
     }
     if (!quiz.quizInvites.contacts) {
