@@ -107,7 +107,6 @@ router.post("/studentLogin", async (req, res) => {
       });
     });
     if (!found) {
-      console.log("quiz not found");
       res.status(403).send({ msg: "invalid code" });
       return;
     }
