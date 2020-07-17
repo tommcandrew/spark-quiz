@@ -82,7 +82,6 @@ router.post("/login", async (req, res) => {
 
 router.post("/studentLogin", async (req, res) => {
   const { studentCode } = req.body;
-  console.log(studentCode);
   try {
     const quizzes = await Quiz.find();
     let found;
