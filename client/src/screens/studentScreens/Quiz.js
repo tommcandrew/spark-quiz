@@ -9,10 +9,8 @@ import QuizMedia from "../../components/student/QuizMedia";
 import { animateNextQuestion } from "./QuizAnimations";
 import Finish from "./Finish";
 import "./Quiz.css";
-
 const Quiz = ({ history }) => {
   const dispatch = useDispatch();
-
   const quiz = useSelector((state) => state.quiz);
   const student = useSelector((state) => state.auth.user);
   const quizPointsSystem = quiz.quizPointsSystem;
@@ -107,6 +105,7 @@ const Quiz = ({ history }) => {
           quiz={quiz}
           setQuizStarted={setQuizStarted}
           quizTaken={quizTaken}
+          history={history}
         />
       )}
       {quizStarted && (

@@ -1,15 +1,26 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import "./QuizStart.css";
+import { Button } from "@material-ui/core";
+import * as authActions from "../../store/actions/authActions";
+import { useDispatch, useSelector } from "react-redux";
 
 //this component is rendered as a child of Quiz
-const QuizStart = ({ setQuizStarted, quizTaken }) => {
+const QuizStart = ({ setQuizStarted, quizTaken, history }) => {
   const quiz = useSelector((state) => state.quiz);
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    dispatch(authActions.logout());
+    history.push("/");
+  };
 
   return (
     <div className="quizStart__wrapper">
       <div className="quizStart__header">
         <h1>Quiz Name: {quiz.quizName}</h1>
+        <Button color="inherit" onClick={logoutHandler}>
+          Logout
+        </Button>
       </div>
       <div className="quizStart__content">
         <div className="quizStart__info">
