@@ -168,7 +168,23 @@ export const studentLogin = (studentCode) => {
         dispatch(setStudent(res.data.user.contactId));
       })
       .catch((err) => {
-        console.log(err);
+        dispatch(loaded());
+        if (!err.response) {
+          dispatch(
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "LOGIN_FAIL"
+            )
+          );
+        } else {
+          dispatch(
+            returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
+          );
+          dispatch({
+            type: LOGIN_FAIL,
+          });
+        }
       });
   };
 };
