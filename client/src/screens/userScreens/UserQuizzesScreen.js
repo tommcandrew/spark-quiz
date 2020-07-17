@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   screenLayoutStyles,
@@ -108,15 +108,13 @@ const UserQuizzesScreen = (props) => {
                   >
                     Delete
                   </Button>
-                  {quiz.quizPublished && (
-                    <Button
-                      size="small"
-                      className={classes.button}
-                      onClick={() => handleOpenStatistics(quiz)}
-                    >
-                      Statistics
-                    </Button>
-                  )}
+                  <Button
+                    size="small"
+                    className={classes.button}
+                    onClick={() => handleOpenStatistics(quiz)}
+                  >
+                    Statistics
+                  </Button>
                 </CardActions>
               </Card>
             </Grid>

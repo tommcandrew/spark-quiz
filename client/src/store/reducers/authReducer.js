@@ -8,6 +8,7 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  CLEAR_STUDENT,
 } from "../actions/authActions";
 
 const initialState = {
@@ -45,15 +46,14 @@ export default function (state = initialState, action) {
         user: action.payload.user,
       };
     case STUDENT_LOGIN_SUCCESS:
-      localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("role", "student");
       return {
         ...state,
-        ...action.payload,
         isAuthenticated: true,
         isLoading: false,
         user: action.payload.user,
+        studentToken: action.payload.token,
       };
+    case CLEAR_STUDENT:
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:

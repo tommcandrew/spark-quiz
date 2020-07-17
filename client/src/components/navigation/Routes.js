@@ -3,8 +3,8 @@ import { Redirect, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export const StudentRoute = ({ component: Component, ...rest }) => {
-  const isAuthenticated = localStorage.getItem("token");
-  const isStudent = localStorage.getItem("role") === "student" ? true : false;
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isStudent = useSelector((state) => state.auth.studentToken);
   return (
     <Route
       {...rest}

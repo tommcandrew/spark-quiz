@@ -13,6 +13,7 @@ const Quiz = new Schema(
       new: [{ email: String, name: String, id: String, code: String }],
     },
     quizPublished: Boolean,
+    quizCodes: [{ code: String, contactId: String }],
     quizQuestions: [
       {
         questionType: String,
@@ -38,7 +39,6 @@ const Quiz = new Schema(
     quizScores: [
       {
         studentId: String,
-        studentName: String,
         results: [
           {
             question: Number,
@@ -47,10 +47,11 @@ const Quiz = new Schema(
         ],
         overallScore: Number,
         timeTaken: Number,
-        completedAt: {
-          type: Date,
-          default: Date.now,
-        },
+        //HOW TO DO THE DATE? DB IS NOT ABLE TO ACCPET DATE: {}
+        // date: {
+        //   type: Date,
+        //   default: Date.now,
+        // },
       },
     ],
   },

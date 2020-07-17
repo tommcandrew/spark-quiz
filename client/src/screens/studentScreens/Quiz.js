@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as quizScoreActions from "../../store/actions/quizScoreActions";
 import * as quizActions from "../../store/actions/quizActions";
+import * as quizScoreActions from "../../store/actions/quizScoreActions";
 import QuizStart from "./QuizStart";
 import QuizOption from "../../components/student/QuizOption";
 import QuizTimer from "../../components/student/QuizTimer";
@@ -9,10 +9,11 @@ import QuizMedia from "../../components/student/QuizMedia";
 import { animateNextQuestion } from "./QuizAnimations";
 import Finish from "./Finish";
 import "./Quiz.css";
+
 const Quiz = ({ history }) => {
   const dispatch = useDispatch();
+
   const quiz = useSelector((state) => state.quiz);
-  const student = useSelector((state) => state.auth.user);
   const quizPointsSystem = quiz.quizPointsSystem;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -22,40 +23,18 @@ const Quiz = ({ history }) => {
   const [finished, setFinished] = useState(false);
   const [timeTaken, setTimeTaken] = useState(0);
   const [answerIsSelected, setAnswerIsSelected] = useState(false);
-  const [quizTaken, setQuizTaken] = useState(false);
-
-  const getQuiz = () => {
-    dispatch(quizActions.loadQuiz());
-  };
 
   useEffect(() => {
-    if (quiz.quizName === "") {
-      getQuiz();
+    if (quiz.timeLimit) {
+      setTimeLimit(parseInt(quiz.timeLimit) * 60);
     }
-    if (quiz && student) {
-      const completedStudents = quiz.quizScores.map(
-        (scoreObj) => scoreObj.studentId
-      );
-      if (completedStudents.includes(student.contactId)) {
-        setQuizTaken(true);
-      }
-      if (quiz.timeLimit) {
-        setTimeLimit(parseInt(quiz.timeLimit) * 60);
-      }
-    }
-    //eslint-disable-next-line
+    const timer = setInterval(() => {
+      setTimeTaken((current) => current + 1000);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
-
-  useEffect(() => {
-    if (quizStarted) {
-      const timer = setInterval(() => {
-        setTimeTaken((current) => current + 1000);
-      }, 1000);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [quizStarted]);
 
   //make a nicer notification
   useEffect(() => {
@@ -65,6 +44,13 @@ const Quiz = ({ history }) => {
       return;
     }
   }, [timeUp]);
+
+  useEffect(() => {
+    if (finished) {
+      dispatch(quizScoreActions.finishQuiz(timeTaken));
+      dispatch(quizActions.clearCurrentQuiz());
+    }
+  }, [finished, dispatch]); // Or [] if effect doesn't need props or state
 
   const goToNextQuestion = () => {
     if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
@@ -80,7 +66,7 @@ const Quiz = ({ history }) => {
     if (timeUp || answerIsSelected) return;
     setAnswerIsSelected(true);
     setSelectedOption(optionIndex);
-    dispatch(
+    await dispatch(
       quizScoreActions.setQuestionAnswer(currentQuestionIndex + 1, isCorrect)
     );
     if (isCorrect) {
@@ -101,23 +87,12 @@ const Quiz = ({ history }) => {
   return (
     <div className="quiz__wrapper">
       {!quizStarted && (
-        <QuizStart
-          quiz={quiz}
-          setQuizStarted={setQuizStarted}
-          quizTaken={quizTaken}
-          history={history}
-        />
+        <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />
       )}
+
       {quizStarted && (
         <Fragment>
-          {finished && (
-            <Finish
-              history={history}
-              quiz={quiz}
-              timeTaken={timeTaken}
-              setQuizStarted={setQuizStarted}
-            />
-          )}
+          {finished && <Finish history={history} quiz={quiz} />}
           {!finished && quiz.quizQuestions.length > 0 && (
             <div className="quiz__content">
               <div className="quiz__info">
