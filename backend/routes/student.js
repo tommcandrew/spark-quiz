@@ -15,19 +15,20 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 		quizzes.forEach((quiz) => {
 			quiz.quizInvites.contacts.forEach((contact) => {
 				if (contact.code === studentCode) {
+					//quiz exists
 					const scoreFromDb = quiz.quizScores.find(score => score.studentId === contact.id)
 					if (scoreFromDb) {
+						//quiz was in progress
 						if (scoreFromDb.quizCompleted) {
 							res.status(403).send({ msg: "invalid code" })
 							return
 						}
-						// 	var d = new Date();
-						// var n = d.getTime();
-						// //need to debug this, not sure if it works
-						// if ((scoreFromDb.quizStarted.getTime()+ parseInt(quiz.quizTimeLimit)*60*1000) >= n) {
-						// 	res.status(403).send({ msg: "Time limit for this quiz is up" })
-						// 	return;
-						// }
+						var d = new Date();
+						var date = new Date(scoreFromDb.quizStarted.toString())
+						if (d.getTime() - date.getTime() >= parseInt(quiz.quizTimeLimit)*60000 ) {
+							res.status(403).send({ msg: "Time limit for this quiz is up" })
+							return;
+						}
 						else { //quiz is not completed
 							lastQuestionSubmitted = scoreFromDb.results.length;
 							quizScores = scoreFromDb.overallScore;
@@ -56,7 +57,7 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 							quizPointsSystem: quiz.quizPointsSystem,
 							quizOverallPoints: quiz.quizOverallPoints,
 							overallScore: quiz.overallScore,
-							//quizStarted: quizStarted,
+							quizStarted: scoreFromDb.quizStarted,
 						},
 						
 						quizQuestionNumber: lastQuestionSubmitted,
@@ -121,8 +122,14 @@ router.post("/finishQuiz", async (req, res) => {
 
 try {
 	const quiz = await Quiz.findById(quizId);
-	const newScore = quiz.quizScores.find(score => score.studentId === studentId)
-	newScore.quizCompleted = true
+	const scoreObjects = quiz.quizScores
+	const objectToUpdate = scoreObjects.map(score => {
+		if (score.studentId === studentId) {
+			score.quizCompleted = true;
+		}
+	})
+	newScore.
+	console.log(newScore)
 	await quiz.save().then(() =>res.status(200).send({msg: "quiz submitted"})
 	).catch(err=> res.status(400).send({msg: err}))
 	
@@ -130,31 +137,5 @@ try {
 	console.log(err);
 	res.status(400).send({msg: err})
 	}})
-// 		let results = [];
-// 		quiz.questions.forEach((question, index) => {
-// 			if (question.questionType === "trueFalse") {
-// 				if (question.answers.trueFalseAnswer === submittedAnswers[index]) {
-// 					results.push({ question: index, correct: true });
-// 				} else {
-// 					results.push({ question: index, correct: false });
-// 				}
-// 			} else if (question.questionType === "multipleChoice") {
-// 				if (question.answers.multipleChoiceAnswer === submittedAnswers[index]) {
-// 					results.push({ question: index, correct: true });
-// 				} else {
-// 					results.push({ question: index, correct: false });
-// 				}
-// 			}
-// 		});
-// 		const scoreObject = {
-// 			studentId,
-// 			results
-// 		};
-// 		quiz.quizScores.push(scoreObject);
-// 		res.status(200).send({ msg: "Quiz submitted", results });
-// 	} catch (err) {
-// 		console.log(err);
-// 	}
-// });
 
 module.exports = router;
