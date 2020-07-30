@@ -17,6 +17,7 @@ const initalState = {
   quizQuestions: [],
   quizTimeLimit: "",
   quizPointsSystem: "",
+  quizScores: [],
   quizInvites: {
     contacts: [],
     groups: [],
