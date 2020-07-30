@@ -16,10 +16,19 @@ const Quiz = ({ history }) => {
 
 	const quiz = useSelector((state) => state.quiz);
 	const quizPointsSystem = quiz.quizPointsSystem;
+	var timeLimit;
+	if (quiz.quizStarted) {
+		var d = new Date(); //todays date
+		var date = new Date(quiz.quizStarted.toString()) //when the quiz was created
+		var timeTaken = d.getTime() - date.getTime() //how much time has passed since the quiz started
+		timeLimit = parseInt(quiz.quizTimeLimit * 60 - timeTaken/1000) 
+	} else timeLimit = parseInt(quiz.quizTimeLimit) * 60;
+	
+	
 	const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
 	const [ selectedOption, setSelectedOption ] = useState(null);
 	const [ timeUp, setTimeUp ] = useState(false);
-	const timeLimit = parseInt(quiz.quizTimeLimit) * 60;
+	
 	const [ quizStarted, setQuizStarted ] = useState(false);
 	const [finished, setFinished] = useState(false);
 
@@ -98,8 +107,8 @@ const Quiz = ({ history }) => {
 						<div className="quiz__content">
 							<div className="quiz__info">
 								<div className="quiz__progress">
-									Question {currentQuestionIndex + 1}/
-									{quiz.quizQuestions.length}
+									Question {currentQuestionIndex + 1 + quiz.quizLastQuestionNumber}/
+									{quiz.quizTotalQuestions}
 								</div>
 								{quiz.quizTimeLimit !=="false" &&
 								<QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
