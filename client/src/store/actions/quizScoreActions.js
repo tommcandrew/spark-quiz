@@ -85,6 +85,7 @@ export const setQuestionAnswer = ( answer) => {
 		const studentId = getState().auth.user.contactId
 		const quizId = getState().quiz._id
 		const questionNumber = parseInt(getState().score.questionNumber + 1)
+		
 		return axios
 			.post("http://localhost:5000/student/saveAnswer", {quizId, studentId, questionNumber, answer}, tokenConfig(token))
 			.then((res) => {
@@ -93,6 +94,7 @@ export const setQuestionAnswer = ( answer) => {
 					type: SET_NEW_QUESTION_NUMBER,
 					questionNumber: questionNumber
 				})
+			
 			})
 			.catch((err) => {
 				console.log(err)
@@ -106,6 +108,7 @@ export const setOverallScore = (score) => {
 		const studentId = getState().auth.user.contactId
 		const quizId = getState().quiz._id
 		const newScore = parseInt(getState().score.overallScore) + parseInt(score)
+		
 		return axios
 			.post("http://localhost:5000/student/saveScore", {quizId, studentId, newScore}, tokenConfig(token))
 			.then((res) => {
@@ -113,6 +116,7 @@ export const setOverallScore = (score) => {
 					type: SET_OVERALL_SCORE,
 					score: newScore
 				})
+				
 			})
 			.catch(err => {
 				console.log(err)

@@ -12,7 +12,7 @@ import Finish from "./Finish";
 import "./Quiz.css";
 
 const Quiz = ({ history }) => {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
 	const quiz = useSelector((state) => state.quiz);
 	const quizPointsSystem = quiz.quizPointsSystem;
@@ -31,19 +31,19 @@ const Quiz = ({ history }) => {
   };
 	useEffect(() => {
      getQuiz();
-  }, []);
+  }, [finished]);
 
-  useEffect(() => {
-    if (quiz.timeLimit) {
-      setTimeLimit(parseInt(quiz.timeLimit) * 60);
-    }
-    const timer = setInterval(() => {
-      setTimeTaken((current) => current + 1000);
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+	//make a nicer notification
+	useEffect(
+		() => {
+			if (timeUp) {
+				alert("Time's up!");
+				setFinished(true);
+				return;
+			}
+		},
+		[ timeUp ]
+	);
 
 	useEffect(
 		() => {
@@ -69,15 +69,9 @@ const Quiz = ({ history }) => {
 		}
 	};
 
-  const goToNextQuestion = () => {
-    if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
-      setFinished(true);
-    } else {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedOption(null);
-    }
-    setAnswerIsSelected(false);
-  };
+	const handleClick = async (optionIndex, isCorrect) => {
+		if (timeUp) return;
+		setSelectedOption(optionIndex);
 
 		await dispatch(quizScoreActions.setQuestionAnswer(isCorrect));
 		if (isCorrect) {
@@ -95,20 +89,7 @@ const Quiz = ({ history }) => {
 		<div className="quiz__wrapper">
 			{quiz.quizQuestions.length === 0 && <h1>No quiz in state.</h1>}
 
-      {quizStarted && (
-        <Fragment>
-          {finished && <Finish history={history} quiz={quiz} />}
-          {!finished && quiz.quizQuestions.length > 0 && (
-            <div className="quiz__content">
-              <div className="quiz__info">
-                <div className="quiz__progress">
-                  Question {currentQuestionIndex + 1}/
-                  {quiz.quizQuestions.length}
-                </div>
-                {timeLimit && (
-                  <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
-                )}
-              </div>
+			{!quizStarted && <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />}
 
 			{quizStarted && (
 				<Fragment>
@@ -125,29 +106,17 @@ const Quiz = ({ history }) => {
 								}
 							</div>
 
-                <div className="quiz__question">
-                  {quiz.quizQuestions[currentQuestionIndex].question}
-                </div>
+							<div className="quiz__questionContent">
+								{quiz.quizQuestions[currentQuestionIndex].media.length > 0 &&
+									quiz.quizQuestions[currentQuestionIndex].media.map((media, index) => (
+										<div className="quiz__medias" key={index}>
+											<QuizMedia media={media} />
+										</div>
+									))}
 
-                <div className="quiz__options">
-                  {quiz.quizQuestions[currentQuestionIndex].questionType ===
-                    "multipleChoice" &&
-                    quiz.quizQuestions[
-                      currentQuestionIndex
-                    ].answers.multipleChoiceOptions.map((option, index) => (
-                      <QuizOption
-                        option={option}
-                        handleClick={handleClick}
-                        key={option}
-                        optionIndex={index}
-                        selectedOption={selectedOption}
-                        isCorrect={
-                          index.toString() ===
-                          quiz.quizQuestions[currentQuestionIndex].answers
-                            .multipleChoiceAnswer
-                        }
-                      />
-                    ))}
+								<div className="quiz__question">
+									{quiz.quizQuestions[currentQuestionIndex].question}
+								</div>
 
 								<div className="quiz__options">
 									{quiz.quizQuestions[currentQuestionIndex].questionType === "multipleChoice" &&
