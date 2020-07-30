@@ -127,13 +127,12 @@ router.post("/finishQuiz", async (req, res) => {
 try {
 	const quiz = await Quiz.findById(quizId);
 	const scoreObjects = quiz.quizScores
-	const objectToUpdate = scoreObjects.map(score => {
+	scoreObjects.map(score => {
 		if (score.studentId === studentId) {
 			score.quizCompleted = true;
 		}
 	})
-	newScore.
-	console.log(newScore)
+	
 	await quiz.save().then(() =>res.status(200).send({msg: "quiz submitted"})
 	).catch(err=> res.status(400).send({msg: err}))
 	
