@@ -12,6 +12,7 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 		let found;
 		let lastQuestionSubmitted = 0;
 		let quizScores = 0;
+		let quizStartTime
 		quizzes.forEach((quiz) => {
 			quiz.quizInvites.contacts.forEach((contact) => {
 				if (contact.code === studentCode) {
@@ -32,6 +33,7 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 						else { //quiz is not completed
 							lastQuestionSubmitted = scoreFromDb.results.length;
 							quizScores = scoreFromDb.overallScore;
+							quizStartTime = scoreFromDb.quizStarted
 						}
 					}
 					else {
@@ -52,12 +54,14 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 							quizAuthor: quiz.quizAuthor,
 							quizSubject: quiz.quizSubject,
 							quizQuestions: quiz.quizQuestions.slice(lastQuestionSubmitted, quiz.quizQuestions.length),
+							quizTotalQuestions: quiz.quizQuestions.length,
+							quizLastQuestionNumber: lastQuestionSubmitted,
 							points: quiz.points,
 							quizTimeLimit: quiz.quizTimeLimit,
 							quizPointsSystem: quiz.quizPointsSystem,
 							quizOverallPoints: quiz.quizOverallPoints,
 							overallScore: quiz.overallScore,
-							quizStarted: scoreFromDb.quizStarted,
+							quizStarted: quizStartTime,
 						},
 						
 						quizQuestionNumber: lastQuestionSubmitted,

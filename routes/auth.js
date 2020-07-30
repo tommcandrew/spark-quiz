@@ -81,6 +81,7 @@ router.post("/studentLogin", async(req, res) => {
 		let found;
 		let lastQuestionSubmitted = 0;
 		let quizScores = 0;
+		let quizStartTime
 		quizzes.forEach((quiz) => {
 			quiz.quizInvites.contacts.forEach((contact) => {
 				if (contact.code === studentCode) {
@@ -104,6 +105,7 @@ router.post("/studentLogin", async(req, res) => {
 							//quiz is not completed. was opened
 							lastQuestionSubmitted = scoreFromDb.results.length;
 							quizScores = scoreFromDb.overallScore;
+							quizStartTime = scoreFromDb.quizStarted
 						}
 					}
 					//student never opened the quiz. quizScore does for this instance does not exist
@@ -125,15 +127,17 @@ router.post("/studentLogin", async(req, res) => {
 							quizAuthor: quiz.quizAuthor,
 							quizSubject: quiz.quizSubject,
 							quizQuestions: quiz.quizQuestions.slice(lastQuestionSubmitted, quiz.quizQuestions.length),
+							quizTotalQuestions: quiz.quizQuestions.length,
 							points: quiz.points,
 							quizTimeLimit: quiz.quizTimeLimit,
 							quizPointsSystem: quiz.quizPointsSystem,
 							quizOverallPoints: quiz.quizOverallPoints,
 							overallScore: quiz.overallScore,
-							quizStarted: scoreFromDb.quizStarted,
+							quizStarted: quizStartTime,
+							quizLastQuestionNumber: lastQuestionSubmitted,
 						},
 						//values we set based on the last quiz interaction
-						quizQuestionNumber: lastQuestionSubmitted,
+						
 						pointsScored: quizScores,
 						token,
 						user: {
