@@ -84,24 +84,29 @@ router.post("/studentLogin", async(req, res) => {
 		quizzes.forEach((quiz) => {
 			quiz.quizInvites.contacts.forEach((contact) => {
 				if (contact.code === studentCode) {
+					found = contact.code;
+					//this is a valid request
 					const scoreFromDb = quiz.quizScores.find(score => score.studentId === contact.id)
 					if (scoreFromDb) {
+						//student has opened the quiz before
 						if (scoreFromDb.quizCompleted) {
-							res.status(403).send({ msg: "invalid code" })
+							//student already completed the quiz
+							res.status(403).send({ msg: "This quiz has already been submitted" })
 							return;
 						}
-						// var d = new Date();
-						// var n = d.getTime();
-						// //need to debug this, not sure if it works
-						// if ((scoreFromDb.quizStarted.getTime()+ parseInt(quiz.quizTimeLimit)*60*1000) >= n) {
-						// 	res.status(403).send({ msg: "Time limit for this quiz is up" })
-						// 	return;
-						// }
-						else { //quiz is not completed
+						var d = new Date();
+						var date = new Date(scoreFromDb.quizStarted.toString())
+						if (d.getTime() - date.getTime() >= parseInt(quiz.quizTimeLimit)*60000 ) {
+							res.status(403).send({ msg: "Time limit for this quiz is up" })
+							return;
+						}
+						else {
+							//quiz is not completed. was opened
 							lastQuestionSubmitted = scoreFromDb.results.length;
 							quizScores = scoreFromDb.overallScore;
 						}
 					}
+					//student never opened the quiz. quizScore does for this instance does not exist
 					else {
 						quiz.quizScores.push({
 							studentId: contact.id,
@@ -111,11 +116,8 @@ router.post("/studentLogin", async(req, res) => {
 						});
 						quiz.save()
 					}
-					
-					found = contact.code;
+					//sending a response
 					const token = jwt.sign({ code: contact.code, role: "student" }, "secretkey");
-					
-
 					res.status(200).send({
 						quiz: {
 							_id: quiz._id,
@@ -128,11 +130,11 @@ router.post("/studentLogin", async(req, res) => {
 							quizPointsSystem: quiz.quizPointsSystem,
 							quizOverallPoints: quiz.quizOverallPoints,
 							overallScore: quiz.overallScore,
-							//quizStarted: quiz.quizStarted,
+							quizStarted: scoreFromDb.quizStarted,
 						},
+						//values we set based on the last quiz interaction
 						quizQuestionNumber: lastQuestionSubmitted,
 						pointsScored: quizScores,
-						
 						token,
 						user: {
 							code: contact.code,
