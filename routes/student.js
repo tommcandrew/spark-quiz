@@ -21,9 +21,16 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 							res.status(403).send({ msg: "invalid code" })
 							return
 						}
+						// 	var d = new Date();
+						// var n = d.getTime();
+						// //need to debug this, not sure if it works
+						// if ((scoreFromDb.quizStarted.getTime()+ parseInt(quiz.quizTimeLimit)*60*1000) >= n) {
+						// 	res.status(403).send({ msg: "Time limit for this quiz is up" })
+						// 	return;
+						// }
 						else { //quiz is not completed
 							lastQuestionSubmitted = scoreFromDb.results.length;
-							quizScores = scoreFromDb.overallScore
+							quizScores = scoreFromDb.overallScore;
 						}
 					}
 					else {
@@ -48,8 +55,10 @@ router.get("/quizReload", checkAuth, async(req, res) => {
 							quizTimeLimit: quiz.quizTimeLimit,
 							quizPointsSystem: quiz.quizPointsSystem,
 							quizOverallPoints: quiz.quizOverallPoints,
-							overallScore: quiz.overallScore
+							overallScore: quiz.overallScore,
+							//quizStarted: quizStarted,
 						},
+						
 						quizQuestionNumber: lastQuestionSubmitted,
 						pointsScored: quizScores,
 						user: {
