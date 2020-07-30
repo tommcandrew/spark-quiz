@@ -1,9 +1,9 @@
 import axios from "axios";
 import { returnErrors, clearErrors } from "./errorActions";
 import { CLEAR_ERRORS } from "./errorActions";
-import { SET_CURRENT_QUIZ } from "./quizActions";
 import { loading, loaded } from "./errorActions";
-import { setStudent } from "./quizScoreActions";
+import { setStudent, resetStudent } from "./quizScoreActions";
+export const STUDENT_RELOAD_SUCCESS ="STUDENT_RELOAD_SUCCESS"
 export const USER_LOADED = "USER_LOADED";
 export const USER_LOADING = "USER_LOADING";
 export const AUTH_ERROR = "AUTH_ERROR";
@@ -148,27 +148,77 @@ export const login = ({ email, password }) => {
 };
 
 // NOT ERROR MANAGED
-export const studentLogin = (studentCode) => {
+export const studentLogin =  (studentCode) => {
   return (dispatch, getState) => {
     const config = { headers: { "Content-Type": "application/json" } };
-
+    dispatch(loading("Verifing code"))
     return axios
       .post("http://localhost:5000/auth/studentLogin", { studentCode }, config)
       .then((res) => {
-        dispatch({
-          type: STUDENT_LOGIN_SUCCESS,
-          payload: { token: res.data.token },
-        });
-        //not sure if we should use same state to store quiz for student as for teacher when creating
-        dispatch({
-          type: SET_CURRENT_QUIZ,
-          payload: res.data.quiz,
-        });
-        dispatch(setStudent(res.data.user.contactId));
+        dispatch(setStudent({
+          quiz: res.data.quiz,
+          token: res.data.token,
+          user: res.data.user,
+          questionNumber: res.data.quizQuestionNumber,
+          pointsScored: res.data.pointsScored
+        }))
+        dispatch(loaded())
       })
       .catch((err) => {
-        console.log(err);
-      });
+        dispatch(loaded());
+        if (!err.response) {
+          dispatch(
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
+          dispatch(
+            returnErrors(err.response.data, err.response.status, "INVALID_CODE")
+          );
+        }
+      })
+  }
+};
+
+export const studentReload = () => {
+  return async (dispatch, getState) => {
+    if (getState().quiz._id !== "") return;
+    else {
+      
+      const token = getState().auth.token;
+      dispatch(loading("Reloading"))
+    return axios
+      .get("http://localhost:5000/student/quizReload", tokenConfig(token))
+      .then((res) => {
+       
+        dispatch( resetStudent({
+          quiz: res.data.quiz,
+          user: res.data.user,
+          questionNumber: res.data.quizQuestionNumber,
+           pointsScored: res.data.pointsScored
+        }))
+         dispatch(loaded())
+      })
+      .catch((err) => {
+         dispatch(loaded())
+        if (!err.response) {
+          dispatch(
+            returnErrors(
+              { msg: "Server is down. Please try again later" },
+              500,
+              "SERVER_ERROR"
+            )
+          );
+        } else {
+          dispatch(
+            returnErrors(err.response.data, err.response.status, "INVALID_CODE")
+          );
+        }
+      })
+    }
   };
 };
 

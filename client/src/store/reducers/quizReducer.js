@@ -7,6 +7,7 @@ import {
   CLEAR_CURRENT_QUIZ,
   UPDATE_QUIZ,
   PUBLISH_QUIZ,
+  RESET_CURRENT_QUIZ
 } from "../actions/quizActions";
 
 const initalState = {
@@ -50,6 +51,11 @@ export default (state = initalState, action) => {
       };
     case SET_CURRENT_QUIZ:
       localStorage.setItem("quizId", action.payload._id);
+      return {
+        ...state,
+        ...action.payload,
+      };
+    case RESET_CURRENT_QUIZ:
       return {
         ...state,
         ...action.payload,
