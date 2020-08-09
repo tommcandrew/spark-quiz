@@ -42,19 +42,13 @@ const UserQuizzesScreen = (props) => {
   };
 
   return (
-    <Grid
-      container
-      spacing={1}
-      className={root.root}
-      justify="center"
-      style={{ overflow: "visible" }}
-    >
-      <Grid item xs={12} xl={12}>
-        <Typography variant="h6" align="center">
-          Your Quizzes
-        </Typography>
-        <Divider variant="middle" />
-      </Grid>
+   <Grid container spacing={2} className={root.root}>
+			<Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }}>
+				<Typography variant="h4" align="center" >
+					Create a new Quiz
+				</Typography>
+				      <Divider variant="middle"  />
+			</Grid>
       <Grid
         item
         container
@@ -65,8 +59,8 @@ const UserQuizzesScreen = (props) => {
         className={classes.list}
       >
         {quizzes.length === 0 && (
-          <Grid item xl={12}>
-            <Typography>You have no quizzes</Typography>
+          <Grid item xs={12} >
+            <Typography variant="body1" style={{textAlign: "center"}}>You have no quizzes</Typography>
           </Grid>
         )}
         {quizzes &&
@@ -84,13 +78,16 @@ const UserQuizzesScreen = (props) => {
                 <CardContent>
                   <div className={classes.quizName}>
                     <Typography variant="body1">Quiz Name:&nbsp;</Typography>
-                    <Typography variant="h4" color="primary">
+                    <Typography variant="h4">
                       {quiz.quizName}
                     </Typography>
                   </div>
                   <Typography variant="body1" component="p">
-                    Subject: {quiz.quizSubject}
+                    Subject: :&nbsp;
                   </Typography>
+                  <Typography variant="h5">
+                      {quiz.quizSubject}
+                    </Typography>
                   <br />
                 </CardContent>
                 <CardActions>

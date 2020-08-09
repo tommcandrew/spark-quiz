@@ -74,6 +74,7 @@ const Dashboard = ({ window, history }, props) => {
       <div className={classes.root}>
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolbarItems}>
+            <div className={classes.navItemsLeft}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -83,22 +84,8 @@ const Dashboard = ({ window, history }, props) => {
             >
               <MenuIcon />
             </IconButton>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "flex-end",
-              }}
-            >
-              <Typography variant="h5">Hello, &nbsp; </Typography>
-              <Typography
-                variant="h3"
-                color="secondary"
-                data-testid="user-name"
-              >
-                {user ? user.name : ""}
-              </Typography>
-            </div>
+              <Typography variant="h5">{user ? user.name : ""}</Typography>
+          </div>
             <Button
               color="inherit"
               className={classes.logoutButton}
@@ -141,7 +128,6 @@ const Dashboard = ({ window, history }, props) => {
         </nav>
 
         <main className={classes.content}>
-          <Paper className={classes.mainContent} elevation={0}>
             <Switch>
               <Route exact path={path} component={WelcomeScreen} />
               <Route path={`${url}/myquizzes`} component={UserQuizzesScreen} />
@@ -152,7 +138,6 @@ const Dashboard = ({ window, history }, props) => {
               <Route path={`${url}/myAccount`} component={MyAccountScreen} />
               <Route path={`${url}/statistics`} component={Statistics} />
             </Switch>
-          </Paper>
         </main>
       </div>
     </Router>

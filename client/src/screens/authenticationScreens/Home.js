@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@material-ui/core/";
 import { useStyles } from "../../style/authScreensStyles";
-import logo from "../../assets/images/logo1.png";
+import logo from "../../assets/images/logo.png";
 import * as authActions from "../../store/actions/authActions";
 import { useDispatch } from "react-redux";
 import CustomSnackbar from "../../components/mui/Snackbar";

@@ -3,7 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 export const screenLayoutStyles = makeStyles({
 root: {
 		flexGrow: 1,
-		padding: "10px"
+		padding: "20px",
+		height: "100%",
+		display: "flex",
+		flexDirection: "column"
 	},
 })
 
@@ -32,20 +35,27 @@ export const userQuizzesScreenStyle = makeStyles(theme=> ({
 		height: "100%",
 		display: "flex",
 		flexDirection: "column",
-		justifyContent: "space-evenly"
+		justifyContent: "space-evenly",
+		background:" rgb(66, 65, 155)",
+		background: "radial-gradient(circle, rgba(66, 65, 155, 1) 12%, rgba(140, 142, 204, 1) 83%)",
+		color: "#FFF"
+		
 	},
 	list: {
+		 flex: "0 0 90%",
 		overflowY: "scroll",
-		overflowX: "hidden"
+		overflowX: "hidden",
+		padding: "20px"
 	},
 
 	quizName: {
 		display: "flex",
 		flexDirection: "row",
-		alignItems: "flex-end"
+		alignItems: "flex-end",
+		color: "#FFF !important"
 	}, 
 	button: {
-		color: theme.palette.transition2.main
+		color: "#FFF"
 	}
 }));
 
