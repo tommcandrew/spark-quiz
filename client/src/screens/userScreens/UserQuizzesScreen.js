@@ -22,14 +22,6 @@ const UserQuizzesScreen = (props) => {
   const root = screenLayoutStyles();
   const quizzes = useSelector((state) => state.quizzesList.quizzes);
 
-
- useEffect(
-   () => {
-     if(quizzes.length===0){
-			dispatch(userActions.fetchQuizzes());}
-		},
-		[ dispatch ]
-	);
   //HANDLERS
   const handleOpenCreateQuiz = (quiz) => {
     dispatch(quizActions.setCurrentQuiz(quiz));

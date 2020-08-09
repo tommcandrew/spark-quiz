@@ -42,7 +42,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
           <Link to={`${url}/myquizzes`} onClick={clearQuizState} style={{textDecoration: "none"}}>
             <ListItem button>
               <ListItemIcon>
-                <PersonIcon color="primary" />
+                 <HomeIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary={<Typography variant="button" color="textPrimary">My quizzes</Typography>}/> 
             </ListItem>

@@ -53,7 +53,7 @@ const Register = (props) => {
 
   //MAIN
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       {validationError !== "" && (
         <CustomSnackbar
           severity="error"
@@ -61,12 +61,12 @@ const Register = (props) => {
           handleClose={() => setValidationError("")}
         />
       )}
-      <div className={classes.paper}>
+      <div className={classes.paperLogin}>
         <Avatar className={classes.avatar} />
         <Typography component="h1" variant="h5">
           Register
         </Typography>
-        <form className={classes.form} noValidate data-testid="register-form">
+        <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField

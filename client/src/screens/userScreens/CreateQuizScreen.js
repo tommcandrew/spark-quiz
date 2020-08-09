@@ -7,6 +7,7 @@ import QuizOptionsModal from "../../components/modals/QuizOptionsModal";
 import PublishQuizConfirmationModal from "../../components/modals/PublishQuizConfirmationModal"
 import ShareModal from "../../components/modals/ShareModal";
 import * as quizActions from "../../store/actions/quizActions";
+import * as userActions from "../../store/actions/userActions"
 
 import { createQuizScreenStyles, customStyles, screenLayoutStyles } from "../../style/screenStyles";
 import { Paper, Button, Box, Typography, Grid, TextField, Divider  } from "@material-ui/core";
@@ -95,7 +96,8 @@ export default function CreateQuizScreen(props) {
         setValidationError(result.getError("quizSubject"));
       return;
     } else {
-      dispatch(quizActions.createQuiz(quizName, quizSubject));
+		dispatch(quizActions.createQuiz(quizName, quizSubject));
+		dispatch(userActions.addQuiz(quizName, quizSubject, false))
       setQuizName(quiz.quizName);
       setQuizSubject(quiz.quizSubject);
     }

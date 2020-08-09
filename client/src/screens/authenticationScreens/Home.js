@@ -36,15 +36,19 @@ const Home = (props) => {
 
   //MAIN
   return (
-    <Container component="main" maxWidth="xs" data-testid="home-wrapper">
-      {validationError !== "" && (
+    <div className={classes.homeBg}>
+      <div className="classes.appDescription">
+
+      </div>
+
+      <div className={classes.paper}>
+        {validationError !== "" && (
         <CustomSnackbar
           severity="error"
           message={validationError}
           handleClose={() => setValidationError("")}
         />
       )}
-      <div className={classes.paper}>
         <Avatar
           alt="logo"
           src={logo}
@@ -64,7 +68,7 @@ const Home = (props) => {
               color="primary"
               className={classes.actionButton}
             >
-              SignIn
+              SignIn?
             </Button>
           </Link>
           <Link to="/register">
@@ -75,7 +79,7 @@ const Home = (props) => {
               color="primary"
               className={classes.actionButton}
             >
-              Register
+              Register!
             </Button>
           </Link>
           <TextField
@@ -91,14 +95,14 @@ const Home = (props) => {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
           >
             Go
           </Button>
         </form>
       </div>
-    </Container>
+    </div>
   );
 };
 

@@ -42,7 +42,7 @@ const Login = (props) => {
 
   //MAIN
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       {validationError !== "" && (
         <CustomSnackbar
           severity="error"
@@ -51,12 +51,12 @@ const Login = (props) => {
         />
       )}
 
-      <div className={classes.paper}>
+      <div className={classes.paperLogin}>
         <Avatar className={classes.avatar} />
         <Typography component="h1" variant="h5">
           SignIn
         </Typography>
-        <form className={classes.form} noValidate data-testid="login-form">
+        <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
