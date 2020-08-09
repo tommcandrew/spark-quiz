@@ -16,18 +16,15 @@ import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import PeopleIcon from "@material-ui/icons/People";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import Logo from "../../assets/images/logo1.png";
-import { useStyles } from "../../style/drawerStyles";
+
+import { useStyles } from "../../style/dashboardStyles";
 
 const CustomDrawer = ({ url, clearQuizState }) => {
   const classes = useStyles();
 
   return (
     <div>
-      <div className={clsx(classes.toolbar, classes.center)}>
-        <img src={Logo} className={classes.logo} alt="" />
-      </div>
-      <Divider />
+      <div className={classes.toolbar} />
       <div className={classes.list}>
         <List component="nav" aria-label="side drawer">
           <Link to={`${url}`} onClick={clearQuizState} style={{textDecoration: "none"}}>
@@ -85,7 +82,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
           </Link>
         </List>
       </div>
-    </div>
+      </div>
   );
 };
 
