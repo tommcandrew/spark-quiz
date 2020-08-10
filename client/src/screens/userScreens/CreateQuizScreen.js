@@ -111,7 +111,8 @@ export default function CreateQuizScreen(props) {
 
 	//RETURN
 	return (
-		<Fragment>
+		
+		<Grid container spacing={2} className={root.root}>
 			{validationError !== "" &&
 				<CustomSnackbar
 				severity="error"
@@ -119,52 +120,56 @@ export default function CreateQuizScreen(props) {
 				handleClose={() => setValidationError("")}/>
 			}
 			{!quizId && (
-						<Grid container spacing={2} className={root.root}>
-			<Grid item xs={12} xl={12}>
-				<Typography variant="h4" align="center">
+
+	
+		
+		<Fragment>
+				<Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }}>
+				<Typography variant="h4" align="center" >
 					Create a new Quiz
 				</Typography>
-				      <Divider variant="middle"  />
-			</Grid>
-						<Grid container spacing={2} style={{ width: "400px" }}>
-						<Grid item xs={12} md={6}>
-							<Typography variant="h5" align="center"  >Quiz name:</Typography>
-						</Grid>
-						<Grid item xs={12} md={6} align="center">
-							<TextField
-								type="text"
-								name="name"
-								variant="outlined"
-								color="secondary"
-								maxLength="15"
-								onChange={(event) => {
-									setQuizName(event.target.value);
-								}}
-								value={quizName}
-							/>
-						</Grid>
-						<Grid item xs={12} md={6}>
-							<Typography variant="h5" align="center" >Quiz Subject</Typography>
-						</Grid>
-						<Grid item xs={12} md={6} align="center">
-							<TextField
-								type="text"
-								name="subject"
-								variant="outlined"
-								color="secondary"
-								maxLength="15"
-								onChange={(event) => {
+					<Divider variant="middle" />
+				</Grid>
+					<Grid container spacing={2}>
+								<Grid item xs={12} md={6}>
+									<Typography variant="h5" align="center"  >Quiz name:</Typography>
+								</Grid>
+								<Grid item xs={12} md={6} align="center">
+									<TextField
+									type="text"
+									name="name"
+									variant="outlined"
+									color="secondary"
+									maxLength="15"
+									onChange={(event) => {
+										setQuizName(event.target.value);
+										}}
+									value={quizName}
+									/>
+								</Grid>
+								<Grid item xs={12} md={6}>
+									<Typography variant="h5" align="center" >Quiz Subject</Typography>
+								</Grid>
+								<Grid item xs={12} md={6} align="center">
+									<TextField
+									type="text"
+									name="subject"
+									variant="outlined"
+									color="secondary"
+									maxLength="15"
+									onChange={(event) => {
 									setQuizSubject(event.target.value);
-								}}
-								value={quizSubject}
-							/>
-						</Grid>
-						<Grid item xs={12} align="center" >
-							<Button onClick={handleCreate} variant="contained" color="secondary">
-								Submit
-							</Button>
-						</Grid>
-					</Grid></Grid>
+										}}
+										value={quizSubject}
+										/>
+									</Grid>
+								<Grid item xs={12} align="center" >
+									<Button onClick={handleCreate} variant="contained" color="secondary" size="large">
+									Submit
+									</Button>
+								</Grid>
+					</Grid>
+				</Fragment>
 			)}
 			{quiz._id.length > 0 && (
 				<div className={classes.makeNewQuizContainer}>
@@ -178,9 +183,10 @@ export default function CreateQuizScreen(props) {
 					</Modal>
 					<Paper className={clsx(classes.flexItem, classes.buttonContainer)}>
 						<Box className={classes.titleContainer}>
-							<Typography variant="body1">Quiz Name: </Typography>
+							<div style={{display: "flex", alignItems: "flex-end"}}>
+							<Typography variant="body1">Quiz Name: &nbsp;</Typography>
 							<Typography variant="h4" color="secondary">
-							{quiz.quizName}</Typography>
+							{quiz.quizName}</Typography></div>
 							{quiz.quizTimeLimit ? (
 								<Typography>Quiz Timelimit: {(quiz.quizTimeLimit==="false")? <>No limit</> : quiz.quizTimeLimit}</Typography>
 							) : (
@@ -225,6 +231,6 @@ export default function CreateQuizScreen(props) {
           </Paper>
         </div>
       )}
-    </Fragment>
+    </Grid>
   );
 }

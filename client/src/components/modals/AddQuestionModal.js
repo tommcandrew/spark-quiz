@@ -10,7 +10,7 @@ import { addQuestionValidation } from "../../utils/validation";
 import { modalRootStyles, addQuestionModalStyles } from "../../style/modalStyles";
 import camelToSentence from "../../utils/camelToSentence";
 import supportedFileTypes from "../../utils/supportedFileTypes";
-import { Grid, Typography, Button, TextField, Divider, Radio } from "@material-ui/core";
+import { Grid, Typography, Button, TextField, Divider, Radio, } from "@material-ui/core";
 
 const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 	const rootClasses = modalRootStyles();
@@ -245,15 +245,15 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 			{validationError !== "" && (
 				<CustomSnackbar severity="error" message={validationError} handleClose={() => setValidationError("")} />
 			)}
-			<Grid container spacing={2} justify="flex-start" alignItems="flex-start">
+			<Grid container spacing={2} justify="flex-start" alignItems="flex-start" style={{padding: "30px"}}>
 				<Grid item xs={12}>
 					<Typography variant="h5" color="secondary" style={{ textAlign: "center" }}>
 						Add a Question
 					</Typography>
 					<Divider variant="middle" />
 				</Grid>
-				<Grid item xl={12} container spacing={3} justify="center">
-					<Grid item xs={12} md={3}>
+				<Grid item xl={12} container spacing={3} justify="center" style={{marginTop: "10px"}}>
+					<Grid item xs={12} md={3} style={{ textAlign: "right" }}>
 						<input
 							onChange={handleAddFile}
 							accept={supportedFileTypes.toString()}
@@ -296,7 +296,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 				</Grid>
 
 				<Grid item xs={12} sm={6}>
-					<Typography htmlFor="questionType">Question type</Typography>
+					<Typography htmlFor="questionType" align="right">Question type</Typography>
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<select id="questionType" value={questionType} onChange={handleSelectQuestionType}>
@@ -307,7 +307,6 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 						))}
 					</select>
 				</Grid>
-				<Grid item md={6} sm={6} xs={false} />
 				<Grid item md={12}>
 					<TextField
 						variant="outlined"
@@ -321,7 +320,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
 				{questionType === "trueFalse" && (
 					<Fragment>
-						<Grid item md={6} sm={6}>
+						<Grid item md={6} sm={6} style={{ textAlign: "right" }}>
 							<Radio
 								value="true"
 								id="true"
@@ -344,34 +343,23 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 						</Grid>
 					</Fragment>
 				)}
+				
+				<Grid item md={12} sm={12}>
+					<Typography variant="body1" style={{ textAlign: "center" }}>Please select the correct answer.</Typography>
+				</Grid>
 
 				{questionType === "multipleChoice" && (
 					<Fragment>
-						<Grid item md={12}>
-							<Button variant="contained" color="secondary" onClick={handleAddMultipleChoiceOption}>
-								Add option
-							</Button>
-						</Grid>
-
+						
 						{multipleChoiceOptions.map((option, index) => (
-							<Grid item md={6} xs={3} key={index}>
+							<Grid item md={3} xs={3} key={index} style={{ textAlign: "center" }}>
 								<label htmlFor={index}>{index + 1}.</label>
-								<textarea
-									type="text"
+								  <TextField id="standard-basic"
 									value={option}
 									onChange={handleMultipleChoiceOptionChange}
-									//needed to access item in multipleChoiceOptions array in state on change
 									data-index={index}
 									required
 								/>
-								{/* <TextField
-									variant="outlined"
-									value={option}
-									onChange={handleMultipleChoiceOptionChange}
-									//needed to access item in multipleChoiceOptions array in state on change
-									data-index={index}
-									required
-								/> */}
 								<Radio
 									value={index}
 									checked={selectedMultipleChoiceOption === index.toString()}
@@ -380,12 +368,16 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 								/>
 							</Grid>
 						))}
+						<Grid item md={3} style={{ textAlign: "center" }}>
+							<Button color="primary" onClick={handleAddMultipleChoiceOption} >
+								Add more options...
+							</Button>
+						</Grid>
+
 					</Fragment>
 				)}
 
-				<Grid item md={12} sm={12}>
-					<Typography variant="body1">Please select the correct answer.</Typography>
-				</Grid>
+				
 
 				{quiz.quizPointsSystem === "eachQuestion" && (
 					<Grid item md={12} xl={12}>
@@ -399,11 +391,14 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 					</Grid>
 				)}
 
-				<Grid item md={12}>
+				 <Grid item xs={6} style={{ textAlign: "right", marginTop: "30px"}}>
 					<Button type="submit" onClick={handleSubmit} variant="contained" color="secondary">
 						{qToEdit ? <>Update Question</> : <>Add question</>}
 					</Button>
 				</Grid>
+				 <Grid item xs={6}  style={{marginTop: "30px"}}>
+            <Button color="secondary" variant="contained">Cancel</Button>
+          </Grid>
 			</Grid>
 		</div>
 	);

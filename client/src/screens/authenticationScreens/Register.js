@@ -107,6 +107,7 @@ const Register = (props) => {
                 id="password"
                 minLength="8"
                 value={password}
+                color="primary"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
@@ -120,6 +121,7 @@ const Register = (props) => {
                 type="password"
                 id="password2"
                 minLength="8"
+                color="primary"
                 value={password2}
                 onChange={(e) => setPassword2(e.target.value)}
               />
@@ -128,7 +130,7 @@ const Register = (props) => {
           <Button
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
             onClick={handleRegister}
             data-testid="register-button"

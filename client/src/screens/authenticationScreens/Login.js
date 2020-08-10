@@ -87,7 +87,7 @@ const Login = (props) => {
           <Button
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
             onClick={loginHandler}
             data-testid="login-button"

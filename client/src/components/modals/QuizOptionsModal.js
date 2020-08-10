@@ -7,6 +7,7 @@ import {
   Divider,
   NativeSelect,
   TextField,
+  Button
 } from "@material-ui/core";
 import { modalRootStyles } from "../../style/modalStyles";
 import CustomSnackbar from "../../components/mui/Snackbar";
@@ -166,10 +167,10 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
             </Grid>
           </Grid>
           <Grid item xs={6} style={{ textAlign: "right" }}>
-            <button type="submit">Done</button>
+            <Button type="submit" color="secondary" variant="contained">Done</Button>
           </Grid>
           <Grid item xs={6}>
-            <button>Cancel</button>
+            <Button color="secondary" variant="contained">Cancel</Button>
           </Grid>
         </Grid>
       </form>

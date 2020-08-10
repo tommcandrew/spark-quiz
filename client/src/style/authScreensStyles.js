@@ -46,8 +46,8 @@ export const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2, 0, 1),
   },
   large: {
-    height: "150px",
-    width: "200px",
+    height: "200px",
+    width: "250px",
   },
   avatar: {
     backgroundColor: theme.palette.primary.main

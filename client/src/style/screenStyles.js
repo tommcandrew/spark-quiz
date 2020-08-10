@@ -22,7 +22,7 @@ export const customStyles = {
 		justifyContent: "center",
 		padding: "20px",
     display: "inline",
-    maxWidth: "90%",
+    maxWidth: "60%",
     maxHeight: "65%",
 	},
 	overlay: { zIndex: 2000 }
@@ -35,17 +35,17 @@ export const userQuizzesScreenStyle = makeStyles(theme=> ({
 		height: "100%",
 		display: "flex",
 		flexDirection: "column",
-		justifyContent: "space-evenly",
-		background:" rgb(66, 65, 155)",
-		background: "radial-gradient(circle, rgba(66, 65, 155, 1) 12%, rgba(140, 142, 204, 1) 83%)",
-		color: "#FFF"
+		justifyContent: "space-between",
+		background: "rgb(131,168,250)",
+		background: "linear-gradient(104deg, rgba(131, 168, 250, 1) 6%, rgba(112, 148, 246, 1) 67%)", 
+		color: "#FFF",
+		padding: theme.spacing(2)
 		
 	},
 	list: {
 		 flex: "0 0 90%",
 		overflowY: "scroll",
 		overflowX: "hidden",
-		padding: "20px"
 	},
 
 	quizName: {
@@ -84,14 +84,15 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
 	paper: {
 		padding: theme.spacing(2),
 		textAlign: "center",
-		color: theme.palette.text.secondary
 	},
 	buttonContainer: {
-		flex: 1,
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "flex-start",
+		paddingTop: "30px",
+		paddingBottom: "30px",
+		backgroundColor: theme.palette.background.default,
 		[theme.breakpoints.down("md")]: {
 			flexDirection: "row",
 			flexDirection: "column",
@@ -103,7 +104,7 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
 		marginTop: "10px",
 		marginRight: "3px",
 		marginLeft: "3px",
-		width: "90%"
+		width: "90%",
 	},
 	buttons: {
 		width: "100%",
@@ -124,15 +125,24 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
 	}
 }));
 
-export const contactsScreenStyles = makeStyles({
+export const contactsScreenStyles = makeStyles((theme)=>({
     listItem: {
-        height: "30px",
-        width: "200px",
+        height: "100px",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
-    }
-})
+		justifyContent: "center",
+		
+	},
+	contactsContainer: {
+		margin: "10px",
+		minHeight: "80%",
+		overflowY: "scroll",
+		background: theme.palette.background.default,
+	// 	boxShadow: "0 1px 1px rgba(0,0,0,0.25), 0 2px 2px rgba(0,0,0,0.20), 0 4px 4px rgba(0,0,0,0.15), 0 8px 8px rgba(0,0,0,0.10), 0 16px 16px rgba(0,0,0,0.05)",
+      borderRadius: "15px" 
+	}
+	
+}))
 
 export const groupsScreenStyles = makeStyles(() => ({
 	listItem: {

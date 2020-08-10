@@ -45,14 +45,14 @@ const UserQuizzesScreen = (props) => {
    <Grid container spacing={2} className={root.root}>
 			<Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }}>
 				<Typography variant="h4" align="center" >
-					Create a new Quiz
+					My Quizzes
 				</Typography>
 				      <Divider variant="middle"  />
 			</Grid>
       <Grid
         item
         container
-        spacing={2}
+        spacing={3}
         xs={12}
         xl={12}
         justify="flex-start"
@@ -60,7 +60,7 @@ const UserQuizzesScreen = (props) => {
       >
         {quizzes.length === 0 && (
           <Grid item xs={12} >
-            <Typography variant="body1" style={{textAlign: "center"}}>You have no quizzes</Typography>
+            <Typography variant="body1" align='center'>You have no quizzes</Typography>
           </Grid>
         )}
         {quizzes &&
@@ -69,10 +69,10 @@ const UserQuizzesScreen = (props) => {
               item
               xs={12}
               sm={12}
-              md={6}
-              lg={4}
+              md={4}
+              lg={3}
               key={index}
-              className="zoom"
+              style={{height: "250px"}}
             >
               <Card className={classes.card} key={quiz._id}>
                 <CardContent>
@@ -82,13 +82,14 @@ const UserQuizzesScreen = (props) => {
                       {quiz.quizName}
                     </Typography>
                   </div>
+                  <div className={classes.quizName}>
                   <Typography variant="body1" component="p">
-                    Subject: :&nbsp;
+                    Subject:&nbsp;
                   </Typography>
                   <Typography variant="h5">
                       {quiz.quizSubject}
                     </Typography>
-                  <br />
+                  <br /></div>
                 </CardContent>
                 <CardActions>
                   <Button

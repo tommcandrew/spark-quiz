@@ -5,7 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 export const modalRootStyles = makeStyles((theme) => ({
 	root: {
         flex: 1,
-        padding: "2px",
+		padding: "10px",
+		overflowX: "hidden"
         
 	}
 }));
