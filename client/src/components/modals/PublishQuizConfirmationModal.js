@@ -48,14 +48,14 @@ const CreateQuizConfirmationModal = ({ closeModal }) => {
 			<form onSubmit={handleSubmit}>
 				<Grid container spacing={3} justify="center" alignItems="flex-start">
 					<Grid item xs={12}>
-						<Typography variant="h5" color="secondary" style={{ textAlign: "center" }}>
+						<Typography variant="h5" color="primary" style={{ textAlign: "center" }}>
 							Quiz Overview
 						</Typography>
 						<Divider variant="middle" />
 					</Grid>
 					<Grid item xs={12} md={12}>
 						<Typography variant="h5" color="secondary">
-							Group name: {quiz.quizName? <>{quiz.quizName}</>: <>Unnamed</>}
+							Quiz name: {quiz.quizName? <>{quiz.quizName}</>: <>Unnamed</>}
 						</Typography>
 					</Grid>
 					<Grid item xs={12} md={12}>
@@ -108,12 +108,12 @@ const CreateQuizConfirmationModal = ({ closeModal }) => {
 								<>None invited </>}
 						</Typography>
 					</Grid>
-					<Grid item xl={12} container spacing={2}>
+					<Grid item xl={12} container spacing={2} style={{textAlign: "right"}}>
 							<Grid item xs={12} sm={6}>
-							<Button variant="outlined" color = "secondary" onClick={closeModal}>Continue Editing</Button>
+							<Button variant="contained" color = "primary" onClick={closeModal}>Continue Editing</Button>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-							<Button variant="contained" color = "secondary" type="submit">Upload Quiz</Button>
+							<Button variant="contained" color = "primary" type="submit">Upload Quiz</Button>
 						</Grid>
 					</Grid>
 				</Grid>
@@ -123,24 +123,3 @@ const CreateQuizConfirmationModal = ({ closeModal }) => {
 };
 
 export default CreateQuizConfirmationModal;
-
-//   const publishQuiz = () => {
-//     if (
-//       //probably easier to just create empty contacts and groups arrays on initial state object in quizReducer
-//       !quiz.quizInvites.contacts ||
-//       quiz.quizInvites.contacts.length === 0
-//     ) {
-//       if (
-//         window.confirm(
-//           "You are publishing a quiz without any invites. Continue?"
-//         )
-//       ) {
-//         dispatch(quizActions.publishQuiz(quiz._id));
-//         //maybe redirect to My Quizzes here?
-//       } else {
-//         return;
-//       }
-//     }
-//     //repetition!
-//     dispatch(quizActions.publishQuiz(quiz._id));
-//   };

@@ -56,5 +56,15 @@ export const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		boxShadow: "0 1px 1px rgba(0,0,0,0.08), 0 2px 2px rgba(0,0,0,0.12), 0 4px 4px rgba(0,0,0,0.16),  0 8px 8px rgba(0,0,0,0.20)",
 		borderRadius: "5px" 
+  },
+    list: {
+		width: "100%",
+		maxWidth: 360,
 	},
+	
+  logo: {
+    padding: "10px",
+    maxHeight: "64px",
+    width: "200px"
+	}
 }));

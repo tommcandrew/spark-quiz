@@ -60,6 +60,7 @@ const Login = (props) => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                color="primary"
                 variant="outlined"
                 fullWidth
                 id="email"
@@ -72,6 +73,7 @@ const Login = (props) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                color="primary"
                 variant="outlined"
                 fullWidth
                 name="password"
@@ -87,7 +89,7 @@ const Login = (props) => {
           <Button
             fullWidth
             variant="contained"
-            color="secondary"
+            color="primary"
             className={classes.submit}
             onClick={loginHandler}
             data-testid="login-button"

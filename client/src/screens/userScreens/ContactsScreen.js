@@ -5,6 +5,7 @@ import ContactInfoModal from "../../components/modals/ContactInfoModal";
 import AddContactModal from "../../components/modals/AddContactModal";
 import { contactsScreenStyles, screenLayoutStyles, customStyles } from "../../style/screenStyles";
 import { Typography, Grid, Paper, Divider, Input, InputAdornment, Button } from "@material-ui/core";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Modal from "react-modal";
 import SearchIcon from "@material-ui/icons/Search";
 
@@ -41,7 +42,7 @@ const Contacts = () => {
 
 	//MAIN
 	return (
-		<Grid container spacing={2} className={root.root}>
+		<Grid container spacing={2} className={root.root} style={{flexDirection: "row", justifyContent: "flexStart"}}>
 			<Modal
 				isOpen={addContactModalIsOpen}
 				onRequestClose={closeModal}
@@ -66,15 +67,15 @@ const Contacts = () => {
 				/>
 			</Modal>
 
-			<Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }}>
+			<Grid item xs={12} xl={12}>
 				<Typography variant="h4" align="center">
 					Contacts
 				</Typography>
 				<Divider variant="middle" />
 			</Grid>
 
-			<Grid container spacing={2} style={{flex: "1"}}>
-        <Grid item xl={12} xs={12} style={{ textAlign: "center" }}>
+			<Grid item container spacing={3} xs={12} xl={12} className={classes.mainContainer}>
+				<Grid item xl={6} xs={6} style={{textAlign: "right"}}>
 					<Input
 						startAdornment={
 							<InputAdornment position="start">
@@ -83,38 +84,34 @@ const Contacts = () => {
 						}
 					/>
 				</Grid>
-				<Grid item xs={12} container spacing={4} className={classes.contactsContainer}>
-					{user &&
-						user.contacts &&
-						user.contacts.map((contact, index) => (
-							<Grid
-								item
-								lg={3}
-								md={3}
-								xs={6}
-                key={index}
-                className="zoom"
+
+				<Grid item xl={6} xs={6}>
+					<Button
+						variant="outlined"
+						color="primary"
+						startIcon={<AddCircleIcon />}
+						onClick={() => {
+							setAddContactModalIsOpen(true);
+						}}>
+						Add new contact
+					</Button>
+				</Grid>
+
+				{user &&
+					user.contacts &&
+					user.contacts.map((contact, index) => (
+						<Grid item xs={12} sm={12} md={4} lg={4} key={index} className={classes.gridItem}>
+							<Paper
+								 className="zoom"
+								elevation={2}
 								onClick={() => {
 									setContactInfoModalIsOpen(true);
 									setSelectedContact(contact);
 								}}>
-								<Paper className={classes.listItem} >
-									<Typography variant="h5">{contact.name}</Typography>
-								</Paper>
-							</Grid>
-						))}
-				</Grid>
-				<Grid item xs={12} xl={12} style={{textAlign: "center"}}>
-					<Button
-						variant="contained"
-            color="secondary"
-            size="large"
-						onClick={() => {
-							setAddContactModalIsOpen(true);
-						}}>
-						Add Contact
-					</Button>
-				</Grid>
+								<Typography variant="h5">{contact.name}</Typography>
+							</Paper>
+						</Grid>
+					))}
 			</Grid>
 		</Grid>
 	);

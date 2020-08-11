@@ -14,6 +14,7 @@ import {
   Typography,
   Button,
   Divider,
+  DialogContentText,
 } from "@material-ui/core";
 import "../../app.css";
 const UserQuizzesScreen = (props) => {
@@ -55,7 +56,6 @@ const UserQuizzesScreen = (props) => {
         spacing={3}
         xs={12}
         xl={12}
-        justify="flex-start"
         className={classes.list}
       >
         {quizzes.length === 0 && (
@@ -70,48 +70,50 @@ const UserQuizzesScreen = (props) => {
               xs={12}
               sm={12}
               md={4}
-              lg={3}
+              lg={4}
               key={index}
-              style={{height: "250px"}}
+              className={classes.cardGridItem}
+              
             >
-              <Card className={classes.card} key={quiz._id}>
+              <Card className={classes.card}
+              key={quiz._id}>
                 <CardContent>
                   <div className={classes.quizName}>
-                    <Typography variant="body1">Quiz Name:&nbsp;</Typography>
-                    <Typography variant="h4">
+                    <Typography variant="h6">Quiz Name:&nbsp;</Typography>
+                    <Typography variant="h6" color="secondary">
                       {quiz.quizName}
                     </Typography>
                   </div>
                   <div className={classes.quizName}>
-                  <Typography variant="body1" component="p">
+                  <Typography variant="h6" component="p">
                     Subject:&nbsp;
                   </Typography>
-                  <Typography variant="h5">
+                  <Typography variant="h6">
                       {quiz.quizSubject}
                     </Typography>
                   <br /></div>
                 </CardContent>
-                <CardActions>
-                  <Button
-                    size="medium"
-                    className={classes.button}
-                    onClick={() => handleOpenCreateQuiz(quiz)}
-                  >
-                    {quiz.quizPublished ? <>Update</> : <>Continue editing</>}
-                  </Button>
+                <CardActions className={classes.cardActions}>
                   <Button
                     size="small"
-                    className={classes.button}
+                    color="secondary"
                     onClick={() => handleDeleteQuiz(quiz._id)}
                   >
                     Delete
                   </Button>
                   <Button
                     size="small"
-                    className={classes.button}
+                    color="secondary"
                     onClick={() => handleOpenStatistics(quiz)}
                   >
                     Statistics
+                  </Button>
+                   <Button
+                    size="small"
+                    color="secondary"
+                    onClick={() => handleOpenCreateQuiz(quiz)}
+                  >
+                    {quiz.quizPublished ? <>Update</> : <>Continue editing</>}
                   </Button>
                 </CardActions>
               </Card>

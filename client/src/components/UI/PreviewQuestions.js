@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as quizActions from "../../store/actions/quizActions";
 import {
@@ -10,7 +10,8 @@ import {
   Paper,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Logo from "../../assets/images/logo1.png";
+import Logo from "../../assets/images/logo.png";
+
 const useStyles = makeStyles((theme) => ({
   list: {
     width: "100%",
@@ -22,9 +23,16 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
   },
   inline: {
-    marginBottom: "5px",
     display: "block",
   },
+  buttonContainer: {
+    textAlign: "right"
+  },
+  button: {
+    marginRight: "10px",
+    padding: "5px",
+    color: theme.palette.secondary.main
+  }
 }));
 
 const PreviewQuestions = (props) => {
@@ -40,25 +48,29 @@ const PreviewQuestions = (props) => {
     dispatch(quizActions.deleteQuestion(id));
   };
 
+  let questionT;
   return (
-    <>
+    <Fragment>
       {(!quiz.quizQuestions || quiz.quizQuestions.length === 0) && (
-        <p>Add a question</p>
+        <Typography align="center">Add a question</Typography>
       )}
       {quiz.quizQuestions.length > 0 && (
         <List className={classes.list}>
-          {quiz.quizQuestions.map((question, index) => (
-            <ListItem key={index}>
+          {quiz.quizQuestions.map((question, index) => {
+            (question.questionType === "trueFalse") ? 
+                  questionT="True/False"
+                : 
+                    questionT="Multiple Choice"
+                
+            return (
+              <ListItem key={index}>
               <Paper className={classes.listItem}>
-                <ListItemIcon>
-                  <img
-                    src={Logo}
-                    style={{ width: "50px", height: "50px" }}
-                    alt=""
-                  />
+                <ListItemIcon style={{margin: "auto auto", marginRight: "8px"}}> 
+                  <Typography color="primary" variant="h4">Q.{index + 1}</Typography>
                 </ListItemIcon>
+                
                 <ListItemText
-                  primary={question.questionType}
+                  primary={<Typography color="primary" variant="h6">Type: {questionT} </Typography>}
                   secondary={
                     <React.Fragment>
                       <Typography
@@ -72,23 +84,25 @@ const PreviewQuestions = (props) => {
                           ? question.question.slice(0, 295) + "..."
                           : question.question}
                       </Typography>
-                      <button
+                      <div className={classes.buttonContainer}>
+                        <button
+                          className={classes.button}
                         onClick={() => deleteQuestionHandler(question._id)}
                       >
                         delete
                       </button>
-                      <button onClick={() => editQuestionHandler(question._id)}>
+                      <button className={classes.button} size="medium" onClick={() => editQuestionHandler(question._id)}>
                         edit
-                      </button>
+                      </button></div>
                     </React.Fragment>
                   }
                 />
               </Paper>
             </ListItem>
-          ))}
+          )})}
         </List>
       )}
-    </>
+    </Fragment>
   );
 };
 export default PreviewQuestions;

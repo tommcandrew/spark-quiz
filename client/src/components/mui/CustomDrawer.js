@@ -7,15 +7,16 @@ import {
   ListItemText,
   ListItem,
   Divider,
-  Typography
+  Typography,
+  Avatar
 } from "@material-ui/core";
 import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import HomeIcon from "@material-ui/icons/Home";
-import PersonIcon from "@material-ui/icons/Person";
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
-import PeopleIcon from "@material-ui/icons/People";
+import CallIcon from '@material-ui/icons/Call';
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-
+import logo from "../../assets/images/logo.png";
 
 import { useStyles } from "../../style/dashboardStyles";
 
@@ -24,7 +25,9 @@ const CustomDrawer = ({ url, clearQuizState }) => {
 
   return (
     <div>
-      <div className={classes.toolbar} />
+       <div className={classes.toolbar}>
+        <img src={logo} className={classes.logo} alt="" />
+      </div>
       <div className={classes.list}>
         <List component="nav" aria-label="side drawer">
           <Link to={`${url}`} onClick={clearQuizState} style={{textDecoration: "none"}}>
@@ -39,7 +42,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
           <Link to={`${url}/myquizzes`} onClick={clearQuizState} style={{textDecoration: "none"}}>
             <ListItem button>
               <ListItemIcon>
-                 <HomeIcon color="primary" />
+                 <MenuBookIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary={<Typography variant="button" color="textPrimary">My quizzes</Typography>}/> 
             </ListItem>
@@ -66,7 +69,7 @@ const CustomDrawer = ({ url, clearQuizState }) => {
           <Link to={`${url}/groups`} onClick={clearQuizState} style={{textDecoration: "none"}}>
             <ListItem button>
               <ListItemIcon>
-                <PeopleIcon color="primary" />
+                <CallIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary={<Typography variant="button" color="textPrimary">Groups</Typography>}/> 
             </ListItem>

@@ -10,7 +10,7 @@ import { addQuestionValidation } from "../../utils/validation";
 import { modalRootStyles, addQuestionModalStyles } from "../../style/modalStyles";
 import camelToSentence from "../../utils/camelToSentence";
 import supportedFileTypes from "../../utils/supportedFileTypes";
-import { Grid, Typography, Button, TextField, Divider, Radio, } from "@material-ui/core";
+import { Grid, Typography, Button, TextField, Divider, Radio } from "@material-ui/core";
 
 const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 	const rootClasses = modalRootStyles();
@@ -171,7 +171,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 		}
 		if (questionType === "trueFalse") {
 			let hasErr = false;
-			if (selectedTrueFalse === "" || selectedTrueFalse=== null) {
+			if (selectedTrueFalse === "" || selectedTrueFalse === null) {
 				setValidationError("Please choose the correct answer");
 				hasErr = true;
 				return;
@@ -179,80 +179,74 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 			if (hasErr === true) return;
 		} else {
 			if (questionType === "multipleChoice") {
-			let hasErr = false;
-			multipleChoiceOptions.map((option) => {
-				const result = V.validate({ option }, { option: "required|string|min:1|max:30" });
-				if (result.hasError) {
-					setValidationError(result.getError("option"));
-					console.log(result.getError("option"));
-					hasErr = true;
-					return;
-				}
-			});
-			if (hasErr === true) return;
+				let hasErr = false;
+				multipleChoiceOptions.map((option) => {
+					const result = V.validate({ option }, { option: "required|string|min:1|max:30" });
+					if (result.hasError) {
+						setValidationError(result.getError("option"));
+						console.log(result.getError("option"));
+						hasErr = true;
+						return;
+					}
+				});
+				if (hasErr === true) return;
+			}
 		}
-		
-		}if (selectedMultipleChoiceOption === null && questionType === "multipleChoice") {
+		if (selectedMultipleChoiceOption === null && questionType === "multipleChoice") {
 			setValidationError("Please chosse the correct answer");
 			return;
 		}
 		if (quiz.quizPointsSystem === "eachQuestion") {
-			const result = V.validate({ points }, { points: 'required|number|between:1,10' });
-		if (result.hasError) {
-			setValidationError(result.getError("points"));
-			return;
-		}
+			const result = V.validate({ points }, { points: "required|number|between:1,10" });
+			if (result.hasError) {
+				setValidationError(result.getError("points"));
+				return;
+			}
 		}
 
-		 let addedText = addedMedia
-      .filter(
-        (media) =>
-          media.file.mediaType === "text/plain" && media.file.data !== ""
-      )
-      .map((obj) => obj.file);
-    const questionObject = {
-      id: qToEdit ? qToEdit._id : new Date().getUTCMilliseconds().toString(),
-      questionType: questionType,
-      //adding text separately because FormData will ignore it
-      media: [...addedText],
-      question: question,
-      answers: {
-        trueFalseAnswer:
-          questionType === "trueFalse" ? selectedTrueFalse : null,
-        multipleChoiceOptions:
-          questionType === "multipleChoice" ? [...multipleChoiceOptions] : null,
-        multipleChoiceAnswer: selectedMultipleChoiceOption,
-      },
-      points: points,
-    };
-    const questionObjectStringified = JSON.stringify(questionObject);
-    const formData = new FormData();
-    formData.append("_id", quiz._id);
-    formData.append("questionObject", questionObjectStringified);
-    addedMedia.forEach((media) => {
-      formData.append("file", media.file);
-    });
-    qToEdit
-      ? await dispatch(quizActions.editQuestion(formData))
-      : await dispatch(quizActions.addNewQuestion(formData));
-    closeModal();
-		
+		let addedText = addedMedia
+			.filter((media) => media.file.mediaType === "text/plain" && media.file.data !== "")
+			.map((obj) => obj.file);
+		const questionObject = {
+			id: qToEdit ? qToEdit._id : new Date().getUTCMilliseconds().toString(),
+			questionType: questionType,
+			//adding text separately because FormData will ignore it
+			media: [ ...addedText ],
+			question: question,
+			answers: {
+				trueFalseAnswer: questionType === "trueFalse" ? selectedTrueFalse : null,
+				multipleChoiceOptions: questionType === "multipleChoice" ? [ ...multipleChoiceOptions ] : null,
+				multipleChoiceAnswer: selectedMultipleChoiceOption
+			},
+			points: points
+		};
+		const questionObjectStringified = JSON.stringify(questionObject);
+		const formData = new FormData();
+		formData.append("_id", quiz._id);
+		formData.append("questionObject", questionObjectStringified);
+		addedMedia.forEach((media) => {
+			formData.append("file", media.file);
+		});
+		qToEdit
+			? await dispatch(quizActions.editQuestion(formData))
+			: await dispatch(quizActions.addNewQuestion(formData));
+		closeModal();
 	};
 
 	//RETURN
 	return (
-		<div className={rootClasses.root}>
+		<div className={rootClasses.root} style={{overflowY: "scroll"}}>
 			{validationError !== "" && (
 				<CustomSnackbar severity="error" message={validationError} handleClose={() => setValidationError("")} />
 			)}
-			<Grid container spacing={2} justify="flex-start" alignItems="flex-start" style={{padding: "30px"}}>
+			<Grid container spacing={2} justify="flex-start" alignItems="flex-start" style={{ padding: "30px" }}>
 				<Grid item xs={12}>
-					<Typography variant="h5" color="secondary" style={{ textAlign: "center" }}>
+					<Typography variant="h5" color="primary" style={{ textAlign: "center" }}>
 						Add a Question
 					</Typography>
 					<Divider variant="middle" />
 				</Grid>
-				<Grid item xl={12} container spacing={3} justify="center" style={{marginTop: "10px"}}>
+				<Grid item xl={12} container spacing={3} justify="center" style={{ marginTop: "10px" }}>
 					<Grid item xs={12} md={3} style={{ textAlign: "right" }}>
 						<input
 							onChange={handleAddFile}
@@ -280,23 +274,25 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 				</Grid>
 
 				<Grid item xl={12} container spacing={3} justify="center">
-					
-					{addedMedia && addedMedia.map((media, index) => (
-						<Grid item xs={6} md={4} key={index}>
-							<AddedMedia
-								media={media}
-								handleRemoveMedia={handleRemoveMedia}
-								handleTextChange={handleTextChange}
-								key={index}
-								//passed into remove function to access item in addedMedia array in state
-								index={index}
-							/>
-						</Grid>
-					))}
+					{addedMedia &&
+						addedMedia.map((media, index) => (
+							<Grid item xs={6} md={4} key={index}>
+								<AddedMedia
+									media={media}
+									handleRemoveMedia={handleRemoveMedia}
+									handleTextChange={handleTextChange}
+									key={index}
+									//passed into remove function to access item in addedMedia array in state
+									index={index}
+								/>
+							</Grid>
+						))}
 				</Grid>
 
 				<Grid item xs={12} sm={6}>
-					<Typography htmlFor="questionType" align="right">Question type</Typography>
+					<Typography htmlFor="questionType" align="right">
+						Question type
+					</Typography>
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<select id="questionType" value={questionType} onChange={handleSelectQuestionType}>
@@ -343,22 +339,25 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 						</Grid>
 					</Fragment>
 				)}
-				
+
 				<Grid item md={12} sm={12}>
-					<Typography variant="body1" style={{ textAlign: "center" }}>Please select the correct answer.</Typography>
+					<Typography variant="body1" style={{ textAlign: "center"}}>
+						Please select the correct answer.
+					</Typography>
 				</Grid>
 
 				{questionType === "multipleChoice" && (
 					<Fragment>
-						
 						{multipleChoiceOptions.map((option, index) => (
-							<Grid item md={3} xs={3} key={index} style={{ textAlign: "center" }}>
+							<Grid item md={3} xs={3} key={index} style={{ display: "flex", alignItems: "center", justifyContent: "flex-end"  }}>
 								<label htmlFor={index}>{index + 1}.</label>
-								  <TextField id="standard-basic"
+								<input
+									type="text"
 									value={option}
 									onChange={handleMultipleChoiceOptionChange}
 									data-index={index}
 									required
+									className={classes.textArea}
 								/>
 								<Radio
 									value={index}
@@ -369,15 +368,12 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 							</Grid>
 						))}
 						<Grid item md={3} style={{ textAlign: "center" }}>
-							<Button color="primary" onClick={handleAddMultipleChoiceOption} >
+							<Button color="primary" onClick={handleAddMultipleChoiceOption}>
 								Add more options...
 							</Button>
 						</Grid>
-
 					</Fragment>
 				)}
-
-				
 
 				{quiz.quizPointsSystem === "eachQuestion" && (
 					<Grid item md={12} xl={12}>
@@ -391,14 +387,16 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 					</Grid>
 				)}
 
-				 <Grid item xs={6} style={{ textAlign: "right", marginTop: "30px"}}>
-					<Button type="submit" onClick={handleSubmit} variant="contained" color="secondary">
+				<Grid item xs={6} style={{ textAlign: "right", marginTop: "30px" }}>
+					<Button type="submit" onClick={handleSubmit} variant="contained" color="primary">
 						{qToEdit ? <>Update Question</> : <>Add question</>}
 					</Button>
 				</Grid>
-				 <Grid item xs={6}  style={{marginTop: "30px"}}>
-            <Button color="secondary" variant="contained">Cancel</Button>
-          </Grid>
+				<Grid item xs={6} style={{ marginTop: "30px" }}>
+					<Button color="primary" variant="contained">
+						Cancel
+					</Button>
+				</Grid>
 			</Grid>
 		</div>
 	);

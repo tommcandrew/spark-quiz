@@ -108,7 +108,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 
   //RETURN
   return (
-    <div className={rootClasses.root}>
+    <div className={rootClasses.root} style={{overflowY: "hidden"}}>
       {validationError !== "" && (
         <CustomSnackbar
           severity="error"
@@ -122,7 +122,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
           <Grid item xs={12}>
             <Typography
               variant="h5"
-              color="secondary"
+              color="primary"
               style={{ textAlign: "center" }}
             >
               Quiz Options
@@ -133,7 +133,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
             <Typography>Time limit (minutes):</Typography>
           </Grid>
           <Grid item xs={6}>
-            <NativeSelect id="timeLimit" name="timeLimit">
+            <NativeSelect color="secondary" id="timeLimit" name="timeLimit">
               {selectOptions}
             </NativeSelect>
           </Grid>
@@ -147,6 +147,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
               name="points"
               onChange={handleSelectPoints}
               defaultValue={prevState.quizPointsSystem}
+              color="secondary"
             >
               <option value="noPoints">No points</option>
               <option value="overall">Overall</option>
@@ -167,10 +168,10 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
             </Grid>
           </Grid>
           <Grid item xs={6} style={{ textAlign: "right" }}>
-            <Button type="submit" color="secondary" variant="contained">Done</Button>
+            <Button type="submit" color="primary" variant="contained">Done</Button>
           </Grid>
           <Grid item xs={6}>
-            <Button color="secondary" variant="contained">Cancel</Button>
+            <Button color="primary" variant="contained">Cancel</Button>
           </Grid>
         </Grid>
       </form>

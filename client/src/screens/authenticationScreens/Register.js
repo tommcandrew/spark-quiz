@@ -70,6 +70,7 @@ const Register = (props) => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                color="primary"
                 autoComplete="fname"
                 name="name"
                 variant="outlined"
@@ -85,6 +86,7 @@ const Register = (props) => {
 
             <Grid item xs={12}>
               <TextField
+                color="primary"
                 variant="outlined"
                 required
                 fullWidth
@@ -130,7 +132,7 @@ const Register = (props) => {
           <Button
             fullWidth
             variant="contained"
-            color="secondary"
+            color="primary"
             className={classes.submit}
             onClick={handleRegister}
             data-testid="register-button"

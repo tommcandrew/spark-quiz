@@ -1,14 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const screenLayoutStyles = makeStyles({
-root: {
+	root: {
 		flexGrow: 1,
 		padding: "20px",
 		height: "100%",
 		display: "flex",
 		flexDirection: "column"
-	},
-})
+	}
+});
 
 export const customStyles = {
 	content: {
@@ -21,44 +21,48 @@ export const customStyles = {
 		alignItems: "flex-start",
 		justifyContent: "center",
 		padding: "20px",
-    display: "inline",
-    maxWidth: "60%",
-    maxHeight: "65%",
+		display: "inline",
+		maxWidth: "60%",
+		maxHeight: "65%"
 	},
 	overlay: { zIndex: 2000 }
 };
 
-
-export const userQuizzesScreenStyle = makeStyles(theme=> ({
+export const userQuizzesScreenStyle = makeStyles((theme) => ({
 	card: {
-		maxWidth: "100%",
-		height: "100%",
+		maxWidth: "300px",
+		height: "200px",
 		display: "flex",
 		flexDirection: "column",
+		alignItems: "flex-start",
 		justifyContent: "space-between",
-		background: "rgb(131,168,250)",
-		background: "linear-gradient(104deg, rgba(131, 168, 250, 1) 6%, rgba(112, 148, 246, 1) 67%)", 
-		color: "#FFF",
-		padding: theme.spacing(2)
-		
+		// background: "rgb(131,168,250)",
+		// background: "linear-gradient(104deg, rgba(131, 168, 250, 1) 6%, rgba(112, 148, 246, 1) 67%)",
+		backgroundColor: theme.palette.background.default,
+		//padding: theme.spacing(1),
+		borderRadius: "10px"
+	},
+	cardGridItem: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center"
 	},
 	list: {
-		 flex: "0 0 90%",
+		flex: "0 0 90%",
 		overflowY: "scroll",
 		overflowX: "hidden",
+		display: "flex",
+		alignItems: "flex-start",
+		padding: "20px !important"
 	},
 
 	quizName: {
 		display: "flex",
 		flexDirection: "row",
-		alignItems: "flex-end",
-		color: "#FFF !important"
-	}, 
-	button: {
-		color: "#FFF"
+		alignItems: "flex-end"
+		//color: "#fff"
 	}
 }));
-
 
 export const createQuizScreenStyles = makeStyles((theme) => ({
 	quizNameContainer: {
@@ -68,48 +72,42 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
 	makeNewQuizContainer: {
 		width: "100%",
 		height: "100%",
-		padding: "30px",
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "stretch",
 		justifyContent: "space-between",
 		[theme.breakpoints.down("md")]: {
-			padding: "10px",
-			flexDirection: "column"
+			flexDirection: "row"
 		}
-	},
-	flexItem: {
-		margin: "5px"
 	},
 	paper: {
 		padding: theme.spacing(2),
-		textAlign: "center",
+		textAlign: "center"
 	},
 	buttonContainer: {
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "flex-start",
-		paddingTop: "30px",
-		paddingBottom: "30px",
+		paddingTop: "10px",
+		paddingBottom: "10px",
 		backgroundColor: theme.palette.background.default,
 		[theme.breakpoints.down("md")]: {
 			flexDirection: "row",
 			flexDirection: "column",
-			flex: 0,
-			padding: "10px"
+			flex: 0
 		}
 	},
 	titleContainer: {
 		marginTop: "10px",
 		marginRight: "3px",
 		marginLeft: "3px",
-		width: "90%",
+		width: "90%"
 	},
 	buttons: {
-		width: "100%",
+		width: "90%",
 		display: "flex",
-		justifyContent: "center",
+		justifyContent: "flex-end",
 		[theme.breakpoints.down("md")]: {
 			justifyContent: "flex-end"
 		},
@@ -122,35 +120,35 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
 	},
 	gridItem: {
 		padding: "10px"
+	},
+	previewQuestionsContainer: {
+		flex: 1,
+		marginTop: "10px"
 	}
 }));
 
-export const contactsScreenStyles = makeStyles((theme)=>({
-    listItem: {
-        height: "100px",
-        display: "flex",
-        alignItems: "center",
-		justifyContent: "center",
-		
-	},
-	contactsContainer: {
-		margin: "10px",
-		minHeight: "80%",
+export const contactsScreenStyles = makeStyles((theme) => ({
+	mainContainer: {
+		flex: "0 0 90%",
 		overflowY: "scroll",
-		background: theme.palette.background.default,
-	// 	boxShadow: "0 1px 1px rgba(0,0,0,0.25), 0 2px 2px rgba(0,0,0,0.20), 0 4px 4px rgba(0,0,0,0.15), 0 8px 8px rgba(0,0,0,0.10), 0 16px 16px rgba(0,0,0,0.05)",
-      borderRadius: "15px" 
+		overflowX: "hidden",
+		display: "flex",
+		alignItems: "flex-start",
+	},
+	gridItem: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center"
 	}
-	
-}))
+}));
 
 export const groupsScreenStyles = makeStyles(() => ({
 	listItem: {
-        height: "100px",
-        width: "200px",
+		height: "100px",
+		width: "200px",
 		display: "flex",
 		flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-evenly"
-    }
+		alignItems: "center",
+		justifyContent: "space-evenly"
+	}
 }));

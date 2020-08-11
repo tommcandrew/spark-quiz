@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  Avatar,
   Button,
-  Container,
   TextField,
+  Avatar
 } from "@material-ui/core/";
 import { useStyles } from "../../style/authScreensStyles";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo.png"
 import * as authActions from "../../store/actions/authActions";
 import { useDispatch } from "react-redux";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import V from "max-validator";
 import { studentLoginValidation } from "../../utils/validation";
+
 
 const Home = (props) => {
   const classes = useStyles();
@@ -37,8 +37,10 @@ const Home = (props) => {
   //MAIN
   return (
     <div className={classes.homeBg}>
-      <div className="classes.appDescription">
 
+      <div className={classes.hero}>
+
+          
       </div>
 
       <div className={classes.paper}>
@@ -49,7 +51,7 @@ const Home = (props) => {
           handleClose={() => setValidationError("")}
         />
       )}
-        <Avatar
+         <Avatar
           alt="logo"
           src={logo}
           className={classes.large}
@@ -83,6 +85,7 @@ const Home = (props) => {
             </Button>
           </Link>
           <TextField
+            color="primary"
             variant="outlined"
             margin="normal"
             fullWidth
@@ -95,7 +98,7 @@ const Home = (props) => {
             type="submit"
             fullWidth
             variant="contained"
-            color="secondary"
+            color="primary"
             className={classes.submit}
           >
             Go

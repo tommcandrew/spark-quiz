@@ -6,31 +6,29 @@ const theme = createMuiTheme({
 		button: {
 			textTransform: 'none',
 		},
-		body1: {
-			fontSize: "1rem"
-		}
 	},
 	palette: {
 		primary: {
 			light: "#6767af",
-			main: "#42419B",
+			main: "#103056",
 			dark: "#2e2d6c",
 			contrastText: "#fff"
 		},
 		secondary: {
-			light: "#415aaa",
-			main: "#5E81F4",
-			dark: "#7e9af6",
-			contrastText: "#fff"
+			light: "#FF206E",
+			main: "#f88128",
+			dark: "#FF206E",
+			contrastText: "#000"
 		},
 		transition: {
-			main: "#fe9195"
+			light: "#E79CB4",
+			main: "#ffd700",
+			dark: "#731C37",
+			contrastText: "#000"
 		},
-		transition2: {
-			main: "#8c8ecc"
-		},
+		
 		background: {
-			default: "#ebeff8"
+			default: "#e0e0e0"
 		}
 	}
 });
