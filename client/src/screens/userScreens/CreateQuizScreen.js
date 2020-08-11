@@ -11,7 +11,6 @@ import * as userActions from "../../store/actions/userActions";
 
 import { createQuizScreenStyles, customStyles, screenLayoutStyles } from "../../style/screenStyles";
 import { Paper, Button, Box, Typography, Grid, TextField, Divider } from "@material-ui/core";
-import clsx from "clsx";
 import Modal from "react-modal";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import V from "max-validator";

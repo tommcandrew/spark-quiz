@@ -8,6 +8,7 @@ import { Typography, Grid, Paper, Divider, Input, InputAdornment, Button } from 
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Modal from "react-modal";
 import SearchIcon from "@material-ui/icons/Search";
+import clsx from 'clsx';
 
 const Contacts = () => {
 	const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const Contacts = () => {
 
 	//MAIN
 	return (
-		<Grid container spacing={2} className={root.root} style={{flexDirection: "row", justifyContent: "flexStart"}}>
+		<Grid container spacing={2} style={{padding: "20px"}}>
 			<Modal
 				isOpen={addContactModalIsOpen}
 				onRequestClose={closeModal}
@@ -67,28 +68,30 @@ const Contacts = () => {
 				/>
 			</Modal>
 
-			<Grid item xs={12} xl={12}>
+			<Grid item xs={12} xl={12} >
 				<Typography variant="h4" align="center">
 					Contacts
 				</Typography>
 				<Divider variant="middle" />
 			</Grid>
 
-			<Grid item container spacing={3} xs={12} xl={12} className={classes.mainContainer}>
-				<Grid item xl={6} xs={6} style={{textAlign: "right"}}>
+			<Grid item container spacing={2} xs={12} xl={12}>
+				<Grid item  xs={12} style={{marginBottom: "10px"}}>
 					<Input
 						startAdornment={
-							<InputAdornment position="start">
-								<SearchIcon />
+							<InputAdornment position="start" >
+								<SearchIcon color="primary"/>
 							</InputAdornment>
 						}
 					/>
 				</Grid>
 
-				<Grid item xl={6} xs={6}>
+				<div className={classes.contactsContainer}>
+					<Grid container spacing={2} style={{width: "100%", height: "100%"}}> 
+					<Grid xs={12} sm={12} md={3} lg={3} className={classes.gridItem}>
 					<Button
-						variant="outlined"
-						color="primary"
+						variant="contained"
+						color="secondary"
 						startIcon={<AddCircleIcon />}
 						onClick={() => {
 							setAddContactModalIsOpen(true);
@@ -100,9 +103,9 @@ const Contacts = () => {
 				{user &&
 					user.contacts &&
 					user.contacts.map((contact, index) => (
-						<Grid item xs={12} sm={12} md={4} lg={4} key={index} className={classes.gridItem}>
+						<Grid item xs={12} sm={12} md={3} lg={3} key={index} className={classes.gridItem}>
 							<Paper
-								 className="zoom"
+								className={clsx(classes.paper, "zoom")}
 								elevation={2}
 								onClick={() => {
 									setContactInfoModalIsOpen(true);
@@ -112,6 +115,9 @@ const Contacts = () => {
 							</Paper>
 						</Grid>
 					))}
+					</Grid>
+				</div>
+				
 			</Grid>
 		</Grid>
 	);

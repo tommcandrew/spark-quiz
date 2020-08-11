@@ -128,17 +128,24 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
 }));
 
 export const contactsScreenStyles = makeStyles((theme) => ({
-	mainContainer: {
-		flex: "0 0 90%",
-		overflowY: "scroll",
-		overflowX: "hidden",
-		display: "flex",
-		alignItems: "flex-start",
-	},
 	gridItem: {
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "center"
+	},
+	contactsContainer: {
+		height: "100%",
+		width: "100%",
+		overflowY: "scroll"
+	},
+	paper: {
+		width: "100%",
+		height: "100%",
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: theme.palette.background.default
+								
 	}
 }));
 
