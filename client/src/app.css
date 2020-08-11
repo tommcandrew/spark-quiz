@@ -34,7 +34,7 @@ body {
 }
 
 ._loading_overlay_content {
-  color: #fe9195
+  color: #ee425a;
 }
 
 .zoom {
@@ -46,7 +46,7 @@ body {
   ) !important; /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
 body {
-  background: #EBEFF8;
+  background: #ebeff8;
   background-size: cover;
   font-family: "bodyFont" !important;
   /* overflow: hidden; */
@@ -80,4 +80,3 @@ span {
 Link {
   text-decoration: none;
 }
-

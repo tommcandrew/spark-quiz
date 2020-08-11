@@ -52,7 +52,7 @@ const Groups = () => {
 	};
 
 	return (
-		<Grid container spacing={2} style={{ padding: "20px" }}>
+		<Grid container spacing={2} style={{ padding: "5px" }}>
 			{warningMessage !== "" && (
 				<CustomSnackbar severity="warning" message={warningMessage} handleClose={() => setWarningMessage("")} />
 			)}
