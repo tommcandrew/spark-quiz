@@ -3,6 +3,7 @@ import {
   DELETE_QUIZ,
   ADD_CONTACT,
   ADD_GROUP,
+  ADD_QUIZ
 } from "../actions/userActions";
 
 const initalState = {
@@ -21,6 +22,11 @@ export default (state = initalState, action) => {
         ...state,
         quizzes: state.quizzes.filter((quiz) => quiz._id !== action.payload),
       };
+    case ADD_QUIZ: 
+      return {
+        ...state,
+        quizzes: [...state.quizzes, action.payload]
+      }
     case ADD_CONTACT:
       return { ...state, contacts: [...state.contacts, action.payload] };
     case ADD_GROUP:

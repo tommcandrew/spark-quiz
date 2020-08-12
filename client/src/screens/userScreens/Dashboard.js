@@ -48,10 +48,11 @@ const Dashboard = ({ window, history }, props) => {
   //USER VERIFICATION ON RELOADS
   const getUser = async () => {
     await dispatch(authActions.loadUser());
+    dispatch(userActions.fetchQuizzes())
   };
   useEffect(() => {
     if (!user) getUser();
-  }, );
+  }, []);
 
   //HANDLERS
   const handleDrawerToggle = () => {
@@ -73,6 +74,7 @@ const Dashboard = ({ window, history }, props) => {
       <div className={classes.root}>
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolbarItems}>
+            <div className={classes.navItemsLeft}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -82,22 +84,8 @@ const Dashboard = ({ window, history }, props) => {
             >
               <MenuIcon />
             </IconButton>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "flex-end",
-              }}
-            >
-              <Typography variant="h5">Hello, &nbsp; </Typography>
-              <Typography
-                variant="h3"
-                color="secondary"
-                data-testid="user-name"
-              >
-                {user ? user.name : ""}
-              </Typography>
-            </div>
+              <Typography variant="h5">{user ? user.name : ""}</Typography>
+          </div>
             <Button
               color="inherit"
               className={classes.logoutButton}
@@ -109,7 +97,7 @@ const Dashboard = ({ window, history }, props) => {
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer} aria-label="mailbox folders">
-          <Hidden smUp implementation="css">
+          <Hidden mdUp implementation="css">
             <Drawer
               container={container}
               variant="temporary"
@@ -126,7 +114,7 @@ const Dashboard = ({ window, history }, props) => {
               <CustomDrawer url={url} clearQuizState={handleClearQuizState} />
             </Drawer>
           </Hidden>
-          <Hidden xsDown implementation="css">
+          <Hidden smDown implementation="css">
             <Drawer
               classes={{
                 paper: classes.drawerPaper,
@@ -140,7 +128,6 @@ const Dashboard = ({ window, history }, props) => {
         </nav>
 
         <main className={classes.content}>
-          <Paper className={classes.mainContent} elevation={0}>
             <Switch>
               <Route exact path={path} component={WelcomeScreen} />
               <Route path={`${url}/myquizzes`} component={UserQuizzesScreen} />
@@ -151,7 +138,6 @@ const Dashboard = ({ window, history }, props) => {
               <Route path={`${url}/myAccount`} component={MyAccountScreen} />
               <Route path={`${url}/statistics`} component={Statistics} />
             </Switch>
-          </Paper>
         </main>
       </div>
     </Router>

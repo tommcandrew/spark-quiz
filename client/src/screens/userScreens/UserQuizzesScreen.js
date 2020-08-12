@@ -14,6 +14,7 @@ import {
   Typography,
   Button,
   Divider,
+  DialogContentText,
 } from "@material-ui/core";
 import "../../app.css";
 const UserQuizzesScreen = (props) => {
@@ -22,14 +23,6 @@ const UserQuizzesScreen = (props) => {
   const root = screenLayoutStyles();
   const quizzes = useSelector((state) => state.quizzesList.quizzes);
 
-
- useEffect(
-   () => {
-     if(quizzes.length===0){
-			dispatch(userActions.fetchQuizzes());}
-		},
-		[ dispatch ]
-	);
   //HANDLERS
   const handleOpenCreateQuiz = (quiz) => {
     dispatch(quizActions.setCurrentQuiz(quiz));
@@ -50,31 +43,24 @@ const UserQuizzesScreen = (props) => {
   };
 
   return (
-    <Grid
-      container
-      spacing={1}
-      className={root.root}
-      justify="center"
-      style={{ overflow: "visible" }}
-    >
-      <Grid item xs={12} xl={12}>
-        <Typography variant="h6" align="center">
-          Your Quizzes
-        </Typography>
-        <Divider variant="middle" />
-      </Grid>
+   <Grid container spacing={2} className={root.root}>
+			<Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }}>
+				<Typography variant="h4" align="center" >
+					My Quizzes
+				</Typography>
+				      <Divider variant="middle"  />
+			</Grid>
       <Grid
         item
         container
-        spacing={2}
+        spacing={3}
         xs={12}
         xl={12}
-        justify="flex-start"
         className={classes.list}
       >
         {quizzes.length === 0 && (
-          <Grid item xl={12}>
-            <Typography>You have no quizzes</Typography>
+          <Grid item xs={12} >
+            <Typography variant="body1" align='center'>You have no quizzes</Typography>
           </Grid>
         )}
         {quizzes &&
@@ -83,45 +69,51 @@ const UserQuizzesScreen = (props) => {
               item
               xs={12}
               sm={12}
-              md={6}
+              md={4}
               lg={4}
               key={index}
-              className="zoom"
+              className={classes.cardGridItem}
+              
             >
-              <Card className={classes.card} key={quiz._id}>
+              <Card className={classes.card}
+              key={quiz._id}>
                 <CardContent>
                   <div className={classes.quizName}>
-                    <Typography variant="body1">Quiz Name:&nbsp;</Typography>
-                    <Typography variant="h4" color="primary">
+                    <Typography variant="h6">Quiz Name:&nbsp;</Typography>
+                    <Typography variant="h6" color="secondary">
                       {quiz.quizName}
                     </Typography>
                   </div>
-                  <Typography variant="body1" component="p">
-                    Subject: {quiz.quizSubject}
+                  <div className={classes.quizName}>
+                  <Typography variant="h6" component="p">
+                    Subject:&nbsp;
                   </Typography>
-                  <br />
+                  <Typography variant="h6">
+                      {quiz.quizSubject}
+                    </Typography>
+                  <br /></div>
                 </CardContent>
-                <CardActions>
-                  <Button
-                    size="medium"
-                    className={classes.button}
-                    onClick={() => handleOpenCreateQuiz(quiz)}
-                  >
-                    {quiz.quizPublished ? <>Update</> : <>Continue editing</>}
-                  </Button>
+                <CardActions className={classes.cardActions}>
                   <Button
                     size="small"
-                    className={classes.button}
+                    color="secondary"
                     onClick={() => handleDeleteQuiz(quiz._id)}
                   >
                     Delete
                   </Button>
                   <Button
                     size="small"
-                    className={classes.button}
+                    color="secondary"
                     onClick={() => handleOpenStatistics(quiz)}
                   >
                     Statistics
+                  </Button>
+                   <Button
+                    size="small"
+                    color="secondary"
+                    onClick={() => handleOpenCreateQuiz(quiz)}
+                  >
+                    {quiz.quizPublished ? <>Update</> : <>Continue editing</>}
                   </Button>
                 </CardActions>
               </Card>

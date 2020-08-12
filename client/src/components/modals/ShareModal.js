@@ -191,11 +191,11 @@ const ShareModal = ({ quizId, closeModal }) => {
           handleClose={() => setValidationError("")}
         />
       )}
-      <Grid container spacing={2} justify="center" alignItems="flex-start">
+      <Grid container spacing={2} justify="center" alignItems="flex-start" style={{overflow: "hidden"}}>
         <Grid item xs={12}>
           <Typography
             variant="h5"
-            color="secondary"
+            color="primary"
             style={{ textAlign: "center" }}
           >
             Invite Students
@@ -313,18 +313,18 @@ const ShareModal = ({ quizId, closeModal }) => {
           </TabPanel>
         </SwipeableViews>
 
-        <Grid item xl={12} container spacing={2}>
-          <Grid item md={6}>
+        <Grid item xl={12} container spacing={2} style={{marginTop: "5px"}}>
+          <Grid item md={6} style={{textAlign: "right"}}>
             <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               onClick={handleComplete}
             >
               Done
             </Button>
           </Grid>
           <Grid item md={6}>
-            <Button variant="contained" color="secondary" onClick={closeModal}>
+            <Button variant="contained" color="primary" onClick={closeModal}>
               Cancel
             </Button>
           </Grid>

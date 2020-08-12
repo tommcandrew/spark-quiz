@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { modalRootStyles } from "../../style/modalStyles";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import { Grid, Typography, Divider, Button, TextField } from "@material-ui/core";
-import SaveIcon from '@material-ui/icons/Save';
-import CloseIcon from '@material-ui/icons/Close';
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import SaveIcon from "@material-ui/icons/Save";
+import CloseIcon from "@material-ui/icons/Close";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import V from "max-validator";
 import { contactValidation } from "../../utils/validation";
 
@@ -14,20 +14,20 @@ const ContactInfoModal = ({ contact, handleSubmit, handleDeleteContact, closeMod
 
 	const internalSubmit = (e) => {
 		e.preventDefault();
-		const email = e.target.email.value
-		const name = e.target.name.value
-		setValidationError("")
-		const result = V.validate({email, name }, contactValidation);
-			if (result.hasError) {
-				if (result.isError('name')){
-					setValidationError(result.getError("name"))
-					return;
-				} else setValidationError(result.getError("email"))
+		const email = e.target.email.value;
+		const name = e.target.name.value;
+		setValidationError("");
+		const result = V.validate({ email, name }, contactValidation);
+		if (result.hasError) {
+			if (result.isError("name")) {
+				setValidationError(result.getError("name"));
 				return;
-			}
-		
-		else{ handleSubmit(name, email)}
-	}
+			} else setValidationError(result.getError("email"));
+			return;
+		} else {
+			handleSubmit(name, email);
+		}
+	};
 
 	return (
 		<div className={rootClasses.root}>
@@ -38,41 +38,52 @@ const ContactInfoModal = ({ contact, handleSubmit, handleDeleteContact, closeMod
 			<form onSubmit={internalSubmit}>
 				<Grid container spacing={3} justify="center" alignItems="flex-start">
 					<Grid item xs={12}>
-						<Typography variant="h5" color="secondary" style={{ textAlign: "center" }}>
+						<Typography variant="h5" color="primary" style={{ textAlign: "center" }}>
 							{contact.name}'s Information
 						</Typography>
 						<Divider variant="middle" />
 					</Grid>
-          <Grid item xs={12} md={6}>
-            <Typography>Name: </Typography>
-					</Grid>
-          <Grid item xs={12} md={6}>
-            <TextField variant="outlined"  type="text" id="name" name="name" defaultValue={contact ? contact.name : ""}/>
+					<Grid item xs={12} md={6} style={{ textAlign: "right", marginTop: "auto" }}>
+						<Typography>Name: </Typography>
 					</Grid>
 					<Grid item xs={12} md={6}>
+						<TextField
+							variant="outlined"
+							type="text"
+							id="name"
+							name="name"
+							defaultValue={contact ? contact.name : ""}
+						/>
+					</Grid>
+					<Grid item xs={12} md={6} style={{ textAlign: "right", marginTop: "auto" }}>
 						<Typography>Email: </Typography>
 					</Grid>
-          <Grid item xs={12} md={6}>
-            <TextField variant="outlined" id="email" name="email" defaultValue={contact.email}/>
+					<Grid item xs={12} md={6}>
+						<TextField variant="outlined" id="email" name="email" defaultValue={contact.email} />
 					</Grid>
-					<Grid item xs={12} md={4}>
-            <Button type="submit" variant="contained"
-              color="secondary" startIcon={<SaveIcon />}>Save</Button>
+					<Grid item xs={12} md={4} style={{ textAlign: "center" }}>
+						<Button type="submit" variant="contained" color="primary" startIcon={<SaveIcon />}>
+							Save
+						</Button>
 					</Grid>
 
-					<Grid item xs={12} md={4}>
+					<Grid item xs={12} md={4} style={{ textAlign: "center" }}>
 						<Button
 							onClick={() => {
 								closeModal();
-              }}
-              variant="contained"
-              color="secondary" startIcon={<CloseIcon />}>
+							}}
+							variant="contained"
+							color="primary"
+							startIcon={<CloseIcon />}>
 							Cancel
 						</Button>
 					</Grid>
-					<Grid item xs={12} md={4}>
-						<Button onClick={handleDeleteContact}variant="contained"
-              color="secondary" startIcon={<DeleteOutlineIcon />}>
+					<Grid item xs={12} md={4} style={{ textAlign: "center" }}>
+						<Button
+							onClick={handleDeleteContact}
+							variant="contained"
+							color="primary"
+							startIcon={<DeleteOutlineIcon />}>
 							Delete Contact
 						</Button>
 					</Grid>

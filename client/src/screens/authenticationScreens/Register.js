@@ -53,7 +53,7 @@ const Register = (props) => {
 
   //MAIN
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       {validationError !== "" && (
         <CustomSnackbar
           severity="error"
@@ -61,15 +61,16 @@ const Register = (props) => {
           handleClose={() => setValidationError("")}
         />
       )}
-      <div className={classes.paper}>
+      <div className={classes.paperLogin}>
         <Avatar className={classes.avatar} />
         <Typography component="h1" variant="h5">
           Register
         </Typography>
-        <form className={classes.form} noValidate data-testid="register-form">
+        <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                color="primary"
                 autoComplete="fname"
                 name="name"
                 variant="outlined"
@@ -85,6 +86,7 @@ const Register = (props) => {
 
             <Grid item xs={12}>
               <TextField
+                color="primary"
                 variant="outlined"
                 required
                 fullWidth
@@ -107,6 +109,7 @@ const Register = (props) => {
                 id="password"
                 minLength="8"
                 value={password}
+                color="primary"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
@@ -120,6 +123,7 @@ const Register = (props) => {
                 type="password"
                 id="password2"
                 minLength="8"
+                color="primary"
                 value={password2}
                 onChange={(e) => setPassword2(e.target.value)}
               />
