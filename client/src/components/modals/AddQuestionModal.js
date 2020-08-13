@@ -31,7 +31,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [addedMedia, setAddedMedia] = useState([]);
   const [retrivedMedia, setRetrivedMedia] = useState([]);
-  const [questionType, setQuestionType] = useState("multipleChoice");
+  const [questionType, setQuestionType] = useState("trueFalse");
   const [multipleChoiceOptions, setMultipleChoiceOptions] = useState(["", ""]);
   const [
     selectedMultipleChoiceOption,

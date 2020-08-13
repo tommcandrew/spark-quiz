@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   screenLayoutStyles,
@@ -22,6 +22,13 @@ const UserQuizzesScreen = (props) => {
   const classes = userQuizzesScreenStyle();
   const root = screenLayoutStyles();
   const quizzes = useSelector((state) => state.quizzesList.quizzes);
+  const [displayedQuizzes, setDisplayedQuizzes] = useState([]);
+
+  useEffect(() => {
+    if (quizzes) {
+      setDisplayedQuizzes(quizzes);
+    }
+  }, [quizzes]);
 
   //HANDLERS
   const handleOpenCreateQuiz = (quiz) => {
@@ -43,28 +50,23 @@ const UserQuizzesScreen = (props) => {
   };
 
   return (
-   <Grid container spacing={2} className={root.root}>
-			<Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }}>
-				<Typography variant="h4" align="center" >
-					My Quizzes
-				</Typography>
-				      <Divider variant="middle"  />
-			</Grid>
-      <Grid
-        item
-        container
-        spacing={3}
-        xs={12}
-        xl={12}
-        className={classes.list}
-      >
+    <Grid container spacing={2} className={root.root}>
+      <Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }}>
+        <Typography variant="h4" align="center">
+          My Quizzes
+        </Typography>
+        <Divider variant="middle" />
+      </Grid>
+      <Grid item container spacing={3} xs={12} xl={12} className={classes.list}>
         {quizzes.length === 0 && (
-          <Grid item xs={12} >
-            <Typography variant="body1" align='center'>You have no quizzes</Typography>
+          <Grid item xs={12}>
+            <Typography variant="body1" align="center">
+              You have no quizzes
+            </Typography>
           </Grid>
         )}
-        {quizzes &&
-          quizzes.map((quiz, index) => (
+        {displayedQuizzes &&
+          displayedQuizzes.map((quiz, index) => (
             <Grid
               item
               xs={12}
@@ -73,10 +75,8 @@ const UserQuizzesScreen = (props) => {
               lg={4}
               key={index}
               className={classes.cardGridItem}
-              
             >
-              <Card className={classes.card}
-              key={quiz._id}>
+              <Card className={classes.card} key={quiz._id}>
                 <CardContent>
                   <div className={classes.quizName}>
                     <Typography variant="h6">Quiz Name:&nbsp;</Typography>
@@ -85,13 +85,12 @@ const UserQuizzesScreen = (props) => {
                     </Typography>
                   </div>
                   <div className={classes.quizName}>
-                  <Typography variant="h6" component="p">
-                    Subject:&nbsp;
-                  </Typography>
-                  <Typography variant="h6">
-                      {quiz.quizSubject}
+                    <Typography variant="h6" component="p">
+                      Subject:&nbsp;
                     </Typography>
-                  <br /></div>
+                    <Typography variant="h6">{quiz.quizSubject}</Typography>
+                    <br />
+                  </div>
                 </CardContent>
                 <CardActions className={classes.cardActions}>
                   <Button
@@ -108,7 +107,7 @@ const UserQuizzesScreen = (props) => {
                   >
                     Statistics
                   </Button>
-                   <Button
+                  <Button
                     size="small"
                     color="secondary"
                     onClick={() => handleOpenCreateQuiz(quiz)}
