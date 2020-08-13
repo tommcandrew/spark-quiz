@@ -45,7 +45,7 @@ const Contacts = () => {
         setDisplayedContacts(filteredContacts);
       }
     }
-  }, [searchInput]);
+  }, [searchInput, user]);
 
   //HANDLERS
   function closeModal() {

@@ -47,7 +47,7 @@ const Groups = () => {
         setDisplayedGroups(filteredGroups);
       }
     }
-  }, [searchInput]);
+  }, [searchInput, user]);
 
   const closeModal = () => {
     setAddGroupModalIsOpen(false);
