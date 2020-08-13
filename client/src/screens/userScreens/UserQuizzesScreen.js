@@ -25,7 +25,10 @@ const UserQuizzesScreen = (props) => {
   const [displayedQuizzes, setDisplayedQuizzes] = useState([]);
 
   useEffect(() => {
+    console.log("EFFECT");
+    console.log(quizzes);
     if (quizzes) {
+      console.log("updating");
       setDisplayedQuizzes(quizzes);
     }
   }, [quizzes]);
