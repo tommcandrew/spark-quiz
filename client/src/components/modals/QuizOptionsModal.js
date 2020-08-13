@@ -7,7 +7,7 @@ import {
   Divider,
   NativeSelect,
   TextField,
-  Button
+  Button,
 } from "@material-ui/core";
 import { modalRootStyles } from "../../style/modalStyles";
 import CustomSnackbar from "../../components/mui/Snackbar";
@@ -78,29 +78,33 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
     const selectedTimeLimit = e.target.timeLimit.value;
     const p = e.target.points.value;
 
-		let isValid = true;
-		if (p === "overall") {
-			// setOverallPoints(e.target.overallPoints.value);
-			let points = e.target.overallPoints.value;
-			const result = V.validate({ points }, quizOptionsValidation);
-			if (result.hasError) {
-				setValidationError(result.getError("points"));
-				isValid = false;
-				return;
-			}
-			if (isValid === true) {
-				if (p === "overall") {
-					dispatch(quizActions.updateQuiz(quizId, { quizOverallPoints: points }));
-				}
-			}
-		}
-		if (isValid === true) {
-			if (selectedTimeLimit) {
-				dispatch(quizActions.updateQuiz(quizId, { quizTimeLimit: selectedTimeLimit }));
-			}
-				if (p) {
-					dispatch(quizActions.updateQuiz(quizId, { quizPointsSystem: p }));
-				}
+    let isValid = true;
+    if (p === "overall") {
+      // setOverallPoints(e.target.overallPoints.value);
+      let points = e.target.overallPoints.value;
+      const result = V.validate({ points }, quizOptionsValidation);
+      if (result.hasError) {
+        setValidationError(result.getError("points"));
+        isValid = false;
+        return;
+      }
+      if (isValid === true) {
+        if (p === "overall") {
+          dispatch(
+            quizActions.updateQuiz(quizId, { quizOverallPoints: points })
+          );
+        }
+      }
+    }
+    if (isValid === true) {
+      if (selectedTimeLimit) {
+        dispatch(
+          quizActions.updateQuiz(quizId, { quizTimeLimit: selectedTimeLimit })
+        );
+      }
+      if (p) {
+        dispatch(quizActions.updateQuiz(quizId, { quizPointsSystem: p }));
+      }
 
       closeModal();
     }
@@ -108,7 +112,7 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
 
   //RETURN
   return (
-    <div className={rootClasses.root} style={{overflowY: "hidden"}}>
+    <div className={rootClasses.root} style={{ overflowY: "hidden" }}>
       {validationError !== "" && (
         <CustomSnackbar
           severity="error"
@@ -168,10 +172,14 @@ const QuizOptionsModal = ({ quizId, closeModal }) => {
             </Grid>
           </Grid>
           <Grid item xs={6} style={{ textAlign: "right" }}>
-            <Button type="submit" color="primary" variant="contained">Done</Button>
+            <Button type="submit" color="primary" variant="contained">
+              Done
+            </Button>
           </Grid>
           <Grid item xs={6}>
-            <Button color="primary" variant="contained">Cancel</Button>
+            <Button color="primary" variant="contained" onClick={closeModal}>
+              Cancel
+            </Button>
           </Grid>
         </Grid>
       </form>
