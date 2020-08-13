@@ -132,6 +132,7 @@ export const contactsScreenStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    cursor: "pointer",
   },
   contactsContainer: {
     height: "100%",
