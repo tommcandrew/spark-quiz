@@ -19,9 +19,11 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [validationError, setValidationError] = useState("");
-  const [email, setEmail] = useState("test@test.com");
-  const [password, setPassword] = useState("12345678");
-  const { from } = props.location.state || { from: { pathname: "/dashboard" } };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { from } = props.location.state || {
+    from: { pathname: "/dashboard/myquizzes" },
+  };
 
   //HANDLERS
   const loginHandler = async () => {

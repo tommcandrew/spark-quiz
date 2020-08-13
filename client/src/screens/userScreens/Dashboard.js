@@ -22,7 +22,6 @@ import { useStyles } from "../../style/dashboardStyles";
 import { useTheme } from "@material-ui/core/styles";
 
 import CustomDrawer from "../../components/mui/CustomDrawer";
-import WelcomeScreen from "./WelcomeScreen";
 import UserQuizzesScreen from "./UserQuizzesScreen";
 import CreateQuizScreen from "./CreateQuizScreen";
 import ContactsScreen from "./ContactsScreen";
@@ -48,7 +47,7 @@ const Dashboard = ({ window, history }, props) => {
   //USER VERIFICATION ON RELOADS
   const getUser = async () => {
     await dispatch(authActions.loadUser());
-    dispatch(userActions.fetchQuizzes())
+    dispatch(userActions.fetchQuizzes());
   };
   useEffect(() => {
     if (!user) getUser();
@@ -75,17 +74,17 @@ const Dashboard = ({ window, history }, props) => {
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolbarItems}>
             <div className={classes.navItemsLeft}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              className={classes.menuButton}
-            >
-              <MenuIcon />
-            </IconButton>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                className={classes.menuButton}
+              >
+                <MenuIcon />
+              </IconButton>
               <Typography variant="h5">{user ? user.name : ""}</Typography>
-          </div>
+            </div>
             <Button
               color="inherit"
               className={classes.logoutButton}
@@ -128,16 +127,15 @@ const Dashboard = ({ window, history }, props) => {
         </nav>
 
         <main className={classes.content}>
-            <Switch>
-              <Route exact path={path} component={WelcomeScreen} />
-              <Route path={`${url}/myquizzes`} component={UserQuizzesScreen} />
-              <Route path={`${url}/updatequiz`} component={CreateQuizScreen} />
-              <Route path={`${url}/createquiz`} component={CreateQuizScreen} />
-              <Route path={`${url}/contacts`} component={ContactsScreen} />
-              <Route path={`${url}/groups`} component={GroupsScreen} />
-              <Route path={`${url}/myAccount`} component={MyAccountScreen} />
-              <Route path={`${url}/statistics`} component={Statistics} />
-            </Switch>
+          <Switch>
+            <Route path={`${url}/myquizzes`} component={UserQuizzesScreen} />
+            <Route path={`${url}/updatequiz`} component={CreateQuizScreen} />
+            <Route path={`${url}/createquiz`} component={CreateQuizScreen} />
+            <Route path={`${url}/contacts`} component={ContactsScreen} />
+            <Route path={`${url}/groups`} component={GroupsScreen} />
+            <Route path={`${url}/myAccount`} component={MyAccountScreen} />
+            <Route path={`${url}/statistics`} component={Statistics} />
+          </Switch>
         </main>
       </div>
     </Router>

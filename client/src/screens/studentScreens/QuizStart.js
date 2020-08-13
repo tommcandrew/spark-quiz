@@ -11,11 +11,16 @@ const QuizStart = ({ quiz, setQuizStarted }) => {
       </div>
       <div className="quizStart__content">
         <div className="quizStart__info">
-          <ul>
+          <ul style={{ listStyle: "none" }}>
             <li>Author: {quiz.quizAuthor}</li>
             <li>Subject: {quiz.quizSubject}</li>
             <li>Time limit: {quiz.quizTimeLimit || "none"}</li>
-            <button onClick={() => setQuizStarted(true)}>Start Quiz</button>
+            <button
+              onClick={() => setQuizStarted(true)}
+              style={{ cursor: "pointer" }}
+            >
+              Start Quiz
+            </button>
           </ul>
         </div>
         <div className="quizStart__scores">
