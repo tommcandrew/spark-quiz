@@ -29,7 +29,7 @@ const Register = (props) => {
 
   //HOOKS
   useEffect(() => {
-    if (token !== null) props.history.push("/dashboard");
+    if (token !== null) props.history.push("/dashboard/myquizzes");
   }, [token, props.history]);
 
   //HANDLERS

@@ -21,7 +21,9 @@ const Login = (props) => {
   const [validationError, setValidationError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { from } = props.location.state || { from: { pathname: "/dashboard" } };
+  const { from } = props.location.state || {
+    from: { pathname: "/dashboard/myquizzes" },
+  };
 
   //HANDLERS
   const loginHandler = async () => {
