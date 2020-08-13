@@ -186,7 +186,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
     setValidationError("");
     const result = V.validate(
       { question },
-      { question: "required|string|min:10|max:50" }
+      { question: "required|string|min:10" }
     );
     if (result.hasError) {
       setValidationError(result.getError("question"));
