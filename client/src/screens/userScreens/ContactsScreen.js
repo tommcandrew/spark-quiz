@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as userActions from "../../store/actions/userActions";
 import ContactInfoModal from "../../components/modals/ContactInfoModal";
@@ -31,6 +31,22 @@ const Contacts = () => {
   const [selectedContact, setSelectedContact] = useState(null);
   const [addContactModalIsOpen, setAddContactModalIsOpen] = useState(false);
   const [contactInfoModalIsOpen, setContactInfoModalIsOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [displayedContacts, setDisplayedContacts] = useState([]);
+
+  useEffect(() => {
+    if (user && user.contacts) {
+      if (searchInput === "") {
+        setDisplayedContacts(user.contacts);
+      } else {
+        const filteredContacts = [...user.contacts].filter((contact) =>
+          contact.name.toLowerCase().includes(searchInput.toLowerCase())
+        );
+        setDisplayedContacts(filteredContacts);
+      }
+    }
+  }, [searchInput]);
+
   //HANDLERS
   function closeModal() {
     setAddContactModalIsOpen(false);
@@ -51,6 +67,10 @@ const Contacts = () => {
   const handleDeleteContact = () => {
     dispatch(userActions.deleteContact(selectedContact._id));
     closeModal();
+  };
+
+  const handleSearch = (e) => {
+    setSearchInput(e.target.value);
   };
 
   //MAIN
@@ -96,6 +116,7 @@ const Contacts = () => {
       <Grid item container spacing={2} xs={12} xl={12}>
         <Grid item xs={12} style={{ marginBottom: "10px" }}>
           <Input
+            onChange={handleSearch}
             placeholder="Search contacts"
             startAdornment={
               <InputAdornment position="start">
@@ -120,9 +141,8 @@ const Contacts = () => {
               </Button>
             </Grid>
 
-            {user &&
-              user.contacts &&
-              user.contacts.map((contact, index) => (
+            {displayedContacts &&
+              displayedContacts.map((contact, index) => (
                 <Grid
                   item
                   xs={12}

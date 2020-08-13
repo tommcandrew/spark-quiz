@@ -33,6 +33,21 @@ const Groups = () => {
   const [addGroupModalIsOpen, setAddGroupModalIsOpen] = useState(false);
   const [groupInfoModalIsOpen, setGroupInfoModalIsOpen] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [displayedGroups, setDisplayedGroups] = useState([]);
+
+  useEffect(() => {
+    if (user && user.groups) {
+      if (searchInput === "") {
+        setDisplayedGroups(user.groups);
+      } else {
+        const filteredGroups = [...user.groups].filter((group) =>
+          group.name.toLowerCase().includes(searchInput.toLowerCase())
+        );
+        setDisplayedGroups(filteredGroups);
+      }
+    }
+  }, [searchInput]);
 
   const closeModal = () => {
     setAddGroupModalIsOpen(false);
@@ -62,6 +77,10 @@ const Groups = () => {
     closeModal();
   };
 
+  const handleSearch = (e) => {
+    setSearchInput(e.target.value);
+  };
+
   return (
     <Grid container spacing={2} style={{ padding: "5px" }}>
       {warningMessage !== "" && (
@@ -81,6 +100,7 @@ const Groups = () => {
       <Grid item container spacing={2} xs={12} xl={12}>
         <Grid item xs={12} style={{ marginBottom: "10px" }}>
           <Input
+            onChange={handleSearch}
             placeholder="Search groups"
             startAdornment={
               <InputAdornment position="start">
@@ -105,9 +125,8 @@ const Groups = () => {
               </Button>
             </Grid>
 
-            {user &&
-              user.groups &&
-              user.groups.map((group, index) => {
+            {displayedGroups &&
+              displayedGroups.map((group, index) => {
                 return (
                   <Grid
                     item
