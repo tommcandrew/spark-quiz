@@ -56,7 +56,7 @@ const Login = (props) => {
       <div className={classes.paperLogin}>
         <Avatar className={classes.avatar} />
         <Typography component="h1" variant="h5">
-          SignIn
+          Log in
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -96,7 +96,7 @@ const Login = (props) => {
             onClick={loginHandler}
             data-testid="login-button"
           >
-            Sign In
+            Log In
           </Button>
           <Grid container justify="flex-end">
             <Grid item>

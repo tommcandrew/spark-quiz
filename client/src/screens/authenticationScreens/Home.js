@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, TextField, Avatar } from "@material-ui/core/";
+import { Button, TextField, Avatar, Typography } from "@material-ui/core/";
 import { useStyles } from "../../style/authScreensStyles";
 import logo from "../../assets/images/logo.png";
 import * as authActions from "../../store/actions/authActions";
@@ -27,6 +27,13 @@ const Home = (props) => {
       await dispatch(authActions.studentLogin(studentCode));
       props.history.push("/quiz");
     }
+  };
+
+  const demoLogin = async () => {
+    console.log("DEMO LOGIN");
+    // const loginData = { email: "sarah@gmail.com", password: "password123" };
+    // await dispatch(authActions.login(loginData));
+    // props.history.push(from);
   };
 
   //MAIN
@@ -61,7 +68,7 @@ const Home = (props) => {
               color="primary"
               className={classes.actionButton}
             >
-              SignIn?
+              Log in
             </Button>
           </Link>
           <Link to="/register">
@@ -72,9 +79,19 @@ const Home = (props) => {
               color="primary"
               className={classes.actionButton}
             >
-              Register!
+              Register
             </Button>
           </Link>
+          <Button
+            type="button"
+            fullWidth
+            variant="outlined"
+            color="primary"
+            className={classes.actionButton}
+            onClick={demoLogin}
+          >
+            Demo login
+          </Button>
           <TextField
             color="primary"
             variant="outlined"
@@ -85,6 +102,9 @@ const Home = (props) => {
             name="code"
             autoFocus
           />
+          <Typography variant="subtitle" component="p" align="center">
+            (use code 123 for sample quiz)
+          </Typography>
           <Button
             type="submit"
             fullWidth
