@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as errorActions from "../../store/actions/errorActions";
 import { BrowserRouter, Switch } from "react-router-dom";
 import { ProtectedRoute, PublicRoute, StudentRoute } from "./Routes";
+import { Redirect, Route } from "react-router-dom";
 import Dashboard from "../../screens/userScreens/Dashboard";
 import Home from "../../screens/authenticationScreens/Home";
 import Login from "../../screens/authenticationScreens/Login";
@@ -42,7 +43,7 @@ const MainNavigation = () => {
       )}
       <BrowserRouter>
         <Switch>
-          <PublicRoute exact={true} path="/" component={Home} />
+          {/* <PublicRoute exact={true} path="/" component={Home} />
           <PublicRoute exact={true} path="/login" component={Login} />
           <PublicRoute exact={true} path="/register" component={Register} />
           <PublicRoute
@@ -50,8 +51,8 @@ const MainNavigation = () => {
             path="/forgotPassword"
             component={ForgotPassword}
           />
-          <ProtectedRoute path="/dashboard" component={Dashboard} />
-          <StudentRoute path="/quiz" component={Quiz} />
+          <ProtectedRoute path="/dashboard" component={Dashboard} /> */}
+          <Route path="/" component={Quiz} />
         </Switch>
       </BrowserRouter>
     </LoadingOverlay>

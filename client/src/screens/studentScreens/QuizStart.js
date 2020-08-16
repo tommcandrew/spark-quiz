@@ -1,44 +1,32 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import "./QuizStart.css";
+import { Typography, Container } from "@material-ui/core";
+
 
 //this component is rendered as a child of Quiz
 const QuizStart = ({ quiz, setQuizStarted }) => {
   return (
-    <div className="quizStart__wrapper">
-      <div className="quizStart__header">
-        <h1>Quiz Name: {quiz.quizName}</h1>
-      </div>
-      <div className="quizStart__content">
-        <div className="quizStart__info">
-          <ul style={{ listStyle: "none" }}>
-            <li>Author: {quiz.quizAuthor}</li>
-            <li>Subject: {quiz.quizSubject}</li>
-            <li>Time limit: {quiz.quizTimeLimit || "none"}</li>
+    <div >
+      <Typography variant="h2">Quiz Name: Quiz Name{/* {quiz.quizName} */}</Typography>
+      <Typography variant="h2">Subject: Quiz Subject{/* {quiz.quizSubject} */}</Typography>
+      <Typography variant="h2">Author: Quiz Author {/* {quiz.quizAuthor} */}</Typography>
+      <Typography variant="h2">Time limit: Quiz Time Limit{/* {quiz.quizTimeLimit || "none"} */}</Typography>
+      <Typography variant="h2">Score{/* {quiz.quizTimeLimit || "none"} */}</Typography>
+
             <button
-              onClick={() => setQuizStarted(true)}
+              // onClick={() => setQuizStarted(true)}
               style={{ cursor: "pointer" }}
             >
               Start Quiz
             </button>
-          </ul>
-        </div>
-        <div className="quizStart__scores">
-          <div className="quizStart__table-wrapper">
-            <h1>Scores</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Score</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+       
+     
     </div>
+   
+        
+    
+            
+     
   );
 };
 
