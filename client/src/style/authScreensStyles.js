@@ -8,10 +8,11 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     width: "100%",
     height: "100%",
+    overflow: "hdden",
     [theme.breakpoints.down("md")]: {
       flexDirection: "column",
-      overflowY: "scroll",
-      height: "200vh",
+      display: "relative",
+      height: "100vh",
     },
   },
   paper: {
@@ -19,6 +20,7 @@ export const useStyles = makeStyles((theme) => ({
     background: "#fff",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
     padding: theme.spacing(8),
     marginRight: "50px",
@@ -26,9 +28,15 @@ export const useStyles = makeStyles((theme) => ({
       "0 1px 1px rgba(0,0,0,0.25), 0 2px 2px rgba(0,0,0,0.20), 0 4px 4px rgba(0,0,0,0.15), 0 8px 8px rgba(0,0,0,0.10), 0 16px 16px rgba(0,0,0,0.05)",
     borderRadius: "25px",
     [theme.breakpoints.down("md")]: {
+      justifyContent: "flex-start",
       width: "100%",
       height: "100vh",
       marginRight: "0",
+      boxShadow: "0",
+      borderRadius: "0"
+    },
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: theme.spacing(0),
     },
   },
   hero: {
@@ -40,8 +48,9 @@ export const useStyles = makeStyles((theme) => ({
     backgroundPosition: "center",
     position: "relative",
     [theme.breakpoints.down("md")]: {
+      opacity: "0.05",
       width: "100%",
-      height: "100vh",
+      position: "absolute",
     },
   },
   large: {
@@ -50,8 +59,11 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("md")]: {
       margin: "20px",
     },
-    [theme.breakpoints.down("md")]: {
-      margin: "5px",
+    [theme.breakpoints.down("sm")]: {
+      margin: "3px",
+      marginTop: theme.spacing(6),
+       height: "100px",
+        width: "200px",
     },
   },
 
@@ -68,10 +80,20 @@ export const useStyles = makeStyles((theme) => ({
     boxShadow:
       "0 1px 1px rgba(0,0,0,0.25), 0 2px 2px rgba(0,0,0,0.20), 0 4px 4px rgba(0,0,0,0.15), 0 8px 8px rgba(0,0,0,0.10), 0 16px 16px rgba(0,0,0,0.05)",
     borderRadius: "25px",
+     [theme.breakpoints.down("sm")]: {
+       marginTop: theme.spacing(0),
+       width: "100%",
+       height: "100%",
+        boxShadow: "0",
+        borderRadius: "0"
+    },
   },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      marginTop: theme.spacing(1),
+    },
   },
   submit: {
     margin: theme.spacing(3, 0, 4),
@@ -79,8 +101,15 @@ export const useStyles = makeStyles((theme) => ({
   actionButton: {
     margin: theme.spacing(2, 0, 1),
   },
-
   avatar: {
     backgroundColor: theme.palette.primary.main,
   },
+  loginBg: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    overflow: "hdden",
+  }
 }));

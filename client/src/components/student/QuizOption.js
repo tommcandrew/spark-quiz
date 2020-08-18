@@ -1,22 +1,24 @@
 import React from "react";
+import studentScreensStyles from "../../style/studentScreensStyles";
+import{FormControlLabel, Radio} from "@material-ui/core"
 
 const QuizOption = ({
   option,
-  handleClick,
   optionIndex,
-  selectedOption,
-  isCorrect,
 }) => {
+
+  const classes = studentScreensStyles();
   return (
-    <div
-      className={`quizOption ${
-        selectedOption === optionIndex ? "quizOption__selected" : ""
-      }`}
-      onClick={() => handleClick(optionIndex, isCorrect)}
+    <div className={classes.quiz__option}>
+      <FormControlLabel value={optionIndex.toString()} control={<Radio />} className={classes.quiz__optionRadio}
+      />
+    <div style={{ display: "flex", flexWrap: "wrap", maxWidth: "100%"}} className={classes.quiz__optionLabel}
     >
       {option}
     </div>
+    </div >
   );
 };
 
 export default QuizOption;
+

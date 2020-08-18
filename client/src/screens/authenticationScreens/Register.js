@@ -53,7 +53,7 @@ const Register = (props) => {
 
   //MAIN
   return (
-    <Container component="main" maxWidth="sm">
+    <div className={classes.loginBg}>
       {validationError !== "" && (
         <CustomSnackbar
           severity="error"
@@ -150,7 +150,7 @@ const Register = (props) => {
           </Grid>
         </form>
       </div>
-    </Container>
+</div>
   );
 };
 

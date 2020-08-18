@@ -29,6 +29,12 @@ export const customStyles = {
 };
 
 export const userQuizzesScreenStyle = makeStyles((theme) => ({
+  titleContainer: {
+    marginBottom: "15px",
+    	[theme.breakpoints.down("md")]: {
+			marginTop: "20px"
+		},
+  },
   card: {
     maxWidth: "300px",
     height: "200px",
@@ -48,12 +54,13 @@ export const userQuizzesScreenStyle = makeStyles((theme) => ({
     justifyContent: "center",
   },
   list: {
-    flex: "0 0 90%",
-    overflowY: "scroll",
     overflowX: "hidden",
-    display: "flex",
-    alignItems: "flex-start",
-    padding: "20px !important",
+    padding: "20px",
+    maxHeight: "80%",
+    	[theme.breakpoints.down("md")]: {
+        paddingTop: "15px",
+         maxHeight: "90%",
+		},
   },
 
   quizName: {
