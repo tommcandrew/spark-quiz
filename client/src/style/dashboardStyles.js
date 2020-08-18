@@ -30,10 +30,6 @@ export const useStyles = makeStyles((theme) => ({
 	drawerPaper: {
 		width: drawerWidth
 	},
-	content: {
-		flexGrow: 1,
-		padding: theme.spacing(3)
-	},
 	toolbarItems: {
 		display: "flex",
 		alignItems: "center",
@@ -56,7 +52,13 @@ export const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		boxShadow:
 			"0 1px 1px rgba(0,0,0,0.08), 0 2px 2px rgba(0,0,0,0.12), 0 4px 4px rgba(0,0,0,0.16),  0 8px 8px rgba(0,0,0,0.20)",
-		borderRadius: "5px"
+		borderRadius: "5px",
+			[theme.breakpoints.down("sm")]: {
+				alignItems: "center",
+			padding: theme.spacing(0),
+			margin: "0",
+			marginTop: "56px",
+		}
 	},
 	list: {
 		width: "100%",

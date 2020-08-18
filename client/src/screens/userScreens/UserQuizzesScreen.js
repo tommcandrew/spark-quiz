@@ -53,14 +53,16 @@ const UserQuizzesScreen = (props) => {
   };
 
   return (
-    <Grid container spacing={2} className={root.root}>
-      <Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }}>
+    <Grid spacing={2} style={{height: "100%", width: "100%"}}>
+      <Grid item xs={12} xl={12} className={classes.titleContainer}>
         <Typography variant="h4" align="center">
           My Quizzes
         </Typography>
         <Divider variant="middle" />
       </Grid>
-      <Grid item container spacing={3} xs={12} xl={12} className={classes.list}>
+      <Grid item container justify="center" spacing={3} xs={12} xl={12} className={classes.list}>
+      <Grid container spacing={3} xs={12} xl={12}>
+        
         {quizzes.length === 0 && (
           <Grid item xs={12}>
             <Typography variant="body1" align="center">
@@ -74,7 +76,7 @@ const UserQuizzesScreen = (props) => {
               item
               xs={12}
               sm={12}
-              md={4}
+              md={6}
               lg={4}
               key={index}
               className={classes.cardGridItem}
@@ -121,6 +123,7 @@ const UserQuizzesScreen = (props) => {
               </Card>
             </Grid>
           ))}
+          </Grid>
       </Grid>
     </Grid>
   );
