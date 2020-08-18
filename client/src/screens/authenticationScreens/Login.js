@@ -44,7 +44,7 @@ const Login = (props) => {
 
   //MAIN
   return (
-    <Container component="main" maxWidth="sm">
+    <div className={classes.loginBg}>
       {validationError !== "" && (
         <CustomSnackbar
           severity="error"
@@ -118,7 +118,7 @@ const Login = (props) => {
           </Grid>
         </form>
       </div>
-    </Container>
+    </div>
   );
 };
 
