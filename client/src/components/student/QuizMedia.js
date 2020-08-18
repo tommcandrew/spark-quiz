@@ -1,13 +1,16 @@
 import React from "react";
+import studentScreensStyles from "../../style/studentScreensStyles";
 
 const QuizMedia = ({ media }) => {
+  const classes = studentScreensStyles();
   return (
-    <div className="quiz__media">
+    <>
       {media.mediaType.includes("image") && (
-        <img src={`data:${media.mediaType};base64,${media.data}`} alt="" />
+        <img className={classes.media__image}
+          src={`data:${media.mediaType};base64,${media.data}`} alt="" />
       )}
       {media.mediaType.includes("video") && (
-        <video width="320" height="240" controls>
+        <video className={classes.media__image} controls>
           <source
             type={media.mediaType}
             src={`data:${media.mediaType};base64,${media.data}`}
@@ -23,9 +26,11 @@ const QuizMedia = ({ media }) => {
         </audio>
       )}
       {media.mediaType.includes("text") && (
-        <textarea rows="5" value={media.data}></textarea>
+        <div
+          style={{width: "100%", height: "100%", textAlign:"left", padding: "3px 5px"}}
+        >{media.data}</div>
       )}
-    </div>
+    </>
   );
 };
 
