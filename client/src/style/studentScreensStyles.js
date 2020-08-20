@@ -76,7 +76,7 @@ const studentScreensStyles = makeStyles((theme) => ({
 	quiz__content: {
 		width: "100%",
 		display: "flex",
-		flexDirection: "column",
+		flexDirection: "column"
 	},
 	quiz__info: {
 		width: "100%",
@@ -86,20 +86,23 @@ const studentScreensStyles = makeStyles((theme) => ({
 		borderBottom: `2px solid ${theme.palette.primary.main}`,
 		[theme.breakpoints.down("sm")]: {
 			border: 0
-		},
+		}
 	},
 	quiz__questionContent: {
 		overflowY: "scroll",
 		overflowX: "hidden",
 		maxHeight: "60vh",
+		minHeight: "50vh",
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		marginTop: "20px",
+		justifyContent: "space-between",
 		border: `2px solid ${theme.palette.primary.main}`,
 		[theme.breakpoints.down("md")]: {
 			maxHeight: "75vh",
-		},
+			minHeight: "70vh"
+		}
 	},
 	quiz__question: {
 		width: "100%",
@@ -111,7 +114,7 @@ const studentScreensStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down("sm")]: {
 			borderBottom: "0",
 			padding: "5px 5px"
-		},
+		}
 	},
 	quiz__medias: {
 		display: "flex",
@@ -120,7 +123,7 @@ const studentScreensStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down("sm")]: {
 			maxWidth: "90%",
 			alignItems: "center"
-		},
+		}
 	},
 	quiz__media: {
 		marginBottom: "5px",
@@ -130,7 +133,7 @@ const studentScreensStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down("sm")]: {
 			maxWidth: "100%",
 			alignItems: "center"
-		},
+		}
 	},
 	media__image: {
 		height: "100%",
@@ -147,7 +150,7 @@ const studentScreensStyles = makeStyles((theme) => ({
 		transition: "background - color 200ms linear",
 		display: "flex",
 		justifyContent: "flex-start",
-		alignItems: "center",
+		alignItems: "center"
 	},
 	quiz__optionRadio: {
 		borderRight: `1px solid ${theme.palette.primary.main}`,
@@ -160,7 +163,7 @@ const studentScreensStyles = makeStyles((theme) => ({
 		border: `2px solid ${theme.palette.primary.main}`,
 		[theme.breakpoints.down("sm")]: {
 			marginTop: "10px"
-		},
+		}
 	},
 	progressBar: {
 		width: "100%",
@@ -174,11 +177,11 @@ const studentScreensStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		padding: "5px 10px",
 		[theme.breakpoints.down("sm")]: {
-			padding: "3px 5px",
-		},
+			padding: "3px 5px"
+		}
 	},
 	progressBar__progress: {
-		height: "100%", 
+		height: "100%",
 		backgroundColor: theme.palette.primary.main
 	}
 }));

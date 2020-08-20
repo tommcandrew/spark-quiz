@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     flexDirection: "row",
+    margin: "0px 8px",
+    padding: "3px 10px",
+    [theme.breakpoints.down("sm")]: {
+        margin: "0"
+		},
   },
   inline: {
     display: "block",
@@ -31,7 +36,11 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginRight: "10px",
     padding: "5px",
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
+    	[theme.breakpoints.down("sm")]: {
+        marginRight: "5px",
+        padding: "2px",
+		},
   }
 }));
 
@@ -63,7 +72,7 @@ const PreviewQuestions = (props) => {
                     questionT="Multiple Choice"
                 
             return (
-              <ListItem key={index}>
+              <ListItem key={index} disableGutters={true}>
               <Paper className={classes.listItem}>
                 <ListItemIcon style={{margin: "auto auto", marginRight: "8px"}}> 
                   <Typography color="primary" variant="h4">Q.{index + 1}</Typography>

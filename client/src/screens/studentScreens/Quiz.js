@@ -30,11 +30,14 @@ const Quiz = ({ history }) => {
 		var d = new Date(); //todays date
 		var date = new Date(quiz.quizStarted.toString()); //when the quiz was created
 		var timeTaken = d.getTime() - date.getTime(); //how much time has passed since the quiz started
+		if(quiz.quizTimeLimit!== ""){
 		timeLimit = parseInt(quiz.quizTimeLimit * 60 - timeTaken / 1000);
-	} else timeLimit = parseInt(quiz.quizTimeLimit) * 60;
+		}
+		else timeLimit = parseInt(quiz.quizTimeLimit) * 60;
+	}
 
 	const getQuiz = async () => {
-		if (quiz._id === "" && !finished) {
+		if (quiz._id === "" && (currentQuestionIndex >= quiz.quizQuestions.length - 1)) {
 			console.log("function in use effect running");
 			await dispatch(authActions.studentReload());
 		}
@@ -43,7 +46,7 @@ const Quiz = ({ history }) => {
 		() => {
 			getQuiz();
 		},
-		[ finished ]
+		[finished]
 	);
 
 	// 	//make a nicer notification
@@ -64,9 +67,12 @@ const Quiz = ({ history }) => {
 				if (finished) {
 					console.log("in finished");
 					await dispatch(quizScoreActions.finishQuiz());
+					await dispatch(authActions.clearStudent());
 					await dispatch(quizActions.clearCurrentQuiz());
-					await await dispatch(authActions.clearStudent());
+					
+					history.push( "/finishQuiz")
 				}
+
 			}
 			fetchData();
 		},
@@ -110,14 +116,13 @@ const Quiz = ({ history }) => {
 					{!quizStarted && <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />}
 					{quizStarted && (
 						<Fragment>
-							{finished && <Finish history={history} quiz={quiz} />}
 							{!finished && (
 								<div className={classes.quiz__content}>
 									<div className={classes.quiz__info}>
 										<Typography variant="h6" color="primary">
 											{quiz.quizName}
 										</Typography>
-										{quiz.quizTimeLimit !== "false" && (
+										{quiz.quizTimeLimit !== "" || null && (
 											<QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
 										)}
 									</div>
