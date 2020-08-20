@@ -102,7 +102,7 @@ export default function CreateQuizScreen(props) {
 						</Typography>
 						<Divider variant="middle" />
 					</Grid>
-					<Grid container spacing={2}>
+					<Grid container spacing={1}>
 						<Grid item xs={12} md={6}>
 							<Typography variant="h5" align="center">
 								Quiz name:
@@ -110,6 +110,7 @@ export default function CreateQuizScreen(props) {
 						</Grid>
 						<Grid item xs={12} md={6} align="center">
 							<TextField
+								className={classes.textField}
 								type="text"
 								name="name"
 								variant="outlined"
@@ -121,13 +122,14 @@ export default function CreateQuizScreen(props) {
 								value={quizName}
 							/>
 						</Grid>
-						<Grid item xs={12} md={6}>
+						<Grid item xs={12} md={6} className={classes.quizSubjectText}>
 							<Typography variant="h5" align="center">
 								Quiz Subject:{" "}
 							</Typography>
 						</Grid>
 						<Grid item xs={12} md={6} align="center">
 							<TextField
+								className = {classes.textField}
 								type="text"
 								name="subject"
 								variant="outlined"
@@ -139,7 +141,7 @@ export default function CreateQuizScreen(props) {
 								value={quizSubject}
 							/>
 						</Grid>
-						<Grid item xs={12} align="center">
+						<Grid item xs={12} align="center" className={classes.quizSubjectText}>
 							<Button onClick={handleCreate} variant="contained" color="primary" size="large">
 								Submit
 							</Button>
@@ -159,9 +161,9 @@ export default function CreateQuizScreen(props) {
 					</Modal>
 					<Paper className={classes.buttonContainer} elevation={2}>
 						<Box className={classes.titleContainer}>
-							<div style={{ display: "flex", alignItems: "flex-end" }}>
+							<div className={classes.titleNameContainer}>
 								<Typography variant="body1">Quiz Name: &nbsp;</Typography>
-								<Typography variant="h4" color="secondary">
+								<Typography variant="h5" color="primary">
 									{quiz.quizName}
 								</Typography>
 							</div>

@@ -128,7 +128,8 @@ const Dashboard = ({ window, history }, props) => {
 
         <main className={classes.content}>
           <Switch>
-            <Route path={`${url}/myquizzes`} component={UserQuizzesScreen} />
+            <Route exact path={`${url}/`} component={UserQuizzesScreen} />
+            <Route exact path={`${url}/myquizzes`} component={UserQuizzesScreen} />
             <Route path={`${url}/updatequiz`} component={CreateQuizScreen} />
             <Route path={`${url}/createquiz`} component={CreateQuizScreen} />
             <Route path={`${url}/contacts`} component={ContactsScreen} />

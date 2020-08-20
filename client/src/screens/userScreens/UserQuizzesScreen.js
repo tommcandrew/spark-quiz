@@ -25,10 +25,7 @@ const UserQuizzesScreen = (props) => {
   const [displayedQuizzes, setDisplayedQuizzes] = useState([]);
 
   useEffect(() => {
-    console.log("EFFECT");
-    console.log(quizzes);
     if (quizzes) {
-      console.log("updating");
       setDisplayedQuizzes(quizzes);
     }
   }, [quizzes]);
@@ -53,7 +50,7 @@ const UserQuizzesScreen = (props) => {
   };
 
   return (
-    <Grid spacing={2} style={{height: "100%", width: "100%"}}>
+    <div style={{height: "100%", width: "100%"}}>
       <Grid item xs={12} xl={12} className={classes.titleContainer}>
         <Typography variant="h4" align="center">
           My Quizzes
@@ -61,8 +58,7 @@ const UserQuizzesScreen = (props) => {
         <Divider variant="middle" />
       </Grid>
       <Grid item container justify="center" spacing={3} xs={12} xl={12} className={classes.list}>
-      <Grid container spacing={3} xs={12} xl={12}>
-        
+     
         {quizzes.length === 0 && (
           <Grid item xs={12}>
             <Typography variant="body1" align="center">
@@ -75,7 +71,7 @@ const UserQuizzesScreen = (props) => {
             <Grid
               item
               xs={12}
-              sm={12}
+              sm={6}
               md={6}
               lg={4}
               key={index}
@@ -123,9 +119,8 @@ const UserQuizzesScreen = (props) => {
               </Card>
             </Grid>
           ))}
-          </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };
 

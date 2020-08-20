@@ -82,7 +82,7 @@ const Groups = () => {
   };
 
   return (
-    <Grid container spacing={2} style={{ padding: "5px" }}>
+    <Grid container spacing={2} className={classes.contactsMainContainer}>
       {warningMessage !== "" && (
         <CustomSnackbar
           severity="warning"
@@ -97,8 +97,7 @@ const Groups = () => {
         <Divider variant="middle" />
       </Grid>
 
-      <Grid item container spacing={2} xs={12} xl={12}>
-        <Grid item xs={12} style={{ marginBottom: "10px" }}>
+      <Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center"  }}>
           <Input
             onChange={handleSearch}
             placeholder="Search groups"
@@ -108,13 +107,10 @@ const Groups = () => {
               </InputAdornment>
             }
           />
-        </Grid>
-
-        <div className={classes.contactsContainer}>
-          <Grid container spacing={2} style={{ width: "100%", height: "100%" }}>
-            <Grid xs={12} sm={12} md={3} lg={3} className={classes.gridItem}>
-              <Button
-                variant="contained"
+      </Grid>
+       <Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
+        <Button
+            variant="contained"
                 color="secondary"
                 startIcon={<AddCircleIcon />}
                 onClick={() => {
@@ -125,6 +121,8 @@ const Groups = () => {
               </Button>
             </Grid>
 
+      <div className={classes.contactsContainer}>
+        <Grid container spacing={3} alignContent="flex-start" style={{ height: "100%", width: "100%"}}>
             {displayedGroups &&
               displayedGroups.map((group, index) => {
                 return (
@@ -158,7 +156,7 @@ const Groups = () => {
               })}
           </Grid>
         </div>
-      </Grid>
+    
 
       <Modal
         isOpen={addGroupModalIsOpen}

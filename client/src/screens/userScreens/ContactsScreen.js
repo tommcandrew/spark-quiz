@@ -75,7 +75,7 @@ const Contacts = () => {
 
   //MAIN
   return (
-    <Grid container spacing={2} style={{ padding: "20px" }}>
+    <Grid container spacing={2} className={classes.contactsMainContainer}>
       <Modal
         isOpen={addContactModalIsOpen}
         onRequestClose={closeModal}
@@ -106,15 +106,14 @@ const Contacts = () => {
         />
       </Modal>
 
-      <Grid item xs={12} xl={12}>
+      <Grid item xs={12}>
         <Typography variant="h4" align="center">
           Contacts
         </Typography>
         <Divider variant="middle" />
       </Grid>
 
-      <Grid item container spacing={2} xs={12} xl={12}>
-        <Grid item xs={12} style={{ marginBottom: "10px" }}>
+        <Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center"  }}>
           <Input
             onChange={handleSearch}
             placeholder="Search contacts"
@@ -123,13 +122,10 @@ const Contacts = () => {
                 <SearchIcon color="primary" />
               </InputAdornment>
             }
-          />
-        </Grid>
-
-        <div className={classes.contactsContainer}>
-          <Grid container spacing={2} style={{ width: "100%", height: "100%" }}>
-            <Grid xs={12} sm={12} md={3} lg={3} className={classes.gridItem}>
-              <Button
+        />
+      </Grid>
+         <Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
+         <Button
                 variant="contained"
                 color="secondary"
                 startIcon={<AddCircleIcon />}
@@ -137,17 +133,20 @@ const Contacts = () => {
                   setAddContactModalIsOpen(true);
                 }}
               >
-                Add new contact
+          Add new contact
               </Button>
-            </Grid>
+      </Grid>
+      
 
+      <div className={classes.contactsContainer}>
+        <Grid container spacing={3} alignContent="flex-start" style={{ height: "100%", width: "100%"}}>
             {displayedContacts &&
               displayedContacts.map((contact, index) => (
                 <Grid
                   item
                   xs={12}
-                  sm={12}
-                  md={3}
+                  sm={6}
+                  md={4}
                   lg={3}
                   key={index}
                   className={classes.gridItem}
@@ -166,7 +165,7 @@ const Contacts = () => {
               ))}
           </Grid>
         </div>
-      </Grid>
+
     </Grid>
   );
 };
