@@ -154,7 +154,7 @@ export default function CreateQuizScreen(props) {
 					<Modal
 						isOpen={modalIsOpen}
 						onRequestClose={closeModal}
-						lassName="Modal"
+						className="Modal"
 						overlayClassName="Overlay"
 						centered>
 						{displayedComponent} 

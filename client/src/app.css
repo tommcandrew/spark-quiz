@@ -88,7 +88,22 @@ Link {
     width: 100%;
     height: 50%
   }
- 
+}
+
+@media only screen and (max-width: 900px) {
+  .Modal{
+     padding: 10px;
+    min-width: 80%;
+    max-width: 90%;
+    max-height: 75%;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .Modal{
+     padding: 5px;
+    max-height: 80%;
+    min-width: 90%;
+  }
 }
 
   .Modal {
@@ -101,11 +116,12 @@ Link {
     align-items: flex-start;
     justify-content: center;
     padding: 20px;
-    display: inline;
     max-width: 60%;
-    max-height: 65%;
+    max-height: 75%;
     position: absolute;
-    background-color: papayawhip;
+    display: block;
+    background-color: #fff;
+    border-radius: 10px;
   }
 
   .Overlay {

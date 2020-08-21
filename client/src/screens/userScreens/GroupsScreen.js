@@ -145,7 +145,7 @@ const Groups = () => {
 			<Modal
 				isOpen={addGroupModalIsOpen}
 				onRequestClose={closeModal}
-				lassName="Modal"
+				className="Modal"
 				overlayClassName="Overlay"
 				centered>
 				<AddGroupModal closeModal={closeModal} user={user} />
@@ -154,7 +154,7 @@ const Groups = () => {
 			<Modal
 				isOpen={groupInfoModalIsOpen}
 				onRequestClose={closeModal}
-				lassName="Modal"
+				className="Modal"
 				overlayClassName="Overlay"
 				centered>
 				<GroupInfoModal

@@ -70,7 +70,7 @@ const Contacts = () => {
 			<Modal
 				isOpen={addContactModalIsOpen}
 				onRequestClose={closeModal}
-				lassName="Modal"
+				className="Modal"
 				overlayClassName="Overlay"
 				centered>
 				<AddContactModal handleSubmit={handleAddContact} closeModal={closeModal} user={user} />
@@ -78,7 +78,7 @@ const Contacts = () => {
 			<Modal
 				isOpen={contactInfoModalIsOpen}
 				onRequestClose={closeModal}
-				lassName="Modal"
+				className="Modal"
 				overlayClassName="Overlay"
 				centered>
 				<ContactInfoModal
