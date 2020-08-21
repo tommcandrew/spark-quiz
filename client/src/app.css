@@ -92,20 +92,29 @@ Link {
 }
 
   .Modal {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    display: inline;
+    max-width: 60%;
+    max-height: 65%;
     position: absolute;
-    top: 40px;
-    left: 40px;
-    right: 40px;
-    bottom: 40px;
     background-color: papayawhip;
   }
 
   .Overlay {
+    z-index: 2000;
+    background-color: rgba(0,0,0,0.7);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rebeccapurple;
   }
 
