@@ -20,8 +20,8 @@ const Quiz = ({ history }) => {
 	const [ finished, setFinished ] = useState(false);
 	const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
 	const [ timeUp, setTimeUp ] = useState(false);
-	const [quizStarted, setQuizStarted] = useState(false);
-	const [score, setScore] = useState(0)
+	const [ quizStarted, setQuizStarted ] = useState(false);
+	//const [score, setScore] = useState(0)
 
 	const dispatch = useDispatch();
 	const quiz = useSelector((state) => state.quiz);
@@ -31,14 +31,13 @@ const Quiz = ({ history }) => {
 		var d = new Date(); //todays date
 		var date = new Date(quiz.quizStarted.toString()); //when the quiz was created
 		var timeTaken = d.getTime() - date.getTime(); //how much time has passed since the quiz started
-		if(quiz.quizTimeLimit!== ""){
-		timeLimit = parseInt(quiz.quizTimeLimit * 60 - timeTaken / 1000);
-		}
-		else timeLimit = parseInt(quiz.quizTimeLimit) * 60;
+		if (quiz.quizTimeLimit !== "") {
+			timeLimit = parseInt(quiz.quizTimeLimit * 60 - timeTaken / 1000);
+		} else timeLimit = parseInt(quiz.quizTimeLimit) * 60;
 	}
 
 	const getQuiz = async () => {
-		if (quiz._id === "" && (currentQuestionIndex >= quiz.quizQuestions.length - 1)) {
+		if (quiz._id === "" && currentQuestionIndex >= quiz.quizQuestions.length - 1) {
 			console.log("function in use effect running");
 			await dispatch(authActions.studentReload());
 		}
@@ -47,7 +46,7 @@ const Quiz = ({ history }) => {
 		() => {
 			getQuiz();
 		},
-		[finished]
+		[ finished ]
 	);
 
 	// 	//make a nicer notification
@@ -62,21 +61,16 @@ const Quiz = ({ history }) => {
 		[ timeUp ]
 	);
 
-
 	useEffect(
 		() => {
 			async function fetchData() {
 				if (finished) {
-				
-					console.log("in finished");
 					await dispatch(quizScoreActions.finishQuiz());
-					history.push("/finishQuiz", {score })
+					history.push({ pathname: "/finishQuiz", state: { score: "20" } });
+					//this needs to be set up
 					await dispatch(authActions.clearStudent());
 					await dispatch(quizActions.clearCurrentQuiz());
-					
-					
 				}
-
 			}
 			fetchData();
 		},
@@ -112,7 +106,6 @@ const Quiz = ({ history }) => {
 		animateNextQuestion(goToNextQuestion);
 	};
 
-
 	return (
 		<div className={classes.root}>
 			<div className={classes.paperBackground}>
@@ -126,9 +119,8 @@ const Quiz = ({ history }) => {
 										<Typography variant="h6" color="primary">
 											{quiz.quizName}
 										</Typography>
-										{quiz.quizTimeLimit !== "" || null && (
-											<QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
-										)}
+										{quiz.quizTimeLimit !== "" ||
+											(null && <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />)}
 									</div>
 
 									<div className={clsx(classes.quiz__questionContent, "quiz__questionContent")}>
@@ -189,14 +181,14 @@ const Quiz = ({ history }) => {
 										/>
 
 										<div className={classes.quiz__progressDetails}>
-											<div> 
-											Question {currentQuestionIndex + 1 + quiz.quizLastQuestionNumber}/
-											{quiz.quizTotalQuestions}
+											<div>
+												Question {currentQuestionIndex + 1 + quiz.quizLastQuestionNumber}/
+												{quiz.quizTotalQuestions}
 												{quizPointsSystem === "overall" && (
-												<div style={{ textAlign: "right", paddingRight: "10px" }}>
-													Quiz points: {quiz.quizOverallPoints}
-												</div>
-											 )} 
+													<div style={{ textAlign: "right", paddingRight: "10px" }}>
+														Quiz points: {quiz.quizOverallPoints}
+													</div>
+												)}
 											</div>
 											<Button variant="contained" color="primary" onClick={handleClick}>
 												Submit
@@ -216,8 +208,8 @@ const Quiz = ({ history }) => {
 export default Quiz;
 
 //FOR TESTING
-	// const timeLimit = 3000;
-	// const quizPointsSystem = "overall";
+// const timeLimit = 3000;
+// const quizPointsSystem = "overall";
 
 // const quiz = {
 // 		quizName: "Biology quiz 1",
