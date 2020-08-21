@@ -4,17 +4,21 @@ import { Typography} from "@material-ui/core";
 const quizRules = () => {
     return (
         <div>
-             <Typography variant="h5" color="primary" >Rules:</Typography>
+             <Typography variant="h5" color="primary" >Guidelines:</Typography>
         <Typography variant="body" style={{marginBottomn: "10px", fontStyle: "italic", lineHeight: "1.5rem" }}>
-          Turn off your cell (or put it on vibrate mode).
+          The quiz questions types consist of MCQs and True/False.
+          <br></br>
+          The quiz questions may contain multi-media.
+          <br></br>
+          Avoid refreshing your broswer while attemting the quiz.
+          <br></br>
+          You are not allowed to retake the quiz.
+          <br></br>
+           you are not allowed to change your submitted answers
            <br></br>
-          Do not start until we tell you so (do not even write your name).
+          The quiz will be automatically submitted when the allotted time is over.
           <br></br>
-          Keep the testing material face down until we indicate you can start.
-          <br></br>
-          Know your section number and TA name.
-          <br></br>
-          Write your directory id (what you use to log on to the grades server, grace cluster) if requested.
+          Good Luck!
          </Typography>
         </div>
     )

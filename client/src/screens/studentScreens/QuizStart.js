@@ -16,8 +16,12 @@ const QuizStart = ({ quiz, setQuizStarted }) => {
       <Typography variant="h4" color="primary" style={{marginBottom: "10px", padding: "0"}}>Quiz Name: {quiz.quizName}</Typography>
       <Typography variant="h6" style={{marginBottom: "10px"}}>Subject: {quiz.quizSubject}</Typography>
       <Typography variant="h6" style={{marginBottom: "10px"}}>Author: {quiz.quizAuthor}</Typography>
-      <Typography variant="h6" style={{marginBottom: "10px"}}>Time limit: {quiz.quizTimeLimit || "none"}</Typography>
-      <Typography variant="h6" style={{marginBottom: "10px"}}>Score: </Typography>
+        <Typography variant="h6" style={{ marginBottom: "10px" }}>Time limit: {quiz.quizTimeLimit || "none"}</Typography>
+        {quiz.quizPointsSystem === null && (<Typography variant="h6" style={{marginBottom: "10px"}}>Points: none</Typography>)
+        }
+        {quiz.quizPointsSystem === "overall" && (<Typography variant="h6" style={{ marginBottom: "10px" }}>Points: {quiz.quizOverallPoints}</Typography>)
+        }
+     
       </div>
       <div className={classes.quizRules}>
         <QuizRules />

@@ -20,7 +20,8 @@ const Quiz = ({ history }) => {
 	const [ finished, setFinished ] = useState(false);
 	const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
 	const [ timeUp, setTimeUp ] = useState(false);
-	const [ quizStarted, setQuizStarted ] = useState(false);
+	const [quizStarted, setQuizStarted] = useState(false);
+	const [score, setScore] = useState(0)
 
 	const dispatch = useDispatch();
 	const quiz = useSelector((state) => state.quiz);
@@ -61,16 +62,19 @@ const Quiz = ({ history }) => {
 		[ timeUp ]
 	);
 
+
 	useEffect(
 		() => {
 			async function fetchData() {
 				if (finished) {
+				
 					console.log("in finished");
 					await dispatch(quizScoreActions.finishQuiz());
+					history.push("/finishQuiz", {score })
 					await dispatch(authActions.clearStudent());
 					await dispatch(quizActions.clearCurrentQuiz());
 					
-					history.push( "/finishQuiz")
+					
 				}
 
 			}
@@ -132,11 +136,6 @@ const Quiz = ({ history }) => {
 											<Typography variant="h6">
 												Q. {quiz.quizQuestions[currentQuestionIndex].question}
 											</Typography>
-											{quizPointsSystem === "overall" && (
-												<h5 style={{ textAlign: "right", paddingRight: "10px" }}>
-													points: {quiz.quizOverallPoints}
-												</h5>
-											)}
 											{quizPointsSystem === "eachQuestion" && (
 												<h5 style={{ textAlign: "right", paddingRight: "10px" }}>
 													points: {quiz.quizQuestions[currentQuestionIndex].points}{" "}
@@ -190,8 +189,15 @@ const Quiz = ({ history }) => {
 										/>
 
 										<div className={classes.quiz__progressDetails}>
+											<div> 
 											Question {currentQuestionIndex + 1 + quiz.quizLastQuestionNumber}/
 											{quiz.quizTotalQuestions}
+												{quizPointsSystem === "overall" && (
+												<div style={{ textAlign: "right", paddingRight: "10px" }}>
+													Quiz points: {quiz.quizOverallPoints}
+												</div>
+											 )} 
+											</div>
 											<Button variant="contained" color="primary" onClick={handleClick}>
 												Submit
 											</Button>
