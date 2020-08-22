@@ -24,24 +24,24 @@ const useStyles = makeStyles((theme) => ({
     margin: "0px 8px",
     padding: "3px 10px",
     [theme.breakpoints.down("sm")]: {
-        margin: "0"
-		},
+      margin: "0",
+    },
   },
   inline: {
     display: "block",
   },
   buttonContainer: {
-    textAlign: "right"
+    textAlign: "right",
   },
   button: {
     marginRight: "10px",
     padding: "5px",
     color: theme.palette.secondary.main,
-    	[theme.breakpoints.down("sm")]: {
-        marginRight: "5px",
-        padding: "2px",
-		},
-  }
+    [theme.breakpoints.down("sm")]: {
+      marginRight: "5px",
+      padding: "2px",
+    },
+  },
 }));
 
 const PreviewQuestions = (props) => {
@@ -66,49 +66,62 @@ const PreviewQuestions = (props) => {
       {quiz.quizQuestions.length > 0 && (
         <List className={classes.list}>
           {quiz.quizQuestions.map((question, index) => {
-            (question.questionType === "trueFalse") ? 
-                  questionT="True/False"
-                : 
-                    questionT="Multiple Choice"
-                
+            question.questionType === "trueFalse"
+              ? (questionT = "True/False")
+              : (questionT = "Multiple Choice");
+
             return (
               <ListItem key={index} disableGutters={true}>
-              <Paper className={classes.listItem}>
-                <ListItemIcon style={{margin: "auto auto", marginRight: "8px"}}> 
-                  <Typography color="primary" variant="h4">Q.{index + 1}</Typography>
-                </ListItemIcon>
-                
-                <ListItemText
-                  primary={<Typography color="primary" variant="h6">Type: {questionT} </Typography>}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                      >
-                        Question:{" "}
-                        {question.question.length > 300
-                          ? question.question.slice(0, 295) + "..."
-                          : question.question}
+                <Paper className={classes.listItem}>
+                  <ListItemIcon
+                    style={{ margin: "auto auto", marginRight: "8px" }}
+                  >
+                    <Typography color="primary" variant="h4">
+                      Q.{index + 1}
+                    </Typography>
+                  </ListItemIcon>
+
+                  <ListItemText
+                    primary={
+                      <Typography color="primary" variant="h6">
+                        Type: {questionT}{" "}
                       </Typography>
-                      <div className={classes.buttonContainer}>
-                        <button
-                          className={classes.button}
-                        onClick={() => deleteQuestionHandler(question._id)}
-                      >
-                        delete
-                      </button>
-                      <button className={classes.button} size="medium" onClick={() => editQuestionHandler(question._id)}>
-                        edit
-                      </button></div>
-                    </React.Fragment>
-                  }
-                />
-              </Paper>
-            </ListItem>
-          )})}
+                    }
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          Question:{" "}
+                          {question.question.length > 300
+                            ? question.question.slice(0, 295) + "..."
+                            : question.question}
+                        </Typography>
+                        <div className={classes.buttonContainer}>
+                          <button
+                            className={classes.button}
+                            onClick={() => deleteQuestionHandler(question._id)}
+                          >
+                            delete
+                          </button>
+                          <button
+                            className={classes.button}
+                            size="medium"
+                            onClick={() => editQuestionHandler(question._id)}
+                          >
+                            edit
+                          </button>
+                        </div>
+                      </React.Fragment>
+                    }
+                  />
+                </Paper>
+              </ListItem>
+            );
+          })}
         </List>
       )}
     </Fragment>

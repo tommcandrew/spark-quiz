@@ -24,7 +24,11 @@ const UserQuizzesScreen = (props) => {
   const quizzes = useSelector((state) => state.quizzesList.quizzes);
   const [displayedQuizzes, setDisplayedQuizzes] = useState([]);
 
+  console.log("QUIZZES");
+
   useEffect(() => {
+    console.log("EFFECT");
+    console.log(quizzes);
     if (quizzes) {
       setDisplayedQuizzes(quizzes);
     }
@@ -50,15 +54,22 @@ const UserQuizzesScreen = (props) => {
   };
 
   return (
-    <div style={{height: "100%", width: "100%"}}>
+    <div style={{ height: "100%", width: "100%" }}>
       <Grid item xs={12} xl={12} className={classes.titleContainer}>
         <Typography variant="h4" align="center">
           My Quizzes
         </Typography>
         <Divider variant="middle" />
       </Grid>
-      <Grid item container justify="center" spacing={3} xs={12} xl={12} className={classes.list}>
-     
+      <Grid
+        item
+        container
+        justify="center"
+        spacing={3}
+        xs={12}
+        xl={12}
+        className={classes.list}
+      >
         {quizzes.length === 0 && (
           <Grid item xs={12}>
             <Typography variant="body1" align="center">

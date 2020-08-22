@@ -280,12 +280,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
           handleClose={() => setValidationError("")}
         />
       )}
-      <Grid
-        container
-        spacing={2}
-        justify="flex-start"
-        alignItems="flex-start"
-      >
+      <Grid container spacing={2} justify="flex-start" alignItems="flex-start">
         <Grid item xs={12}>
           <Typography
             variant="h5"
@@ -297,8 +292,14 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
           <Divider variant="middle" />
         </Grid>
 
-
-     <Grid item container xl={12} spacing={2} justify="center" className={classes.scrollContainer}>
+        <Grid
+          item
+          container
+          xl={12}
+          spacing={2}
+          justify="center"
+          className={classes.scrollContainer}
+        >
           <Grid item xs={12} sm={3} className={classes.label}>
             <input
               onChange={handleAddFile}
@@ -332,154 +333,157 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
             </Button>
           </Grid>
 
-        <Grid item xl={12} container spacing={3} justify="center">
-          {addedMedia &&
-            addedMedia.map((media, index) => (
-              <Grid item sm={12} md={4} key={index}>
-                <AddedMedia
-                  media={media}
-                  handleRemoveMedia={handleRemoveMedia}
-                  handleTextChange={handleTextChange}
-                  key={index}
-                  //passed into remove function to access item in addedMedia array in state
-                  index={index}
-                />
-              </Grid>
-            ))}
-        </Grid>
+          <Grid item xl={12} container spacing={3} justify="center">
+            {addedMedia &&
+              addedMedia.map((media, index) => (
+                <Grid item sm={12} md={6} key={index}>
+                  <AddedMedia
+                    media={media}
+                    handleRemoveMedia={handleRemoveMedia}
+                    handleTextChange={handleTextChange}
+                    key={index}
+                    //passed into remove function to access item in addedMedia array in state
+                    index={index}
+                  />
+                </Grid>
+              ))}
+          </Grid>
 
-        <Grid item xs={6} sm={6} className={classes.label}>
-          <Typography htmlFor="questionType" align="right">
-            Question type
-          </Typography>
-        </Grid>
-        <Grid item xs={6} sm={6} className={classes.input}>
-          <select
-            id="questionType"
-            value={questionType}
-            onChange={handleSelectQuestionType}
-          >
-            {questionTypes.map((type, index) => (
-              <option key={index} value={type}>
-                {camelToSentence(type)}
-              </option>
-            ))}
-          </select>
-        </Grid>
+          <Grid item xs={6} sm={6} className={classes.label}>
+            <Typography htmlFor="questionType" align="right">
+              Question type
+            </Typography>
+          </Grid>
+          <Grid item xs={6} sm={6} className={classes.input}>
+            <select
+              id="questionType"
+              value={questionType}
+              onChange={handleSelectQuestionType}
+            >
+              {questionTypes.map((type, index) => (
+                <option key={index} value={type}>
+                  {camelToSentence(type)}
+                </option>
+              ))}
+            </select>
+          </Grid>
           <Grid item xs={12} md={12} className={classes.input}>
-          <TextField
-            variant="outlined"
-            fullWidth
-            label="Question"
-            value={question}
-            onChange={handleQuestionChange}
-            required
-          />
-        </Grid>
-
-        {questionType === "trueFalse" && (
-          <Fragment>
-            <Grid item md={6} sm={6} style={{ textAlign: "right" }}>
-              <Radio
-                value="true"
-                id="true"
-                checked={selectedTrueFalse === "true"}
-                onChange={handleTrueFalseSelect}
-                name="trueFalse"
-                required
-              />
-              <label htmlFor="true">True</label>
-            </Grid>
-            <Grid item md={6} sm={6}>
-              <Radio
-                value="false"
-                id="false"
-                checked={selectedTrueFalse === "false"}
-                onChange={handleTrueFalseSelect}
-                name="trueFalse"
-              />
-              <label htmlFor="false">False</label>
-            </Grid>
-          </Fragment>
-        )}
-
-        <Grid item md={12} sm={12}>
-          <Typography variant="body1" style={{ textAlign: "center" }}>
-            Please select the correct answer.
-          </Typography>
-        </Grid>
-
-        {questionType === "multipleChoice" && (
-          <Fragment>
-            {multipleChoiceOptions.map((option, index) => (
-              <Grid
-                item
-                md={12}
-                xs={12}
-                key={index}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <label htmlFor={index}>{index + 1 }.</label>
-                <input
-                  type="text"
-                  value={option}
-                  onChange={handleMultipleChoiceOptionChange}
-                  data-index={index}
-                  required
-                  className={classes.textArea}
-                />
-                <Radio
-                  value={index}
-                  checked={selectedMultipleChoiceOption === index.toString()}
-                  onChange={handleMultipleChoiceOptionSelect}
-                  required
-                />
-              </Grid>
-            ))}
-            <Grid item md={12} style={{ textAlign: "center" }}>
-              <Button color="primary" onClick={handleAddMultipleChoiceOption}>
-                Add another option
-              </Button>
-            </Grid>
-          </Fragment>
-        )}
-
-        {quiz.quizPointsSystem === "eachQuestion" && (
-          <Grid item md={12} xl={12}>
             <TextField
-              id="points"
-              label="points"
-              value={points}
-              onChange={handlePointsChange}
               variant="outlined"
+              fullWidth
+              label="Question"
+              value={question}
+              onChange={handleQuestionChange}
+              required
             />
           </Grid>
-        )}
 
-        <Grid item xs={6} className={classes.label}>
-          <Button
-            type="submit"
-            onClick={handleSubmit}
-            variant="contained"
+          {questionType === "trueFalse" && (
+            <Fragment>
+              <Grid item md={6} sm={6} style={{ textAlign: "right" }}>
+                <Radio
+                  value="true"
+                  id="true"
+                  checked={selectedTrueFalse === "true"}
+                  onChange={handleTrueFalseSelect}
+                  name="trueFalse"
+                  required
+                />
+                <label htmlFor="true">True</label>
+              </Grid>
+              <Grid item md={6} sm={6}>
+                <Radio
+                  value="false"
+                  id="false"
+                  checked={selectedTrueFalse === "false"}
+                  onChange={handleTrueFalseSelect}
+                  name="trueFalse"
+                />
+                <label htmlFor="false">False</label>
+              </Grid>
+            </Fragment>
+          )}
+
+          <Grid item md={12} sm={12}>
+            <Typography variant="body1" style={{ textAlign: "center" }}>
+              Please select the correct answer.
+            </Typography>
+          </Grid>
+
+          {questionType === "multipleChoice" && (
+            <Fragment>
+              {multipleChoiceOptions.map((option, index) => (
+                <Grid
+                  item
+                  md={12}
+                  xs={12}
+                  key={index}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <label htmlFor={index}>{index + 1}.</label>
+                  <input
+                    type="text"
+                    value={option}
+                    onChange={handleMultipleChoiceOptionChange}
+                    data-index={index}
+                    required
+                    className={classes.textArea}
+                  />
+                  <Radio
+                    value={index}
+                    checked={selectedMultipleChoiceOption === index.toString()}
+                    onChange={handleMultipleChoiceOptionSelect}
+                    required
+                  />
+                </Grid>
+              ))}
+              <Grid item md={12} style={{ textAlign: "center" }}>
+                <Button color="primary" onClick={handleAddMultipleChoiceOption}>
+                  Add another option
+                </Button>
+              </Grid>
+            </Fragment>
+          )}
+
+          {quiz.quizPointsSystem === "eachQuestion" && (
+            <Grid item md={12} xl={12}>
+              <TextField
+                id="points"
+                label="points"
+                value={points}
+                onChange={handlePointsChange}
+                variant="outlined"
+              />
+            </Grid>
+          )}
+
+          <Grid item xs={6} className={classes.label}>
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              variant="contained"
               color="primary"
               className={classes.button}
-          >
-            {qToEdit ? <>Update Question</> : <>Add question</>}
-          </Button>
-        </Grid>
-        <Grid item xs={6} className={classes.input}>
-            <Button color="primary"
+            >
+              {qToEdit ? <>Update Question</> : <>Add question</>}
+            </Button>
+          </Grid>
+          <Grid item xs={6} className={classes.input}>
+            <Button
+              color="primary"
               variant="contained"
               onClick={closeModal}
-            className={classes.button}>
-            Cancel
-          </Button>
+              className={classes.button}
+            >
+              Cancel
+            </Button>
+          </Grid>
         </Grid>
-      </Grid></Grid>
+      </Grid>
     </div>
   );
 };
