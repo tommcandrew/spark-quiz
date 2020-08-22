@@ -272,7 +272,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
 
   //RETURN
   return (
-    <div className={rootClasses.root} style={{ overflowY: "scroll" }}>
+    <div className={classes.root}>
       {validationError !== "" && (
         <CustomSnackbar
           severity="error"
@@ -285,7 +285,6 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
         spacing={2}
         justify="flex-start"
         alignItems="flex-start"
-        style={{ padding: "30px" }}
       >
         <Grid item xs={12}>
           <Typography
@@ -297,15 +296,10 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
           </Typography>
           <Divider variant="middle" />
         </Grid>
-        <Grid
-          item
-          xl={12}
-          container
-          spacing={3}
-          justify="center"
-          style={{ marginTop: "10px" }}
-        >
-          <Grid item xs={12} md={3} style={{ textAlign: "right" }}>
+
+
+     <Grid item container xl={12} spacing={2} justify="center" className={classes.scrollContainer}>
+          <Grid item xs={12} sm={3} className={classes.label}>
             <input
               onChange={handleAddFile}
               accept={supportedFileTypes.toString()}
@@ -319,28 +313,29 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
                 color="primary"
                 component="span"
                 startIcon={<CloudUploadIcon />}
+                classname={classes.button}
               >
                 Add Media
               </Button>
             </label>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={3} className={classes.input}>
             <Button
               variant="outlined"
               color="primary"
               component="span"
               onClick={handleAddText}
               startIcon={<CreateIcon />}
+              classname={classes.button}
             >
               Add Text
             </Button>
           </Grid>
-        </Grid>
 
         <Grid item xl={12} container spacing={3} justify="center">
           {addedMedia &&
             addedMedia.map((media, index) => (
-              <Grid item xs={6} md={4} key={index}>
+              <Grid item sm={12} md={4} key={index}>
                 <AddedMedia
                   media={media}
                   handleRemoveMedia={handleRemoveMedia}
@@ -353,12 +348,12 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
             ))}
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={6} sm={6} className={classes.label}>
           <Typography htmlFor="questionType" align="right">
             Question type
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={6} sm={6} className={classes.input}>
           <select
             id="questionType"
             value={questionType}
@@ -371,7 +366,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
             ))}
           </select>
         </Grid>
-        <Grid item md={12}>
+          <Grid item xs={12} md={12} className={classes.input}>
           <TextField
             variant="outlined"
             fullWidth
@@ -419,8 +414,8 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
             {multipleChoiceOptions.map((option, index) => (
               <Grid
                 item
-                md={3}
-                xs={3}
+                md={12}
+                xs={12}
                 key={index}
                 style={{
                   display: "flex",
@@ -428,7 +423,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
                   justifyContent: "flex-end",
                 }}
               >
-                <label htmlFor={index}>{index + 1}.</label>
+                <label htmlFor={index}>{index + 1 }.</label>
                 <input
                   type="text"
                   value={option}
@@ -445,7 +440,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
                 />
               </Grid>
             ))}
-            <Grid item md={3} style={{ textAlign: "center" }}>
+            <Grid item md={12} style={{ textAlign: "center" }}>
               <Button color="primary" onClick={handleAddMultipleChoiceOption}>
                 Add another option
               </Button>
@@ -465,22 +460,26 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
           </Grid>
         )}
 
-        <Grid item xs={6} style={{ textAlign: "right", marginTop: "30px" }}>
+        <Grid item xs={6} className={classes.label}>
           <Button
             type="submit"
             onClick={handleSubmit}
             variant="contained"
-            color="primary"
+              color="primary"
+              className={classes.button}
           >
             {qToEdit ? <>Update Question</> : <>Add question</>}
           </Button>
         </Grid>
-        <Grid item xs={6} style={{ marginTop: "30px" }}>
-          <Button color="primary" variant="contained" onClick={closeModal}>
+        <Grid item xs={6} className={classes.input}>
+            <Button color="primary"
+              variant="contained"
+              onClick={closeModal}
+            className={classes.button}>
             Cancel
           </Button>
         </Grid>
-      </Grid>
+      </Grid></Grid>
     </div>
   );
 };

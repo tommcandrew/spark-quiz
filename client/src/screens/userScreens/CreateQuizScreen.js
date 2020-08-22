@@ -9,7 +9,7 @@ import ShareModal from "../../components/modals/ShareModal";
 import * as quizActions from "../../store/actions/quizActions";
 import * as userActions from "../../store/actions/userActions";
 
-import { createQuizScreenStyles, customStyles, screenLayoutStyles } from "../../style/screenStyles";
+import { createQuizScreenStyles, screenLayoutStyles } from "../../style/screenStyles";
 import { Paper, Button, Box, Typography, Grid, TextField, Divider } from "@material-ui/core";
 import Modal from "react-modal";
 import CustomSnackbar from "../../components/mui/Snackbar";
@@ -154,8 +154,8 @@ export default function CreateQuizScreen(props) {
 					<Modal
 						isOpen={modalIsOpen}
 						onRequestClose={closeModal}
-						style={customStyles}
-						aria-labelledby="contained-modal-title-vcenter"
+						className="Modal"
+						overlayClassName="Overlay"
 						centered>
 						{displayedComponent} 
 					</Modal>

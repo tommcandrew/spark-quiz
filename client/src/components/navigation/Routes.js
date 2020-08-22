@@ -15,7 +15,7 @@ export const StudentRoute = ({ component: Component, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: "/",
+              pathname: "/finishQuiz",
               state: { from: props.location },
             }}
           />

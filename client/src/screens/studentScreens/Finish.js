@@ -1,28 +1,35 @@
-import React, {useEffect} from 'react'
-import {useDispatch, useSelector} from "react-redux"
-import * as quizActions from "../../store/actions/quizActions";
-import * as authActions from "../../store/actions/authActions";
-import * as quizScoreActions from "../../store/actions/quizScoreActions";
+import React from 'react'
+import studentScreensStyles from "../../style/studentScreensStyles";
+import {
+  Typography,
+  Button,
+} from "@material-ui/core";
 
-
-const Finish = ({ history}) => {
-  const dispatch = useDispatch();
- //const score = useSelector(state => state.score.overallScore)
-
-
-  
+const Finish = ({ history, location }) => {
+  const classes = studentScreensStyles();
 
   const doneHandler = async () => {
     history.push("/")
     }
     return (
-        <>
-              <h2>End of Quiz</h2>
-              <p>
-                Score: 
-              </p>
-              <button onClick={doneHandler}>Done</button>
-            </>
+      <>
+        {location?
+          (
+            <div className = {classes.finsihQuizContainer}>
+              <Typography variant="h6" color= "primary">Quiz Finished</Typography>
+              <Typography variant="body">
+                Score: {location.score}
+                {/* need to get score here */}
+              </Typography>
+              <Button color="primary" onClick={doneHandler}>Done</Button>
+              </div>
+            ):
+          (
+            <>
+              { history.push("/")}
+              </>
+      ) }</>
+              
     )
 }
 

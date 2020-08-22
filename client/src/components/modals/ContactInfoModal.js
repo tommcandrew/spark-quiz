@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { modalRootStyles } from "../../style/modalStyles";
+import { modalRootStyles, addContactModalStyles } from "../../style/modalStyles";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import { Grid, Typography, Divider, Button, TextField } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
@@ -11,6 +11,7 @@ import { contactValidation } from "../../utils/validation";
 const ContactInfoModal = ({ contact, handleSubmit, handleDeleteContact, closeModal }) => {
 	const [ validationError, setValidationError ] = useState("");
 	const rootClasses = modalRootStyles();
+	const classes = addContactModalStyles();
 
 	const internalSubmit = (e) => {
 		e.preventDefault();
@@ -36,17 +37,17 @@ const ContactInfoModal = ({ contact, handleSubmit, handleDeleteContact, closeMod
 			)}
 
 			<form onSubmit={internalSubmit}>
-				<Grid container spacing={3} justify="center" alignItems="flex-start">
+				<Grid container spacing={3} justify="center">
 					<Grid item xs={12}>
 						<Typography variant="h5" color="primary" style={{ textAlign: "center" }}>
 							{contact.name}'s Information
 						</Typography>
 						<Divider variant="middle" />
 					</Grid>
-					<Grid item xs={12} md={6} style={{ textAlign: "right", marginTop: "auto" }}>
+					<Grid item xs={12} sm={6} className={classes.label}>
 						<Typography>Name: </Typography>
 					</Grid>
-					<Grid item xs={12} md={6}>
+					<Grid item xs={12} sm={6} className={classes.input}>
 						<TextField
 							variant="outlined"
 							type="text"
@@ -55,14 +56,14 @@ const ContactInfoModal = ({ contact, handleSubmit, handleDeleteContact, closeMod
 							defaultValue={contact ? contact.name : ""}
 						/>
 					</Grid>
-					<Grid item xs={12} md={6} style={{ textAlign: "right", marginTop: "auto" }}>
+					<Grid item xs={12} sm={6} className={classes.label}>
 						<Typography>Email: </Typography>
 					</Grid>
-					<Grid item xs={12} md={6}>
+					<Grid item xs={12} sm={6} className={classes.input}>
 						<TextField variant="outlined" id="email" name="email" defaultValue={contact.email} />
 					</Grid>
 					<Grid item xs={12} md={4} style={{ textAlign: "center" }}>
-						<Button type="submit" variant="contained" color="primary" startIcon={<SaveIcon />}>
+						<Button type="submit" variant="contained" color="primary" startIcon={<SaveIcon />} fullWidth>
 							Save
 						</Button>
 					</Grid>
@@ -72,6 +73,7 @@ const ContactInfoModal = ({ contact, handleSubmit, handleDeleteContact, closeMod
 							onClick={() => {
 								closeModal();
 							}}
+							fullWidth
 							variant="contained"
 							color="primary"
 							startIcon={<CloseIcon />}>
@@ -83,6 +85,7 @@ const ContactInfoModal = ({ contact, handleSubmit, handleDeleteContact, closeMod
 							onClick={handleDeleteContact}
 							variant="contained"
 							color="primary"
+							fullWidth
 							startIcon={<DeleteOutlineIcon />}>
 							Delete Contact
 						</Button>

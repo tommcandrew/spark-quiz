@@ -44,7 +44,7 @@ const studentScreensStyles = makeStyles((theme) => ({
 	quizStartContainer: {
 		width: "100%",
 		display: "flex",
-		flexDirection: "column"
+		flexDirection: "column",
 	},
 	quizInfo: {
 		margin: "0 auto",
@@ -183,7 +183,14 @@ const studentScreensStyles = makeStyles((theme) => ({
 	progressBar__progress: {
 		height: "100%",
 		backgroundColor: theme.palette.primary.main
+	},
+	finsihQuizContainer: {
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		marginTop: "20px"
 	}
+
 }));
 
 export default studentScreensStyles;

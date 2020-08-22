@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as userActions from "../../store/actions/userActions";
 import { useDispatch } from "react-redux";
-import { modalRootStyles } from "../../style/modalStyles";
+import { modalRootStyles, addContactModalStyles  } from "../../style/modalStyles";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import {
   Grid,
@@ -17,6 +17,7 @@ import V from "max-validator";
 //MAIN
 const AddGroupModal = ({ closeModal, user }) => {
   const rootClasses = modalRootStyles();
+  const classes = addContactModalStyles();
   const dispatch = useDispatch();
   const [validationError, setValidationError] = useState("");
   const [groupMemberList, setGroupMemberList] = useState([]);
@@ -79,22 +80,22 @@ const AddGroupModal = ({ closeModal, user }) => {
       )}
 
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={3} justify="center" alignItems="flex-start">
+        <Grid container spacing={3} justify="center" >
           <Grid item xs={12}>
             <Typography
               variant="h5"
-              color="secondary"
+              color="primary"
               style={{ textAlign: "center" }}
             >
-              Make a group
+              Create a group
             </Typography>
             <Divider variant="middle" />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} className={classes.label} >
             <Typography>Group Name: </Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} className={classes.input}>
             <TextField
               variant="outlined"
               id="name"
@@ -104,36 +105,46 @@ const AddGroupModal = ({ closeModal, user }) => {
           </Grid>
           {user &&
             user.contacts &&
-            user.contacts.map((contact, index) => (
+            <Grid item container XL={12} spacing={2} className={classes.nonGroupMembersContainer}>
+            {
+              user.contacts.map((contact, index) => (
               <Grid item lg={3} key={index}>
-                <label htmlFor={contact.name}>{contact.name}</label>
+              
                 <input
                   type="checkbox"
-                  name={contact}
+                    name={contact}
+                    color="secondary"
                   onChange={handleAddContact}
+                  style={{marginRight: "5px"}}
                   value={JSON.stringify(contact)}
-                />
+                />  <label htmlFor={contact.name}>{contact.name}</label>
               </Grid>
-            ))}
+            ))
+            }
+            </Grid>
+          
+            }
           <Grid item xl={12} container spacing={2} />
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} sm={6}>
             <Button
               type="submit"
               variant="contained"
-              color="secondary"
+              color="primary"
+              fullWidth
               startIcon={<SaveIcon />}
             >
               Save
             </Button>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} sm={6}>
             <Button
               onClick={() => {
                 closeModal();
               }}
               variant="contained"
-              color="secondary"
+              color="primary"
+              fullWidth
               startIcon={<CloseIcon />}
             >
               Cancel

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { modalRootStyles } from "../../style/modalStyles";
+import { modalRootStyles, addContactModalStyles } from "../../style/modalStyles";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import { Grid, Typography, Divider, Button, TextField } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
@@ -10,6 +10,7 @@ import { contactValidation } from "../../utils/validation";
 const AddContactModal = ({ handleSubmit, closeModal, user }) => {
 	const [ validationError, setValidationError ] = useState("");
 	const rootClasses = modalRootStyles();
+	const classes = addContactModalStyles();
 
 	const internalSubmit = (e) => {
 		e.preventDefault();
@@ -38,38 +39,41 @@ const AddContactModal = ({ handleSubmit, closeModal, user }) => {
 			)}
 
 			<form onSubmit={internalSubmit}>
-				<Grid container spacing={3} justify="center" alignItems="flex-start">
+				<Grid container spacing={3} justify="center">
 					<Grid item xs={12}>
-						<Typography variant="h5" color="primary" style={{ textAlign: "center" }}>
+						<Typography variant="h5" color="primary" style={{textAlign: "center"}}>
 							Add Contact
 						</Typography>
 						<Divider variant="middle" />
 					</Grid>
-					<Grid item xs={12} md={6} style={{ textAlign: "right", marginTop: "auto" }}>
+					<Grid item xs={12} sm={6} className={classes.label}>
 						<Typography>Name: </Typography>
 					</Grid>
-					<Grid item xs={12} md={6}>
+					<Grid item xs={12} sm={6} className={classes.input}>
 						<TextField variant="outlined" type="text" id="name" name="name" color="secondary" />
 					</Grid>
-					<Grid item xs={12} md={6} style={{ textAlign: "right", marginTop: "auto" }}>
+					<Grid item xs={12} sm={6} className={classes.label}>
 						<Typography>Email: </Typography>
 					</Grid>
-					<Grid item xs={12} md={6}>
+					<Grid item xs={12} sm={6} className={classes.input}>
 						<TextField variant="outlined" id="email" name="email" color="secondary" />
 					</Grid>
-					<Grid item xs={12} md={4} style={{ textAlign: "right" }}>
-						<Button type="submit" variant="contained" color="primary" startIcon={<SaveIcon />}>
+					<Grid item xs={12} sm={6} className={classes.label}>
+						<Button type="submit" variant="contained" color="primary" startIcon={<SaveIcon />} classname={classes.button}>
 							Save
 						</Button>
 					</Grid>
 
-					<Grid item xs={12} md={4}>
+					<Grid item xs={12}sm={6} className={classes.input}>
 						<Button
+							classname={classes.button}
 							onClick={() => {
 								closeModal();
 							}}
 							variant="contained"
 							color="primary"
+							
+							
 							startIcon={<CloseIcon />}>
 							Cancel
 						</Button>

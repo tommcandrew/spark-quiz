@@ -10,24 +10,6 @@ export const screenLayoutStyles = makeStyles({
   },
 });
 
-export const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    padding: "20px",
-    display: "inline",
-    maxWidth: "60%",
-    maxHeight: "65%",
-
-  },
-  overlay: { zIndex: 2000, background: "rgba(0,0,0,0.7)" },
-};
 
 export const userQuizzesScreenStyle = makeStyles((theme) => ({
   titleContainer: {
@@ -151,16 +133,7 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
       width: "100%"
     },
   },
-  button: {
-    marginLeft: "10px",
-    [theme.breakpoints.down("sm")]: {
-      height: "35px",
-      width: "20%",
-      fontSize: "0.6rem",
-      margin: "5px",
-         padding: "2px"
-    },
-  },
+ 
   gridItem: {
     padding: "10px",
   },

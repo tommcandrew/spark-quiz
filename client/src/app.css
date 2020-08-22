@@ -89,3 +89,48 @@ Link {
     height: 50%
   }
 }
+
+@media only screen and (max-width: 900px) {
+  .Modal{
+     padding: 10px;
+    min-width: 80%;
+    max-width: 90%;
+    max-height: 75%;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .Modal{
+     padding: 5px;
+    max-height: 80%;
+    min-width: 90%;
+  }
+}
+
+  .Modal {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    max-width: 60%;
+    max-height: 75%;
+    position: absolute;
+    display: block;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+
+  .Overlay {
+    z-index: 2000;
+    background-color: rgba(0,0,0,0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+

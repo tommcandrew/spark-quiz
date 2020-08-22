@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { modalRootStyles, groupInfoModalStyles } from "../../style/modalStyles";
+import { modalRootStyles, addContactModalStyles  } from "../../style/modalStyles";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import {
 	Grid,
@@ -28,7 +28,7 @@ const GroupInfoModal = ({ selectedGroup, closeModal, handleDeleteGroup, user, ha
 	const [validationError, setValidationError] = useState("");
 	const [ membersToAdd, setMembersToAdd ] = useState([]);
 	const rootClasses = modalRootStyles();
-	const classes = groupInfoModalStyles();
+	const classes = addContactModalStyles ();
 
 
 	const handleSubmit = (e) => {
@@ -71,36 +71,46 @@ const GroupInfoModal = ({ selectedGroup, closeModal, handleDeleteGroup, user, ha
 			)}
 			
 			<form onSubmit={handleSubmit}>
-			<Grid container spacing={3} justify="center" alignItems="flex-start">
+			<Grid container spacing={3} justify="center">
 				<Grid item xs={12}>
-					<Typography variant="h5" color="secondary" style={{ textAlign: "center" }}>
+					<Typography variant="h5" color="primary" style={{ textAlign: "center" }}>
 						Group Detail
 					</Typography>
 					<Divider variant="middle" />
 				</Grid>
-				<Grid item xs={12} md={6}>
+				<Grid item xs={12} sm={6} className={classes.label}>
 					<Typography>Group name: </Typography>
 				</Grid>
-				<Grid item xs={12} md={6}>
+				<Grid item xs={12} sm={6} className={classes.input}>
 					<TextField variant="outlined" id="name" name="name" defaultValue={selectedGroup.name} />
 				</Grid>
 				<Grid item xl={12} container spacing={1}>
 					<Grid item xs={12}>
-						Group Members:
+							Group Members:
 					</Grid>
-					{groupMembers && groupMembers.length>0 && groupMembers.map((contact, index) => {
-						return (
-							<Grid item xs={6} md={2} key={index}>
-								<Chip
-									label={contact.name}
-									clickable
-									color="secondary"
-									onDelete={() => handleDeleteMember(contact._id)}
-									variant="outlined"
-								/>
-							</Grid>
-						);
-					})}
+						
+						{groupMembers && groupMembers.length > 0 &&
+							
+							
+							(
+						<Grid item xl={12} container spacing={1} className={classes.nonGroupMembersContainer} >
+								{groupMembers.map((contact, index) => {
+						
+									return(<Grid item xs={6} md={2} key={index}>
+										<Chip
+											label={contact.name}
+											clickable
+											color="secondary"
+											onDelete={() => handleDeleteMember(contact._id)}
+											variant="outlined"
+										/>
+									</Grid>)
+						
+						
+								})}
+							</Grid>)
+					}
+						
 
 					<Grid item xs={12}>
 						Add more members:
@@ -118,24 +128,25 @@ const GroupInfoModal = ({ selectedGroup, closeModal, handleDeleteGroup, user, ha
 					</Grid>
 					}
 
-					<Grid item xs={12} md={4}>
-						<Button type="submit" variant="contained" color="secondary" startIcon={<SaveIcon />}>
+					<Grid item xs={12} sm={4}>
+						<Button type="submit" fullWidth variant="contained" color="primary" startIcon={<SaveIcon />}>
 							Save
 						</Button>
 					</Grid>
 
-					<Grid item xs={12} md={4}>
-						<Button onClick={closeModal} variant="contained" color="secondary" startIcon={<CloseIcon />}>
+					<Grid item xs={12} sm={4}>
+						<Button onClick={closeModal} fullWidth variant="contained" color="primary" startIcon={<CloseIcon />}>
 							Cancel
 						</Button>
 					</Grid>
-					<Grid item xs={12} md={4}>
+					<Grid item xs={12} sm={4}>
 						<Button
-							onClick={handleDeleteGroup}
+								onClick={handleDeleteGroup}
+								fullWidth
 							variant="contained"
-							color="secondary"
+							color="primary"
 							startIcon={<DeleteOutlineIcon />}>
-							Delete group
+							Delete
 						</Button>
 					</Grid>
 				</Grid>
