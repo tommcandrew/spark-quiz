@@ -65,17 +65,11 @@ export const createQuiz = (quizName, quizSubject) => {
 };
 
 export const loadQuiz = () => {
-  console.log("LOAD QUIZ");
   return async (dispatch, getState) => {
     const quizId = localStorage.getItem("quizId");
-    console.log("QUIZ ID");
-    console.log(quizId);
     if (quizId) {
       const token = getState().auth.token;
-      console.log("TOKEN");
-      console.log(token);
       if (quizId) {
-        console.log("MAKING AXIOS CALL");
         return axios
           .post(
             "http://localhost:5000/quiz/fetchQuiz",

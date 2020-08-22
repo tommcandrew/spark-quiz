@@ -374,6 +374,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
               label="Question"
               value={question}
               onChange={handleQuestionChange}
+              spellCheck={false}
               required
             />
           </Grid>

@@ -26,11 +26,8 @@ const UserQuizzesScreen = (props) => {
 
   useEffect(() => {
     if (quizzes && quizzes.length > 0) {
-      console.log("THERE ARE QUIZZES");
-      console.log(quizzes);
       setDisplayedQuizzes(quizzes);
     } else {
-      console.log("FETCHING QUIZZES");
       dispatch(userActions.fetchQuizzes());
     }
   }, [quizzes]);
