@@ -127,7 +127,7 @@ const studentScreensStyles = makeStyles((theme) => ({
   },
   quiz__media: {
     marginBottom: "5px",
-    border: `1px solid ${theme.palette.primary.main}`,
+    // border: `1px solid ${theme.palette.primary.main}`,
     width: "350px",
     height: "250px",
     [theme.breakpoints.down("sm")]: {

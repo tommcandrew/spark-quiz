@@ -24,13 +24,11 @@ const UserQuizzesScreen = (props) => {
   const quizzes = useSelector((state) => state.quizzesList.quizzes);
   const [displayedQuizzes, setDisplayedQuizzes] = useState([]);
 
-  console.log("QUIZZES");
-
   useEffect(() => {
-    console.log("EFFECT");
-    console.log(quizzes);
     if (quizzes) {
       setDisplayedQuizzes(quizzes);
+    } else {
+      dispatch(userActions.fetchQuizzes());
     }
   }, [quizzes]);
 
