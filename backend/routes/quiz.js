@@ -98,7 +98,6 @@ router.post("/deleteQuiz", checkAuth, async (req, res) => {
 });
 
 router.get("/fetchQuizzes", checkAuth, async (req, res) => {
-  console.log("FETCH QUIZZES REQUEST RECEIVED");
   let userQuizzes = [];
   try {
     const user = await User.findById(req.user.id);
@@ -108,7 +107,6 @@ router.get("/fetchQuizzes", checkAuth, async (req, res) => {
         userQuizzes.push(quiz);
       }
     });
-    console.log("SENDING RESPONSE");
     res.status(200).send({ quizzes: userQuizzes });
   } catch (err) {
     console.log(err);
