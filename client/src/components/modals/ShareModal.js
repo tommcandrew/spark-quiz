@@ -313,8 +313,8 @@ const ShareModal = ({ quizId, closeModal }) => {
           </TabPanel>
         </SwipeableViews>
 
-        <Grid item xl={12} container spacing={2} style={{marginTop: "5px"}}>
-          <Grid item md={6} style={{textAlign: "right"}}>
+        <Grid item xl={12} container spacing={2} justify="center" style={{marginTop: "5px"}}>
+          <Grid item md={6} >
             <Button
               variant="contained"
               color="primary"

@@ -140,14 +140,14 @@ const CreateQuizConfirmationModal = ({ closeModal }) => {
             xl={12}
             container
             spacing={2}
-            style={{ textAlign: "right" }}
+            justify="center"
           >
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} md={6} style={{textAlign: "center"}}>
               <Button variant="contained" color="primary" onClick={closeModal}>
                 Continue Editing
               </Button>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} md={6} style={{textAlign: "center"}}>
               <Button variant="contained" color="primary" type="submit">
                 Upload Quiz
               </Button>
