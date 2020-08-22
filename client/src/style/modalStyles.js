@@ -37,6 +37,7 @@ export const addQuestionModalStyles = makeStyles((theme) => ({
     maxlength: "10",
     width: "80px",
     marginLeft: "10px",
+    width:"100%"
   },
 }));
 
@@ -51,9 +52,40 @@ export const shareModalStyles = makeStyles((theme) => ({
   },
 }));
 
-export const groupInfoModalStyles = makeStyles((theme) => ({
+
+
+export const addContactModalStyles = makeStyles((theme) => ({
+  label: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    [theme.breakpoints.down("xs")]: {
+      alignItems: "flex-end",
+      justifyContent: "center",
+      padding: "8px"
+    },
+  },
+  input: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    	[theme.breakpoints.down("xs")]: {
+			justifyContent: "center"
+    },
+  },
+  button: {
+    [theme.breakpoints.down("xs")]: {
+      width:"100%"
+    },
+  },
   nonGroupMembersContainer: {
     border: `1px solid ${theme.palette.primary.main}`,
     borderRadius: "3px",
+    height: "180px",
+    maxHeight: "30%",
+    overflowY: "scroll",
+    marginTop: "2px"
   },
+  
+  
 }));

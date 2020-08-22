@@ -115,17 +115,17 @@ const Groups = () => {
 							return (
 								<Grid
 									item
-									lg={3}
-									md={4}
-									xs={12}
-									key={index}
+									 xs={12} sm={6} md={4} lg={3}
 									className={classes.gridItem}
-									onClick={() => {
+									>
+									<Paper
+										onClick={() => {
 										setSelectedGroupId(group._id);
 										setGroupInfoModalIsOpen(true);
-									}}>
-									<Paper className={clsx(classes.paper, "zoom")}>
-										<Typography>Group name:&nbsp; {group.name}</Typography>
+									}}
+										className={clsx(classes.paper, "zoom")}
+									elevation={2}>
+										<Typography variant="h6">{group.name}</Typography>
 										{group.contacts.length === 0 && (
 											<Typography
 												variant="caption"
