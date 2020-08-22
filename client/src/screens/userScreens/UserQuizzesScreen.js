@@ -25,9 +25,12 @@ const UserQuizzesScreen = (props) => {
   const [displayedQuizzes, setDisplayedQuizzes] = useState([]);
 
   useEffect(() => {
-    if (quizzes) {
+    if (quizzes && quizzes.length > 0) {
+      console.log("THERE ARE QUIZZES");
+      console.log(quizzes);
       setDisplayedQuizzes(quizzes);
     } else {
+      console.log("FETCHING QUIZZES");
       dispatch(userActions.fetchQuizzes());
     }
   }, [quizzes]);
