@@ -8,12 +8,15 @@ export const ADD_CONTACT = "ADD_CONTACT";
 export const ADD_GROUP = "ADD_GROUP";
 
 export const fetchQuizzes = () => {
+  console.log("THIS IS FETCH QUIZZES");
   return (dispatch, getState) => {
     const token = getState().auth.token;
     dispatch(loading("Fetching quizzes"));
+    console.log("MAKING AXIOS CALL");
     axios
       .get("http://localhost:5000/quiz/fetchQuizzes", tokenConfig(token))
       .then((res) => {
+        console.log(res);
         dispatch(loaded());
         dispatch({
           type: FETCH_QUIZZES,

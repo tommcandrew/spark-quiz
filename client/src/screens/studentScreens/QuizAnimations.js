@@ -20,7 +20,7 @@ export const animateNextQuestion = (onComplete) => {
   );
   //return question and options elements to original position (not visible)
   tl.to(".quiz__questionContent", 0, {
-    x: 0,
+    x: "100vw",
   });
   //and fade them in
   tl.to(
@@ -28,6 +28,7 @@ export const animateNextQuestion = (onComplete) => {
     1,
     {
       opacity: 1,
+      x: 0,
       ease: "Power1.easeOut",
     },
     ">+0.3"
