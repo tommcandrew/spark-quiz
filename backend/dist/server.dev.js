@@ -14,7 +14,12 @@ var app = express(); //environment variables
 var MONGO_URI = process.env.MONGO_URI; //middleware
 
 app.use(cors());
-app.use(express.json()); //connect to DB
+app.use(express.json());
+app.get("/", function (req, res) {
+  res.json({
+    message: "hello world"
+  });
+}); //connect to DB
 
 mongoose.connect(MONGO_URI, {
   useFindAndModify: false,
