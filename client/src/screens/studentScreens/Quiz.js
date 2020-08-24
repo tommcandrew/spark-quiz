@@ -11,6 +11,7 @@ import QuizOption from "../../components/student/QuizOption";
 import QuizTimer from "../../components/student/QuizTimer";
 import QuizMedia from "../../components/student/QuizMedia";
 import { animateNextQuestion } from "./QuizAnimations";
+import CustomSnackbar from "../../components/mui/Snackbar";
 import Finish from "./Finish";
 import clsx from "clsx";
 
@@ -21,6 +22,7 @@ const Quiz = ({ history }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeUp, setTimeUp] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
+  const [validationError, setValidationError] = useState("");
   //const [score, setScore] = useState(0)
 
   const dispatch = useDispatch();
@@ -86,7 +88,10 @@ const Quiz = ({ history }) => {
   };
 
   const handleClick = async () => {
-    if (selectedOption === null) return;
+    if (selectedOption === null) {
+      setValidationError("Please select an option");
+      return;
+    };
     if (timeUp) return;
 
     let isCorrect;
@@ -118,7 +123,15 @@ const Quiz = ({ history }) => {
 
   return (
     <div className={classes.root}>
+      
       <div className={classes.paperBackground}>
+        {validationError !== "" && (
+        <CustomSnackbar
+          severity="error"
+          message={validationError}
+          handleClose={() => setValidationError("")}
+        />
+      )}
         <div className={classes.content}>
           {!quizStarted && (
             <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />

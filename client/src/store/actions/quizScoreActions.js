@@ -65,10 +65,7 @@ export const finishQuiz = () => {
 		return axios
 			.post("http://localhost:5000/student/finishQuiz", { quizId, studentId }, tokenConfig(token))
 			.then((res) => {
-				console.log("in res of save quiz");
-				dispatch({
-					type: FINISH_QUIZ
-				});
+				return;
 			})
 			.catch((err) => {
 				console.log(err);
