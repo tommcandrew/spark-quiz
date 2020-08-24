@@ -107,6 +107,7 @@ router.get("/fetchQuizzes", checkAuth, async (req, res) => {
         userQuizzes.push(quiz);
       }
     });
+    console.log(userQuizzes)
     res.status(200).send({ quizzes: userQuizzes });
   } catch (err) {
     console.log(err);
