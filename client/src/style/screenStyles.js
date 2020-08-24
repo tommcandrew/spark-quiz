@@ -1,20 +1,24 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export const screenLayoutStyles = makeStyles({
+export const screenLayoutStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     padding: "20px",
     height: "100%",
     display: "flex",
     flexDirection: "column",
+     [theme.breakpoints.down("sm")]: {
+      padding: "0px",
+    },
   },
-});
+}));
 
 
 export const userQuizzesScreenStyle = makeStyles((theme) => ({
   titleContainer: {
-    marginBottom: "15px",
-    	[theme.breakpoints.down("md")]: {
+    marginBottom: "8px",
+    [theme.breakpoints.down("md")]: {
+        marginBottom: "8px",
 			marginTop: "20px"
 		},
   },
@@ -56,6 +60,11 @@ export const userQuizzesScreenStyle = makeStyles((theme) => ({
 }));
 
 export const createQuizScreenStyles = makeStyles((theme) => ({
+  noQuizContainer: {
+     [theme.breakpoints.down("sm")]: {
+      paddingTop: "10px"
+    },
+  },
    textField: {
     [theme.breakpoints.down("sm")]: {
         width: "90%"
@@ -78,6 +87,7 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
     alignItems: "stretch",
     justifyContent: "space-between",
     [theme.breakpoints.down("sm")]: {
+      paddingTop: "10px"
     },
   },
   paper: {
@@ -95,10 +105,15 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
     paddingTop: "10px",
     paddingBottom: "10px",
     backgroundColor: theme.palette.background.default,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "center",
+      alignItems: "flex-start",
+      padding: "10px",
       flex: 0,
-      padding: "8px 8px",
-      width: "100%"
+    },
+     [theme.breakpoints.down("sm")]: {
+       padding: "4px",
+       paddingBottom: "0px"
     },
   },
   titleContainer: {
@@ -106,31 +121,49 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
     marginRight: "3px",
     marginLeft: "3px",
     width: "90%",
+    [theme.breakpoints.down("md")]: {
+       marginTop: "0"
+    },
      [theme.breakpoints.down("sm")]: {
        flexDirection: "column",
        width: "100%",
        alignItems: "flex-start",
-       margin: "0px",
-       marginBottom: "5px"
+       marginBottom: "0px"
     },
   },
   titleNameContainer: {
     display: "flex",
     alignItems: "flex-end",
-     [theme.breakpoints.down("sm")]: {
-      flexDirection: "row",
-       justifyContent: "flex-start",
+     [theme.breakpoints.down("md")]: {
+       flexDirection: "row",
+       justifyContent: "center",
+       marginTop: "5px"
       
     },
   },
   buttons: {
-    width: "90%",
     display: "flex",
     justifyContent: "flex-end",
-    [theme.breakpoints.down("sm")]: {
+    width: "90%",
+    [theme.breakpoints.down("md")]: {
       flexDirection: "row",
       justifyContent: "center",
-      width: "100%"
+      width: "100%",
+      marginTop: "10px"
+    },
+  },
+  button: {
+    marginRight: "10px",
+    [theme.breakpoints.down("md")]: {
+      margin: "10px",
+     width: "100%"
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.75em",
+      margin: "0px",
+      borderRadius: "0",
+      
+    
     },
   },
  

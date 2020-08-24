@@ -11,7 +11,7 @@ import Register from "../../screens/authenticationScreens/Register";
 import Quiz from "../../screens/studentScreens/Quiz";
 import Finish from "../../screens/studentScreens/Finish"
 import LoadingOverlay from "react-loading-overlay";
-import RingLoader from "react-spinners/RingLoader";
+import RingLoader from "react-spinners/PulseLoader";
 import theme from "../../style/theme";
 import CustomSnakbar from "../mui/Snackbar";
 import "../../app.css";
@@ -30,7 +30,7 @@ const MainNavigation = () => {
   const LoadingDisplay = () => (
     <LoadingOverlay
       active={loading}
-      spinner={<RingLoader size={80} color={theme.palette.secondary.main} />}
+      spinner={<RingLoader size={40} color={theme.palette.secondary.main} />}
       text={loadingMsg}
       className="full"
     >

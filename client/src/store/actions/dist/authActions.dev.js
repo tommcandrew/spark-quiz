@@ -68,7 +68,6 @@ var loadUser = function loadUser() {
 
             token = getState().auth.token;
             return _context.abrupt("return", _axios["default"].get("http://localhost:5000/user/fetchUser", tokenConfig(token)).then(function (res) {
-              console.log(res.data);
               dispatch({
                 type: USER_LOADED,
                 payload: res.data.user
