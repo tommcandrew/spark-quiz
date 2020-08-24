@@ -170,8 +170,7 @@ var login = function login(_ref2) {
       dispatch(loadUser());
       dispatch({
         type: _errorActions.CLEAR_ERRORS
-      });
-      dispatch((0, _errorActions.loaded)());
+      }); // dispatch(loaded());
     })["catch"](function (err) {
       dispatch((0, _errorActions.loaded)());
 

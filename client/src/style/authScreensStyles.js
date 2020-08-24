@@ -16,7 +16,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    Width: "600px",
+    width: "600px",
     background: "#fff",
     display: "flex",
     flexDirection: "column",
