@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logout = exports.resetPassword = exports.clearStudent = exports.changePassword = exports.deleteAccount = exports.studentReload = exports.studentLogin = exports.login = exports.register = exports.loadUser = exports.tokenConfig = exports.CLEAR_STUDENT = exports.REGISTER_FAIL = exports.REGISTER_SUCCESS = exports.STUDENT_LOGIN_SUCCESS = exports.LOGOUT_SUCCESS = exports.LOGIN_FAIL = exports.LOGIN_SUCCESS = exports.AUTH_ERROR = exports.USER_LOADING = exports.USER_LOADED = exports.STUDENT_RELOAD_SUCCESS = void 0;
+exports.logout = exports.resetPassword = exports.clearStudent = exports.changePassword = exports.deleteAccount = exports.studentReload = exports.studentLogin = exports.login = exports.register = exports.loadUser = exports.tokenConfig = exports.QUIZZES_LOADED = exports.CLEAR_STUDENT = exports.REGISTER_FAIL = exports.REGISTER_SUCCESS = exports.STUDENT_LOGIN_SUCCESS = exports.LOGOUT_SUCCESS = exports.LOGIN_FAIL = exports.LOGIN_SUCCESS = exports.AUTH_ERROR = exports.USER_LOADING = exports.USER_LOADED = exports.STUDENT_RELOAD_SUCCESS = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -35,6 +35,8 @@ var REGISTER_FAIL = "REGISTER_FAIL";
 exports.REGISTER_FAIL = REGISTER_FAIL;
 var CLEAR_STUDENT = "CLEAR_STUDENT";
 exports.CLEAR_STUDENT = CLEAR_STUDENT;
+var QUIZZES_LOADED = "QUIZZES_LOADED";
+exports.QUIZZES_LOADED = QUIZZES_LOADED;
 
 var tokenConfig = function tokenConfig(token) {
   var config = {
@@ -65,10 +67,15 @@ var loadUser = function loadUser() {
             }); //user is loading to true
 
             token = getState().auth.token;
-            return _context.abrupt("return", _axios["default"].get("https://sparkquiz-backend.herokuapp.com/user/fetchUser", tokenConfig(token)).then(function (res) {
+            return _context.abrupt("return", _axios["default"].get("http://localhost:5000/user/fetchUser", tokenConfig(token)).then(function (res) {
+              console.log(res.data);
               dispatch({
                 type: USER_LOADED,
                 payload: res.data.user
+              });
+              dispatch({
+                type: QUIZZES_LOADED,
+                payload: res.data.userQuizzes
               });
             })["catch"](function (err) {
               if (!err.response) {
@@ -114,7 +121,7 @@ var register = function register(_ref) {
       password2: password2
     });
     dispatch((0, _errorActions.loading)("Registering User. Please Wait"));
-    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/register", body, config).then(function (res) {
+    return _axios["default"].post("http://localhost:5000/auth/register", body, config).then(function (res) {
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
@@ -155,7 +162,7 @@ var login = function login(_ref2) {
       email: email,
       password: password
     });
-    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/login", body, config).then(function (res) {
+    return _axios["default"].post("http://localhost:5000/auth/login", body, config).then(function (res) {
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
@@ -164,7 +171,6 @@ var login = function login(_ref2) {
       dispatch({
         type: _errorActions.CLEAR_ERRORS
       });
-      loadUser();
       dispatch((0, _errorActions.loaded)());
     })["catch"](function (err) {
       dispatch((0, _errorActions.loaded)());
@@ -194,7 +200,7 @@ var studentLogin = function studentLogin(studentCode) {
       }
     };
     dispatch((0, _errorActions.loading)("Verifing code"));
-    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/studentLogin", {
+    return _axios["default"].post("http://localhost:5000/auth/studentLogin", {
       studentCode: studentCode
     }, config).then(function (res) {
       dispatch((0, _quizScoreActions.setStudent)({
@@ -238,7 +244,7 @@ var studentReload = function studentReload() {
           case 4:
             token = getState().auth.token;
             dispatch((0, _errorActions.loading)("Reloading"));
-            return _context2.abrupt("return", _axios["default"].get("https://sparkquiz-backend.herokuapp.com/student/quizReload", tokenConfig(token)).then(function (res) {
+            return _context2.abrupt("return", _axios["default"].get("http://localhost:5000/student/quizReload", tokenConfig(token)).then(function (res) {
               dispatch((0, _quizScoreActions.resetStudent)({
                 quiz: res.data.quiz,
                 user: res.data.user,
@@ -272,7 +278,7 @@ exports.studentReload = studentReload;
 var deleteAccount = function deleteAccount() {
   return function (dispatch, getState) {
     var token = getState().auth.token;
-    return _axios["default"].get("https://sparkquiz-backend.herokuapp.com/user/deleteAccount", tokenConfig(token)).then(function () {
+    return _axios["default"].get("http://localhost:5000/user/deleteAccount", tokenConfig(token)).then(function () {
       //is it ok to not return an action object for reducer? It seems unnecessary here.
       dispatch(logout());
     })["catch"](function (err) {
@@ -286,7 +292,7 @@ exports.deleteAccount = deleteAccount;
 var changePassword = function changePassword(currentPassword, newPassword) {
   return function (dispatch, getState) {
     var token = getState().auth.token;
-    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/changePassword", {
+    return _axios["default"].post("http://localhost:5000/auth/changePassword", {
       currentPassword: currentPassword,
       newPassword: newPassword
     }, tokenConfig(token)).then(function (res) {
@@ -322,7 +328,7 @@ exports.clearStudent = clearStudent;
 
 var resetPassword = function resetPassword(email) {
   return function (dispatch, getState) {
-    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/resetPassword", {
+    return _axios["default"].post("http://localhost:5000/auth/resetPassword", {
       email: email
     }).then(function (res) {
       console.log(res);

@@ -8,13 +8,11 @@ export const ADD_CONTACT = "ADD_CONTACT";
 export const ADD_GROUP = "ADD_GROUP";
 
 export const fetchQuizzes = () => {
-	console.log("THIS IS FETCH QUIZZES");
 	return (dispatch, getState) => {
 		const token = getState().auth.token;
 		dispatch(loading("Fetching quizzes"));
-		console.log("MAKING AXIOS CALL");
 		axios
-			.get("https://sparkquiz-backend.herokuapp.com/quiz/fetchQuizzes", tokenConfig(token))
+			.get("http://localhost:5000/quiz/fetchQuizzes", tokenConfig(token))
 			.then((res) => {
 				console.log(res);
 				dispatch(loaded());
@@ -50,7 +48,7 @@ export const addContact = (contact) => {
 		dispatch(loading("Adding Student"));
 		const token = getState().auth.token;
 		return axios
-			.post("https://sparkquiz-backend.herokuapp.com/user/addContact", { contact }, tokenConfig(token))
+			.post("http://localhost:5000/user/addContact", { contact }, tokenConfig(token))
 			.then(() => {
 				dispatch({
 					type: ADD_CONTACT,
@@ -75,7 +73,7 @@ export const deleteContact = (contactId) => {
 		const token = getState().auth.token;
 		dispatch(loading("Deleting contact"));
 		return axios
-			.post("https://sparkquiz-backend.herokuapp.com/user/deleteContact", { contactId }, tokenConfig(token))
+			.post("http://localhost:5000/user/deleteContact", { contactId }, tokenConfig(token))
 			.then(() => {
 				dispatch(loadUser());
 				dispatch(loaded());
@@ -96,7 +94,7 @@ export const deleteGroup = (groupId) => {
 		const token = getState().auth.token;
 		dispatch(loading("Deleting group"));
 		return axios
-			.post("https://sparkquiz-backend.herokuapp.com/user/deleteGroup", { groupId }, tokenConfig(token))
+			.post("http://localhost:5000/user/deleteGroup", { groupId }, tokenConfig(token))
 			.then(() => {
 				dispatch(loadUser());
 				dispatch(loaded());
@@ -117,11 +115,7 @@ export const updateContact = (contactId, updatedContact) => {
 		dispatch(loading("Updating contact"));
 		const token = getState().auth.token;
 		return axios
-			.post(
-				"https://sparkquiz-backend.herokuapp.com/user/updateContact",
-				{ contactId, updatedContact },
-				tokenConfig(token)
-			)
+			.post("http://localhost:5000/user/updateContact", { contactId, updatedContact }, tokenConfig(token))
 			.then(() => {
 				dispatch(loadUser());
 				dispatch(loaded());
@@ -141,7 +135,7 @@ export const addGroup = (group) => {
 	return (dispatch, getState) => {
 		const token = getState().auth.token;
 		return axios
-			.post("https://sparkquiz-backend.herokuapp.com/user/addGroup", { group }, tokenConfig(token))
+			.post("http://localhost:5000/user/addGroup", { group }, tokenConfig(token))
 			.then(() => {
 				dispatch({
 					type: ADD_GROUP,
@@ -159,11 +153,7 @@ export const deleteMember = (groupId, memberId) => {
 	return (dispatch, getState) => {
 		const token = getState().auth.token;
 		return axios
-			.post(
-				"https://sparkquiz-backend.herokuapp.com/user/deleteMember",
-				{ groupId, memberId },
-				tokenConfig(token)
-			)
+			.post("http://localhost:5000/user/deleteMember", { groupId, memberId }, tokenConfig(token))
 			.then(() => {
 				dispatch(loadUser());
 			})
@@ -178,11 +168,7 @@ export const updateGroup = (groupId, groupName, members) => {
 		dispatch(loading("Updating group"));
 		const token = getState().auth.token;
 		return axios
-			.post(
-				"https://sparkquiz-backend.herokuapp.com/user/updateGroup",
-				{ groupId, groupName, members },
-				tokenConfig(token)
-			)
+			.post("http://localhost:5000/user/updateGroup", { groupId, groupName, members }, tokenConfig(token))
 			.then(() => {
 				dispatch(loadUser());
 				dispatch(loaded());
@@ -204,7 +190,7 @@ export const deleteQuiz = (id) => {
 		const token = getState().auth.token;
 
 		return axios
-			.post("https://sparkquiz-backend.herokuapp.com/quiz/deleteQuiz", { _id: id }, tokenConfig(token))
+			.post("http://localhost:5000/quiz/deleteQuiz", { _id: id }, tokenConfig(token))
 			.then(() => {
 				dispatch({
 					type: DELETE_QUIZ,

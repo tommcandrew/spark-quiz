@@ -6,6 +6,9 @@ import {
   ADD_QUIZ,
 } from "../actions/userActions";
 
+import { QUIZZES_LOADED } from "../actions/authActions"
+
+
 const initalState = {
   quizzes: [],
   contacts: [],
@@ -17,6 +20,11 @@ export default (state = initalState, action) => {
   switch (action.type) {
     case FETCH_QUIZZES:
       return { ...state, quizzes: [...action.payload] };
+    case QUIZZES_LOADED:
+      return {
+        ...state,
+        quizzes: action.payload
+      }
     case DELETE_QUIZ:
       return {
         ...state,
