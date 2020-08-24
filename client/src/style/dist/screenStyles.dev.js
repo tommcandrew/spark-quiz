@@ -9,14 +9,18 @@ var _styles = require("@material-ui/core/styles");
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var screenLayoutStyles = (0, _styles.makeStyles)({
-  root: {
-    flexGrow: 1,
-    padding: "20px",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column"
-  }
+var screenLayoutStyles = (0, _styles.makeStyles)(function (theme) {
+  return {
+    root: _defineProperty({
+      flexGrow: 1,
+      padding: "20px",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column"
+    }, theme.breakpoints.down("sm"), {
+      padding: "0px"
+    })
+  };
 });
 exports.screenLayoutStyles = screenLayoutStyles;
 var userQuizzesScreenStyle = (0, _styles.makeStyles)(function (theme) {
@@ -65,7 +69,12 @@ var userQuizzesScreenStyle = (0, _styles.makeStyles)(function (theme) {
 });
 exports.userQuizzesScreenStyle = userQuizzesScreenStyle;
 var createQuizScreenStyles = (0, _styles.makeStyles)(function (theme) {
+  var _buttonContainer, _titleContainer2, _button;
+
   return {
+    noQuizContainer: _defineProperty({}, theme.breakpoints.down("sm"), {
+      paddingTop: "10px"
+    }),
     textField: _defineProperty({}, theme.breakpoints.down("sm"), {
       width: "90%"
     }),
@@ -83,14 +92,16 @@ var createQuizScreenStyles = (0, _styles.makeStyles)(function (theme) {
       flexDirection: "column",
       alignItems: "stretch",
       justifyContent: "space-between"
-    }, theme.breakpoints.down("sm"), {}),
+    }, theme.breakpoints.down("sm"), {
+      paddingTop: "10px"
+    }),
     paper: _defineProperty({
       padding: theme.spacing(2),
       textAlign: "center"
     }, theme.breakpoints.down("sm"), {
       padding: theme.spacing(0)
     }),
-    buttonContainer: _defineProperty({
+    buttonContainer: (_buttonContainer = {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -98,39 +109,56 @@ var createQuizScreenStyles = (0, _styles.makeStyles)(function (theme) {
       paddingTop: "10px",
       paddingBottom: "10px",
       backgroundColor: theme.palette.background["default"]
-    }, theme.breakpoints.down("sm"), {
-      flex: 0,
-      padding: "8px 8px",
-      width: "100%"
-    }),
-    titleContainer: _defineProperty({
+    }, _defineProperty(_buttonContainer, theme.breakpoints.down("md"), {
+      justifyContent: "center",
+      alignItems: "flex-start",
+      padding: "10px",
+      flex: 0
+    }), _defineProperty(_buttonContainer, theme.breakpoints.down("sm"), {
+      padding: "4px",
+      paddingBottom: "0px"
+    }), _buttonContainer),
+    titleContainer: (_titleContainer2 = {
       marginTop: "10px",
       marginRight: "3px",
       marginLeft: "3px",
       width: "90%"
-    }, theme.breakpoints.down("sm"), {
+    }, _defineProperty(_titleContainer2, theme.breakpoints.down("md"), {
+      marginTop: "0"
+    }), _defineProperty(_titleContainer2, theme.breakpoints.down("sm"), {
       flexDirection: "column",
       width: "100%",
       alignItems: "flex-start",
-      margin: "0px",
-      marginBottom: "5px"
-    }),
+      marginBottom: "0px"
+    }), _titleContainer2),
     titleNameContainer: _defineProperty({
       display: "flex",
       alignItems: "flex-end"
-    }, theme.breakpoints.down("sm"), {
-      flexDirection: "row",
-      justifyContent: "flex-start"
-    }),
-    buttons: _defineProperty({
-      width: "90%",
-      display: "flex",
-      justifyContent: "flex-end"
-    }, theme.breakpoints.down("sm"), {
+    }, theme.breakpoints.down("md"), {
       flexDirection: "row",
       justifyContent: "center",
-      width: "100%"
+      marginTop: "5px"
     }),
+    buttons: _defineProperty({
+      display: "flex",
+      justifyContent: "flex-end",
+      width: "90%"
+    }, theme.breakpoints.down("md"), {
+      flexDirection: "row",
+      justifyContent: "center",
+      width: "100%",
+      marginTop: "10px"
+    }),
+    button: (_button = {
+      marginRight: "10px"
+    }, _defineProperty(_button, theme.breakpoints.down("md"), {
+      margin: "10px",
+      width: "100%"
+    }), _defineProperty(_button, theme.breakpoints.down("sm"), {
+      fontSize: "0.75em",
+      margin: "0px",
+      borderRadius: "0"
+    }), _button),
     gridItem: {
       padding: "10px"
     },

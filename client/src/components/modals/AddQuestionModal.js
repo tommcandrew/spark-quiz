@@ -442,7 +442,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
                   />
                 </Grid>
               ))}
-              <Grid item md={12} style={{ textAlign: "center" }}>
+              <Grid item md={12} xl={12} style={{ textAlign: "center" }}>
                 <Button color="primary" onClick={handleAddMultipleChoiceOption}>
                   Add another option
                 </Button>
@@ -461,6 +461,7 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
               />
             </Grid>
           )}
+
 
           <Grid item xs={6} className={classes.label}>
             <Button

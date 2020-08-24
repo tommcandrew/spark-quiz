@@ -37,7 +37,6 @@ export const loadUser = () => {
 		return axios
 			.get("http://localhost:5000/user/fetchUser", tokenConfig(token))
 			.then((res) => {
-				console.log(res.data)
 				dispatch({
 					type: USER_LOADED,
 					payload: res.data.user

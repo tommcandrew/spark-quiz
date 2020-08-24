@@ -40,9 +40,6 @@ export default function CreateQuizScreen(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [validationError, setValidationError] = useState("");
 
-  console.log("CREATE QUIZ SCREEN");
-  console.log(quizId);
-
   //ON PAGE RELOAD
   const getQuiz = () => {
     dispatch(quizActions.loadQuiz());
@@ -130,7 +127,7 @@ export default function CreateQuizScreen(props) {
       )}
       {!quizId && (
         <Fragment>
-          <Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }}>
+          <Grid item xs={12} xl={12} style={{ flex: "0 0 10%", marginTop: "10px" }}>
             <Typography variant="h4" align="center">
               Create a new Quiz
             </Typography>
@@ -207,7 +204,7 @@ export default function CreateQuizScreen(props) {
           <Paper className={classes.buttonContainer} elevation={2}>
             <Box className={classes.titleContainer}>
               <div className={classes.titleNameContainer}>
-                <Typography variant="body1">Quiz Name: &nbsp;</Typography>
+                <Typography variant="h5" color="primary">quiz name: &nbsp;</Typography>
                 <Typography variant="h5" color="primary">
                   {quiz.quizName}
                 </Typography>
