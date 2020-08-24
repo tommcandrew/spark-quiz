@@ -47,7 +47,6 @@ const Dashboard = ({ window, history }, props) => {
   //USER VERIFICATION ON RELOADS
   const getUser = async () => {
     await dispatch(authActions.loadUser());
-    dispatch(userActions.fetchQuizzes());
   };
   useEffect(() => {
     if (!user) getUser();

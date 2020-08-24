@@ -22,15 +22,6 @@ const UserQuizzesScreen = (props) => {
   const classes = userQuizzesScreenStyle();
   const root = screenLayoutStyles();
   const quizzes = useSelector((state) => state.quizzesList.quizzes);
-  const [displayedQuizzes, setDisplayedQuizzes] = useState([]);
-
-  useEffect(() => {
-    if (quizzes && quizzes.length > 0) {
-      setDisplayedQuizzes(quizzes);
-    } else {
-      dispatch(userActions.fetchQuizzes());
-    }
-  }, [quizzes]);
 
   //HANDLERS
   const handleOpenCreateQuiz = (quiz) => {
@@ -75,14 +66,14 @@ const UserQuizzesScreen = (props) => {
             </Typography>
           </Grid>
         )}
-        {displayedQuizzes &&
-          displayedQuizzes.map((quiz, index) => (
+        {quizzes &&
+          quizzes.map((quiz, index) => (
             <Grid
               item
               xs={12}
               sm={6}
-              md={6}
-              lg={4}
+              md={4}
+              lg={3}
               key={index}
               className={classes.cardGridItem}
             >

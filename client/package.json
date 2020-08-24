@@ -54,5 +54,9 @@
   "devDependencies": {
     "faker": "^4.1.0",
     "puppeteer": "^5.0.0"
-  }
+  },
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
