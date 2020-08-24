@@ -31,6 +31,7 @@ router.post("/register", async (req, res) => {
 		const hash = await bcrypt.hash(password, salt);
 		const user = await new User({ name, email, password: hash }).save();
 		const token = jwt.sign({ id: user._id, role: "teacher", name: user.name }, "secretkey");
+
 		res.send({
 			token,
 			user: {
@@ -38,9 +39,9 @@ router.post("/register", async (req, res) => {
 				name: user.name,
 				email: user.email,
 				role: "teacher",
-				quizzes: [],
-				contacts: [],
-				groups: []
+				quizzes: user.quizzes,
+				contacts: user.contacts,
+				groups: user.groups
 			}
 		});
 	}
@@ -58,6 +59,7 @@ router.post("/login", async (req, res) => {
 				res.status(403).send({ msg: "Wrong password" });
 			} else {
 				const token = jwt.sign({ id: user._id, role: "teacher", name: user.name }, "secretkey");
+
 				res.status(200).send({
 					token,
 					user: {
@@ -74,49 +76,47 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-router.post("/studentLogin", async(req, res) => {
+router.post("/studentLogin", async (req, res) => {
 	const { studentCode } = req.body;
 	try {
 		const quizzes = await Quiz.find();
 		let found;
 		let lastQuestionSubmitted = 0;
 		let quizScores = 0;
-		let quizStartTime
+		let quizStartTime;
 		quizzes.forEach((quiz) => {
 			quiz.quizInvites.contacts.forEach((contact) => {
 				if (contact.code === studentCode) {
 					found = contact.code;
 					//this is a valid request
-					const scoreFromDb = quiz.quizScores.find(score => score.studentId === contact.id)
+					const scoreFromDb = quiz.quizScores.find((score) => score.studentId === contact.id);
 					if (scoreFromDb) {
 						//student has opened the quiz before
 						if (scoreFromDb.quizCompleted) {
 							//student already completed the quiz
-							res.status(403).send({ msg: "This quiz has already been submitted" })
+							res.status(403).send({ msg: "This quiz has already been submitted" });
 							return;
 						}
 						var d = new Date();
-						var date = new Date(scoreFromDb.quizStarted.toString())
-						if (d.getTime() - date.getTime() >= parseInt(quiz.quizTimeLimit)*60000 ) {
-							res.status(403).send({ msg: "Time limit for this quiz is up" })
+						var date = new Date(scoreFromDb.quizStarted.toString());
+						if (d.getTime() - date.getTime() >= parseInt(quiz.quizTimeLimit) * 60000) {
+							res.status(403).send({ msg: "Time limit for this quiz is up" });
 							return;
-						}
-						else {
+						} else {
 							//quiz is not completed. was opened
 							lastQuestionSubmitted = scoreFromDb.results.length;
 							quizScores = scoreFromDb.overallScore;
-							quizStartTime = scoreFromDb.quizStarted
+							quizStartTime = scoreFromDb.quizStarted;
 						}
-					}
-					//student never opened the quiz. quizScore does for this instance does not exist
-					else {
+					} else {
+						//student never opened the quiz. quizScore does for this instance does not exist
 						quiz.quizScores.push({
 							studentId: contact.id,
 							results: [],
 							overallScore: 0,
 							quizCompleted: false
 						});
-						quiz.save()
+						quiz.save();
 					}
 					//sending a response
 					const token = jwt.sign({ code: contact.code, role: "student" }, "secretkey");
@@ -134,10 +134,10 @@ router.post("/studentLogin", async(req, res) => {
 							quizOverallPoints: quiz.quizOverallPoints,
 							overallScore: quiz.overallScore,
 							quizStarted: quizStartTime,
-							quizLastQuestionNumber: lastQuestionSubmitted,
+							quizLastQuestionNumber: lastQuestionSubmitted
 						},
 						//values we set based on the last quiz interaction
-						
+
 						pointsScored: quizScores,
 						token,
 						user: {
@@ -146,10 +146,8 @@ router.post("/studentLogin", async(req, res) => {
 						}
 					});
 				}
-			
-			})
-		
 			});
+		});
 		if (!found) {
 			res.status(403).send({ msg: "invalid code" });
 			return;

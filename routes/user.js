@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middleware");
 const User = require("../models/User.model");
+const Quiz = require("../models/Quiz.model");
 
 router.post("/addContact", checkAuth, async (req, res) => {
   const id = req.user.id;
@@ -158,7 +159,16 @@ router.get("/deleteAccount", checkAuth, async (req, res) => {
 router.get("/fetchUser", checkAuth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
-    res.status(200).send({ user });
+
+    	let userQuizzes = [];
+				const quizzes = await Quiz.find();
+				quizzes.forEach((quiz) => {
+					if (user.quizzes.includes(quiz._id)) {
+						userQuizzes.push(quiz);
+					}
+				});
+
+    res.status(200).send({ user, userQuizzes });
   } catch (err) {
     console.log(err);
   }
