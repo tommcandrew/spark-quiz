@@ -53,8 +53,8 @@ const UserQuizzesScreen = (props) => {
       <Grid
         item
         container
-        justify="center"
-        spacing={3}
+        justify="flex-start"
+        spacing={2}
         xs={12}
         xl={12}
         className={classes.list}
@@ -72,16 +72,16 @@ const UserQuizzesScreen = (props) => {
               item
               xs={12}
               sm={6}
-              md={4}
-              lg={3}
+              md={6}
+              lg={4}
               key={index}
               className={classes.cardGridItem}
             >
               <Card className={classes.card} key={quiz._id}>
                 <CardContent>
                   <div className={classes.quizName}>
-                    <Typography variant="h6">Quiz Name:&nbsp;</Typography>
-                    <Typography variant="h6" color="secondary">
+                    <Typography variant="h6">Name:&nbsp;</Typography>
+                    <Typography variant="h6" color="primary">
                       {quiz.quizName}
                     </Typography>
                   </div>

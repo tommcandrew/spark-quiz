@@ -107,7 +107,7 @@ export const login = ({ email, password }) => {
 				dispatch({
 					type: CLEAR_ERRORS
 				});
-				// dispatch(loaded());
+				dispatch(loaded());
 			})
 			.catch((err) => {
 				dispatch(loaded());

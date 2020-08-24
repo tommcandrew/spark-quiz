@@ -13,8 +13,9 @@ export const screenLayoutStyles = makeStyles({
 
 export const userQuizzesScreenStyle = makeStyles((theme) => ({
   titleContainer: {
-    marginBottom: "15px",
-    	[theme.breakpoints.down("md")]: {
+    marginBottom: "8px",
+    [theme.breakpoints.down("md")]: {
+        marginBottom: "8px",
 			marginTop: "20px"
 		},
   },
