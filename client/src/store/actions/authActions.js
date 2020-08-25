@@ -14,7 +14,7 @@ export const STUDENT_LOGIN_SUCCESS = "STUDENT_LOGIN_SUCCESS";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const CLEAR_STUDENT = "CLEAR_STUDENT";
-export const QUIZZES_LOADED = "QUIZZES_LOADED"
+export const QUIZZES_LOADED = "QUIZZES_LOADED";
 
 export const tokenConfig = (token) => {
 	const config = {
@@ -35,7 +35,7 @@ export const loadUser = () => {
 		dispatch({ type: USER_LOADING }); //user is loading to true
 		const token = getState().auth.token;
 		return axios
-			.get("http://localhost:5000/user/fetchUser", tokenConfig(token))
+			.get("https://sparkquiz-backend.herokuapp.com/user/fetchUser", tokenConfig(token))
 			.then((res) => {
 				dispatch({
 					type: USER_LOADED,
@@ -45,8 +45,6 @@ export const loadUser = () => {
 					type: QUIZZES_LOADED,
 					payload: res.data.userQuizzes
 				});
-				
-
 			})
 			.catch((err) => {
 				if (!err.response) {
@@ -67,7 +65,7 @@ export const register = ({ name, email, password, password2 }) => {
 		const body = JSON.stringify({ name, email, password, password2 });
 		dispatch(loading("Registering User. Please Wait"));
 		return axios
-			.post("http://localhost:5000/auth/register", body, config)
+			.post("https://sparkquiz-backend.herokuapp.com/auth/register", body, config)
 			.then((res) => {
 				dispatch({
 					type: REGISTER_SUCCESS,
@@ -96,7 +94,7 @@ export const login = ({ email, password }) => {
 		const config = { headers: { "Content-Type": "application/json" } };
 		const body = JSON.stringify({ email, password });
 		return axios
-			.post("http://localhost:5000/auth/login", body, config)
+			.post("https://sparkquiz-backend.herokuapp.com/auth/login", body, config)
 			.then((res) => {
 				dispatch({
 					type: LOGIN_SUCCESS,
@@ -128,7 +126,7 @@ export const studentLogin = (studentCode) => {
 		const config = { headers: { "Content-Type": "application/json" } };
 		dispatch(loading("Verifing code"));
 		return axios
-			.post("http://localhost:5000/auth/studentLogin", { studentCode }, config)
+			.post("https://sparkquiz-backend.herokuapp.com/auth/studentLogin", { studentCode }, config)
 			.then((res) => {
 				dispatch(
 					setStudent({
@@ -159,7 +157,7 @@ export const studentReload = () => {
 			const token = getState().auth.token;
 			dispatch(loading("Reloading"));
 			return axios
-				.get("http://localhost:5000/student/quizReload", tokenConfig(token))
+				.get("https://sparkquiz-backend.herokuapp.com/student/quizReload", tokenConfig(token))
 				.then((res) => {
 					dispatch(
 						resetStudent({
@@ -187,7 +185,7 @@ export const deleteAccount = () => {
 	return (dispatch, getState) => {
 		const token = getState().auth.token;
 		return axios
-			.get("http://localhost:5000/user/deleteAccount", tokenConfig(token))
+			.get("https://sparkquiz-backend.herokuapp.com/user/deleteAccount", tokenConfig(token))
 			.then(() => {
 				//is it ok to not return an action object for reducer? It seems unnecessary here.
 				dispatch(logout());
@@ -202,7 +200,11 @@ export const changePassword = (currentPassword, newPassword) => {
 	return (dispatch, getState) => {
 		const token = getState().auth.token;
 		return axios
-			.post("http://localhost:5000/auth/changePassword", { currentPassword, newPassword }, tokenConfig(token))
+			.post(
+				"https://sparkquiz-backend.herokuapp.com/auth/changePassword",
+				{ currentPassword, newPassword },
+				tokenConfig(token)
+			)
 			.then((res) => {
 				console.log(res);
 			})
@@ -221,7 +223,7 @@ export const clearStudent = () => {
 export const resetPassword = (email) => {
 	return (dispatch, getState) => {
 		return axios
-			.post("http://localhost:5000/auth/resetPassword", { email })
+			.post("https://sparkquiz-backend.herokuapp.com/auth/resetPassword", { email })
 			.then((res) => {
 				console.log(res);
 			})
