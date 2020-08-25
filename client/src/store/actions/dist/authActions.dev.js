@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logout = exports.resetPassword = exports.clearStudent = exports.changePassword = exports.deleteAccount = exports.studentReload = exports.studentLogin = exports.login = exports.register = exports.loadUser = exports.tokenConfig = exports.QUIZZES_LOADED = exports.CLEAR_STUDENT = exports.REGISTER_FAIL = exports.REGISTER_SUCCESS = exports.STUDENT_LOGIN_SUCCESS = exports.LOGOUT_SUCCESS = exports.LOGIN_FAIL = exports.LOGIN_SUCCESS = exports.AUTH_ERROR = exports.USER_LOADING = exports.USER_LOADED = exports.STUDENT_RELOAD_SUCCESS = void 0;
+exports.logout = exports.resetPassword = exports.clearStudent = exports.changePassword = exports.deleteAccount = exports.studentReload = exports.studentLogin = exports.login = exports.register = exports.loadUser = exports.tokenConfig = exports.CLEAR_USER_REDUCER = exports.QUIZZES_LOADED = exports.CLEAR_STUDENT = exports.REGISTER_FAIL = exports.REGISTER_SUCCESS = exports.STUDENT_LOGIN_SUCCESS = exports.LOGOUT_SUCCESS = exports.LOGIN_FAIL = exports.LOGIN_SUCCESS = exports.AUTH_ERROR = exports.USER_LOADING = exports.USER_LOADED = exports.STUDENT_RELOAD_SUCCESS = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -37,6 +37,8 @@ var CLEAR_STUDENT = "CLEAR_STUDENT";
 exports.CLEAR_STUDENT = CLEAR_STUDENT;
 var QUIZZES_LOADED = "QUIZZES_LOADED";
 exports.QUIZZES_LOADED = QUIZZES_LOADED;
+var CLEAR_USER_REDUCER = "CLEAR_USER_REDUCER";
+exports.CLEAR_USER_REDUCER = CLEAR_USER_REDUCER;
 
 var tokenConfig = function tokenConfig(token) {
   var config = {
@@ -343,6 +345,9 @@ var logout = function logout() {
   return function (dispatch) {
     dispatch({
       type: LOGOUT_SUCCESS
+    });
+    dispatch({
+      type: CLEAR_USER_REDUCER
     });
   };
 };

@@ -16,7 +16,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var initalState = {
   studentId: "",
   questionNumber: 0,
-  overallScore: 0
+  overallScore: null
 };
 
 var _default = function _default() {
@@ -43,8 +43,16 @@ var _default = function _default() {
         overallScore: parseInt(action.score)
       });
 
+    case _quizScoreActions.CLEAR_SCORE:
+      return _objectSpread({}, state, {
+        overallScore: null
+      });
+
     case _quizScoreActions.FINISH_QUIZ:
-      return initalState;
+      return _objectSpread({}, state, {
+        studentId: "",
+        questionNumber: 0
+      });
 
     default:
       return state;

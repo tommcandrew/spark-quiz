@@ -66,6 +66,13 @@ var _default = function _default() {
         groups: [].concat(_toConsumableArray(state.groups), [action.payload])
       });
 
+    case _authActions.CLEAR_USER_REDUCER:
+      return _objectSpread({}, state, {
+        quizzes: [],
+        contacts: [],
+        groups: []
+      });
+
     default:
       return state;
   }

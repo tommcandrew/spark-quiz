@@ -15,6 +15,7 @@ export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const CLEAR_STUDENT = "CLEAR_STUDENT";
 export const QUIZZES_LOADED = "QUIZZES_LOADED";
+export const CLEAR_USER_REDUCER = "CLEAR_USER_REDUCER";
 
 export const tokenConfig = (token) => {
 	const config = {
@@ -236,5 +237,6 @@ export const resetPassword = (email) => {
 export const logout = () => {
 	return (dispatch) => {
 		dispatch({ type: LOGOUT_SUCCESS });
+		dispatch({ type: CLEAR_USER_REDUCER });
 	};
 };

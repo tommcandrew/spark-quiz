@@ -1,9 +1,9 @@
-import { SET_STUDENT, SET_NEW_QUESTION_NUMBER, FINISH_QUIZ, SET_OVERALL_SCORE } from "../actions/quizScoreActions";
+import { SET_STUDENT, SET_NEW_QUESTION_NUMBER, FINISH_QUIZ, SET_OVERALL_SCORE, CLEAR_SCORE } from "../actions/quizScoreActions";
 
 const initalState = {
 		studentId: "",
 		questionNumber: 0,
-		overallScore: 0,
+		overallScore: null,
 		
 };
 
@@ -28,8 +28,17 @@ export default (state = initalState, action) => {
 				...state,
 				overallScore: parseInt(action.score)
 			};
+		case CLEAR_SCORE:
+			return {
+				...state,
+				overallScore: null
+			};
 		case FINISH_QUIZ:
-			return initalState;
+			return {
+				...state,
+				studentId: "",
+				questionNumber: 0,
+			}
 		default:
 			return state;
 	}

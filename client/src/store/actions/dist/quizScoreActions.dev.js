@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setOverallScore = exports.setQuestionAnswer = exports.finishQuiz = exports.setStudent = exports.resetStudent = exports.RESET_STUDENT = exports.SET_OVERALL_SCORE = exports.FINISH_QUIZ = exports.SET_OVERALLSCORE = exports.SET_NEW_QUESTION_NUMBER = exports.SET_STUDENT = void 0;
+exports.setOverallScore = exports.setQuestionAnswer = exports.finishQuiz = exports.clearScore = exports.setStudent = exports.resetStudent = exports.CLEAR_SCORE = exports.RESET_STUDENT = exports.SET_OVERALL_SCORE = exports.FINISH_QUIZ = exports.SET_OVERALLSCORE = exports.SET_NEW_QUESTION_NUMBER = exports.SET_STUDENT = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -27,6 +27,8 @@ var SET_OVERALL_SCORE = "SET_OVERALL_SCORE";
 exports.SET_OVERALL_SCORE = SET_OVERALL_SCORE;
 var RESET_STUDENT = "RESET_STUDENT";
 exports.RESET_STUDENT = RESET_STUDENT;
+var CLEAR_SCORE = "CLEAR_SCORE";
+exports.CLEAR_SCORE = CLEAR_SCORE;
 
 var resetStudent = function resetStudent(_ref) {
   var quiz = _ref.quiz,
@@ -124,6 +126,16 @@ var setStudent = function setStudent(_ref2) {
 
 exports.setStudent = setStudent;
 
+var clearScore = function clearScore() {
+  return function (dispatch) {
+    dispatch({
+      type: CLEAR_SCORE
+    });
+  };
+};
+
+exports.clearScore = clearScore;
+
 var finishQuiz = function finishQuiz() {
   return function (dispatch, getState) {
     var token = getState().auth.studentToken;
@@ -131,14 +143,11 @@ var finishQuiz = function finishQuiz() {
 
     var quizId = getState().quiz._id;
 
-    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/student/finishQuiz", {
+    return _axios["default"].post("http://localhost:5000/student/finishQuiz", {
       quizId: quizId,
       studentId: studentId
     }, (0, _authActions.tokenConfig)(token)).then(function (res) {
-      console.log("in res of save quiz");
-      dispatch({
-        type: FINISH_QUIZ
-      });
+      return;
     })["catch"](function (err) {
       console.log(err);
     });
@@ -155,7 +164,7 @@ var setQuestionAnswer = function setQuestionAnswer(answer) {
     var quizId = getState().quiz._id;
 
     var questionNumber = parseInt(getState().score.questionNumber + 1);
-    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/student/saveAnswer", {
+    return _axios["default"].post("http://localhost:5000/student/saveAnswer", {
       quizId: quizId,
       studentId: studentId,
       questionNumber: questionNumber,
@@ -182,7 +191,7 @@ var setOverallScore = function setOverallScore(score) {
     var quizId = getState().quiz._id;
 
     var newScore = parseInt(getState().score.overallScore) + parseInt(score);
-    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/student/saveScore", {
+    return _axios["default"].post("http://localhost:5000/student/saveScore", {
       quizId: quizId,
       studentId: studentId,
       newScore: newScore
