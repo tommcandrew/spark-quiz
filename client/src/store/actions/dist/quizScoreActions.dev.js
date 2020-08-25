@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setOverallScore = exports.setQuestionAnswer = exports.finishQuiz = exports.setStudent = exports.resetStudent = exports.RESET_STUDENT = exports.SET_OVERALL_SCORE = exports.FINISH_QUIZ = exports.SET_OVERALLSCORE = exports.SET_NEW_QUESTION_NUMBER = exports.SET_STUDENT = void 0;
+exports.setOverallScore = exports.setQuestionAnswer = exports.finishQuiz = exports.clearScore = exports.setStudent = exports.resetStudent = exports.CLEAR_SCORE = exports.RESET_STUDENT = exports.SET_OVERALL_SCORE = exports.FINISH_QUIZ = exports.SET_OVERALLSCORE = exports.SET_NEW_QUESTION_NUMBER = exports.SET_STUDENT = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -27,6 +27,8 @@ var SET_OVERALL_SCORE = "SET_OVERALL_SCORE";
 exports.SET_OVERALL_SCORE = SET_OVERALL_SCORE;
 var RESET_STUDENT = "RESET_STUDENT";
 exports.RESET_STUDENT = RESET_STUDENT;
+var CLEAR_SCORE = "CLEAR_SCORE";
+exports.CLEAR_SCORE = CLEAR_SCORE;
 
 var resetStudent = function resetStudent(_ref) {
   var quiz = _ref.quiz,
@@ -123,6 +125,16 @@ var setStudent = function setStudent(_ref2) {
 };
 
 exports.setStudent = setStudent;
+
+var clearScore = function clearScore() {
+  return function (dispatch) {
+    dispatch({
+      type: CLEAR_SCORE
+    });
+  };
+};
+
+exports.clearScore = clearScore;
 
 var finishQuiz = function finishQuiz() {
   return function (dispatch, getState) {
