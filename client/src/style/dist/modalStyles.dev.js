@@ -25,17 +25,21 @@ var quizOptionsModalStyles = (0, _styles.makeStyles)(function (theme) {
 });
 exports.quizOptionsModalStyles = quizOptionsModalStyles;
 var addQuestionModalStyles = (0, _styles.makeStyles)(function (theme) {
-  var _scrollContainer;
-
   return {
     root: {
       maxHeight: "75%",
       overflowY: "hidden",
       overflowX: "hidden"
     },
-    scrollContainer: (_scrollContainer = {
-      maxHeight: "80%"
-    }, _defineProperty(_scrollContainer, "maxHeight", "85%"), _defineProperty(_scrollContainer, "overflowX", "hidden"), _defineProperty(_scrollContainer, "overflowY", "scroll !important"), _defineProperty(_scrollContainer, "margin", "2px 0px"), _defineProperty(_scrollContainer, "width", "100%"), _scrollContainer),
+    scrollContainer: _defineProperty({
+      height: "500px",
+      overflowX: "hidden",
+      overflowY: "scroll !important",
+      margin: "0",
+      width: "100%"
+    }, theme.breakpoints.down("sm"), {
+      height: "350px"
+    }),
     label: _defineProperty({
       display: "flex",
       justifyContent: "flex-end",

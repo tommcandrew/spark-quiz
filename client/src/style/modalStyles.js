@@ -19,12 +19,14 @@ export const addQuestionModalStyles = makeStyles((theme) => ({
   },
 
   scrollContainer: {
-    maxHeight: "80%",
-    maxHeight: "85%",
+    height: "500px",
     overflowX: "hidden",
     overflowY: "scroll !important",
-    margin: "2px 0px",
+    margin: "0",
     width: "100%",
+    [theme.breakpoints.down("sm")]: {
+       height: "350px"
+    },
   },
   label: {
     display: "flex",
