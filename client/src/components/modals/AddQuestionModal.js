@@ -6,7 +6,6 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import CreateIcon from "@material-ui/icons/Create";
 import CustomSnackbar from "../../components/mui/Snackbar";
 import V from "max-validator";
-import { addQuestionValidation } from "../../utils/validation";
 import {
   modalRootStyles,
   addQuestionModalStyles,
@@ -442,7 +441,10 @@ const AddQuestionModal = ({ closeModal, quiz, questionToEdit }) => {
                   />
                 </Grid>
               ))}
-              <Grid item md={12} xl={12} style={{ textAlign: "center" }}>
+             <Grid
+                  item
+                  md={12}
+                  xs={12} style={{ textAlign: "center" }}>
                 <Button color="primary" onClick={handleAddMultipleChoiceOption}>
                   Add another option
                 </Button>

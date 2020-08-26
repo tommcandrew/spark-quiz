@@ -26,23 +26,20 @@ exports.screenLayoutStyles = screenLayoutStyles;
 var userQuizzesScreenStyle = (0, _styles.makeStyles)(function (theme) {
   return {
     titleContainer: _defineProperty({
-      marginBottom: "8px"
+      marginBottom: "10px !important"
     }, theme.breakpoints.down("md"), {
-      marginBottom: "8px",
-      marginTop: "20px"
+      marginTop: "20px !important"
     }),
     card: {
       width: "300px",
       height: "200px",
       display: "flex",
       flexDirection: "column",
-      alignItems: "flex-start",
-      justifyContent: "space-between",
-      // background: "rgb(131,168,250)",
-      // background: "linear-gradient(104deg, rgba(131, 168, 250, 1) 6%, rgba(112, 148, 246, 1) 67%)",
+      alignItems: "center",
+      justifyContent: "space-evenly",
       backgroundColor: theme.palette.background["default"],
-      //padding: theme.spacing(1),
-      borderRadius: "10px"
+      borderRadius: "10px",
+      padding: "10px 3px"
     },
     cardGridItem: {
       display: "flex",
@@ -54,8 +51,10 @@ var userQuizzesScreenStyle = (0, _styles.makeStyles)(function (theme) {
       overflowX: "hidden",
       width: "100%",
       padding: "20px",
-      maxHeight: "80%"
+      maxHeight: "80%",
+      marginTop: "5px !important"
     }, theme.breakpoints.down("md"), {
+      marginTop: "0",
       paddingTop: "15px",
       maxHeight: "90%"
     }),
@@ -64,6 +63,11 @@ var userQuizzesScreenStyle = (0, _styles.makeStyles)(function (theme) {
       flexDirection: "row",
       alignItems: "flex-end" //color: "#fff"
 
+    },
+    cardActions: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "space-evenly"
     }
   };
 });
@@ -72,8 +76,8 @@ var createQuizScreenStyles = (0, _styles.makeStyles)(function (theme) {
   var _buttonContainer, _titleContainer2, _button;
 
   return {
-    noQuizContainer: _defineProperty({}, theme.breakpoints.down("sm"), {
-      paddingTop: "10px"
+    noQuizContainer: _defineProperty({}, theme.breakpoints.down("md"), {
+      marginTop: "20px !important"
     }),
     textField: _defineProperty({}, theme.breakpoints.down("sm"), {
       width: "90%"
@@ -137,7 +141,8 @@ var createQuizScreenStyles = (0, _styles.makeStyles)(function (theme) {
     }, theme.breakpoints.down("md"), {
       flexDirection: "row",
       justifyContent: "center",
-      marginTop: "5px"
+      marginTop: "5px",
+      textAlign: "center"
     }),
     buttons: _defineProperty({
       display: "flex",

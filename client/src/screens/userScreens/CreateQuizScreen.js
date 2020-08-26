@@ -127,7 +127,7 @@ export default function CreateQuizScreen(props) {
       )}
       {!quizId && (
         <Fragment>
-          <Grid item xs={12} xl={12} style={{ flex: "0 0 10%", marginTop: "10px" }}>
+          <Grid item xs={12} xl={12} style={{ flex: "0 0 10%" }} className={classes.noQuizContainer}>
             <Typography variant="h4" align="center">
               Create a new Quiz
             </Typography>
@@ -203,15 +203,13 @@ export default function CreateQuizScreen(props) {
           </Modal>
           <Paper className={classes.buttonContainer} elevation={2}>
             <Box className={classes.titleContainer}>
-              <div className={classes.titleNameContainer}>
-                <Typography variant="h5" color="primary">quiz name: &nbsp;</Typography>
                 <Typography variant="h5" color="primary">
                   {quiz.quizName}
                 </Typography>
-              </div>
+              
               {quiz.quizTimeLimit ? (
-                <Typography>
-                  Quiz Timelimit:{" "}
+                <Typography variant="body1">
+                  Timelimit:{" "}
                   {quiz.quizTimeLimit === "false" ? (
                     <>No limit</>
                   ) : (

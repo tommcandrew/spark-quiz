@@ -20,10 +20,10 @@ export const addQuestionModalStyles = makeStyles((theme) => ({
 
   scrollContainer: {
     maxHeight: "80%",
-    height: "500px",
+    maxHeight: "85%",
     overflowX: "hidden",
-    overflowY: "scroll",
-    marginTop: "2px",
+    overflowY: "scroll !important",
+    margin: "2px 0px",
     width: "100%",
   },
   label: {
@@ -69,6 +69,9 @@ export const addQuestionModalStyles = makeStyles((theme) => ({
     width: "100%",
     width: "100%",
   },
+  button: {
+    marginBottom: "5px"
+  }
 }));
 
 export const shareModalStyles = makeStyles((theme) => ({

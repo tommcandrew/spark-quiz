@@ -16,10 +16,9 @@ export const screenLayoutStyles = makeStyles((theme) => ({
 
 export const userQuizzesScreenStyle = makeStyles((theme) => ({
   titleContainer: {
-    marginBottom: "8px",
+    marginBottom: "10px !important",
     [theme.breakpoints.down("md")]: {
-        marginBottom: "8px",
-			marginTop: "20px"
+			marginTop: "20px !important"
 		},
   },
   card: {
@@ -27,13 +26,11 @@ export const userQuizzesScreenStyle = makeStyles((theme) => ({
     height: "200px",
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    // background: "rgb(131,168,250)",
-    // background: "linear-gradient(104deg, rgba(131, 168, 250, 1) 6%, rgba(112, 148, 246, 1) 67%)",
+    alignItems: "center",
+    justifyContent: "space-evenly",
     backgroundColor: theme.palette.background.default,
-    //padding: theme.spacing(1),
     borderRadius: "10px",
+    padding: "10px 3px",
   },
   cardGridItem: {
     display: "flex",
@@ -46,7 +43,9 @@ export const userQuizzesScreenStyle = makeStyles((theme) => ({
     width: "100%",
     padding: "20px",
     maxHeight: "80%",
-    	[theme.breakpoints.down("md")]: {
+    marginTop: "5px !important",
+    [theme.breakpoints.down("md")]: {
+        marginTop: "0",
         paddingTop: "15px",
          maxHeight: "90%",
 		},
@@ -57,13 +56,18 @@ export const userQuizzesScreenStyle = makeStyles((theme) => ({
     alignItems: "flex-end",
     //color: "#fff"
   },
+  cardActions: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-evenly"
+  }
 }));
 
 export const createQuizScreenStyles = makeStyles((theme) => ({
   noQuizContainer: {
-     [theme.breakpoints.down("sm")]: {
-      paddingTop: "10px"
-    },
+     [theme.breakpoints.down("md")]: {
+			marginTop: "20px !important"
+		},
   },
    textField: {
     [theme.breakpoints.down("sm")]: {
@@ -137,7 +141,8 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
      [theme.breakpoints.down("md")]: {
        flexDirection: "row",
        justifyContent: "center",
-       marginTop: "5px"
+       marginTop: "5px",
+       textAlign: "center"
       
     },
   },
