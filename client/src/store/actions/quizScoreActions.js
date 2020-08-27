@@ -8,7 +8,7 @@ export const SET_OVERALLSCORE = "SET_OVERALLSCORE";
 export const FINISH_QUIZ = "FINISH_QUIZ";
 export const SET_OVERALL_SCORE = "SET_OVERALL_SCORE";
 export const RESET_STUDENT = "RESET_STUDENT";
-export const CLEAR_SCORE = "CLEAR_SCORE"
+export const CLEAR_SCORE = "CLEAR_SCORE";
 
 export const resetStudent = ({ quiz, user, questionNumber, pointsScored }) => {
 	return async (dispatch) => {
@@ -61,10 +61,10 @@ export const setStudent = ({ quiz, token, user, questionNumber, pointsScored }) 
 export const clearScore = () => {
 	return (dispatch) => {
 		dispatch({
-					type: CLEAR_SCORE
-				});
-	}
-}
+			type: CLEAR_SCORE
+		});
+	};
+};
 
 export const finishQuiz = () => {
 	return (dispatch, getState) => {
@@ -72,11 +72,7 @@ export const finishQuiz = () => {
 		const studentId = getState().auth.user.contactId;
 		const quizId = getState().quiz._id;
 		return axios
-			.post(
-				"https://sparkquiz-backend.herokuapp.com/student/finishQuiz",
-				{ quizId, studentId },
-				tokenConfig(token)
-			)
+			.post("http://localhost:5000/student/finishQuiz", { quizId, studentId }, tokenConfig(token))
 			.then((res) => {
 				return;
 			})
@@ -95,7 +91,7 @@ export const setQuestionAnswer = (answer) => {
 
 		return axios
 			.post(
-				"https://sparkquiz-backend.herokuapp.com/student/saveAnswer",
+				"http://localhost:5000/student/saveAnswer",
 				{ quizId, studentId, questionNumber, answer },
 				tokenConfig(token)
 			)
@@ -120,11 +116,7 @@ export const setOverallScore = (score) => {
 		const newScore = parseInt(getState().score.overallScore) + parseInt(score);
 
 		return axios
-			.post(
-				"https://sparkquiz-backend.herokuapp.com/student/saveScore",
-				{ quizId, studentId, newScore },
-				tokenConfig(token)
-			)
+			.post("http://localhost:5000/student/saveScore", { quizId, studentId, newScore }, tokenConfig(token))
 			.then((res) => {
 				dispatch({
 					type: SET_OVERALL_SCORE,
