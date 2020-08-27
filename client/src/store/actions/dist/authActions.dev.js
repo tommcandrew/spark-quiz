@@ -68,7 +68,9 @@ var loadUser = function loadUser() {
               type: USER_LOADING
             }); //user is loading to true
 
+            console.log("in load user");
             token = getState().auth.token;
+            dispatch((0, _errorActions.loading)("Fetching your data"));
             return _context.abrupt("return", _axios["default"].get("http://localhost:5000/user/fetchUser", tokenConfig(token)).then(function (res) {
               dispatch({
                 type: USER_LOADED,
@@ -78,7 +80,10 @@ var loadUser = function loadUser() {
                 type: QUIZZES_LOADED,
                 payload: res.data.userQuizzes
               });
+              dispatch((0, _errorActions.loaded)());
             })["catch"](function (err) {
+              console.log(err);
+
               if (!err.response) {
                 dispatch((0, _errorActions.returnErrors)({
                   msg: "Server is down. Please try again later"
@@ -91,9 +96,11 @@ var loadUser = function loadUser() {
                   msg: "Something went wrong. Please login Again"
                 }, err.response.status));
               }
+
+              dispatch((0, _errorActions.loaded)());
             }));
 
-          case 3:
+          case 5:
           case "end":
             return _context.stop();
         }

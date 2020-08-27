@@ -34,7 +34,9 @@ export const tokenConfig = (token) => {
 export const loadUser = () => {
 	return async (dispatch, getState) => {
 		dispatch({ type: USER_LOADING }); //user is loading to true
+		console.log("in load user")
 		const token = getState().auth.token;
+		dispatch(loading("Fetching your data"));
 		return axios
 			.get("http://localhost:5000/user/fetchUser", tokenConfig(token))
 			.then((res) => {
@@ -46,10 +48,10 @@ export const loadUser = () => {
 					type: QUIZZES_LOADED,
 					payload: res.data.userQuizzes
 				});
-				
-
+				dispatch(loaded());
 			})
 			.catch((err) => {
+				console.log(err)
 				if (!err.response) {
 					dispatch(returnErrors({ msg: "Server is down. Please try again later" }, 500, "REGISTER_FAIL"));
 				} else {
@@ -58,6 +60,7 @@ export const loadUser = () => {
 					});
 					dispatch(returnErrors({ msg: "Something went wrong. Please login Again" }, err.response.status));
 				}
+				dispatch(loaded());
 			});
 	};
 };
