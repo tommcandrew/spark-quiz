@@ -76,8 +76,22 @@ var createQuizScreenStyles = (0, _styles.makeStyles)(function (theme) {
   var _buttonContainer, _titleContainer2, _button;
 
   return {
-    noQuizContainer: _defineProperty({}, theme.breakpoints.down("md"), {
+    title1Container: _defineProperty({
+      marginBottom: "10px !important"
+    }, theme.breakpoints.down("md"), {
       marginTop: "20px !important"
+    }),
+    noQuizContainer: _defineProperty({
+      margin: "auto",
+      overflowX: "hidden",
+      width: "100%",
+      padding: "20px",
+      maxHeight: "80%",
+      marginTop: "5px !important"
+    }, theme.breakpoints.down("md"), {
+      marginTop: "0",
+      paddingTop: "15px",
+      maxHeight: "90%"
     }),
     textField: _defineProperty({}, theme.breakpoints.down("sm"), {
       width: "90%"
