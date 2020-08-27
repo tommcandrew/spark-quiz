@@ -27,9 +27,10 @@ router.post("/register", function _callee(req, res) {
       switch (_context.prev = _context.next) {
         case 0:
           _req$body = req.body, name = _req$body.name, email = _req$body.email, password = _req$body.password, password2 = _req$body.password2;
+          email = email.toLowerCase();
 
           if (!(password.length < 8)) {
-            _context.next = 4;
+            _context.next = 5;
             break;
           }
 
@@ -38,9 +39,9 @@ router.post("/register", function _callee(req, res) {
           });
           return _context.abrupt("return");
 
-        case 4:
+        case 5:
           if (validator.isEmail(email)) {
-            _context.next = 7;
+            _context.next = 8;
             break;
           }
 
@@ -49,9 +50,9 @@ router.post("/register", function _callee(req, res) {
           });
           return _context.abrupt("return");
 
-        case 7:
+        case 8:
           if (!(password !== password2)) {
-            _context.next = 10;
+            _context.next = 11;
             break;
           }
 
@@ -60,17 +61,17 @@ router.post("/register", function _callee(req, res) {
           });
           return _context.abrupt("return");
 
-        case 10:
-          _context.next = 12;
+        case 11:
+          _context.next = 13;
           return regeneratorRuntime.awrap(User.findOne({
             email: email
           }));
 
-        case 12:
+        case 13:
           existingUser = _context.sent;
 
           if (!existingUser) {
-            _context.next = 18;
+            _context.next = 19;
             break;
           }
 
@@ -79,25 +80,25 @@ router.post("/register", function _callee(req, res) {
           });
           return _context.abrupt("return");
 
-        case 18:
-          _context.next = 20;
+        case 19:
+          _context.next = 21;
           return regeneratorRuntime.awrap(bcrypt.genSalt(10));
 
-        case 20:
+        case 21:
           salt = _context.sent;
-          _context.next = 23;
+          _context.next = 24;
           return regeneratorRuntime.awrap(bcrypt.hash(password, salt));
 
-        case 23:
+        case 24:
           hash = _context.sent;
-          _context.next = 26;
+          _context.next = 27;
           return regeneratorRuntime.awrap(new User({
             name: name,
             email: email,
             password: hash
           }).save());
 
-        case 26:
+        case 27:
           user = _context.sent;
           token = jwt.sign({
             id: user._id,
@@ -117,7 +118,7 @@ router.post("/register", function _callee(req, res) {
             }
           });
 
-        case 29:
+        case 30:
         case "end":
           return _context.stop();
       }
@@ -132,31 +133,32 @@ router.post("/login", function _callee2(req, res) {
       switch (_context2.prev = _context2.next) {
         case 0:
           _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
-          _context2.next = 3;
+          email = email.toLowerCase();
+          _context2.next = 4;
           return regeneratorRuntime.awrap(User.findOne({
             email: email
           }));
 
-        case 3:
+        case 4:
           user = _context2.sent;
 
           if (user) {
-            _context2.next = 8;
+            _context2.next = 9;
             break;
           }
 
           res.status(403).send({
             msg: "That email is not registered"
           });
-          _context2.next = 18;
+          _context2.next = 19;
           break;
 
-        case 8:
-          _context2.prev = 8;
-          _context2.next = 11;
+        case 9:
+          _context2.prev = 9;
+          _context2.next = 12;
           return regeneratorRuntime.awrap(bcrypt.compare(password, user.password));
 
-        case 11:
+        case 12:
           isSame = _context2.sent;
 
           if (!isSame) {
@@ -180,20 +182,20 @@ router.post("/login", function _callee2(req, res) {
             });
           }
 
-          _context2.next = 18;
+          _context2.next = 19;
           break;
 
-        case 15:
-          _context2.prev = 15;
-          _context2.t0 = _context2["catch"](8);
+        case 16:
+          _context2.prev = 16;
+          _context2.t0 = _context2["catch"](9);
           console.log(_context2.t0);
 
-        case 18:
+        case 19:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[8, 15]]);
+  }, null, null, [[9, 16]]);
 });
 router.post("/studentLogin", function _callee3(req, res) {
   var studentCode, quizzes, found, lastQuestionSubmitted, quizScores, quizStartTime;

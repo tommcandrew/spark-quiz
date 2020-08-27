@@ -8,7 +8,7 @@ export const SET_OVERALLSCORE = "SET_OVERALLSCORE";
 export const FINISH_QUIZ = "FINISH_QUIZ";
 export const SET_OVERALL_SCORE = "SET_OVERALL_SCORE";
 export const RESET_STUDENT = "RESET_STUDENT";
-export const CLEAR_SCORE = "CLEAR_SCORE"
+export const CLEAR_SCORE = "CLEAR_SCORE";
 
 export const resetStudent = ({ quiz, user, questionNumber, pointsScored }) => {
 	return async (dispatch) => {
@@ -61,10 +61,10 @@ export const setStudent = ({ quiz, token, user, questionNumber, pointsScored }) 
 export const clearScore = () => {
 	return (dispatch) => {
 		dispatch({
-					type: CLEAR_SCORE
-				});
-	}
-}
+			type: CLEAR_SCORE
+		});
+	};
+};
 
 export const finishQuiz = () => {
 	return (dispatch, getState) => {

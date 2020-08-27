@@ -9,7 +9,8 @@ const User = require("../models/User.model");
 const validator = require("validator");
 
 router.post("/register", async (req, res) => {
-	const { name, email, password, password2 } = req.body;
+	let { name, email, password, password2 } = req.body;
+	email = email.toLowerCase() 
 	if (password.length < 8) {
 		res.status(500).send({ msg: "Password must have at least 8 characters" });
 		return;
@@ -48,7 +49,8 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-	const { email, password } = req.body;
+	let { email, password } = req.body;
+	email = email.toLowerCase() 
 	const user = await User.findOne({ email });
 	if (!user) {
 		res.status(403).send({ msg: "That email is not registered" });

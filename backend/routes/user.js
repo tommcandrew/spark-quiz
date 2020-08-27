@@ -160,13 +160,13 @@ router.get("/fetchUser", checkAuth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     	let userQuizzes = [];
-				const quizzes = await Quiz.find();
+    const quizzes = await Quiz.find();
 				quizzes.forEach((quiz) => {
 					if (user.quizzes.includes(quiz._id)) {
 						userQuizzes.push(quiz);
 					}
-				});
-    res.status(200).send({ user: user, userQuizzes: userQuizzes });
+        });
+    res.status(200).send({ user, userQuizzes });
   } catch (err) {
     console.log(err);
   }

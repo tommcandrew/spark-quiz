@@ -48,7 +48,7 @@ export const loadUser = () => {
 					type: QUIZZES_LOADED,
 					payload: res.data.userQuizzes
 				});
-				dispatch(loaded());
+				dispatch(loaded())
 			})
 			.catch((err) => {
 				console.log(err)
@@ -60,7 +60,7 @@ export const loadUser = () => {
 					});
 					dispatch(returnErrors({ msg: "Something went wrong. Please login Again" }, err.response.status));
 				}
-				dispatch(loaded());
+				dispatch(loaded())
 			});
 	};
 };
@@ -105,7 +105,7 @@ export const login = ({ email, password }) => {
 				dispatch({
 					type: LOGIN_SUCCESS,
 					payload: res.data
-				});
+				})
 				dispatch(loadUser());
 				dispatch({
 					type: CLEAR_ERRORS
