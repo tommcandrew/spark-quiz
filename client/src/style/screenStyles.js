@@ -192,13 +192,14 @@ export const createQuizScreenStyles = makeStyles((theme) => ({
 }));
 
 export const contactsScreenStyles = makeStyles((theme) => ({
-	contactsMainContainer: {
-		height: "100%",
-		padding: "20px"
+	titleContainer: {
+		marginBottom: "10px !important",
+		[theme.breakpoints.down("md")]: {
+			marginTop: "20px !important"
+		}
 	},
-
 	contactsContainer: {
-		height: "80%",
+		flexGrow: 1,
 		overflowY: "scroll",
 		width: "100%",
 		border: `1px solid ${theme.palette.primary.main}`,

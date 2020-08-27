@@ -190,12 +190,13 @@ var createQuizScreenStyles = (0, _styles.makeStyles)(function (theme) {
 exports.createQuizScreenStyles = createQuizScreenStyles;
 var contactsScreenStyles = (0, _styles.makeStyles)(function (theme) {
   return {
-    contactsMainContainer: {
-      height: "100%",
-      padding: "20px"
-    },
+    titleContainer: _defineProperty({
+      marginBottom: "10px !important"
+    }, theme.breakpoints.down("md"), {
+      marginTop: "20px !important"
+    }),
     contactsContainer: _defineProperty({
-      height: "80%",
+      flexGrow: 1,
       overflowY: "scroll",
       width: "100%",
       border: "1px solid ".concat(theme.palette.primary.main),

@@ -35,6 +35,7 @@ export const loadUser = () => {
 	return async (dispatch, getState) => {
 		dispatch({ type: USER_LOADING }); //user is loading to true
 		const token = getState().auth.token;
+		dispatch(loading("Fetching your data"));
 		return axios
 			.get("http://localhost:5000/user/fetchUser", tokenConfig(token))
 			.then((res) => {
@@ -46,6 +47,7 @@ export const loadUser = () => {
 					type: QUIZZES_LOADED,
 					payload: res.data.userQuizzes
 				});
+				dispatch(loaded())
 			})
 			.catch((err) => {
 				if (!err.response) {
@@ -56,6 +58,7 @@ export const loadUser = () => {
 					});
 					dispatch(returnErrors({ msg: "Something went wrong. Please login Again" }, err.response.status));
 				}
+				dispatch(loaded())
 			});
 	};
 };
@@ -100,7 +103,7 @@ export const login = ({ email, password }) => {
 				dispatch({
 					type: LOGIN_SUCCESS,
 					payload: res.data
-				});
+				})
 				dispatch(loadUser());
 				dispatch({
 					type: CLEAR_ERRORS
