@@ -66,78 +66,79 @@ const Contacts = () => {
 
 	//MAIN
 	return (
-		<Grid container spacing={2} className={classes.contactsMainContainer}>
-			<Modal
-				isOpen={addContactModalIsOpen}
-				onRequestClose={closeModal}
-				className="Modal"
-				overlayClassName="Overlay"
-				centered>
-				<AddContactModal handleSubmit={handleAddContact} closeModal={closeModal} user={user} />
-			</Modal>
-			<Modal
-				isOpen={contactInfoModalIsOpen}
-				onRequestClose={closeModal}
-				className="Modal"
-				overlayClassName="Overlay"
-				centered>
-				<ContactInfoModal
-					contact={selectedContact}
-					handleSubmit={handleUpdateContact}
-					handleDeleteContact={handleDeleteContact}
-					closeModal={closeModal}
-				/>
-			</Modal>
-
-			<Grid item xs={12}>
+		<div style={{ height: "100%", width: "100%" }}>
+			<Grid item xs={12} xl={12} className={classes.titleContainer}>
 				<Typography variant="h4" align="center">
 					Contacts
 				</Typography>
 				<Divider variant="middle" />
 			</Grid>
+			<Grid container spacing={2} className={classes.contactsMainContainer}>
+				<Modal
+					isOpen={addContactModalIsOpen}
+					onRequestClose={closeModal}
+					className="Modal"
+					overlayClassName="Overlay"
+					centered>
+					<AddContactModal handleSubmit={handleAddContact} closeModal={closeModal} user={user} />
+				</Modal>
+				<Modal
+					isOpen={contactInfoModalIsOpen}
+					onRequestClose={closeModal}
+					className="Modal"
+					overlayClassName="Overlay"
+					centered>
+					<ContactInfoModal
+						contact={selectedContact}
+						handleSubmit={handleUpdateContact}
+						handleDeleteContact={handleDeleteContact}
+						closeModal={closeModal}
+					/>
+				</Modal>
 
-			<Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
-				<Input
-					onChange={handleSearch}
-					placeholder="Search contacts"
-					startAdornment={
-						<InputAdornment position="start">
-							<SearchIcon color="primary" />
-						</InputAdornment>
-					}
-				/>
-			</Grid>
-			<Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
-				<Button
-					variant="contained"
-					color="secondary"
-					startIcon={<AddCircleIcon />}
-					onClick={() => {
-						setAddContactModalIsOpen(true);
-					}}>
-					Add new contact
-				</Button>
-			</Grid>
-
-			<div className={classes.contactsContainer}>
-				<Grid container spacing={3} alignContent="flex-start" style={{ height: "100%", width: "100%" }}>
-					{displayedContacts &&
-						displayedContacts.map((contact, index) => (
-							<Grid item xs={12} sm={6} md={4} lg={3} key={index} className={classes.gridItem}>
-								<Paper
-									className={clsx(classes.paper, "zoom")}
-									elevation={2}
-									onClick={() => {
-										setContactInfoModalIsOpen(true);
-										setSelectedContact(contact);
-									}}>
-									<Typography variant="h5">{contact.name}</Typography>
-								</Paper>
-							</Grid>
-						))}
+				<Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
+					<Input
+						onChange={handleSearch}
+						placeholder="Search contacts"
+						startAdornment={
+							<InputAdornment position="start">
+								<SearchIcon color="primary" />
+							</InputAdornment>
+						}
+					/>
 				</Grid>
-			</div>
-		</Grid>
+				<Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
+					<Button
+						variant="contained"
+						color="secondary"
+						startIcon={<AddCircleIcon />}
+						onClick={() => {
+							setAddContactModalIsOpen(true);
+						}}>
+						Add new contact
+					</Button>
+				</Grid>
+
+				<div className={classes.contactsContainer}>
+					<Grid container spacing={3} alignContent="flex-start" style={{ height: "100%", width: "100%" }}>
+						{displayedContacts &&
+							displayedContacts.map((contact, index) => (
+								<Grid item xs={12} sm={6} md={4} lg={3} key={index} className={classes.gridItem}>
+									<Paper
+										className={clsx(classes.paper, "zoom")}
+										elevation={2}
+										onClick={() => {
+											setContactInfoModalIsOpen(true);
+											setSelectedContact(contact);
+										}}>
+										<Typography variant="h5">{contact.name}</Typography>
+									</Paper>
+								</Grid>
+							))}
+					</Grid>
+				</div>
+			</Grid>
+		</div>
 	);
 };
 

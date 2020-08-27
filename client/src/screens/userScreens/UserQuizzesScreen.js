@@ -59,22 +59,14 @@ const UserQuizzesScreen = (props) => {
 					quizzes.map((quiz, index) => (
 						<Grid item xs={12} sm={6} md={6} lg={4} key={index} className={classes.cardGridItem}>
 							<Card className={classes.card} key={quiz._id}>
-								<CardContent>
-									<div className={classes.quizName}>
-										<Typography variant="h6">Name:&nbsp;</Typography>
-										<Typography variant="h6" color="primary">
+										<Typography variant="h5" color="primary">
 											{quiz.quizName}
 										</Typography>
-									</div>
-									<div className={classes.quizName}>
-										<Typography variant="h6" component="p">
-											Subject:&nbsp;
-										</Typography>
-										<Typography variant="h6">{quiz.quizSubject}</Typography>
+							
+										<Typography variant="body2">({quiz.quizSubject})</Typography>
 										<br />
-									</div>
-								</CardContent>
-								<CardActions className={classes.cardActions}>
+								
+								<div className={classes.cardActions}>
 									<Button size="small" color="secondary" onClick={() => handleDeleteQuiz(quiz._id)}>
 										Delete
 									</Button>
@@ -84,7 +76,7 @@ const UserQuizzesScreen = (props) => {
 									<Button size="small" color="secondary" onClick={() => handleOpenStatistics(quiz)}>
 										Statistics
 									</Button>
-								</CardActions>
+								</div>
 							</Card>
 						</Grid>
 					))}
