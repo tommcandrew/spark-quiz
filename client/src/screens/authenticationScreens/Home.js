@@ -13,6 +13,9 @@ const Home = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [validationError, setValidationError] = useState("");
+   const { from } = props.location.state || {
+    from: { pathname: "/dashboard/myquizzes" },
+  };
 
   //HANDLERS
   const studentLoginHandler = async (e) => {
@@ -31,9 +34,9 @@ const Home = (props) => {
 
   const demoLogin = async () => {
     console.log("DEMO LOGIN");
-    // const loginData = { email: "sarah@gmail.com", password: "password123" };
-    // await dispatch(authActions.login(loginData));
-    // props.history.push(from);
+    const loginData = { email: "johndoe@spark-quiz.com", password: "john123doe" };
+    await dispatch(authActions.login(loginData));
+    props.history.push(from);
   };
 
   //MAIN
@@ -60,6 +63,7 @@ const Home = (props) => {
           noValidate
           onSubmit={studentLoginHandler}
         >
+          
           <Link to="/login">
             <Button
               type="submit"
@@ -71,6 +75,7 @@ const Home = (props) => {
               Log in
             </Button>
           </Link>
+            
           <Link to="/register">
             <Button
               type="submit"
@@ -86,7 +91,7 @@ const Home = (props) => {
             type="button"
             fullWidth
             variant="outlined"
-            color="primary"
+            color="secondary"
             className={classes.actionButton}
             onClick={demoLogin}
           >
@@ -103,7 +108,7 @@ const Home = (props) => {
             autoFocus
           />
           <Typography variant="subtitle" component="p" align="center">
-            (use code 123 for sample quiz)
+            (use code "SPARK" for sample quiz)
           </Typography>
           <Button
             type="submit"

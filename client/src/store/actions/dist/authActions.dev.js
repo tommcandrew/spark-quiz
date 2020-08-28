@@ -68,7 +68,6 @@ var loadUser = function loadUser() {
               type: USER_LOADING
             }); //user is loading to true
 
-            console.log("in load user");
             token = getState().auth.token;
             dispatch((0, _errorActions.loading)("Fetching your data"));
             return _context.abrupt("return", _axios["default"].get("http://localhost:5000/user/fetchUser", tokenConfig(token)).then(function (res) {
@@ -100,7 +99,7 @@ var loadUser = function loadUser() {
               dispatch((0, _errorActions.loaded)());
             }));
 
-          case 5:
+          case 4:
           case "end":
             return _context.stop();
         }
