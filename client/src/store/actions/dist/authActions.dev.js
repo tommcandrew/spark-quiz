@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logout = exports.resetPassword = exports.clearStudent = exports.changePassword = exports.deleteAccount = exports.studentReload = exports.studentLogin = exports.login = exports.register = exports.loadUser = exports.tokenConfig = exports.CLEAR_USER_REDUCER = exports.QUIZZES_LOADED = exports.CLEAR_STUDENT = exports.REGISTER_FAIL = exports.REGISTER_SUCCESS = exports.STUDENT_LOGIN_SUCCESS = exports.LOGOUT_SUCCESS = exports.LOGIN_FAIL = exports.LOGIN_SUCCESS = exports.AUTH_ERROR = exports.USER_LOADING = exports.USER_LOADED = exports.STUDENT_RELOAD_SUCCESS = void 0;
+exports.logout = exports.resetPassword = exports.clearStudent = exports.changePassword = exports.deleteAccount = exports.studentReload = exports.demoLogin = exports.studentLogin = exports.login = exports.register = exports.loadUser = exports.tokenConfig = exports.CLEAR_USER_REDUCER = exports.QUIZZES_LOADED = exports.CLEAR_STUDENT = exports.REGISTER_FAIL = exports.REGISTER_SUCCESS = exports.STUDENT_LOGIN_SUCCESS = exports.LOGOUT_SUCCESS = exports.LOGIN_FAIL = exports.LOGIN_SUCCESS = exports.AUTH_ERROR = exports.USER_LOADING = exports.USER_LOADED = exports.STUDENT_RELOAD_SUCCESS = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -234,24 +234,43 @@ var studentLogin = function studentLogin(studentCode) {
 
 exports.studentLogin = studentLogin;
 
-var studentReload = function studentReload() {
+var demoLogin = function demoLogin() {
   return function _callee2(dispatch, getState) {
-    var token;
     return regeneratorRuntime.async(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
+            return _context2.abrupt("return");
+
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    });
+  };
+};
+
+exports.demoLogin = demoLogin;
+
+var studentReload = function studentReload() {
+  return function _callee3(dispatch, getState) {
+    var token;
+    return regeneratorRuntime.async(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
             if (!(getState().quiz._id !== "")) {
-              _context2.next = 4;
+              _context3.next = 4;
               break;
             }
 
-            return _context2.abrupt("return");
+            return _context3.abrupt("return");
 
           case 4:
             token = getState().auth.token;
             dispatch((0, _errorActions.loading)("Reloading"));
-            return _context2.abrupt("return", _axios["default"].get("http://localhost:5000/student/quizReload", tokenConfig(token)).then(function (res) {
+            return _context3.abrupt("return", _axios["default"].get("http://localhost:5000/student/quizReload", tokenConfig(token)).then(function (res) {
               dispatch((0, _quizScoreActions.resetStudent)({
                 quiz: res.data.quiz,
                 user: res.data.user,
@@ -273,7 +292,7 @@ var studentReload = function studentReload() {
 
           case 7:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
     });
@@ -313,10 +332,10 @@ var changePassword = function changePassword(currentPassword, newPassword) {
 exports.changePassword = changePassword;
 
 var clearStudent = function clearStudent() {
-  return function _callee3(dispatch) {
-    return regeneratorRuntime.async(function _callee3$(_context3) {
+  return function _callee4(dispatch) {
+    return regeneratorRuntime.async(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
             dispatch({
               type: CLEAR_STUDENT
@@ -324,7 +343,7 @@ var clearStudent = function clearStudent() {
 
           case 1:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
     });

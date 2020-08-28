@@ -27,8 +27,14 @@ const Home = (props) => {
       setValidationError(result.getError("code"));
       return;
     } else {
-      await dispatch(authActions.studentLogin(studentCode));
-      props.history.push("/quiz");
+      if (studentCode.toLowerCase() === "spark") {
+         await dispatch(authActions.demoLogin);
+        props.history.push("/quiz");
+      }
+      else {
+        await dispatch(authActions.studentLogin(studentCode));
+        props.history.push("/quiz");
+      }
     }
   };
 

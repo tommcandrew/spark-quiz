@@ -155,6 +155,12 @@ export const studentLogin = (studentCode) => {
 	};
 };
 
+export const demoLogin = () => {
+	return async (dispatch, getState) => {
+		return 
+	}
+}
+
 export const studentReload = () => {
 	return async (dispatch, getState) => {
 		if (getState().quiz._id !== "") return;

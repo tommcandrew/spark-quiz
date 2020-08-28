@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const drawerWidth = 240;
 export const useStyles = makeStyles((theme) => ({
 	active: {
-  backgroundColor: theme.palette.secondary.light
+		backgroundColor: theme.palette.secondary.light
 	},
 	item: {},
 	root: {
