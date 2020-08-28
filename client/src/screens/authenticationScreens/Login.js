@@ -19,8 +19,8 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [validationError, setValidationError] = useState("");
-  const [email, setEmail] = useState("johndoe@spark-quiz.com");
-  const [password, setPassword] = useState("john123doe");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { from } = props.location.state || {
     from: { pathname: "/dashboard/myquizzes" },
   };

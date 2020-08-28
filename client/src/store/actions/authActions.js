@@ -47,9 +47,10 @@ export const loadUser = () => {
 					type: QUIZZES_LOADED,
 					payload: res.data.userQuizzes
 				});
-				dispatch(loaded())
+				dispatch(loaded());
 			})
 			.catch((err) => {
+				console.log(err);
 				if (!err.response) {
 					dispatch(returnErrors({ msg: "Server is down. Please try again later" }, 500, "REGISTER_FAIL"));
 				} else {
@@ -58,7 +59,7 @@ export const loadUser = () => {
 					});
 					dispatch(returnErrors({ msg: "Something went wrong. Please login Again" }, err.response.status));
 				}
-				dispatch(loaded())
+				dispatch(loaded());
 			});
 	};
 };
@@ -103,7 +104,7 @@ export const login = ({ email, password }) => {
 				dispatch({
 					type: LOGIN_SUCCESS,
 					payload: res.data
-				})
+				});
 				dispatch(loadUser());
 				dispatch({
 					type: CLEAR_ERRORS
@@ -153,6 +154,12 @@ export const studentLogin = (studentCode) => {
 			});
 	};
 };
+
+export const demoLogin = () => {
+	return async (dispatch, getState) => {
+		return 
+	}
+}
 
 export const studentReload = () => {
 	return async (dispatch, getState) => {
