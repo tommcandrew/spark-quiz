@@ -192,6 +192,10 @@ const studentScreensStyles = makeStyles((theme) => ({
 		height: "100%",
 		backgroundColor: theme.palette.primary.main
 	},
+	buttonContainer: {
+		display: "flex",
+		flexDirection: "column"
+	},
 	finsihQuizContainer: {
 		display: "flex",
 		flexDirection: "column",
