@@ -155,9 +155,12 @@ export const studentLogin = (studentCode) => {
 	};
 };
 
-export const demoLogin = () => {
+export const quizDemo = () => {
 	return async (dispatch, getState) => {
-		return 
+		return axios
+			.get("http://localhost:5000/student/quizDemo")
+			.then((res) => console.log(res.data))
+		.catch((err)=> console.log(err))
 	}
 }
 

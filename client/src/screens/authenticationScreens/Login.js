@@ -98,6 +98,15 @@ const Login = (props) => {
           >
             Log In
           </Button>
+           <Grid container justify="flex-end">
+            <Grid item>
+              <Link to="/">
+                <Typography href="#" variant="body2">
+                  Have a code?
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
           <Grid container justify="flex-end">
             <Grid item>
               <Link to="/register">

@@ -153,4 +153,16 @@ router.post("/finishQuiz", async (req, res) => {
   }
 });
 
+
+router.get("/quizDemo", async (req, res) => {
+  try {
+    const quiz = await Quiz.findById("5f48b285a0813300047f4788");
+    res.status(200).send({quiz})
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({ msg: err });
+  }
+});
+
+
 module.exports = router;
