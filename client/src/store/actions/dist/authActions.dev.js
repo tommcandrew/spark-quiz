@@ -241,7 +241,9 @@ var quizDemo = function quizDemo() {
         switch (_context2.prev = _context2.next) {
           case 0:
             return _context2.abrupt("return", _axios["default"].get("http://localhost:5000/student/quizDemo").then(function (res) {
-              return console.log(res.data);
+              dispatch((0, _quizScoreActions.setDemoQuiz)({
+                quiz: res.data.quiz
+              }));
             })["catch"](function (err) {
               return console.log(err);
             }));

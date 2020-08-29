@@ -2,7 +2,7 @@ import axios from "axios";
 import { returnErrors, clearErrors } from "./errorActions";
 import { CLEAR_ERRORS } from "./errorActions";
 import { loading, loaded } from "./errorActions";
-import { setStudent, resetStudent } from "./quizScoreActions";
+import { setStudent, resetStudent, setDemoQuiz } from "./quizScoreActions";
 export const STUDENT_RELOAD_SUCCESS = "STUDENT_RELOAD_SUCCESS";
 export const USER_LOADED = "USER_LOADED";
 export const USER_LOADING = "USER_LOADING";
@@ -159,7 +159,11 @@ export const quizDemo = () => {
 	return async (dispatch, getState) => {
 		return axios
 			.get("http://localhost:5000/student/quizDemo")
-			.then((res) => console.log(res.data))
+			.then((res) => {
+				dispatch(setDemoQuiz({
+					quiz: res.data.quiz,
+				}))
+			})
 		.catch((err)=> console.log(err))
 	}
 }
@@ -194,6 +198,8 @@ export const studentReload = () => {
 		}
 	};
 };
+
+
 
 export const deleteAccount = () => {
 	return (dispatch, getState) => {

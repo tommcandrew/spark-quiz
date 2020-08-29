@@ -5,7 +5,7 @@ const quizRules = () => {
     return (
         <div>
              <Typography variant="h5" color="primary" >Guidelines:</Typography>
-        <Typography variant="body" style={{marginBottomn: "10px", fontStyle: "italic", lineHeight: "1.5rem" }}>
+        <Typography variant="body1" style={{marginBottomn: "10px", fontStyle: "italic", lineHeight: "1.5rem" }}>
           The quiz questions types consist of MCQs and True/False.
           <br></br>
           The quiz questions may contain multi-media.

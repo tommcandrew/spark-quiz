@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setOverallScore = exports.setQuestionAnswer = exports.finishQuiz = exports.clearScore = exports.setStudent = exports.resetStudent = exports.CLEAR_SCORE = exports.RESET_STUDENT = exports.SET_OVERALL_SCORE = exports.FINISH_QUIZ = exports.SET_OVERALLSCORE = exports.SET_NEW_QUESTION_NUMBER = exports.SET_STUDENT = void 0;
+exports.setOverallScore = exports.setQuestionAnswer = exports.finishQuiz = exports.clearScore = exports.setDemoQuiz = exports.setStudent = exports.resetStudent = exports.CLEAR_SCORE = exports.RESET_STUDENT = exports.SET_OVERALL_SCORE = exports.FINISH_QUIZ = exports.SET_OVERALLSCORE = exports.SET_NEW_QUESTION_NUMBER = exports.SET_STUDENT = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -126,6 +126,51 @@ var setStudent = function setStudent(_ref2) {
 
 exports.setStudent = setStudent;
 
+var setDemoQuiz = function setDemoQuiz(_ref3) {
+  var quiz = _ref3.quiz;
+  return function _callee3(dispatch) {
+    return regeneratorRuntime.async(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return regeneratorRuntime.awrap(dispatch({
+              type: _authActions.STUDENT_LOGIN_SUCCESS,
+              payload: {
+                token: "demo_token",
+                user: "demo_user"
+              }
+            }));
+
+          case 2:
+            _context3.next = 4;
+            return regeneratorRuntime.awrap(dispatch({
+              type: _quizActions.SET_CURRENT_QUIZ,
+              payload: quiz
+            }));
+
+          case 4:
+            _context3.next = 6;
+            return regeneratorRuntime.awrap(dispatch({
+              type: SET_STUDENT,
+              payload: {
+                id: "demo_id",
+                questionNumber: 0,
+                pointsScored: 0
+              }
+            }));
+
+          case 6:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    });
+  };
+};
+
+exports.setDemoQuiz = setDemoQuiz;
+
 var clearScore = function clearScore() {
   return function (dispatch) {
     dispatch({
@@ -164,20 +209,30 @@ var setQuestionAnswer = function setQuestionAnswer(answer) {
     var quizId = getState().quiz._id;
 
     var questionNumber = parseInt(getState().score.questionNumber + 1);
-    return _axios["default"].post("http://localhost:5000/student/saveAnswer", {
-      quizId: quizId,
-      studentId: studentId,
-      questionNumber: questionNumber,
-      answer: answer
-    }, (0, _authActions.tokenConfig)(token)).then(function (res) {
-      console.log("successfully set the answer");
+    var isDemo = localStorage.getItem("token") === "demo_token";
+
+    if (!isDemo) {
+      return _axios["default"].post("http://localhost:5000/student/saveAnswer", {
+        quizId: quizId,
+        studentId: studentId,
+        questionNumber: questionNumber,
+        answer: answer
+      }, (0, _authActions.tokenConfig)(token)).then(function (res) {
+        dispatch({
+          type: SET_NEW_QUESTION_NUMBER,
+          questionNumber: questionNumber
+        });
+      })["catch"](function (err) {
+        console.log(err);
+      });
+      return;
+    } else {
       dispatch({
         type: SET_NEW_QUESTION_NUMBER,
         questionNumber: questionNumber
       });
-    })["catch"](function (err) {
-      console.log(err);
-    });
+      return;
+    }
   };
 };
 
@@ -191,18 +246,29 @@ var setOverallScore = function setOverallScore(score) {
     var quizId = getState().quiz._id;
 
     var newScore = parseInt(getState().score.overallScore) + parseInt(score);
-    return _axios["default"].post("http://localhost:5000/student/saveScore", {
-      quizId: quizId,
-      studentId: studentId,
-      newScore: newScore
-    }, (0, _authActions.tokenConfig)(token)).then(function (res) {
+    var isDemo = localStorage.getItem("token") === "demo_token";
+
+    if (!isDemo) {
+      return _axios["default"].post("http://localhost:5000/student/saveScore", {
+        quizId: quizId,
+        studentId: studentId,
+        newScore: newScore
+      }, (0, _authActions.tokenConfig)(token)).then(function (res) {
+        dispatch({
+          type: SET_OVERALL_SCORE,
+          score: newScore
+        });
+      })["catch"](function (err) {
+        console.log(err);
+      });
+      return;
+    } else {
       dispatch({
         type: SET_OVERALL_SCORE,
         score: newScore
       });
-    })["catch"](function (err) {
-      console.log(err);
-    });
+      return;
+    }
   };
 };
 

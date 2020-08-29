@@ -69,7 +69,7 @@ const Home = (props) => {
           onSubmit={studentLoginHandler}
         >
           
-          <Link to="/login">
+          <Link to="/login" style={{textDecoration: "none"}}>
             <Button
               type="submit"
               fullWidth
@@ -81,7 +81,7 @@ const Home = (props) => {
             </Button>
           </Link>
             
-          <Link to="/register">
+          <Link to="/register" style={{textDecoration: "none"}}>
             <Button
               type="submit"
               fullWidth

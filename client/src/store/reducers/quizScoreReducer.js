@@ -17,13 +17,11 @@ export default (state = initalState, action) => {
 				overallScore: action.payload.pointsScored
 			};
 		case SET_NEW_QUESTION_NUMBER:
-			console.log(action.questionNumber)
 			return {
 				...state,
 				questionNumber: parseInt(action.questionNumber)
 			};
 		case SET_OVERALL_SCORE:
-			console.log(action.score)
 			return {
 				...state,
 				overallScore: parseInt(action.score)
