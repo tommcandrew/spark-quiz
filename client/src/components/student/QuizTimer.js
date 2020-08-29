@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Timer = ({ seconds, setTimeUp }) => {
   const [timeLeft, setTimeLeft] = useState(seconds);
-
-  console.log("TIMER");
   useEffect(() => {
-    console.log(timeLeft);
   }, [timeLeft]);
 
   function fmtMSS(s) {
@@ -14,7 +11,6 @@ const Timer = ({ seconds, setTimeUp }) => {
 
   useEffect(() => {
     if (!timeLeft) {
-      console.log("TIME IS FALSY SO SETTING TIME UP TO TRUE");
       setTimeUp(true);
       return;
     }

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logout = exports.resetPassword = exports.clearStudent = exports.changePassword = exports.deleteAccount = exports.studentReload = exports.demoLogin = exports.studentLogin = exports.login = exports.register = exports.loadUser = exports.tokenConfig = exports.CLEAR_USER_REDUCER = exports.QUIZZES_LOADED = exports.CLEAR_STUDENT = exports.REGISTER_FAIL = exports.REGISTER_SUCCESS = exports.STUDENT_LOGIN_SUCCESS = exports.LOGOUT_SUCCESS = exports.LOGIN_FAIL = exports.LOGIN_SUCCESS = exports.AUTH_ERROR = exports.USER_LOADING = exports.USER_LOADED = exports.STUDENT_RELOAD_SUCCESS = void 0;
+exports.logout = exports.resetPassword = exports.clearStudent = exports.changePassword = exports.deleteAccount = exports.studentReload = exports.quizDemo = exports.studentLogin = exports.login = exports.register = exports.loadUser = exports.tokenConfig = exports.CLEAR_USER_REDUCER = exports.QUIZZES_LOADED = exports.CLEAR_STUDENT = exports.REGISTER_FAIL = exports.REGISTER_SUCCESS = exports.STUDENT_LOGIN_SUCCESS = exports.LOGOUT_SUCCESS = exports.LOGIN_FAIL = exports.LOGIN_SUCCESS = exports.AUTH_ERROR = exports.USER_LOADING = exports.USER_LOADED = exports.STUDENT_RELOAD_SUCCESS = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -234,13 +234,19 @@ var studentLogin = function studentLogin(studentCode) {
 
 exports.studentLogin = studentLogin;
 
-var demoLogin = function demoLogin() {
+var quizDemo = function quizDemo() {
   return function _callee2(dispatch, getState) {
     return regeneratorRuntime.async(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            return _context2.abrupt("return");
+            return _context2.abrupt("return", _axios["default"].get("http://localhost:5000/student/quizDemo").then(function (res) {
+              dispatch((0, _quizScoreActions.setDemoQuiz)({
+                quiz: res.data.quiz
+              }));
+            })["catch"](function (err) {
+              return console.log(err);
+            }));
 
           case 1:
           case "end":
@@ -251,7 +257,7 @@ var demoLogin = function demoLogin() {
   };
 };
 
-exports.demoLogin = demoLogin;
+exports.quizDemo = quizDemo;
 
 var studentReload = function studentReload() {
   return function _callee3(dispatch, getState) {

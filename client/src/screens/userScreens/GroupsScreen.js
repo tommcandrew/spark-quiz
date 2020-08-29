@@ -74,97 +74,98 @@ const Groups = () => {
 	};
 
 	return (
-		<div style={{ height: "100%", width: "100%" }}>
+		<Grid container spacing={2} className={classes.contactsMainContainer}>
 			{warningMessage !== "" && (
 				<CustomSnackbar severity="warning" message={warningMessage} handleClose={() => setWarningMessage("")} />
 			)}
-			<Grid item xs={12} xl={12} className={classes.titleContainer}>
+			<Grid item xs={12} xl={12}>
 				<Typography variant="h4" align="center">
 					Groups
 				</Typography>
 				<Divider variant="middle" />
 			</Grid>
-			<Grid container spacing={2} className={classes.contactsMainContainer}>
-	
-				<Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
-					<Input
-						onChange={handleSearch}
-						placeholder="Search groups"
-						startAdornment={
-							<InputAdornment position="start">
-								<SearchIcon color="primary" />
-							</InputAdornment>
-						}
-					/>
-				</Grid>
 
-				<Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
-					<Button
-						variant="contained"
-						color="secondary"
-						startIcon={<AddCircleIcon />}
-						onClick={() => {
-							setAddGroupModalIsOpen(true);
-						}}>
-						Add new group
-					</Button>
-				</Grid>
-
-				<div className={classes.contactsContainer}>
-					<Grid container spacing={3} alignContent="flex-start" style={{ height: "100%", width: "100%" }}>
-						{displayedGroups &&
-							displayedGroups.map((group, index) => {
-								return (
-									<Grid item xs={12} sm={6} md={4} lg={3} className={classes.gridItem}>
-										<Paper
-											onClick={() => {
-												setSelectedGroupId(group._id);
-												setGroupInfoModalIsOpen(true);
-											}}
-											className={clsx(classes.paper, "zoom")}
-											elevation={2}>
-											<Typography variant="h6">{group.name}</Typography>
-											{group.contacts.length === 0 && (
-												<Typography
-													variant="caption"
-													display="block"
-													color="secondary"
-													gutterBottom>
-													No members in this group. Click to add
-												</Typography>
-											)}
-										</Paper>
-									</Grid>
-								);
-							})}
-					</Grid>
-				</div>
-
-				<Modal
-					isOpen={addGroupModalIsOpen}
-					onRequestClose={closeModal}
-					className="Modal"
-					overlayClassName="Overlay"
-					centered>
-					<AddGroupModal closeModal={closeModal} user={user} />
-				</Modal>
-
-				<Modal
-					isOpen={groupInfoModalIsOpen}
-					onRequestClose={closeModal}
-					className="Modal"
-					overlayClassName="Overlay"
-					centered>
-					<GroupInfoModal
-						selectedGroup={selectedGroup}
-						closeModal={closeModal}
-						handleDeleteGroup={handleDeleteGroup}
-						user={user}
-						handleUpdateGroup={handleUpdateGroup}
-					/>
-				</Modal>
+			<Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
+				<Input
+					onChange={handleSearch}
+					placeholder="Search groups"
+					startAdornment={
+						<InputAdornment position="start">
+							<SearchIcon color="primary" />
+						</InputAdornment>
+					}
+				/>
 			</Grid>
-		</div>
+			<Grid item xs={6} style={{ marginBottom: "10px", textAlign: "center" }}>
+				<Button
+					variant="contained"
+					color="secondary"
+					startIcon={<AddCircleIcon />}
+					onClick={() => {
+						setAddGroupModalIsOpen(true);
+					}}>
+					Add new group
+				</Button>
+			</Grid>
+
+			<div className={classes.contactsContainer}>
+				<Grid container spacing={3} alignContent="flex-start" style={{ height: "100%", width: "100%" }}>
+					{displayedGroups &&
+						displayedGroups.map((group, index) => {
+							return (
+								<Grid
+									item
+									 xs={12} sm={6} md={4} lg={3}
+									className={classes.gridItem}
+									>
+									<Paper
+										onClick={() => {
+										setSelectedGroupId(group._id);
+										setGroupInfoModalIsOpen(true);
+									}}
+										className={clsx(classes.paper, "zoom")}
+									elevation={2}>
+										<Typography variant="h6">{group.name}</Typography>
+										{group.contacts.length === 0 && (
+											<Typography
+												variant="caption"
+												display="block"
+												color="secondary"
+												gutterBottom>
+												No members in this group. Click to add
+											</Typography>
+										)}
+									</Paper>
+								</Grid>
+							);
+						})}
+				</Grid>
+			</div>
+
+			<Modal
+				isOpen={addGroupModalIsOpen}
+				onRequestClose={closeModal}
+				className="Modal"
+				overlayClassName="Overlay"
+				centered>
+				<AddGroupModal closeModal={closeModal} user={user} />
+			</Modal>
+
+			<Modal
+				isOpen={groupInfoModalIsOpen}
+				onRequestClose={closeModal}
+				className="Modal"
+				overlayClassName="Overlay"
+				centered>
+				<GroupInfoModal
+					selectedGroup={selectedGroup}
+					closeModal={closeModal}
+					handleDeleteGroup={handleDeleteGroup}
+					user={user}
+					handleUpdateGroup={handleUpdateGroup}
+				/>
+			</Modal>
+		</Grid>
 	);
 };
 

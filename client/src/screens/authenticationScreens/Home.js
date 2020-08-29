@@ -28,7 +28,7 @@ const Home = (props) => {
       return;
     } else {
       if (studentCode.toLowerCase() === "spark") {
-         await dispatch(authActions.demoLogin);
+         await dispatch(authActions.quizDemo());
         props.history.push("/quiz");
       }
       else {
@@ -39,7 +39,6 @@ const Home = (props) => {
   };
 
   const demoLogin = async () => {
-    console.log("DEMO LOGIN");
     const loginData = { email: "johndoe@spark-quiz.com", password: "john123doe" };
     await dispatch(authActions.login(loginData));
     props.history.push(from);
@@ -70,7 +69,7 @@ const Home = (props) => {
           onSubmit={studentLoginHandler}
         >
           
-          <Link to="/login">
+          <Link to="/login" style={{textDecoration: "none"}}>
             <Button
               type="submit"
               fullWidth
@@ -82,7 +81,7 @@ const Home = (props) => {
             </Button>
           </Link>
             
-          <Link to="/register">
+          <Link to="/register" style={{textDecoration: "none"}}>
             <Button
               type="submit"
               fullWidth

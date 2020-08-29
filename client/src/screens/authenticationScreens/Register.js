@@ -139,6 +139,15 @@ const Register = (props) => {
           >
             Sign Up
           </Button>
+            <Grid container justify="flex-end">
+            <Grid item>
+              <Link to="/">
+                <Typography href="#" variant="body2">
+                  Have a code?
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
           <Grid container justify="flex-end">
             <Grid item>
               <Link to="/login">

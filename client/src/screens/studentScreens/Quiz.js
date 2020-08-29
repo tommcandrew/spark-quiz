@@ -16,250 +16,239 @@ import Finish from "./Finish";
 import clsx from "clsx";
 
 const Quiz = ({ history }) => {
-  const classes = studentScreensStyles();
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [finished, setFinished] = useState(false);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [timeUp, setTimeUp] = useState(false);
-  const [quizStarted, setQuizStarted] = useState(false);
+	const classes = studentScreensStyles();
+	const isQuizDemo = localStorage.getItem("token") === "demo_token";
+	const [ selectedOption, setSelectedOption ] = useState(null);
+	const [ finished, setFinished ] = useState(false);
+	const [ currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
+	const [ timeUp, setTimeUp ] = useState(false);
+	const [ quizStarted, setQuizStarted ] = useState(false);
   const [validationError, setValidationError] = useState("");
-  //const [score, setScore] = useState(0)
-
-  const dispatch = useDispatch();
-  const quiz = useSelector((state) => state.quiz);
-  const quizPointsSystem = quiz.quizPointsSystem;
-  var timeLimit;
-  if (quiz.quizStarted) {
-    var d = new Date(); //todays date
-    var date = new Date(quiz.quizStarted.toString()); //when the quiz was created
-    var timeTaken = d.getTime() - date.getTime(); //how much time has passed since the quiz started
-    if (
-      quiz.quizTimeLimit !== "false" &&
-      quiz.quizTimeLimit !== "" &&
-      quiz.quizTimeLimit !== null
-    ) {
-      timeLimit = parseInt(quiz.quizTimeLimit * 60 - timeTaken / 1000);
-    } else timeLimit = parseInt(quiz.quizTimeLimit) * 60;
+  
+ 
+	const dispatch = useDispatch();
+	const quiz = useSelector((state) => state.quiz);
+	const quizPointsSystem = quiz.quizPointsSystem;
+	var timeLimit;
+	if (quiz.quizStarted) {
+		var d = new Date(); //todays date
+		var date = new Date(quiz.quizStarted.toString()); //when the quiz was created
+		var timeTaken = d.getTime() - date.getTime(); //how much time has passed since the quiz started
+		if (quiz.quizTimeLimit !== "false" && quiz.quizTimeLimit !== "" && quiz.quizTimeLimit !== null) {
+			timeLimit = parseInt(quiz.quizTimeLimit * 60 - timeTaken / 1000);
+		} else timeLimit = parseInt(quiz.quizTimeLimit) * 60;
   }
+  else timeLimit = parseInt(quiz.quizTimeLimit) * 60;
+  
+	const leaveQuiz = () => {
+		setFinished(true);
+	};
 
-  console.log(quiz.quizTimeLimit);
+	const getQuiz = async () => {
+		if (isQuizDemo && quiz._id === "") {
+			await dispatch(authActions.quizDemo());
+			return;
+		}
+		if (quiz._id === "" && currentQuestionIndex >= quiz.quizQuestions.length - 1) {
+			await dispatch(authActions.studentReload());
+		}
+	};
 
-  const getQuiz = async () => {
-    if (
-      quiz._id === "" &&
-      currentQuestionIndex >= quiz.quizQuestions.length - 1
-    ) {
-      console.log("function in use effect running");
-      await dispatch(authActions.studentReload());
-    }
-  };
-  useEffect(() => {
-    getQuiz();
-  }, [finished]);
+	useEffect(
+		() => {
+			getQuiz();
+		},
+		[ finished ]
+	);
 
-  // 	//make a nicer notification
-  useEffect(() => {
-    if (timeUp) {
-      alert("Time's up!");
-      setFinished(true);
-      return;
-    }
-  }, [timeUp]);
+	// 	//make a nicer notification
+	useEffect(
+		() => {
+			if (timeUp) {
+				alert("Time's up!");
+				setFinished(true);
+				return;
+			}
+		},
+		[ timeUp ]
+	);
 
-  useEffect(() => {
-    async function fetchData() {
-      if (finished) {
-        await dispatch(quizScoreActions.finishQuiz());
-        history.push({ pathname: "/finishQuiz", state: { score: "20" } });
-        //this needs to be set up
-        await dispatch(authActions.clearStudent());
-        await dispatch(quizActions.clearCurrentQuiz());
-      }
-    }
-    fetchData();
-  }, [finished]); // Or [] if effect doesn't need props or state
+	useEffect(
+		() => {
+			async function fetchData() {
+				if (finished) {
+					await dispatch(quizScoreActions.finishQuiz());
+					history.push({ pathname: "/finishQuiz" });
+					await dispatch(authActions.clearStudent());
+					await dispatch(quizActions.clearCurrentQuiz());
+				}
+			}
+			fetchData();
+		},
+		[ finished ]
+	); // Or [] if effect doesn't need props or state
 
-  const goToNextQuestion = () => {
-    if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
-      setFinished(true);
-    } else {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
+	const goToNextQuestion = () => {
+		if (currentQuestionIndex === quiz.quizQuestions.length - 1) {
+			setFinished(true);
+		} else {
+			setCurrentQuestionIndex(currentQuestionIndex + 1);
+		}
+	};
 
-  const handleClick = async () => {
-    if (selectedOption === null) {
-      setValidationError("Please select an option");
-      return;
-    };
-    if (timeUp) return;
+	const handleClick = async () => {
+		if (selectedOption === null) {
+			setValidationError("Please select an option");
+			return;
+		}
+		if (timeUp) return;
 
-    let isCorrect;
-    quiz.quizQuestions[currentQuestionIndex].questionType === "multipleChoice"
-      ? (isCorrect =
-          quiz.quizQuestions[currentQuestionIndex].answers
-            .multipleChoiceAnswer === selectedOption)
-      : (isCorrect =
-          quiz.quizQuestions[currentQuestionIndex].answers.trueFalseAnswer ===
-          selectedOption);
-    setSelectedOption(null);
-    await dispatch(quizScoreActions.setQuestionAnswer(isCorrect));
-    if (isCorrect) {
-      if (quizPointsSystem === "overall") {
-        await dispatch(
-          quizScoreActions.setOverallScore(quiz.quizOverallPoints)
-        );
-      }
-      if (quizPointsSystem === "eachQuestion") {
-        await dispatch(
-          quizScoreActions.setOverallScore(
-            quiz.quizQuestions[currentQuestionIndex].points
-          )
-        );
-      }
-    }
-    animateNextQuestion(goToNextQuestion);
-  };
+		let isCorrect;
+		quiz.quizQuestions[currentQuestionIndex].questionType === "multipleChoice"
+			? (isCorrect = quiz.quizQuestions[currentQuestionIndex].answers.multipleChoiceAnswer === selectedOption)
+			: (isCorrect = quiz.quizQuestions[currentQuestionIndex].answers.trueFalseAnswer === selectedOption);
+		setSelectedOption(null);
+		await dispatch(quizScoreActions.setQuestionAnswer(isCorrect));
+		if (isCorrect) {
+			if (quizPointsSystem === "overall") {
+				await dispatch(quizScoreActions.setOverallScore(quiz.quizOverallPoints));
+			}
+			if (quizPointsSystem === "eachQuestion") {
+				await dispatch(quizScoreActions.setOverallScore(quiz.quizQuestions[currentQuestionIndex].points));
+			}
+		}
+		animateNextQuestion(goToNextQuestion);
+	};
 
-  return (
-    <div className={classes.root}>
-      
-      <div className={classes.paperBackground}>
-        {validationError !== "" && (
-        <CustomSnackbar
-          severity="error"
-          message={validationError}
-          handleClose={() => setValidationError("")}
-        />
-      )}
-        <div className={classes.content}>
-          {!quizStarted && (
-            <QuizStart quiz={quiz} setQuizStarted={setQuizStarted} />
-          )}
-          {quizStarted && (
-            <Fragment>
-              {!finished && (
-                <div className={classes.quiz__content}>
-                  <div className={classes.quiz__info}>
-                    <Typography variant="h6" color="primary">
-                      {quiz.quizName}
-                    </Typography>
-                    {quiz.quizTimeLimit !== "false" &&
-                      quiz.quizTimeLimit !== "" &&
-                      quiz.quizTimeLimit !== null && (
-                        <QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
-                      )}
-                  </div>
+	return (
+		<div className={classes.root}>
+			<div className={classes.paperBackground}>
+				{validationError !== "" && (
+					<CustomSnackbar
+						severity="error"
+						message={validationError}
+						handleClose={() => setValidationError("")}
+					/>
+				)}
+				<div className={classes.content}>
+					{!quizStarted && (
+						<QuizStart
+							quiz={quiz}
+							setQuizStarted={setQuizStarted}
+							leaveQuiz={leaveQuiz}
+							isQuizDemo={isQuizDemo}
+						/>
+					)}
+					{quizStarted && (
+						<Fragment>
+							{!finished && (
+								<div className={classes.quiz__content}>
+									<div className={classes.quiz__info}>
+										<Typography variant="h6" color="primary">
+											{quiz.quizName}
+										</Typography>
+										{quiz.quizTimeLimit !== "false" &&
+										quiz.quizTimeLimit !== "" &&
+										quiz.quizTimeLimit !== null && (
+											<QuizTimer seconds={timeLimit} setTimeUp={setTimeUp} />
+										)}
+									</div>
 
-                  <div
-                    className={clsx(
-                      classes.quiz__questionContent,
-                      "quiz__questionContent"
-                    )}
-                  >
-                    <div className={classes.quiz__question}>
-                      <Typography variant="h6">
-                        Q. {quiz.quizQuestions[currentQuestionIndex].question}
-                      </Typography>
-                      {quizPointsSystem === "eachQuestion" && (
-                        <h5
-                          style={{ textAlign: "right", paddingRight: "10px" }}
-                        >
-                          points:{" "}
-                          {quiz.quizQuestions[currentQuestionIndex].points}{" "}
-                        </h5>
-                      )}
-                    </div>
+									<div className={clsx(classes.quiz__questionContent, "quiz__questionContent")}>
+										<div className={classes.quiz__question}>
+											<Typography variant="h6">
+												Q. {quiz.quizQuestions[currentQuestionIndex].question}
+											</Typography>
+											{quizPointsSystem === "eachQuestion" && (
+												<h5 style={{ textAlign: "right", paddingRight: "10px" }}>
+													points: {quiz.quizQuestions[currentQuestionIndex].points}{" "}
+												</h5>
+											)}
+										</div>
 
-                    {quiz.quizQuestions[currentQuestionIndex].media.length >
-                      0 && (
-                      <div className={classes.quiz__medias}>
-                        <Typography variant="body" />
-                        {quiz.quizQuestions[currentQuestionIndex].media.map(
-                          (media, index) => (
-                            <div key={index} className={classes.quiz__media}>
-                              <QuizMedia media={media} />
-                            </div>
-                          )
-                        )}
-                      </div>
-                    )}
+										{quiz.quizQuestions[currentQuestionIndex].media.length > 0 && (
+											<div className={classes.quiz__medias}>
+												<Typography variant="body" />
+												{quiz.quizQuestions[currentQuestionIndex].media.map((media, index) => (
+													<div key={index} className={classes.quiz__media}>
+														<QuizMedia media={media} />
+													</div>
+												))}
+											</div>
+										)}
 
-                    <div className={classes.quiz__options}>
-                      {quiz.quizQuestions[currentQuestionIndex].questionType ===
-                        "multipleChoice" && (
-                        <RadioGroup
-                          value={selectedOption}
-                          onChange={(e) => {
-                            setSelectedOption(e.target.value);
-                          }}
-                        >
-                          {quiz.quizQuestions[
-                            currentQuestionIndex
-                          ].answers.multipleChoiceOptions.map(
-                            (option, index) => (
-                              <QuizOption
-                                key={index}
-                                option={option}
-                                optionIndex={index}
-                              />
-                            )
-                          )}
-                        </RadioGroup>
-                      )}
+										<div className={classes.quiz__options}>
+											{quiz.quizQuestions[currentQuestionIndex].questionType ===
+												"multipleChoice" && (
+												<RadioGroup
+													value={selectedOption}
+													onChange={(e) => {
+														setSelectedOption(e.target.value);
+													}}>
+													{quiz.quizQuestions[
+														currentQuestionIndex
+													].answers.multipleChoiceOptions.map((option, index) => (
+														<QuizOption key={index} option={option} optionIndex={index} />
+													))}
+												</RadioGroup>
+											)}
 
-                      {quiz.quizQuestions[currentQuestionIndex].questionType ===
-                        "trueFalse" && (
-                        <RadioGroup
-                          value={selectedOption}
-                          onChange={(e) => {
-                            setSelectedOption(e.target.value);
-                          }}
-                        >
-                          <QuizOption option={"true"} optionIndex={"true"} />
-                          <QuizOption option={"false"} optionIndex={"false"} />
-                        </RadioGroup>
-                      )}
-                    </div>
-                  </div>
-                  <div className={classes.quiz__progress}>
+											{quiz.quizQuestions[currentQuestionIndex].questionType === "trueFalse" && (
+												<RadioGroup
+													value={selectedOption}
+													onChange={(e) => {
+														setSelectedOption(e.target.value);
+													}}>
+													<QuizOption option={"true"} optionIndex={"true"} />
+													<QuizOption option={"false"} optionIndex={"false"} />
+												</RadioGroup>
+											)}
+										</div>
+									</div>
+									<div className={classes.quiz__progress}>
                     <ProgressBar
-                      currentQuestion={
-                        currentQuestionIndex + 1 + quiz.quizLastQuestionNumber
-                      }
-                      totalQuestions={quiz.quizTotalQuestions}
-                    />
+                      quizLastQuestionNumber={quiz.quizLastQuestionNumber}
+											currentQuestion={currentQuestionIndex}
+											totalQuestions={quiz.quizTotalQuestions}
+										/>
 
-                    <div className={classes.quiz__progressDetails}>
+										<div className={classes.quiz__progressDetails}>
                       <div>
-                        Question{" "}
-                        {currentQuestionIndex + 1 + quiz.quizLastQuestionNumber}
-                        /{quiz.quizTotalQuestions}
-                        {quizPointsSystem === "overall" && (
-                          <div
-                            style={{ textAlign: "right", paddingRight: "10px" }}
-                          >
-                            Quiz points: {quiz.quizOverallPoints}
-                          </div>
-                        )}
+                        {quiz.quizLastQuestionNumber ? (
+                         <> Question {currentQuestionIndex + 1 + quiz.quizLastQuestionNumber}
+												/{quiz.quizTotalQuestions}</>
+                        ): (
+                              <> Question {currentQuestionIndex + 1}
+												/{quiz.quizQuestions.length}</>
+                        )
+                        }
+												
+												{quizPointsSystem === "overall" && (
+													<div style={{ textAlign: "right", paddingRight: "10px" }}>
+														Quiz points: {quiz.quizOverallPoints}
+													</div>
+												)}
                       </div>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleClick}
-                      >
+                      <div>
+											<Button variant="contained" color="primary" onClick={handleClick}>
                         Submit
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </Fragment>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+											</Button>
+                      {isQuizDemo &&
+                      	<Button variant="contained" color="primary" onClick={leaveQuiz}>
+                        Exit Demo
+											</Button>
+                      }
+</div>
+										</div>
+									</div>
+								</div>
+							)}
+						</Fragment>
+					)}
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default Quiz;

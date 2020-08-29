@@ -32,13 +32,11 @@ var _default = function _default() {
       });
 
     case _quizScoreActions.SET_NEW_QUESTION_NUMBER:
-      console.log(action.questionNumber);
       return _objectSpread({}, state, {
         questionNumber: parseInt(action.questionNumber)
       });
 
     case _quizScoreActions.SET_OVERALL_SCORE:
-      console.log(action.score);
       return _objectSpread({}, state, {
         overallScore: parseInt(action.score)
       });

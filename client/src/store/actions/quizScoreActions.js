@@ -42,7 +42,6 @@ export const setStudent = ({ quiz, token, user, questionNumber, pointsScored }) 
 				user: user
 			}
 		});
-		//not sure if we should use same state to store quiz for student as for teacher when creating
 		await dispatch({
 			type: SET_CURRENT_QUIZ,
 			payload: quiz
@@ -57,6 +56,30 @@ export const setStudent = ({ quiz, token, user, questionNumber, pointsScored }) 
 		});
 	};
 };
+
+export const setDemoQuiz = ({ quiz }) => {
+	return async (dispatch) => {
+		await dispatch({
+			type: STUDENT_LOGIN_SUCCESS,
+			payload: {
+				token: "demo_token",
+				user: "demo_user"
+			}
+		});
+		await dispatch({
+			type: SET_CURRENT_QUIZ,
+			payload: quiz
+		});
+		await dispatch({
+			type: SET_STUDENT,
+			payload: {
+				id: "demo_id",
+				questionNumber: 0,
+				pointsScored: 0
+			}
+		});
+	}
+}
 
 export const clearScore = () => {
 	return (dispatch) => {
@@ -88,15 +111,15 @@ export const setQuestionAnswer = (answer) => {
 		const studentId = getState().auth.user.contactId;
 		const quizId = getState().quiz._id;
 		const questionNumber = parseInt(getState().score.questionNumber + 1);
-
-		return axios
+		const isDemo = localStorage.getItem("token") === "demo_token"
+		if (!isDemo) {
+			return axios
 			.post(
 				"http://localhost:5000/student/saveAnswer",
 				{ quizId, studentId, questionNumber, answer },
 				tokenConfig(token)
 			)
 			.then((res) => {
-				console.log("successfully set the answer");
 				dispatch({
 					type: SET_NEW_QUESTION_NUMBER,
 					questionNumber: questionNumber
@@ -105,6 +128,16 @@ export const setQuestionAnswer = (answer) => {
 			.catch((err) => {
 				console.log(err);
 			});
+			return;
+		}
+		else {
+			dispatch({
+					type: SET_NEW_QUESTION_NUMBER,
+					questionNumber: questionNumber
+			});
+			return;
+		}
+		
 	};
 };
 
@@ -114,8 +147,9 @@ export const setOverallScore = (score) => {
 		const studentId = getState().auth.user.contactId;
 		const quizId = getState().quiz._id;
 		const newScore = parseInt(getState().score.overallScore) + parseInt(score);
-
-		return axios
+		const isDemo = localStorage.getItem("token") === "demo_token"
+		if (!isDemo) {
+			return axios
 			.post("http://localhost:5000/student/saveScore", { quizId, studentId, newScore }, tokenConfig(token))
 			.then((res) => {
 				dispatch({
@@ -126,5 +160,15 @@ export const setOverallScore = (score) => {
 			.catch((err) => {
 				console.log(err);
 			});
+			return;
+		}
+		else {
+			dispatch({
+					type: SET_OVERALL_SCORE,
+					score: newScore
+			});
+			return;
+		}
+		
 	};
 };

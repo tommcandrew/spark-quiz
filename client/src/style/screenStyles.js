@@ -198,16 +198,24 @@ export const contactsScreenStyles = makeStyles((theme) => ({
 			marginTop: "20px !important"
 		}
 	},
-	contactsContainer: {
-		flexGrow: 1,
-		overflowY: "scroll",
-		width: "100%",
-		border: `1px solid ${theme.palette.primary.main}`,
-		padding: "20px",
-		// boxShadow: "0px 3px 15px rgba(0,0,0,0.2)"
-		[theme.breakpoints.down("xs")]: {
-			border: "none"
-		}
+
+	 contactsMainContainer: {
+    height: "100%",
+    padding: "20px",
+},
+
+  contactsContainer: {
+    height: "80%",
+    overflowY: "scroll",
+    width: "100%",
+    border: `1px solid ${theme.palette.primary.main}`,
+    padding: "20px",
+    // boxShadow: "0px 3px 15px rgba(0,0,0,0.2)"
+    [theme.breakpoints.down("xs")]: {
+      border: "none",
+       
+    },
+  
 	},
 	gridItem: {
 		height: "200px",
