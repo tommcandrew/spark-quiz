@@ -21,7 +21,11 @@ export const createQuiz = (quizName, quizSubject) => {
 		const token = getState().auth.token;
 		dispatch(loading("Creating new quiz"));
 		return axios
-			.post("http://localhost:5000/quiz/createQuiz", { quizName, quizSubject }, tokenConfig(token))
+			.post(
+				"https://sparkquiz-backend.herokuapp.com/quiz/createQuiz",
+				{ quizName, quizSubject },
+				tokenConfig(token)
+			)
 			.then((res) => {
 				dispatch({
 					type: CREATE_QUIZ,
@@ -55,7 +59,7 @@ export const loadQuiz = () => {
 			const token = getState().auth.token;
 			if (quizId) {
 				return axios
-					.post("http://localhost:5000/quiz/fetchQuiz", { quizId }, tokenConfig(token))
+					.post("https://sparkquiz-backend.herokuapp.com/quiz/fetchQuiz", { quizId }, tokenConfig(token))
 					.then((res) => {
 						dispatch({
 							type: CREATE_QUIZ,
@@ -101,7 +105,7 @@ export const addNewQuestion = (formData) => {
 	return (dispatch) => {
 		dispatch(loading("Adding question"));
 		axios
-			.post("http://localhost:5000/quiz/addQuestion", formData)
+			.post("https://sparkquiz-backend.herokuapp.com/quiz/addQuestion", formData)
 			.then((res) => {
 				dispatch({
 					type: ADD_NEW_QUESTION,
@@ -125,7 +129,7 @@ export const editQuestion = (formData) => {
 		const token = getState().auth.token;
 		dispatch(loading("Updating question"));
 		return await axios
-			.post("http://localhost:5000/quiz/editQuestion", formData, tokenConfig(token))
+			.post("https://sparkquiz-backend.herokuapp.com/quiz/editQuestion", formData, tokenConfig(token))
 			.then((res) => {
 				dispatch({
 					type: EDIT_QUESTION,
@@ -149,7 +153,11 @@ export const deleteQuestion = (id) => {
 		const quizId = getState().quiz._id;
 		const token = getState().auth.token;
 		return await axios
-			.post("http://localhost:5000/quiz/deleteQuestion", { quizId: quizId, questionId: id }, tokenConfig(token))
+			.post(
+				"https://sparkquiz-backend.herokuapp.com/quiz/deleteQuestion",
+				{ quizId: quizId, questionId: id },
+				tokenConfig(token)
+			)
 			.then(() => {
 				dispatch({
 					type: DELETE_QUESTION,
@@ -163,7 +171,7 @@ export const updateQuiz = (_id, update) => {
 	return (dispatch) => {
 		dispatch(loading("Updating quiz"));
 		axios
-			.post("http://localhost:5000/quiz/updateQuiz", { _id, update })
+			.post("https://sparkquiz-backend.herokuapp.com/quiz/updateQuiz", { _id, update })
 			.then(() => {
 				dispatch({
 					type: UPDATE_QUIZ,
@@ -182,7 +190,7 @@ export const publishQuiz = (quizId) => {
 		const token = getState().auth.token;
 		dispatch(loading("Uploading quiz"));
 		return axios
-			.post("http://localhost:5000/quiz/publishQuiz", { quizId }, tokenConfig(token))
+			.post("https://sparkquiz-backend.herokuapp.com/quiz/publishQuiz", { quizId }, tokenConfig(token))
 			.then((res) => {
 				dispatch(clearCurrentQuiz());
 				dispatch(loaded());

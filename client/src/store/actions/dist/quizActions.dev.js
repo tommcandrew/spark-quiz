@@ -51,7 +51,7 @@ var createQuiz = function createQuiz(quizName, quizSubject) {
           case 0:
             token = getState().auth.token;
             dispatch((0, _errorActions.loading)("Creating new quiz"));
-            return _context.abrupt("return", _axios["default"].post("http://localhost:5000/quiz/createQuiz", {
+            return _context.abrupt("return", _axios["default"].post("https://sparkquiz-backend.herokuapp.com/quiz/createQuiz", {
               quizName: quizName,
               quizSubject: quizSubject
             }, (0, _authActions.tokenConfig)(token)).then(function (res) {
@@ -112,7 +112,7 @@ var loadQuiz = function loadQuiz() {
               break;
             }
 
-            return _context2.abrupt("return", _axios["default"].post("http://localhost:5000/quiz/fetchQuiz", {
+            return _context2.abrupt("return", _axios["default"].post("https://sparkquiz-backend.herokuapp.com/quiz/fetchQuiz", {
               quizId: quizId
             }, (0, _authActions.tokenConfig)(token)).then(function (res) {
               dispatch({
@@ -195,7 +195,7 @@ var addNewQuestion = function addNewQuestion(formData) {
   return function (dispatch) {
     dispatch((0, _errorActions.loading)("Adding question"));
 
-    _axios["default"].post("http://localhost:5000/quiz/addQuestion", formData).then(function (res) {
+    _axios["default"].post("https://sparkquiz-backend.herokuapp.com/quiz/addQuestion", formData).then(function (res) {
       dispatch({
         type: ADD_NEW_QUESTION,
         payload: res.data.quiz
@@ -227,7 +227,7 @@ var editQuestion = function editQuestion(formData) {
             token = getState().auth.token;
             dispatch((0, _errorActions.loading)("Updating question"));
             _context5.next = 4;
-            return regeneratorRuntime.awrap(_axios["default"].post("http://localhost:5000/quiz/editQuestion", formData, (0, _authActions.tokenConfig)(token)).then(function (res) {
+            return regeneratorRuntime.awrap(_axios["default"].post("https://sparkquiz-backend.herokuapp.com/quiz/editQuestion", formData, (0, _authActions.tokenConfig)(token)).then(function (res) {
               dispatch({
                 type: EDIT_QUESTION,
                 payload: res.data.quiz
@@ -269,7 +269,7 @@ var deleteQuestion = function deleteQuestion(id) {
             quizId = getState().quiz._id;
             token = getState().auth.token;
             _context6.next = 4;
-            return regeneratorRuntime.awrap(_axios["default"].post("http://localhost:5000/quiz/deleteQuestion", {
+            return regeneratorRuntime.awrap(_axios["default"].post("https://sparkquiz-backend.herokuapp.com/quiz/deleteQuestion", {
               quizId: quizId,
               questionId: id
             }, (0, _authActions.tokenConfig)(token)).then(function () {
@@ -297,7 +297,7 @@ var updateQuiz = function updateQuiz(_id, update) {
   return function (dispatch) {
     dispatch((0, _errorActions.loading)("Updating quiz"));
 
-    _axios["default"].post("http://localhost:5000/quiz/updateQuiz", {
+    _axios["default"].post("https://sparkquiz-backend.herokuapp.com/quiz/updateQuiz", {
       _id: _id,
       update: update
     }).then(function () {
@@ -318,7 +318,7 @@ var publishQuiz = function publishQuiz(quizId) {
   return function (dispatch, getState) {
     var token = getState().auth.token;
     dispatch((0, _errorActions.loading)("Uploading quiz"));
-    return _axios["default"].post("http://localhost:5000/quiz/publishQuiz", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/quiz/publishQuiz", {
       quizId: quizId
     }, (0, _authActions.tokenConfig)(token)).then(function (res) {
       dispatch(clearCurrentQuiz());

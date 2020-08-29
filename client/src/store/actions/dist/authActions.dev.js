@@ -70,7 +70,7 @@ var loadUser = function loadUser() {
 
             token = getState().auth.token;
             dispatch((0, _errorActions.loading)("Fetching your data"));
-            return _context.abrupt("return", _axios["default"].get("http://localhost:5000/user/fetchUser", tokenConfig(token)).then(function (res) {
+            return _context.abrupt("return", _axios["default"].get("https://sparkquiz-backend.herokuapp.com/user/fetchUser", tokenConfig(token)).then(function (res) {
               dispatch({
                 type: USER_LOADED,
                 payload: res.data.user
@@ -128,7 +128,7 @@ var register = function register(_ref) {
       password2: password2
     });
     dispatch((0, _errorActions.loading)("Registering User. Please Wait"));
-    return _axios["default"].post("http://localhost:5000/auth/register", body, config).then(function (res) {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/register", body, config).then(function (res) {
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
@@ -169,7 +169,7 @@ var login = function login(_ref2) {
       email: email,
       password: password
     });
-    return _axios["default"].post("http://localhost:5000/auth/login", body, config).then(function (res) {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/login", body, config).then(function (res) {
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
@@ -207,7 +207,7 @@ var studentLogin = function studentLogin(studentCode) {
       }
     };
     dispatch((0, _errorActions.loading)("Verifing code"));
-    return _axios["default"].post("http://localhost:5000/auth/studentLogin", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/studentLogin", {
       studentCode: studentCode
     }, config).then(function (res) {
       dispatch((0, _quizScoreActions.setStudent)({
@@ -240,7 +240,7 @@ var quizDemo = function quizDemo() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            return _context2.abrupt("return", _axios["default"].get("http://localhost:5000/student/quizDemo").then(function (res) {
+            return _context2.abrupt("return", _axios["default"].get("https://sparkquiz-backend.herokuapp.com/student/quizDemo").then(function (res) {
               dispatch((0, _quizScoreActions.setDemoQuiz)({
                 quiz: res.data.quiz
               }));
@@ -276,7 +276,7 @@ var studentReload = function studentReload() {
           case 4:
             token = getState().auth.token;
             dispatch((0, _errorActions.loading)("Reloading"));
-            return _context3.abrupt("return", _axios["default"].get("http://localhost:5000/student/quizReload", tokenConfig(token)).then(function (res) {
+            return _context3.abrupt("return", _axios["default"].get("https://sparkquiz-backend.herokuapp.com/student/quizReload", tokenConfig(token)).then(function (res) {
               dispatch((0, _quizScoreActions.resetStudent)({
                 quiz: res.data.quiz,
                 user: res.data.user,
@@ -310,7 +310,7 @@ exports.studentReload = studentReload;
 var deleteAccount = function deleteAccount() {
   return function (dispatch, getState) {
     var token = getState().auth.token;
-    return _axios["default"].get("http://localhost:5000/user/deleteAccount", tokenConfig(token)).then(function () {
+    return _axios["default"].get("https://sparkquiz-backend.herokuapp.com/user/deleteAccount", tokenConfig(token)).then(function () {
       //is it ok to not return an action object for reducer? It seems unnecessary here.
       dispatch(logout());
     })["catch"](function (err) {
@@ -324,7 +324,7 @@ exports.deleteAccount = deleteAccount;
 var changePassword = function changePassword(currentPassword, newPassword) {
   return function (dispatch, getState) {
     var token = getState().auth.token;
-    return _axios["default"].post("http://localhost:5000/auth/changePassword", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/changePassword", {
       currentPassword: currentPassword,
       newPassword: newPassword
     }, tokenConfig(token)).then(function (res) {
@@ -360,7 +360,7 @@ exports.clearStudent = clearStudent;
 
 var resetPassword = function resetPassword(email) {
   return function (dispatch, getState) {
-    return _axios["default"].post("http://localhost:5000/auth/resetPassword", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/auth/resetPassword", {
       email: email
     }).then(function (res) {
       console.log(res);
