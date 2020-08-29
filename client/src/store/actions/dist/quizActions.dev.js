@@ -63,6 +63,7 @@ var createQuiz = function createQuiz(quizName, quizSubject) {
                   _id: res.data._id
                 }
               });
+              dispatch((0, _userActions.addQuiz)(res.data._id, quizName, quizSubject, false));
               dispatch({
                 type: SET_CURRENT_QUIZ,
                 payload: res.data

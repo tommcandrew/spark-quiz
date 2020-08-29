@@ -52,10 +52,11 @@ var fetchQuizzes = function fetchQuizzes() {
 
 exports.fetchQuizzes = fetchQuizzes;
 
-var addQuiz = function addQuiz(quizName, quizSubject, quizPublished) {
+var addQuiz = function addQuiz(_id, quizName, quizSubject, quizPublished) {
   return {
     type: ADD_QUIZ,
     payload: {
+      _id: _id,
       quizName: quizName,
       quizSubject: quizSubject,
       quizPublished: quizPublished
