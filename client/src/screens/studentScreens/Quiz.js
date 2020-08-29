@@ -228,10 +228,17 @@ const Quiz = ({ history }) => {
 														Quiz points: {quiz.quizOverallPoints}
 													</div>
 												)}
-											</div>
+                      </div>
+                      <div>
 											<Button variant="contained" color="primary" onClick={handleClick}>
-												Submit
+                        Submit
 											</Button>
+                      {isQuizDemo &&
+                      	<Button variant="contained" color="primary" onClick={leaveQuiz}>
+                        Exit Demo
+											</Button>
+                      }
+</div>
 										</div>
 									</div>
 								</div>

@@ -42,7 +42,7 @@ const QuizStart = ({ quiz, setQuizStarted, leaveQuiz, isQuizDemo }) => {
 				</Button>
 				{isQuizDemo && (
 						<Button  variant="contained" color="primary" className={classes.button} onClick={leaveQuiz}>
-							Exit
+							Exit Demo
 						</Button>
 				)}
 			</div>
