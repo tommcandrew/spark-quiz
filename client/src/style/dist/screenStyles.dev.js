@@ -195,8 +195,12 @@ var contactsScreenStyles = (0, _styles.makeStyles)(function (theme) {
     }, theme.breakpoints.down("md"), {
       marginTop: "20px !important"
     }),
+    contactsMainContainer: {
+      height: "100%",
+      padding: "20px"
+    },
     contactsContainer: _defineProperty({
-      flexGrow: 1,
+      height: "80%",
       overflowY: "scroll",
       width: "100%",
       border: "1px solid ".concat(theme.palette.primary.main),

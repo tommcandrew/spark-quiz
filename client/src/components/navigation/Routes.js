@@ -56,7 +56,7 @@ export const PublicRoute = ({ component: Component, ...rest }) => {
       render={(props) => {
         if (isAuthenticated) {
           if (isTeacher) {
-            return <Redirect to="/dashboard" />;
+            return <Redirect to="/dashboard/myquizzes" />;
           } else if (isStudent) {
             return <Redirect to="/quiz" />;
           }
