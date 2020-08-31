@@ -78,7 +78,6 @@ export default function CreateQuizScreen(props) {
 			return;
 		} else {
 			dispatch(quizActions.createQuiz(quizName, quizSubject));
-			dispatch(userActions.addQuiz(quizName, quizSubject, false));
 			setQuizName(quiz.quizName);
 			setQuizSubject(quiz.quizSubject);
 		}
@@ -91,12 +90,14 @@ export default function CreateQuizScreen(props) {
 	//RETURN
 	return (
 		<>
-			{validationError !== "" && (
-				<CustomSnackbar severity="error" message={validationError} handleClose={() => setValidationError("")} />
-			)}
+			
       {!quizId && (
  
 				<div style={{ height: "100%", width: "100%" }}>
+{validationError !== "" && (
+				<CustomSnackbar severity="error" message={validationError} handleClose={() => setValidationError("")} />
+			)}
+
 					<Grid item xs={12} xl={12} className={classes.title1Container}>
 						<Typography variant="h4" align="center">
 							Create a new Quiz

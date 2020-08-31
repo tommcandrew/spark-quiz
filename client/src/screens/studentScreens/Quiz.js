@@ -12,7 +12,6 @@ import QuizTimer from "../../components/student/QuizTimer";
 import QuizMedia from "../../components/student/QuizMedia";
 import { animateNextQuestion } from "./QuizAnimations";
 import CustomSnackbar from "../../components/mui/Snackbar";
-import Finish from "./Finish";
 import clsx from "clsx";
 
 const Quiz = ({ history }) => {
@@ -205,12 +204,22 @@ const Quiz = ({ history }) => {
 											)}
 										</div>
 									</div>
-									<div className={classes.quiz__progress}>
-                    <ProgressBar
-                      quizLastQuestionNumber={quiz.quizLastQuestionNumber}
-											currentQuestion={currentQuestionIndex}
-											totalQuestions={quiz.quizTotalQuestions}
-										/>
+                  <div className={classes.quiz__progress}>
+                    {!isQuizDemo ? (
+                        <ProgressBar
+                      currentQuestion={
+                        currentQuestionIndex + 1 + quiz.quizLastQuestionNumber
+                      }
+                      totalQuestions={quiz.quizTotalQuestions}
+                    />
+                    ): (
+                        <ProgressBar
+                      currentQuestion={currentQuestionIndex+1}
+                      totalQuestions={quiz.quizQuestions.length}
+                        />
+                    )
+                    }
+                   
 
 										<div className={classes.quiz__progressDetails}>
                       <div>
@@ -224,21 +233,21 @@ const Quiz = ({ history }) => {
                         }
 												
 												{quizPointsSystem === "overall" && (
-													<div style={{ textAlign: "right", paddingRight: "10px" }}>
-														Quiz points: {quiz.quizOverallPoints}
+                          <div style={{ textAlign: "left", paddingRight: "10px" }}>
+                            Point: {quiz.quizOverallPoints}
 													</div>
 												)}
                       </div>
-                      <div>
+                      <div >
 											<Button variant="contained" color="primary" onClick={handleClick}>
                         Submit
 											</Button>
                       {isQuizDemo &&
-                      	<Button variant="contained" color="primary" onClick={leaveQuiz}>
+                      	<Button variant="contained" color="primary" onClick={leaveQuiz} style={{marginLeft: "10px"}}>
                         Exit Demo
 											</Button>
-                      }
-</div>
+                        }
+                      </div>
 										</div>
 									</div>
 								</div>

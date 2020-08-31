@@ -112,7 +112,7 @@ const Home = (props) => {
             name="code"
             autoFocus
           />
-          <Typography variant="subtitle" component="p" align="center">
+          <Typography variant="subtitle1" component="p" align="center">
             (use code "SPARK" for sample quiz)
           </Typography>
           <Button

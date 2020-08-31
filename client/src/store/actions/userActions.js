@@ -32,10 +32,11 @@ export const fetchQuizzes = () => {
 	};
 };
 
-export const addQuiz = (quizName, quizSubject, quizPublished) => {
+export const addQuiz = (_id, quizName, quizSubject, quizPublished) => {
 	return {
 		type: ADD_QUIZ,
 		payload: {
+			_id,
 			quizName,
 			quizSubject,
 			quizPublished

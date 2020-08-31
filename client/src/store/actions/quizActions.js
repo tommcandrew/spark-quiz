@@ -1,7 +1,7 @@
 import axios from "axios";
 import { tokenConfig } from "./authActions";
 import { loading, loaded, returnErrors } from "./errorActions";
-import { fetchQuizzes } from "./userActions";
+import { fetchQuizzes, addQuiz } from "./userActions";
 export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
 export const EDIT_QUESTION = "EDIT_QUESTION";
 export const DELETE_QUESTION = "DELETE_QUESTION";
@@ -31,6 +31,7 @@ export const createQuiz = (quizName, quizSubject) => {
 						_id: res.data._id
 					}
 				});
+				dispatch(addQuiz( res.data._id, quizName, quizSubject, false));
 				dispatch({
 					type: SET_CURRENT_QUIZ,
 					payload: res.data
