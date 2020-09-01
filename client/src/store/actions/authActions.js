@@ -157,16 +157,20 @@ export const studentLogin = (studentCode) => {
 
 export const quizDemo = () => {
 	return async (dispatch, getState) => {
+		dispatch(loading("Loading demo quiz"));
 		return axios
 			.get("http://localhost:5000/student/quizDemo")
 			.then((res) => {
-				dispatch(setDemoQuiz({
-					quiz: res.data.quiz,
-				}))
+				dispatch(
+					setDemoQuiz({
+						quiz: res.data.quiz
+					})
+				);
+				dispatch(loaded())
 			})
-		.catch((err)=> console.log(err))
-	}
-}
+			.catch((err) => console.log(err));
+	};
+};
 
 export const studentReload = () => {
 	return async (dispatch, getState) => {
@@ -198,8 +202,6 @@ export const studentReload = () => {
 		}
 	};
 };
-
-
 
 export const deleteAccount = () => {
 	return (dispatch, getState) => {

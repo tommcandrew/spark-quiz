@@ -31,7 +31,7 @@ export const createQuiz = (quizName, quizSubject) => {
 						_id: res.data._id
 					}
 				});
-				dispatch(addQuiz( res.data._id, quizName, quizSubject, false));
+				dispatch(addQuiz(res.data._id, quizName, quizSubject, false));
 				dispatch({
 					type: SET_CURRENT_QUIZ,
 					payload: res.data
