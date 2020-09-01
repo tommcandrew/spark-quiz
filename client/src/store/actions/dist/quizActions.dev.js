@@ -57,7 +57,7 @@ var createQuiz = function createQuiz(quizName, quizSubject) {
 							"return",
 							_axios["default"]
 								.post(
-									"http://localhost:5000/quiz/createQuiz",
+									"https://sparkquiz-backend.herokuapp.com/quiz/createQuiz",
 									{
 										quizName: quizName,
 										quizSubject: quizSubject
@@ -140,7 +140,7 @@ var loadQuiz = function loadQuiz() {
 							"return",
 							_axios["default"]
 								.post(
-									"http://localhost:5000/quiz/fetchQuiz",
+									"https://sparkquiz-backend.herokuapp.com/quiz/fetchQuiz",
 									{
 										quizId: quizId
 									},
@@ -230,29 +230,33 @@ var addNewQuestion = function addNewQuestion(formData) {
 	return function(dispatch) {
 		dispatch((0, _errorActions.loading)("Adding question"));
 
-		_axios["default"].post("http://localhost:5000/quiz/addQuestion", formData).then(function(res) {
-			dispatch({
-				type: ADD_NEW_QUESTION,
-				payload: res.data.quiz
-			});
-			dispatch((0, _errorActions.loaded)());
-		})["catch"](function(err) {
-			dispatch((0, _errorActions.loaded)());
+		_axios["default"]
+			.post("https://sparkquiz-backend.herokuapp.com/quiz/addQuestion", formData)
+			.then(function(res) {
+				dispatch({
+					type: ADD_NEW_QUESTION,
+					payload: res.data.quiz
+				});
+				dispatch((0, _errorActions.loaded)());
+			})["catch"](function(err) {
+				dispatch((0, _errorActions.loaded)());
 
-			if (!err.response) {
-				dispatch(
-					(0, _errorActions.returnErrors)(
-						{
-							msg: "Server is down. Please try again later"
-						},
-						500,
-						"SERVER_ERROR"
-					)
-				);
-			} else {
-				dispatch((0, _errorActions.returnErrors)(err.response.data, err.response.status, "EDIT_QUESTION_FAIL"));
-			}
-		});
+				if (!err.response) {
+					dispatch(
+						(0, _errorActions.returnErrors)(
+							{
+								msg: "Server is down. Please try again later"
+							},
+							500,
+							"SERVER_ERROR"
+						)
+					);
+				} else {
+					dispatch(
+						(0, _errorActions.returnErrors)(err.response.data, err.response.status, "EDIT_QUESTION_FAIL")
+					);
+				}
+			});
 	};
 };
 
@@ -271,7 +275,7 @@ var editQuestion = function editQuestion(formData) {
 						return regeneratorRuntime.awrap(
 							_axios["default"]
 								.post(
-									"http://localhost:5000/quiz/editQuestion",
+									"https://sparkquiz-backend.herokuapp.com/quiz/editQuestion",
 									formData,
 									(0, _authActions.tokenConfig)(token)
 								)
@@ -333,7 +337,7 @@ var deleteQuestion = function deleteQuestion(id) {
 						return regeneratorRuntime.awrap(
 							_axios["default"]
 								.post(
-									"http://localhost:5000/quiz/deleteQuestion",
+									"https://sparkquiz-backend.herokuapp.com/quiz/deleteQuestion",
 									{
 										quizId: quizId,
 										questionId: id
@@ -367,7 +371,7 @@ var updateQuiz = function updateQuiz(_id, update) {
 		dispatch((0, _errorActions.loading)("Updating quiz"));
 
 		_axios["default"]
-			.post("http://localhost:5000/quiz/updateQuiz", {
+			.post("https://sparkquiz-backend.herokuapp.com/quiz/updateQuiz", {
 				_id: _id,
 				update: update
 			})
@@ -391,7 +395,7 @@ var publishQuiz = function publishQuiz(quizId) {
 		dispatch((0, _errorActions.loading)("Uploading quiz"));
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/quiz/publishQuiz",
+				"https://sparkquiz-backend.herokuapp.com/quiz/publishQuiz",
 				{
 					quizId: quizId
 				},
