@@ -160,6 +160,7 @@ export const quizDemo = () => {
 		return axios
 			.get("https://sparkquiz-backend.herokuapp.com/student/quizDemo")
 			.then((res) => {
+				console.log(res)
 				dispatch(
 					setDemoQuiz({
 						quiz: res.data.quiz
