@@ -40,7 +40,7 @@ const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
       <br>
       <p><strong>Quiz Name: </strong>${quizName}</p>
       <p><strong>Subject: </strong>${quizSubject}</p>
-      ><p>Log in with code: ${contact.code}</p><br><a href="https://spark-quiz.vercel.app/">Go to Quiz Master</a>`,
+      ><p>Log in with code: ${contact.code}</p><br><a href="https://spark-quiz.vercel.app/">Go to Spark Quiz</a>`,
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
