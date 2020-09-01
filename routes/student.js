@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const checkAuth = require("../middleware");
 const Quiz = require("../models/Quiz.model");
+const User = require("../models/User.model")
 const { update } = require("../models/Quiz.model");
 
 router.get("/quizReload", checkAuth, async (req, res) => {
@@ -156,7 +157,9 @@ router.post("/finishQuiz", async (req, res) => {
 
 router.get("/quizDemo", async (req, res) => {
   try {
-    const quiz = await Quiz.findById("5f48b285a0813300047f4788");
+    const user = await User.findById("5f4e08ac908463000481b561")
+    const quizId = user.quizzes[0]
+    const quiz = await Quiz.findById(quizId);
     res.status(200).send({quiz})
   } catch (err) {
     console.log(err);
