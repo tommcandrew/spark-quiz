@@ -32,7 +32,7 @@ var fetchQuizzes = function fetchQuizzes() {
 		dispatch((0, _errorActions.loading)("Fetching quizzes"));
 
 		_axios["default"]
-			.get("http://localhost:5000/quiz/fetchQuizzes", (0, _authActions.tokenConfig)(token))
+			.get("https://sparkquiz-backend.herokuapp.com/quiz/fetchQuizzes", (0, _authActions.tokenConfig)(token))
 			.then(function(res) {
 				console.log(res);
 				dispatch((0, _errorActions.loaded)());
@@ -84,7 +84,7 @@ var addContact = function addContact(contact) {
 		var token = getState().auth.token;
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/user/addContact",
+				"https://sparkquiz-backend.herokuapp.com/user/addContact",
 				{
 					contact: contact
 				},
@@ -127,7 +127,7 @@ var deleteContact = function deleteContact(contactId) {
 		dispatch((0, _errorActions.loading)("Deleting contact"));
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/user/deleteContact",
+				"https://sparkquiz-backend.herokuapp.com/user/deleteContact",
 				{
 					contactId: contactId
 				},
@@ -166,7 +166,7 @@ var deleteGroup = function deleteGroup(groupId) {
 		dispatch((0, _errorActions.loading)("Deleting group"));
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/user/deleteGroup",
+				"https://sparkquiz-backend.herokuapp.com/user/deleteGroup",
 				{
 					groupId: groupId
 				},
@@ -205,7 +205,7 @@ var updateContact = function updateContact(contactId, updatedContact) {
 		var token = getState().auth.token;
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/user/updateContact",
+				"https://sparkquiz-backend.herokuapp.com/user/updateContact",
 				{
 					contactId: contactId,
 					updatedContact: updatedContact
@@ -244,7 +244,7 @@ var addGroup = function addGroup(group) {
 		var token = getState().auth.token;
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/user/addGroup",
+				"https://sparkquiz-backend.herokuapp.com/user/addGroup",
 				{
 					group: group
 				},
@@ -269,7 +269,7 @@ var deleteMember = function deleteMember(groupId, memberId) {
 		var token = getState().auth.token;
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/user/deleteMember",
+				"https://sparkquiz-backend.herokuapp.com/user/deleteMember",
 				{
 					groupId: groupId,
 					memberId: memberId
@@ -292,7 +292,7 @@ var updateGroup = function updateGroup(groupId, groupName, members) {
 		var token = getState().auth.token;
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/user/updateGroup",
+				"https://sparkquiz-backend.herokuapp.com/user/updateGroup",
 				{
 					groupId: groupId,
 					groupName: groupName,
@@ -333,7 +333,7 @@ var deleteQuiz = function deleteQuiz(id) {
 		var token = getState().auth.token;
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/quiz/deleteQuiz",
+				"https://sparkquiz-backend.herokuapp.com/quiz/deleteQuiz",
 				{
 					_id: id
 				},

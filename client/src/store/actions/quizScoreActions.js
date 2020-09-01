@@ -96,7 +96,11 @@ export const finishQuiz = () => {
 		const quizId = getState().quiz._id;
 		dispatch(loading("Finishing"));
 		return axios
-			.post("http://localhost:5000/student/finishQuiz", { quizId, studentId }, tokenConfig(token))
+			.post(
+				"https://sparkquiz-backend.herokuapp.com/student/finishQuiz",
+				{ quizId, studentId },
+				tokenConfig(token)
+			)
 			.then((res) => {
 				dispatch(loaded());
 			})
@@ -116,7 +120,7 @@ export const setQuestionAnswer = (answer) => {
 		if (!isDemo) {
 			return axios
 				.post(
-					"http://localhost:5000/student/saveAnswer",
+					"https://sparkquiz-backend.herokuapp.com/student/saveAnswer",
 					{ quizId, studentId, questionNumber, answer },
 					tokenConfig(token)
 				)
@@ -149,7 +153,11 @@ export const setOverallScore = (score) => {
 		const isDemo = localStorage.getItem("token") === "demo_token";
 		if (!isDemo) {
 			return axios
-				.post("http://localhost:5000/student/saveScore", { quizId, studentId, newScore }, tokenConfig(token))
+				.post(
+					"https://sparkquiz-backend.herokuapp.com/student/saveScore",
+					{ quizId, studentId, newScore },
+					tokenConfig(token)
+				)
 				.then((res) => {
 					dispatch({
 						type: SET_OVERALL_SCORE,

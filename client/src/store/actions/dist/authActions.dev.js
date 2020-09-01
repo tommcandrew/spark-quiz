@@ -74,7 +74,7 @@ var loadUser = function loadUser() {
 						return _context.abrupt(
 							"return",
 							_axios["default"]
-								.get("http://localhost:5000/user/fetchUser", tokenConfig(token))
+								.get("https://sparkquiz-backend.herokuapp.com/user/fetchUser", tokenConfig(token))
 								.then(function(res) {
 									dispatch({
 										type: USER_LOADED,
@@ -145,34 +145,36 @@ var register = function register(_ref) {
 			password2: password2
 		});
 		dispatch((0, _errorActions.loading)("Registering User. Please Wait"));
-		return _axios["default"].post("http://localhost:5000/auth/register", body, config).then(function(res) {
-			dispatch({
-				type: REGISTER_SUCCESS,
-				payload: res.data
-			});
-			dispatch((0, _errorActions.clearErrors)());
-			dispatch((0, _errorActions.loaded)());
-		})["catch"](function(err) {
-			dispatch((0, _errorActions.loaded)());
+		return _axios["default"]
+			.post("https://sparkquiz-backend.herokuapp.com/auth/register", body, config)
+			.then(function(res) {
+				dispatch({
+					type: REGISTER_SUCCESS,
+					payload: res.data
+				});
+				dispatch((0, _errorActions.clearErrors)());
+				dispatch((0, _errorActions.loaded)());
+			})["catch"](function(err) {
+				dispatch((0, _errorActions.loaded)());
 
-			if (!err.response) {
-				dispatch(
-					(0, _errorActions.returnErrors)(
-						{
-							msg: "Server is down. Please try again later"
-						},
-						500,
-						"SERVER_ERROR"
-					)
-				);
-			} else {
-				dispatch((0, _errorActions.returnErrors)(err.response.data, err.response.status, "REGISTER_FAIL"));
-			}
+				if (!err.response) {
+					dispatch(
+						(0, _errorActions.returnErrors)(
+							{
+								msg: "Server is down. Please try again later"
+							},
+							500,
+							"SERVER_ERROR"
+						)
+					);
+				} else {
+					dispatch((0, _errorActions.returnErrors)(err.response.data, err.response.status, "REGISTER_FAIL"));
+				}
 
-			dispatch({
-				type: REGISTER_FAIL
+				dispatch({
+					type: REGISTER_FAIL
+				});
 			});
-		});
 	};
 };
 
@@ -192,36 +194,38 @@ var login = function login(_ref2) {
 			email: email,
 			password: password
 		});
-		return _axios["default"].post("http://localhost:5000/auth/login", body, config).then(function(res) {
-			dispatch({
-				type: LOGIN_SUCCESS,
-				payload: res.data
-			});
-			dispatch(loadUser());
-			dispatch({
-				type: _errorActions.CLEAR_ERRORS
-			});
-			dispatch((0, _errorActions.loaded)());
-		})["catch"](function(err) {
-			dispatch((0, _errorActions.loaded)());
-
-			if (!err.response) {
-				dispatch(
-					(0, _errorActions.returnErrors)(
-						{
-							msg: "Server is down. Please try again later"
-						},
-						500,
-						"LOGIN_FAIL"
-					)
-				);
-			} else {
-				dispatch((0, _errorActions.returnErrors)(err.response.data, err.response.status, "LOGIN_FAIL"));
+		return _axios["default"]
+			.post("https://sparkquiz-backend.herokuapp.com/auth/login", body, config)
+			.then(function(res) {
 				dispatch({
-					type: LOGIN_FAIL
+					type: LOGIN_SUCCESS,
+					payload: res.data
 				});
-			}
-		});
+				dispatch(loadUser());
+				dispatch({
+					type: _errorActions.CLEAR_ERRORS
+				});
+				dispatch((0, _errorActions.loaded)());
+			})["catch"](function(err) {
+				dispatch((0, _errorActions.loaded)());
+
+				if (!err.response) {
+					dispatch(
+						(0, _errorActions.returnErrors)(
+							{
+								msg: "Server is down. Please try again later"
+							},
+							500,
+							"LOGIN_FAIL"
+						)
+					);
+				} else {
+					dispatch((0, _errorActions.returnErrors)(err.response.data, err.response.status, "LOGIN_FAIL"));
+					dispatch({
+						type: LOGIN_FAIL
+					});
+				}
+			});
 	};
 }; // NOT ERROR MANAGED
 
@@ -237,7 +241,7 @@ var studentLogin = function studentLogin(studentCode) {
 		dispatch((0, _errorActions.loading)("Verifing code"));
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/auth/studentLogin",
+				"https://sparkquiz-backend.herokuapp.com/auth/studentLogin",
 				{
 					studentCode: studentCode
 				},
@@ -284,15 +288,17 @@ var quizDemo = function quizDemo() {
 					case 0:
 						return _context2.abrupt(
 							"return",
-							_axios["default"].get("http://localhost:5000/student/quizDemo").then(function(res) {
-								dispatch(
-									(0, _quizScoreActions.setDemoQuiz)({
-										quiz: res.data.quiz
-									})
-								);
-							})["catch"](function(err) {
-								return console.log(err);
-							})
+							_axios["default"]
+								.get("https://sparkquiz-backend.herokuapp.com/student/quizDemo")
+								.then(function(res) {
+									dispatch(
+										(0, _quizScoreActions.setDemoQuiz)({
+											quiz: res.data.quiz
+										})
+									);
+								})["catch"](function(err) {
+									return console.log(err);
+								})
 						);
 
 					case 1:
@@ -326,7 +332,7 @@ var studentReload = function studentReload() {
 						return _context3.abrupt(
 							"return",
 							_axios["default"]
-								.get("http://localhost:5000/student/quizReload", tokenConfig(token))
+								.get("https://sparkquiz-backend.herokuapp.com/student/quizReload", tokenConfig(token))
 								.then(function(res) {
 									dispatch(
 										(0, _quizScoreActions.resetStudent)({
@@ -376,12 +382,14 @@ exports.studentReload = studentReload;
 var deleteAccount = function deleteAccount() {
 	return function(dispatch, getState) {
 		var token = getState().auth.token;
-		return _axios["default"].get("http://localhost:5000/user/deleteAccount", tokenConfig(token)).then(function() {
-			//is it ok to not return an action object for reducer? It seems unnecessary here.
-			dispatch(logout());
-		})["catch"](function(err) {
-			console.log(err);
-		});
+		return _axios["default"]
+			.get("https://sparkquiz-backend.herokuapp.com/user/deleteAccount", tokenConfig(token))
+			.then(function() {
+				//is it ok to not return an action object for reducer? It seems unnecessary here.
+				dispatch(logout());
+			})["catch"](function(err) {
+				console.log(err);
+			});
 	};
 };
 
@@ -392,7 +400,7 @@ var changePassword = function changePassword(currentPassword, newPassword) {
 		var token = getState().auth.token;
 		return _axios["default"]
 			.post(
-				"http://localhost:5000/auth/changePassword",
+				"https://sparkquiz-backend.herokuapp.com/auth/changePassword",
 				{
 					currentPassword: currentPassword,
 					newPassword: newPassword
@@ -433,7 +441,7 @@ exports.clearStudent = clearStudent;
 var resetPassword = function resetPassword(email) {
 	return function(dispatch, getState) {
 		return _axios["default"]
-			.post("http://localhost:5000/auth/resetPassword", {
+			.post("https://sparkquiz-backend.herokuapp.com/auth/resetPassword", {
 				email: email
 			})
 			.then(function(res) {
