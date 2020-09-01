@@ -32,11 +32,15 @@ const emailNewPassword = (email) => {
 const emailInvites = (quizInvites, quizName, quizAuthor, quizSubject) => {
   quizInvites.new.forEach((contact) => {
     const mailOptions = {
-      from: "Quiz Master",
+      from: "Spark Quiz",
       //email array goes here
       to: contact.email,
-      subject: "Quiz Master Invitation",
-      html: `<h1>You've been invited to take a quiz!</h1><br><p><strong>Name: </strong>${quizName}</p><br><p><strong>Subject: </strong>${quizSubject}</p><br><p><strong>Author: </strong>${quizAuthor}</p><br><p>Log in with code: ${contact.code}</p><br><a href="#">Go to Quiz Master</a>`,
+      subject: "Spark Quiz Invitation",
+      html: `<h2>You've been invited to take a quiz by ${quizAuthor}!</h2>
+      <br>
+      <p><strong>Quiz Name: </strong>${quizName}</p>
+      <p><strong>Subject: </strong>${quizSubject}</p>
+      ><p>Log in with code: ${contact.code}</p><br><a href="https://spark-quiz.vercel.app/">Go to Quiz Master</a>`,
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
