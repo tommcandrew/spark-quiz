@@ -188,7 +188,7 @@ var finishQuiz = function finishQuiz() {
 
     var quizId = getState().quiz._id;
 
-    return _axios["default"].post("http://localhost:5000/student/finishQuiz", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/student/finishQuiz", {
       quizId: quizId,
       studentId: studentId
     }, (0, _authActions.tokenConfig)(token)).then(function (res) {
@@ -212,7 +212,7 @@ var setQuestionAnswer = function setQuestionAnswer(answer) {
     var isDemo = localStorage.getItem("token") === "demo_token";
 
     if (!isDemo) {
-      return _axios["default"].post("http://localhost:5000/student/saveAnswer", {
+      return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/student/saveAnswer", {
         quizId: quizId,
         studentId: studentId,
         questionNumber: questionNumber,
@@ -249,7 +249,7 @@ var setOverallScore = function setOverallScore(score) {
     var isDemo = localStorage.getItem("token") === "demo_token";
 
     if (!isDemo) {
-      return _axios["default"].post("http://localhost:5000/student/saveScore", {
+      return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/student/saveScore", {
         quizId: quizId,
         studentId: studentId,
         newScore: newScore

@@ -29,7 +29,7 @@ var fetchQuizzes = function fetchQuizzes() {
     var token = getState().auth.token;
     dispatch((0, _errorActions.loading)("Fetching quizzes"));
 
-    _axios["default"].get("http://localhost:5000/quiz/fetchQuizzes", (0, _authActions.tokenConfig)(token)).then(function (res) {
+    _axios["default"].get("https://sparkquiz-backend.herokuapp.com/quiz/fetchQuizzes", (0, _authActions.tokenConfig)(token)).then(function (res) {
       console.log(res);
       dispatch((0, _errorActions.loaded)());
       dispatch({
@@ -70,7 +70,7 @@ var addContact = function addContact(contact) {
   return function (dispatch, getState) {
     dispatch((0, _errorActions.loading)("Adding Student"));
     var token = getState().auth.token;
-    return _axios["default"].post("http://localhost:5000/user/addContact", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/user/addContact", {
       contact: contact
     }, (0, _authActions.tokenConfig)(token)).then(function () {
       dispatch({
@@ -99,7 +99,7 @@ var deleteContact = function deleteContact(contactId) {
   return function (dispatch, getState) {
     var token = getState().auth.token;
     dispatch((0, _errorActions.loading)("Deleting contact"));
-    return _axios["default"].post("http://localhost:5000/user/deleteContact", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/user/deleteContact", {
       contactId: contactId
     }, (0, _authActions.tokenConfig)(token)).then(function () {
       dispatch((0, _authActions.loadUser)());
@@ -124,7 +124,7 @@ var deleteGroup = function deleteGroup(groupId) {
   return function (dispatch, getState) {
     var token = getState().auth.token;
     dispatch((0, _errorActions.loading)("Deleting group"));
-    return _axios["default"].post("http://localhost:5000/user/deleteGroup", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/user/deleteGroup", {
       groupId: groupId
     }, (0, _authActions.tokenConfig)(token)).then(function () {
       dispatch((0, _authActions.loadUser)());
@@ -149,7 +149,7 @@ var updateContact = function updateContact(contactId, updatedContact) {
   return function (dispatch, getState) {
     dispatch((0, _errorActions.loading)("Updating contact"));
     var token = getState().auth.token;
-    return _axios["default"].post("http://localhost:5000/user/updateContact", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/user/updateContact", {
       contactId: contactId,
       updatedContact: updatedContact
     }, (0, _authActions.tokenConfig)(token)).then(function () {
@@ -174,7 +174,7 @@ exports.updateContact = updateContact;
 var addGroup = function addGroup(group) {
   return function (dispatch, getState) {
     var token = getState().auth.token;
-    return _axios["default"].post("http://localhost:5000/user/addGroup", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/user/addGroup", {
       group: group
     }, (0, _authActions.tokenConfig)(token)).then(function () {
       dispatch({
@@ -193,7 +193,7 @@ exports.addGroup = addGroup;
 var deleteMember = function deleteMember(groupId, memberId) {
   return function (dispatch, getState) {
     var token = getState().auth.token;
-    return _axios["default"].post("http://localhost:5000/user/deleteMember", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/user/deleteMember", {
       groupId: groupId,
       memberId: memberId
     }, (0, _authActions.tokenConfig)(token)).then(function () {
@@ -210,7 +210,7 @@ var updateGroup = function updateGroup(groupId, groupName, members) {
   return function (dispatch, getState) {
     dispatch((0, _errorActions.loading)("Updating group"));
     var token = getState().auth.token;
-    return _axios["default"].post("http://localhost:5000/user/updateGroup", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/user/updateGroup", {
       groupId: groupId,
       groupName: groupName,
       members: members
@@ -237,7 +237,7 @@ var deleteQuiz = function deleteQuiz(id) {
   return function (dispatch, getState) {
     dispatch((0, _errorActions.loading)("Deleting quiz"));
     var token = getState().auth.token;
-    return _axios["default"].post("http://localhost:5000/quiz/deleteQuiz", {
+    return _axios["default"].post("https://sparkquiz-backend.herokuapp.com/quiz/deleteQuiz", {
       _id: id
     }, (0, _authActions.tokenConfig)(token)).then(function () {
       dispatch({
